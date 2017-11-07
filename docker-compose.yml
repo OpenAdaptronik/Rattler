@@ -1,0 +1,8 @@
+version: "3"
+services:
+  web: 
+    build: ./
+    volumes:
+      - ./:/app
+    ports:
+      - 80:5000
