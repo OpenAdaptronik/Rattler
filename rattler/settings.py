@@ -8,6 +8,8 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
+
+
 """
 
 import os
@@ -25,7 +27,7 @@ SECRET_KEY = 'dqfc+6=p^h_qo0^j_bs4yb1q%6r%$)=y8)c_q)7s_b$qp4ldx$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,7 +83,7 @@ DATABASES = {
         'NAME': 'rattler',
         'USER': 'rattler',
         'PASSWORD': '123456',
-        'HOST': 'database'
+        'HOST': 'db'
     }
 }
 
