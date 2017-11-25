@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web:
+    build: ./
+    volumes:
+      - ./:/app
+    ports:
+      - 80:5000
+    depends_on:
+      - db
+    links:
+      - db:database
+  db:
+      image: mariadb
+      volumes:
+        - ./db:/var/lib/mysql
+      environment:
+          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_DATABASE: rattler
+          MYSQL_USER: rattler
+          MYSQL_PASSWORD: 123456
+      ports:
+        - 3306:3306
+

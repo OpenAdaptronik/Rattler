@@ -1,0 +1,43 @@
+Build Containers
+docker-compose build
+
+Start Containers
+docker-compose up -d
+
+Stop Containers
+docker-compose stop
+
+Remove Containers
+docker-compose rm
+Open Contaiener logs
+
+docker-compose logs
+-f to follow the logs
+
+Connect to DB
+docker-compose exec  db sh -c 'exec mysql -h"localhost" -uroot -p123456'
+
+Connect to shell Web
+docker-compose exec web /bin/ash
+
+Connect to Shell DB
+docker-compose exec db /bin/bash
+
+Database Migration
+docker-compose exec web python manage.py migrate
+# Migriere spezifische APP
+docker-compose exec web python manage.py migrate <APP>
+# Neue Models bzw. änderrungen, erstellt die Migration files
+docker-compose exec web python manage.py makemigrations <APP>
+# Gibt die SQLs für ein Spezifische Migration aus
+docker-compose exec web python manage.py sqlmigrate <APP> <VERSION>
+
+# Interaktive Shell
+docker-compose exec web python manage.py shell
+
+# Admin erstellen
+docker-compose exec web python manage.py createsuperuser
+
+
+# Auf manage.py zugreifen
+docker-compose exec web python manage.py
