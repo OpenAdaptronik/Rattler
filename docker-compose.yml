@@ -8,6 +8,8 @@ services:
       - 80:5000
     depends_on:
       - db
+    links:
+      - db:db
 
   db:
       image: mysql:8.0
