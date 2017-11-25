@@ -101,7 +101,7 @@
 					<div class="col s12 m12 l8">
 						<div class="card">
 							<div class="card-content">
-								{% block login %}
+								{% block register %}
                                 {% endblock %}
 							</div>
 						</div>
@@ -109,27 +109,8 @@
 					<div class="col s12 m12 l4">
 						<div class="card">
 							<div class="card-content">
-								<form>
-									<h5>Login:</h5>
-									<div class="row">
-										<div class="col s12 m12 l12 input-field">
-											<i class="material-icons prefix">account_circle</i>
-											<input id="input_text" type="text"/>
-											<label for="input_text">Nutzername</label>
-										</div>
-										<div class="col s12 m12 l12 input-field">
-											<i class="material-icons prefix">lock</i>
-											<input id="input_text" type="password"/>
-											<label for="input_text">Passwort</label>
-										</div>
-										<div class="col s6">
-											<button class="btn waves-effect waves-light" type="submit">Einloggen <i class="material-icons right">send</i></button>
-										</div>
-										<div class="col s6">
-											<a href="forgotpw/" class="right">Passwort vergessen</a>
-										</div>
-									</div>
-								</form>
+                                {% block login %}
+                                {% endblock %}
 							</div>
 						</div>
 					</div>
