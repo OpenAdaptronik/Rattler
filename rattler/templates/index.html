@@ -1,5 +1,91 @@
 ﻿{% extends "base.html" %}
 {% block siteTitle %}Start{% endblock %}
 {% block naviSpace %}
-    {% include 'navis/indexNavi.html' %}
+    {% include 'includeDefs/indexNavi.html' %}
+{% endblock %}
+{% block container %}
+    <h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
+    <div class="card">
+        <!-- TODO: Schritte über die ersten 3 Bilder!
+        http://materializecss.com/badges.html
+        -->
+        <div class="row card-content promo-row">
+            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
+                <div class="promo-pic-space"><-- csv duifgsdi soijdfi --> 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764;</div>
+                <h5>Daten hochladen</h5>
+                Als .csv
+            </div>
+            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
+                <div class="promo-pic-space">Bild von einem Grapheng</div>
+                <h5>Visualisieren &amp; Analysieren</h5>
+            </div>
+            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
+                <div class="promo-pic-space">Bild von Empfehlungen</div>
+                5 Empfehlungen zur
+                <h5>Open&shy;Source-Schwingungs&shy;minderung</h5>
+            </div>
+            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
+                <div class="promo-pic-space">Feed (nice2have: fullscreen-tauglich)</div>
+                Schwingungsdaten
+                <h5>teilen &amp; vergleichen</h5>
+            </div>
+        </div>
+    </div>
+    <h3>Alles kostenlos und im Browser.</h3>
+    <div class="row">
+        <div class="col s12 m12 l8">
+            <div class="card">
+                <div class="card-content">
+                    <form>
+                        <h5>Jetzt registrieren:</h5>
+                        <div class="row">
+                            <div class="col l6 m6 s12 input-field">
+                                <i class="material-icons prefix">mail</i>
+                                <input id="input_text" type="email" class="validate"/>
+                                <label data-error="gültige Mail eingeben!" for="input_text">E-Mail-Adresse</label>
+                            </div>
+                            <div class="col l4 m4 s10 input-field">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="input_text" type="text" data-length="30"/>
+                                <label for="input_text">Nutzername (Wunsch)</label>
+                            </div>
+                            <div class="col s2">
+                                <button class="btn-floating btn-large waves-effect waves-light" type="submit"><i class="material-icons right">send</i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m12 l4">
+            <div class="card">
+                <div class="card-content">
+                    <form>
+                        <h5>Login:</h5>
+                        <div class="row">
+                            <div class="col s12 m12 l12 input-field">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="input_text" type="text"/>
+                                <label for="input_text">Nutzername</label>
+                            </div>
+                            <div class="col s12 m12 l12 input-field">
+                                <i class="material-icons prefix">lock</i>
+                                <input id="input_text" type="password"/>
+                                <label for="input_text">Passwort</label>
+                            </div>
+                            <div class="col s6">
+                                <button class="btn waves-effect waves-light" type="submit">Einloggen <i class="material-icons right">send</i></button>
+                            </div>
+                            <div class="col s6">
+                                <a href="forgotpw/" class="right">Passwort vergessen</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block moreScripts %}
+    {% include 'includeDefs/javascript-forms.html' %}
 {% endblock %}

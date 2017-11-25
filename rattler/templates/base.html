@@ -30,185 +30,24 @@
 		<div class="navbar-fixed"><nav>
 			<div class="nav-wrapper">
 				<!-- Rattler-Logo -->
-					<a id="logo-container" href="#" class="brand-logo center">
-						{% include 'img/logo.svg' %}
-						<div id="logoText">RATT⅃∃Я</div>
-					</a>
-                {% block naviSpace %}{% endblock %}
-				<!-- Haupt-Navigation auf grossem Bildschirm -->
+					{% include 'includeDefs/logo.html' %}
+                <!-- Navigation(en) -->
+                    {% block naviSpace %}{% endblock %}
 			</div>
 		</nav></div>
 
 <!-- INHALT -->
 		<div class="section">
 			<div class="container">
-				<h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
-					<div class="card">
-						<!-- TODO: Schritte über die ersten 3 Bilder!
-						http://materializecss.com/badges.html
-						-->
-						<div class="row card-content promo-row">
-							<div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-								<div class="promo-pic-space"><-- csv duifgsdi soijdfi --> 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764;</div>
-								<h5>Daten hochladen</h5>
-								Als .csv, .xls oder .xlsx
-							</div>
-							<div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-								<div class="promo-pic-space">Bild von einem Grapheng</div>
-								<h5>Visualisieren &amp; Analysieren</h5>
-							</div>
-							<div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-								<div class="promo-pic-space">Bild von Empfehlungen</div>
-								5 Empfehlungen zur
-								<h5>Open&shy;Source-Schwingungs&shy;minderung</h5>
-							</div>
-							<div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-								<div class="promo-pic-space">Feed (nice2have: fullscreen-tauglich)</div>
-								Schwingungsdaten
-								<h5>teilen &amp; vergleichen</h5>
-							</div>
-						</div>
-					</div>
-				<h3>Alles kostenlos und im Browser.</h3>
-				<div class="row">
-					<div class="col s12 m12 l8">
-						<div class="card">
-							<div class="card-content">
-								<form>
-									<h5>Jetzt registrieren:</h5>
-									<div class="row">
-										<div class="col l6 m6 s12 input-field">
-											<i class="material-icons prefix">mail</i>
-											<input id="input_text" type="email" class="validate"/>
-											<label data-error="gültige Mail eingeben!" for="input_text">E-Mail-Adresse</label>
-										</div>
-										<div class="col l4 m4 s10 input-field">
-											<i class="material-icons prefix">account_circle</i>
-											<input id="input_text" type="text" data-length="30"/>
-											<label for="input_text">Nutzername (Wunsch)</label>
-										</div>
-										<div class="col s2">
-											<button class="btn-floating btn-large waves-effect waves-light" type="submit"><i class="material-icons right">send</i></button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="col s12 m12 l4">
-						<div class="card">
-							<div class="card-content">
-								<form>
-									<h5>Login:</h5>
-									<div class="row">
-										<div class="col s12 m12 l12 input-field">
-											<i class="material-icons prefix">account_circle</i>
-											<input id="input_text" type="text"/>
-											<label for="input_text">Nutzername</label>
-										</div>
-										<div class="col s12 m12 l12 input-field">
-											<i class="material-icons prefix">lock</i>
-											<input id="input_text" type="password"/>
-											<label for="input_text">Passwort</label>
-										</div>
-										<div class="col s6">
-											<button class="btn waves-effect waves-light" type="submit">Einloggen <i class="material-icons right">send</i></button>
-										</div>
-										<div class="col s6">
-											<a href="forgotpw/" class="right">Passwort vergessen</a>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
+                {% block container %}{% endblock %}
 			</div>
 		</div>
 
-
-
 <!-- FOOTER -->
-		<footer class="page-footer">
-			<div class="container">
-				<div class="row">
-					<div class="col l6 s12">
-						<h5 class="">Partner</h5>
-						<div class="row partnerLinks">
-							<div class="col s12 m4 l4">
-								<a href="https://www.openadaptronik.de/" target="_blank">
-									<div id="partnerLogoOA" href="#" class="partnerSvg-container hide-on-small-only">
-										{% include 'img/oa-logo.svg' %}
-									</div>OpenAdaptronik
-								</a>
-							</div>
-							<div class="col s12 m4 l4">
-								<a href="https://www.lbf.fraunhofer.de/" target="_blank">
-									<div id="partnerLogoFLBF" href="#" class="partnerSvg-container hide-on-small-only">
-										<img src="{% static 'img/flbf-logo.png' %}" />
-									</div>Fraunhofer LBF
-								</a>
-							</div>
-							<div class="col s12 m4 l4">
-								<a href="https://www.tu-darmstadt.de/" target="_blank">
-									<div id="partnerLogoTUD" href="#" class="partnerSvg-container hide-on-small-only">
-										{% include 'img/tud-logo.svg' %}
-									</div>TU Darmstadt
-								</a>
-							</div>
-						</div>
-					</div>
-					<div class="col l4 offset-l2 s12">
-						<h5 class="">Informationen</h5>
-							<a class="" href="about/">Über</a><br/>
-							<a class="" href="https://www.openadaptronik.de/kontakt/" target="_blank">Kontakt</a><br/>
-							<a class="" href="https://www.openadaptronik.de/impressum/" target="_blank">Impressum</a><br/>
-							<a class="" href="https://www.openadaptronik.de/datenschutzerklaerung/" target="_blank">Datenschutz</a><br/>
-							<a class="" href="license/">Lizenz</a><br/>
-					</div>
-				</div>
-			</div>
-			<div class="footer-copyright">
-				<div class="container">
-					© 2017-2018 OpenAdaptronik und das Rattler-Team. Veröffentlicht unter der MIT-Lizenz.
-					<!--<a class="right" href="#!">More Links</a>-->
-				</div>
-			</div>
-		</footer>
-
-
-
-
-
-
+    {% include 'includeDefs/footer.html' %}
 
 <!-- SKRIPTE einbinden -->
-		<script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'materialize/js/bin/materialize.min.js' %}"></script>
-		<script>
-		$(document).ready(function($){
-			$(function(){
-				// fuer Navi
-					$('.button-collapse').sideNav({draggable: true});
-				// fuer Forms
-					$('select').material_select();
-					$('input#input_text, textarea#textarea1').characterCounter();
-					$('.datepicker').pickadate({
-						selectMonths: true, // Creates a dropdown to control month
-						selectYears: 15, // Creates a dropdown of 15 years to control year,
-						today: 'Heute',
-						clear: 'Reset',
-						close: 'Ok',
-						closeOnSelect: true // Close upon selecting a date,
-						/*,onClose: function() {
-							$('.datepicker').blur();
-						}*/
-						// geht not
-					});
-
-			}); // end of document ready
-		}); // end of jQuery name space
-		</script>
+        {% include 'includeDefs/javascripts.html' %}
 	</body>
 </html>
 
