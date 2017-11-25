@@ -139,7 +139,7 @@
         }
 
         // Animate image + set z-index
-        if(origin.hasClass('responsive-img')) {
+        if(origin.hasClass('responsive-svg')) {
           origin.velocity({'max-width': newWidth, 'width': originalWidth}, {duration: 0, queue: false,
             complete: function(){
               origin.css({left: 0, top: 0})

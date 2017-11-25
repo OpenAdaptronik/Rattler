@@ -92,7 +92,7 @@
           captionTransition($(this), 0);
         });
 
-        // Move img src into background-image
+        // Move svg src into background-image
         $slides.find('img').each(function () {
           var placeholderBase64 = 'data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
           if ($(this).attr('src') !== placeholderBase64) {
