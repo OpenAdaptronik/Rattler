@@ -8,10 +8,9 @@ services:
       - 80:5000
     depends_on:
       - db
-    links:
-      - db:database
+
   db:
-      image: mariadb
+      image: mysql:8.0
       volumes:
         - ./db:/var/lib/mysql
       environment:
