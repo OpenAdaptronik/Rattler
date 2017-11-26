@@ -1,0 +1,288 @@
+@charset "UTF-8";
+// MaterializeCSS Std.-Variablen Import
+	@import "materialize/sass/components/color";
+	@import "materialize/sass/components/variables";
+	
+// Farben
+	$primary-color: #009372;
+	$primary-color-light: #3db298;
+	$primary-color-dark: #005c47;
+
+	//$secondary-color: #e48400;
+	$secondary-color: $primary-color;
+	$success-color: $primary-color;
+	$error-color: #d70022;
+	$link-color: $primary-color-dark;
+	
+	$card-link-color: $primary-color;
+	
+// xyz
+	//$roboto-font-path: "materialize/fonts/roboto/";
+	
+// Mixins
+	@mixin noselect {
+		  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+	}
+	
+	
+// Selection Color
+	@mixin selection {
+		::-moz-selection { @content; }
+		::selection { @content; }
+	}
+
+	@include selection {
+		background: rgba(0,147,116,.2);
+	}
+	
+// Form Colors
+	//$button-raised-color;
+	$button-raised-background: $primary-color;
+
+// BODY
+	body {
+		background: #eee;
+		//@include noselect {}
+	}
+	
+// HEADER
+	// Hoehe des Headers
+		$navbar-height: 55px !default;
+		$navbar-height-mobile: 55px !default;
+	// Logo im Header
+		// http://howtocenterincss.com/#contentType=div&horizontal=left&vertical=middle&browser.IE=9
+		a#logo-container {
+			display:flex;
+			align-items:center;
+			padding: 0 5px;
+			transition: background-color .3s;
+		}
+		a#logo-container svg, a#logo-container #logoText {
+		}
+		a#logo-container #logoText {
+			font-size: 16pt;
+			letter-spacing: 3px;
+		}
+		a#logo-container svg {
+			height: 35px;
+			margin-right: 8px;
+		}
+		a#logo-container svg path {
+			fill: #fff;
+		}
+		a#logo-container svg path,
+		a#logo-container #logoText {
+			transition: opacity .3s, fill .3s, color .3s;
+		}
+		a#logo-container:hover svg path,
+		a#logo-container:hover #logoText {
+			opacity: .75;
+		}
+		a#logo-container:hover {
+			//background-color: rgba(0,0,0,.1);
+		}
+		$header-logo-hover-color: #efefef;
+		a#logo-container:hover svg path {
+			fill: $header-logo-hover-color;
+		}
+		a#logo-container:hover #logoText {
+			color: $header-logo-hover-color;
+		}
+		$navbar-bg-color: $primary-color-dark;
+	// Navigation
+		$navbar-li-active-bg-color: rgba(0,0,0,0);
+		nav ul li.active {
+			-webkit-box-shadow: inset 3px 3px 30px 1px rgba(0,0,0,0.75);
+			   -moz-box-shadow: inset 3px 3px 30px 1px rgba(0,0,0,0.75);
+			        box-shadow: inset 3px 3px 30px 1px rgba(0,0,0,0.75);
+		}
+	
+// SIDE-NAV
+	$sidenav-font-color: $primary-color-dark;
+	$sidenav-active-bg-color: $primary-color;
+	$sidenav-active-color: #fff;
+	.side-nav {
+		max-width: 85%; // damit SideNav auch auf schmalen Bildschirmen schliessbar ist
+	}
+
+// PROFIL-NAV
+	#dropdown-profile {
+		& li a {
+			display:flex;
+			align-items:center;
+			& i, & div {
+				color: $primary-color-dark;
+				opacity: .85;
+				transition: opacity .3s;
+			}
+			&:hover i, &:hover div {
+				opacity: 1;
+			}
+		}
+	}
+	.dropdown-profile-avatar {
+		position: relative;
+		padding: 0 15px;
+		height: 100%;
+		display:flex;
+		align-items:center;
+	}
+	.dropdown-profile-avatar img {
+		width:			22px;
+		height:			22px;
+		border-radius:	11px;
+	}
+	
+// SECTION
+	.section {
+	}
+	
+// CONTAINER
+	.container {
+	}
+	
+
+	
+	
+// STARTSEITE
+	// 4 coole Marketing-Cards
+		.promo-pic-space {
+			overflow: hidden;
+			display: flex;
+			flex-grow: 1;
+			max-height: 120px; // muss später auf die Höhe der Inhalte von Grafik 2, 3 & 4 gesetzt werden!
+		}
+
+	
+	
+	
+// DASHBOARD
+	// Karte "Neue Schwingungsdaten analysieren"
+		// Process Steps = die 4 Schritte des Hauptprozesses
+			.processSteps {
+				display: inline-block
+			}
+			.processSteps ul,
+			.processSteps li {
+				padding: 0;
+				margin-left: -16px;
+			}
+			.processSteps li {
+				width: 2em;
+				height: 2em;
+				text-align: center;
+				line-height: 2em;
+				border-radius: 1em;
+				background: black;
+				margin: 0 1em;
+				display: inline-block;
+				color: white;
+				position: relative;
+			}
+			.card-content {
+				z-index: 1;
+				position: relative;
+			} // damit [z-index:-1] bei [.processSteps li::before] funktioniert
+			.processSteps li::before{
+				content: '';
+				position: absolute;
+				top: .9em;
+				left: -4em;
+				width: 4em;
+				height: .2em;
+				background: black;
+				z-index: -1;
+			}
+			.processSteps li:first-child::before {
+				display: none;
+			}
+			.processSteps .active {
+				background: black;
+			}
+			.processSteps .active ~ li {
+				background: #777;
+			}
+			.processSteps .active ~ li::before {
+				background: #777;
+			}
+		
+		
+		
+		
+		
+		
+		
+// FOOTER
+	$footer-font-color: rgba(51,51,51,0.8);
+	$footer-bg-color: #ccc;
+	$footer-copyright-font-color: $footer-font-color;
+	$footer-copyright-bg-color: rgba(0,0,0,.1);
+	.page-footer { 
+		/*-webkit-box-shadow: inset 0px 58px 102px -80px rgba(0,0,0,0.48);
+		-moz-box-shadow: inset 0px 58px 102px -80px rgba(0,0,0,0.48);
+		box-shadow: inset 0px 58px 102px -80px rgba(0,0,0,0.48);*/
+		//border-top: 1px solid #888;
+	}
+	.page-footer a {
+		color: $footer-font-color;
+		opacity: 1;
+		transition: opacity .3s;
+		&:hover {
+			opacity: .7;
+		}
+	}
+	
+	// Partner-Links (TUD, Fraunhofer LBF, OA)
+		.partnerLinks > .col {
+			display: block;
+			text-align: center;
+			@media #{$small-and-down} {
+				text-align: left;
+			}
+		}
+		.partnerLinks > .col > a {
+			display: inline-block;
+			text-align: center;
+			//padding: 0 10px;
+			@media #{$small-and-down} {
+				//padding: 0;
+			}
+		}
+		
+		.partnerSvg-container {
+			display: block;
+			text-align: center;
+			height: 60px;
+			display:flex;
+			align-items:center;
+		}
+		.partnerSvg-container svg,
+		.partnerSvg-container img{
+			max-height: 60px;
+			max-width: 100%;
+			display: block;
+			margin: auto;
+		}
+		
+		// OA-Logo
+			#partnerLogoOA svg .oa-logo-rest {
+				fill: #009372;
+			}
+			#partnerLogoOA svg .oa-logo-adap {
+				fill: $footer-font-color;
+			}
+		
+		
+
+// Schlechter Fix fuer Roboto
+	@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700');
+	
+	
+// MaterializeCSS Import
+	@import "materialize/sass/materialize";
