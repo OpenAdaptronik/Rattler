@@ -18,17 +18,19 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^login/', include('apps.login.urls')),
-    url(r'dashboard', views.dashboard, name='dashboard'),
-    url(r'register/test/', views.registerTest, name='registerTest'),
-    url(r'register/', views.register, name='register'),
-    url(r'community/', views.community, name='community'),
-    url(r'profile/me/', views.profileMe, name='profileMe'),
-    url(r'admin/', views.admin, name='admin'),
-    url(r'settings/', views.settings, name='settings'),
-    url(r'logout/', views.logout, name='logout'),
-    url(r'help/', views.help, name='help'),
+    # Import Apps
+    url(r'^login/', include('apps.login.urls'), name='login'),
+    url(r'^logout/', include('apps.logout.urls'), name='logout'),
+    # Django Admin
     url(r'^djangoAdmin/', admin.site.urls),
-    url(r'', views.index),
-    url(r'^', views.error404, name='error404')
+    # Global Routes
+    url(r'^dashboard/', views.dashboard, name='dashboard'),
+    url(r'^register/test/', views.registerTest, name='registerTest'),
+    url(r'^register/', views.register, name='register'),
+    url(r'^community/', views.community, name='community'),
+    url(r'^profile/me/', views.profileMe, name='profileMe'),
+    url(r'^admin/', views.admin, name='admin'),
+    url(r'^settings/', views.settings, name='settings'),
+    url(r'^help/', views.help, name='help'),
+    url(r'^$', views.index),
 ]

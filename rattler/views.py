@@ -27,8 +27,5 @@ def admin (request):
 def settings (request):
     return render (request,'settings/index.html')
 
-def logout (request):
-    return render (request,'logout/index.html')
-
 def help (request):
     return render (request,'help/index.html')
