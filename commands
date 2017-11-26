@@ -29,7 +29,7 @@ docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py migrate <APP>
 # Neue Models bzw. änderrungen, erstellt die Migration files
 docker-compose exec web python manage.py makemigrations <APP>
-# Gibt die SQLs für ein Spezifische Migration aus
+# Gibt die SQLs für ein Spezifiche Migration aus
 docker-compose exec web python manage.py sqlmigrate <APP> <VERSION>
 
 # Interaktive Shell
