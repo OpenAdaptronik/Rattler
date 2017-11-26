@@ -1,6 +1,6 @@
 from django.contrib import auth
+from django.shortcuts import HttpResponseRedirect
 from .forms import LoginForm
-
 
 def isPost(request):
     return request.method == 'POST'
@@ -30,5 +30,6 @@ def authenticate(request, form):
     auth.login(request, user)
     return True
 
-def logout(request):
-    auth.logout(request)
+def redirect(request):
+    return HttpResponseRedirect(request.GET.get('next', '/'))
+
