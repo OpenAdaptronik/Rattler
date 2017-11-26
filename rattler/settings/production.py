@@ -4,7 +4,7 @@ from .base import *
 DEBUG = False
 
 ALLOWED_HOSTS = ['*.openadaptronik.com', '*.openadaptronik.de', '192.168.99.100']
-SECRET_KEY ='%secretkey%'
+SECRET_KEY ='%key%'
 
 
 
