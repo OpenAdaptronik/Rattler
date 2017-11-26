@@ -1,6 +1,13 @@
 import bcrypt
 import MySQLdb
-
+from django.db import models, migrations
+from . import migrations
+from .models import User
+'''from django.db import models
+from .fields import (
+    AddField, AlterField, FieldOperation, RemoveField, RenameField,
+)
+'''
 db = MySQLdb.connect(host='db', user='root',
                      passwd='123456', db='test')
 c = db.cursor()
@@ -12,6 +19,7 @@ deleted_ids = []
 
 # Entering Userdata
 def enter_data(username, e_mail, password):
+
     return encryption(username, e_mail, password)
 
 
