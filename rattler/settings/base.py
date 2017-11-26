@@ -8,11 +8,6 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
-
-
-
-
-
 """
 
 import os
@@ -28,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 SECRET_KEY = ''
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,6 +48,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'rattler.urls'
 
 TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR, 'rattler', 'templates' , 'jinja2')],
+        'APP_DIRS': True,
+        'OPTIONS': {'environment': 'rattler.jinja2.Environment',}
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'rattler', 'templates')],
@@ -132,3 +132,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'rattler', 'static')
 ]
+
+# E-Mail Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp'
+
+DEFAULT_FROM_EMAIL = 'rattler@openadaptronik.com'
