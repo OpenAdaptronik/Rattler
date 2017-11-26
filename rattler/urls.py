@@ -19,8 +19,8 @@ from . import views
 
 urlpatterns = [
     # Import Apps
-    url(r'^login/', include('apps.login.urls'), name='login'),
-    url(r'^logout/', include('apps.logout.urls'), name='logout'),
+    url(r'^login/', include('apps.login.urls', namespace='login')),
+    url(r'^logout/', include('apps.logout.urls', namespace='logout')),
     # Django Admin
     url(r'^djangoAdmin/', admin.site.urls),
     # Global Routes
