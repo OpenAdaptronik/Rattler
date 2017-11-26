@@ -4,6 +4,7 @@ flask
 db_repository
 tmp
 *.db
+rattler/settings/production.py
 
 ## Operationsystems
 
