@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
+    'apps.login.apps.LoginConfig',
     'apps.index.apps.IndexConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -144,3 +145,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp'
 
 DEFAULT_FROM_EMAIL = 'rattler@openadaptronik.com'
+
+# Login Settings
+LOGIN_URL = '/login/'
