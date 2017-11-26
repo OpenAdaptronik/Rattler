@@ -1,5 +1,6 @@
 version: "3"
 services:
+
   web:
     build: ./
     volumes:
@@ -23,3 +24,8 @@ services:
       ports:
         - 3306:3306
 
+  smtp:
+      image: djfarrelly/maildev:latest
+      ports:
+        - 25:25
+        - 8080:80
