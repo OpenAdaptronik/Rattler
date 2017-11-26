@@ -6,7 +6,7 @@ services:
     volumes:
       - ./:/app
     ports:
-      - 80:5000
+      - 8000:5000
     depends_on:
       - db
     links:
@@ -22,7 +22,7 @@ services:
           MYSQL_USER: rattler
           MYSQL_PASSWORD: 123456
       ports:
-        - 3306:3306
+        - 8001:3306
 
   smtp:
       image: djfarrelly/maildev:latest
