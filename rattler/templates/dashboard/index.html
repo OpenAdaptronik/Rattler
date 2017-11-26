@@ -1,0 +1,118 @@
+﻿{% extends "base.html" %}
+{% block siteTitle %}Dashboard{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+{% block container %}
+    <h2>Willkommen!</h2>
+    <div class="row">
+        <div class="col s12 m12 l6" style="min-width: 300px">
+            <div class="card"><form>
+                <div class="card-content">
+                    <span class="card-title">Neue Schwingungsdaten analysieren</span>
+                    <p>
+                        <div class="processSteps">
+                            <ul>
+                                <li class="active">1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                            </ul>
+                        </div><span style="display: inline-block">Schritt 1: <b>Hochladen</b></span>
+                    </p><br/>
+                    <p>
+                        <p>
+                            <input name="group1" type="radio" id="test1" />
+                            <label for="test1">nur Sensor</label>&emsp;&emsp;
+                            <input name="group1" type="radio" id="test2" />
+                            <label for="test2">Aktor &amp; Sensor</label>
+                        </p>
+                        <br/>
+                        <p><b>Datei:</b></p>
+                        <p><div class="row">
+                            <div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>
+                            <div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>
+                        </div></p>
+                        <p style="margin: 0 0 0 7px;">&rarr; Wie ist die Datei aufgebaut?</p>
+                        <div class="row" style="margin: 0 0 0 7px;">
+                            <div class="col l6 m6 s12">
+                                Spalte 1:
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1" selected>Zeitstempel</option>
+                                        <option value="2">Schwingungen</option>
+                                    </select>
+                                    <label>Inhalt der Spalte</label>
+                                </div>
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1" selected>ms</option>
+                                        <option value="2">ns</option>
+                                    </select>
+                                    <label>Einheit</label>
+                                </div>
+                            </div>
+                            <div class="col l6 m6 s12">
+                                Spalte 2:
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1">Zeitstempel</option>
+                                        <option value="2" selected>Schwingungen</option>
+                                    </select>
+                                    <label>Inhalt der Spalte</label>
+                                </div>
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1" selected>xyz</option>
+                                        <option value="2">abc</option>
+                                    </select>
+                                    <label>Einheit</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <input id="input_text" type="text" data-length="40"/>
+                            <label for="input_text">Name des Datensatzes</label>
+                        </div>
+                        <div class="input-field">
+                            <input  id="erfassungs-datum" type="text" class="datepicker">
+                            <label for="erfassungs-datum">Datum der Erfassung</label>
+                        </div>
+                        <p><b>Angaben zum Objekt:</b></p>
+                        HIER WEITER
+                    </p>
+
+
+                    BUTTON UNTEN HAT FALSCHE FARBE BEIM HOVERN!
+                </div>
+                <div class="card-action">
+                    <button class="btn waves-effect waves-light" type="submit">nächster Schritt <i class="material-icons right">send</i></button>
+                    <button class="btn-flat waves-effect" type="reset">alle Felder löschen</button>
+                </div>
+            </form></div>
+        </div>
+        <div class="col s12 m12 l6" style="min-width: 300px">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Meine Schwingungsdaten</span>
+                    <p>Die letzten 5 von Ihnen hochgeladenen Schwingungsdatensätze.</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">Alle meine Schwingungsdaten anzeigen</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Irgendwas anderes</span>
+                    <p>xyz.</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">ACTION</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block moreScripts %}
+    {% include 'includeDefs/javascript-forms.html' %}
+{% endblock %}
