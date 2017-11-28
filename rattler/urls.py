@@ -19,18 +19,19 @@ from . import views
 
 urlpatterns = [
     # Import Apps
-    url(r'^login/', include('apps.login.urls', namespace='login')),
-    url(r'^logout/', include('apps.logout.urls', namespace='logout')),
+    url(r'^login/', include('apps.login.urls'), name='login'),
+    url(r'^logout/', include('apps.logout.urls'), name='logout'),
+    url(r'^register/', include('apps.register.urls', namespace='register'), name='register'),
     # Django Admin
-    url(r'^admin/', admin.site.urls),
+    url(r'^djangoAdmin/', admin.site.urls),
     # Global Routes
     url(r'^dashboard/', views.dashboard, name='dashboard'),
     url(r'^register/test/', views.registerTest, name='registerTest'),
     url(r'^register/', views.register, name='register'),
     url(r'^community/', views.community, name='community'),
     url(r'^profile/me/', views.profileMe, name='profileMe'),
+    url(r'^admin/', views.admin, name='admin'),
     url(r'^settings/', views.settings, name='settings'),
     url(r'^help/', views.help, name='help'),
-    url(r'^', include('apps.index.urls')),
-    url(r'^', views.index),
+    url(r'^$', views.index),
 ]

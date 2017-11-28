@@ -23,17 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 SECRET_KEY = ''
 INSTALLED_APPS = [
-
+    'apps.user.apps.UserConfig',
+    'apps.login.apps.LoginConfig',
+    'apps.logout.apps.LogoutConfig',
+    'apps.index.apps.IndexConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.login.apps.LoginConfig',
-    'apps.logout.apps.LogoutConfig',
-    'apps.user.apps.UserConfig',
-    'apps.index.apps.IndexConfig',
 ]
 
 MIDDLEWARE = [
