@@ -42,7 +42,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #
 # EMAIL_BACKEND = ''
-# EMAIL_HOST = ''
+EMAIL_HOST = 'smtp'
+DEFAULT_FROM_EMAIL ='rattler@openadaptronik.com'
+LOGIN_URL ='/login/'
+APPEND_SLASH = True
+
 # EMAIL_PORT =
 # EMAIL_HOST_USER =
 # EMAIL_HOST_PASSWORD =
