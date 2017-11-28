@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ['*']
 
 # Adding the debug_toolbar to the Installed_Apps
 INSTALLED_APPS += [
-    'debug_toolbar'
+    #'debug_toolbar'
 ]
 
 
@@ -32,13 +32,13 @@ DATABASES = {
 
 
 
-MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+#MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-DEBUG_TOOLBAR_CONFIG = {
-    'JQUERY_URL': '',
-}
+#DEBUG_TOOLBAR_CONFIG = {
+#    'JQUERY_URL': '',
+#}
 
 #
 # EMAIL_BACKEND = ''
