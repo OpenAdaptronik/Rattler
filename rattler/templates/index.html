@@ -36,41 +36,26 @@
         <div class="col s12 m12 l8">
             <div class="card">
                 <div class="card-content">
-                    <form>
-                        <h5>Jetzt registrieren:</h5>
-                        <div class="row">
-                            <div class="col l6 m6 s12 input-field">
-                                <i class="material-icons prefix">mail</i>
-                                <input id="input_text" type="email" class="validate"/>
-                                <label data-error="gültige Mail eingeben!" for="input_text">E-Mail-Adresse</label>
-                            </div>
-                            <div class="col l4 m4 s10 input-field">
-                                <i class="material-icons prefix">account_circle</i>
-                                <input id="input_text" type="text" data-length="30"/>
-                                <label for="input_text">Nutzername (Wunsch)</label>
-                            </div>
-                            <div class="col s2">
-                                <button class="btn-floating btn-large waves-effect waves-light" type="submit"><i class="material-icons right">send</i></button>
-                            </div>
-                        </div>
-                    </form>
+                    {% block register %}
+                    {% endblock %}
                 </div>
             </div>
         </div>
         <div class="col s12 m12 l4">
             <div class="card">
                 <div class="card-content">
-                    <form>
+                    <form method="POST" action="{% url 'login:index' %}">
+                        {% csrf_token %}
                         <h5>Login:</h5>
                         <div class="row">
                             <div class="col s12 m12 l12 input-field">
                                 <i class="material-icons prefix">account_circle</i>
-                                <input id="input_text" type="text"/>
+                                {{ form.name }}
                                 <label for="input_text">Nutzername</label>
                             </div>
                             <div class="col s12 m12 l12 input-field">
                                 <i class="material-icons prefix">lock</i>
-                                <input id="input_text" type="password"/>
+                                {{ form.password }}
                                 <label for="input_text">Passwort</label>
                             </div>
                             <div class="col s6">
