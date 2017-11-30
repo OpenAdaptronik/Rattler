@@ -1,0 +1,4 @@
+time and force
+
+stichpunktartige messung : diskreter zeitbereich
+dauerhafte messung  : kontinuierlicher zeitbereich
