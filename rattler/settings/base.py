@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
     'apps.login.apps.LoginConfig',
     'apps.logout.apps.LogoutConfig',
+    'apps.register.apps.RegisterConfig',
     'apps.index.apps.IndexConfig',
     'django.contrib.admin',
     'django.contrib.auth',
