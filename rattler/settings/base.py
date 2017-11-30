@@ -143,3 +143,6 @@ DEFAULT_FROM_EMAIL = 'rattler@openadaptronik.com'
 LOGIN_URL = '/login/'
 
 APPEND_SLASH = True
+
+PASSWORD_HASHERS = 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+
