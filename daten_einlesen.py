@@ -3,12 +3,13 @@ import numpy as np
 import scipy as sci
 from nose.util import tolist
 
+#Header = None -> ignoriert
 daten = pd.read_csv('CSV_files/multidata_equal_/single_multidata_equal_Time_data.csv')
-daten2 = pd.read_csv('CSV_files/multidata_equal_/none_multidata_equal_Time_data.csv')
+daten2 = pd.read_csv('CSV_files/multidata_equal_/none_multidata_equal_Time_data.csv',header=None)
 #Preview Daten
 print('Daten wurden erfolgreich eingelesen: \n\n',daten.head(10))
 
-daten2.
+
 data= daten2.get_values()
 
 
