@@ -1,20 +1,17 @@
 import pandas as pd
 import numpy as np
 import scipy as sci
-from nose.util import tolist
-
 
 header_found = False
 
 #Header = None -> ignoriert
 daten = pd.read_csv('CSV_files/multidata_equal_/single_multidata_equal_Time_data.csv')
 daten2 = pd.read_csv('CSV_files/multidata_equal_/none_multidata_equal_Time_data.csv', header=None)
-label = daten2.columns.values
 
-print(label)
+
 
 #Preview Daten
-#print('Daten wurden erfolgreich eingelesen: \n\n',daten.head(10))
+print('Daten wurden erfolgreich eingelesen: \n\n',daten.head(10))
 
 
 
@@ -22,28 +19,34 @@ print(label)
 
 colNames_User =[]
 colUnits_User =[]
-i=-1
-for reihe in list(daten.head()):
-    i+=1
-    if isinstance(reihe, int):
-        #@TODO: Frontend, verhindert leere Eingabe
-        colNames_User.append(input('Bitte geben Sie den Namen der '+i+1+' Spalte ein: '))
-    else:
-        # @TODO: Frontend, verhindert leere Eingabe
-        colNames_User.append(input('Wie möchten sie die Spalte '+reihe+ ' bennen? '))
+#Fragt den Nutzer nach den Bezeichnern der Spalte und in welcher Einheit diese Daten gemessen wurde und fügt die Einheiten an idx = 0 ein
+def firstFormat(data):
+    i = -1
+    for value in list(data.head()):
+        i+=1
+    # Instance of Numpy.Int64 because of the fact that this is the standard type of an pandas Dataframe
+        if isinstance(value, np.int64):
+         #@TODO: Frontend, verhindert leere Eingabe
+         colNames_User.append(input("Bitte geben Sie den Namen der "+str(i)+" Spalte ein:" ))
+        else:
+          # @TODO: Frontend, verhindert leere Eingabe
+         colNames_User.append(input('Wie möchten sie die Spalte '+value+ ' bennen? '))
 
-i = -1
-for reihe in list(daten.head()):
-    i += 1
-    #@TODO: Frontend, Dropdown Liste
-    colUnits_User.append(input('Bitte geben Sie die Einheit der Spalte '+ colNames_User[i]+ ' ein: '))
+    i = -1
 
-daten.columns = colNames_User
+    for value in list(data.head()):
+        i += 1
+        #@TODO: Frontend, Dropdown Liste
+        colUnits_User.append(input('Bitte geben Sie die Einheit der Spalte '+ colNames_User[i]+ ' ein: '))
 
-daten.loc[-1] = colUnits_User
-daten.index = daten.index + 1
-daten = daten.sort_index()
+    data.columns = colNames_User
 
+    data.loc[-1] = colUnits_User
+    data.index = data.index + 1
+    data = data.sort_index()
+    return data
+
+daten =firstFormat(daten2)
 print(daten)
 
 
