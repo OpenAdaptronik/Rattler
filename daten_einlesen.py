@@ -86,18 +86,20 @@ def firstFormat(data):
 daten = firstFormat(masse)
 
 #lowpass filter
-b, a = sci.signal.butter(8, 0.225)
-#b, a = sci.signal.butter(2, 0.01,'low')
-#b, a = sci.signal.ellip(25,4, 1, 120, 5)  # Filter to be applied.
-filtered=sci.signal.filtfilt(a,b,daten.iloc[:,1][1:],padlen=150)
+def lowpass_filter(data,n=8,Wn=0.120):
+    b, a = sci.signal.butter(n, Wn)
+    #b, a = sci.signal.butter(2, 0.01,'low')
+    #b, a = sci.signal.ellip(25,4, 1, 120, 5)  # Filter to be applied.
+    return sci.signal.filtfilt(a,b,daten,padlen=150)
 
+#Example
 plt.figure
+plt.plot(daten.iloc[:,0][1:], lowpass_filter(daten.iloc[:,1][1:]), 'r')
 plt.plot(daten.iloc[:,0][1:], daten.iloc[:,1][1:], 'b', alpha=0.75)
-plt.plot(daten.iloc[:,0][1:], filtered, 'r')
 plt.legend(('noisy signal', 'filtfilt'), loc='best')
 plt.grid(True)
 plt.show()
 
 #Gauß Filter
-
+def gaussian_filter(data,window_len=11,window='hanning'):
 
