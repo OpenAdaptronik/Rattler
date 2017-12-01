@@ -93,13 +93,47 @@ def lowpass_filter(data,n=8,Wn=0.120):
     return sci.signal.filtfilt(a,b,daten,padlen=150)
 
 #Example
-plt.figure
-plt.plot(daten.iloc[:,0][1:], lowpass_filter(daten.iloc[:,1][1:]), 'r')
-plt.plot(daten.iloc[:,0][1:], daten.iloc[:,1][1:], 'b', alpha=0.75)
-plt.legend(('noisy signal', 'filtfilt'), loc='best')
-plt.grid(True)
-plt.show()
+def lowpass_example():
+    plt.figure
+    plt.plot(masse.iloc[:, 0][1:], lowpass_filter(masse.iloc[:, 1][1:]), 'r')
+    plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
+    plt.legend(('noisy signal', 'filtfilt'), loc='best')
+    plt.grid(True)
+    plt.show()
 
 #Gauß Filter
 def gaussian_filter(data,window_len=11,window='hanning'):
 
+    if data.ndim != 1:
+        print(ValueError, "smooth only accepts 1 dimension arrays.")
+
+    if data.size < window_len:
+        print(ValueError, "Input vector needs to be bigger than window size.")
+
+
+    if window_len<3:
+        return data
+
+
+    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
+        print(ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
+
+
+    s=np.r_[data[window_len-1:0:-1],data,data[-2:-window_len-1:-1]]
+    #print(len(s))
+    if window == 'flat': #moving average
+        w=np.ones(window_len,'d')
+    else:
+        w=eval('np.'+window+'(window_len)')
+
+    y=np.convolve(w/w.sum(),s,mode='valid')
+    return y
+
+#Example
+def gaussian_example():
+    print(masse.iloc[:,1][1:])
+    print(gaussian_filter(masse.iloc[:,1][1:]))
+
+
+
+#gaussian_example()
