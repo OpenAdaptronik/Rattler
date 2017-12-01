@@ -32,14 +32,14 @@ def header_Format(data):
 
 
     colValues = data.columns.values
-    if isinstance(data.columns.values,str):
+    if isinstance(data.columns.values[0],str):
         return data
     else:
         for values in data.columns.values:
             colHeader.append(i)
             i += 1
 
-        print(colValues)
+
         data.loc[-1] = colValues
         data.index = data.index+1
         data = data.sort_index()
@@ -100,7 +100,6 @@ def lowpass_example():
     plt.legend(('noisy signal', 'filtfilt'), loc='best')
     plt.grid(True)
     plt.show()
-
 #Gauß Filter
 def gaussian_filter(data,window_len=11,window='hanning'):
 
@@ -137,3 +136,8 @@ def gaussian_example():
 
 
 #gaussian_example()
+
+daten = daten2
+daten=header_Format(daten)
+daten=firstFormat(daten)
+print(daten)
