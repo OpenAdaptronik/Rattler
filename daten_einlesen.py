@@ -1,7 +1,9 @@
+
 import pandas as pd
-import numpy as np
 import scipy as sci
-from scipy.signal import butter, lfilter, freqz
+from scipy.signal import butter, gaussian
+import numpy as np
+from scipy.ndimage import filters
 import matplotlib.pyplot as plt
 
 
@@ -11,7 +13,7 @@ import matplotlib.pyplot as plt
 # Header = None -> ignoriert
 head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
-masse = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
+masse_read = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
 # Preview Daten
 #print('Daten wurden erfolgreich eingelesen: \n\n', daten2.head(10))
 
@@ -82,68 +84,97 @@ def firstFormat(data):
         # @TODO: Frontend, Dropdown Liste
         colUnits_User.append(input('Bitte geben Sie die Einheit der Spalte ' + colNames_User[i] + ' ein: '))
 
+
     data.columns = colNames_User
     data.loc[-1] = colUnits_User
-    data.index = data.index + 1
-    data = data.sort_index()
-    return data
+    # @TODO Frontend Click liste der Titel
+    # Umwandlung in pd datetime format
+    print(data.index)
+    Index = int(input('Bitte geben Sie den Index des Namen von ' + str(colNames_User) + ' ein: '))
+    print(data)
+    data.index = data.set_index([colNames_User[Index]])
+    print(data)
+    #data.index = data.index+1
+    #data.index = pd.to_datetime(data.index, unit=colUnits_User[Index])
+    #data = data.sort_index()
+    #return data
 
 
+masse = firstFormat(headerFormat(masse_read))
 
+#Highpass and lowpass filter
+def butterworth_filter(data,index,fs=10,order = 4, cofreq =1.5 , mode = 'low'):
+    '''
 
-#lowpass filter
-def lowpass_filter(data,n=8,Wn=0.120):
-    b, a = sci.signal.butter(n, Wn)
-    #b, a = sci.signal.butter(2, 0.01,'low')
-    #b, a = sci.signal.ellip(25,4, 1, 120, 5)  # Filter to be applied.
-    return sci.signal.filtfilt(a,b,daten,padlen=150)
+    :param data: The data array
+    :param index: The index of interest for the data
+    :param fs: the sampling rate
+    :param order: The order of the butter filter.
+    :param cofreq: The cuttoff frequency
+    :param mode: disdinguish between 'high' for highpass and 'low' for lowpass
+    :return: the filtered data sequence
+    '''
+    b, a = butter(order, cofreq/ (fs*0.5),btype=mode, analog=False)
+    return sci.signal.filtfilt(b,a,data.iloc[:,index][1:])
 
 #Example
-def lowpass_example():
+def butterworth_example():
     plt.figure
-    plt.plot(masse.iloc[:, 0][1:], lowpass_filter(masse.iloc[:, 1][1:]), 'r')
+    plt.plot(masse.iloc[:, 0][1:], butterworth_filter(masse.iloc[:, 1][1:]), 'r')
     plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
-    plt.legend(('noisy signal', 'filtfilt'), loc='best')
+    plt.legend(('noisy signal', 'butterworth'), loc='best')
     plt.grid(True)
     plt.show()
-#Gauß Filter
-def gaussian_filter(data,window_len=11,window='hanning'):
-
-    if data.ndim != 1:
-        print(ValueError, "smooth only accepts 1 dimension arrays.")
-
-    if data.size < window_len:
-        print(ValueError, "Input vector needs to be bigger than window size.")
 
 
-    if window_len<3:
-        return data
+#@TODO: Standartwerte mit Frauenhofer abklären
+def testGauss(data,index, gauss_M = 50,gauss_std = 2):
+    '''
+    :param data: The data array
+    :param index: The index of interest for the data
+    :param gauss_M: Number of points in the output window of the gaussian Function.
+    If zero or less, an empty array is returned.
+    :param gauss_std: The standard deviation, sigma.
+    :return: The filtered Data
+    '''
+    daten = np.asarray(data.iloc[:,index][1:], dtype=np.result_type(float, np.ravel(data.iloc[:,index][1:])[0]))
+    b = gaussian(gauss_M, gauss_std)
+    return filters.convolve1d(daten, b/b.sum())
 
 
-    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        print(ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
+#@TODO: Noch nicht implementiert
+def resample_data(data, time_index):
+    interval = str(get_interval(data,time_index))+str(data.iloc[:,time_index][0])
+    print(interval)
+    data.resample(interval, label='right').sum()
 
-    s=np.r_[data[window_len-1:0:-1],data,data[-2:-window_len-1:-1]]
-    #print(len(s))
-    if window == 'flat': #moving average
-        w=np.ones(window_len,'d')
-    else:
-        w=eval('np.'+window+'(window_len)')
+def get_interval(data,time_index):
+    '''
+    This function calculates the average interval between the measurements
+    :param data: the data array
+    :param time_index: the index of the time column
+    :return: the average distance in the time column
+    '''
+    res=[]
+    for t1,t2 in zip(data.iloc[:,time_index][1:-1],data.iloc[:,time_index][2:]):
+        res.append(t2-t1)
+    return sum(res)/len(res)
 
-    y=np.convolve(w/w.sum(),s,mode='valid')
-    return y
 
 #Example
 def gaussian_example():
-    print(masse.iloc[:,1][1:])
-    print(gaussian_filter(masse.iloc[:,1][1:]))
+    plt.figure
+    plt.plot(masse.iloc[:, 0][1:], testGauss(masse.iloc[:, 1][1:],len(masse.iloc[:, 1][1:])), 'b')
+    plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
+    plt.legend(('Gauß','noisy signal'), loc='best')
+    plt.grid(True)
+    plt.show()
 
 
-
-
-
-data =headerFormat(head)
+#butterworth_example()
+resample_data(masse,0)
+print(masse.values())
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
 
