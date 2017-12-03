@@ -88,16 +88,11 @@ def firstFormat(data):
     data.columns = colNames_User
     data.loc[-1] = colUnits_User
     # @TODO Frontend Click liste der Titel
-    # Umwandlung in pd datetime format
-    print(data.index)
     Index = int(input('Bitte geben Sie den Index des Namen von ' + str(colNames_User) + ' ein: '))
-    print(data)
-    data.index = data.set_index([colNames_User[Index]])
-    print(data)
-    #data.index = data.index+1
+    data.index = data.index+1
     #data.index = pd.to_datetime(data.index, unit=colUnits_User[Index])
-    #data = data.sort_index()
-    #return data
+    data = data.sort_index()
+    return data
 
 
 masse = firstFormat(headerFormat(masse_read))
@@ -147,7 +142,7 @@ def testGauss(data,index, gauss_M = 50,gauss_std = 2):
 def resample_data(data, time_index):
     interval = str(get_interval(data,time_index))+str(data.iloc[:,time_index][0])
     print(interval)
-    data.resample(interval, label='right').sum()
+    #data.resample(interval, label='right').sum()
 
 def get_interval(data,time_index):
     '''
@@ -174,7 +169,7 @@ def gaussian_example():
 
 #butterworth_example()
 resample_data(masse,0)
-print(masse.values())
+print(masse)
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
 
