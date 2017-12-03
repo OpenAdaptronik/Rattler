@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^login/', include('apps.login.urls', namespace='login'), name='login'),
     url(r'^logout/', include('apps.logout.urls', namespace='logout'), name='logout'),
     url(r'^register/', include('apps.register.urls', namespace='register'), name='register'),
+    url(r'^userSettings/', include('apps.userSettings.urls', namespace='userSettings'), name='userSettings'),
     # Django Admin
     url(r'^djangoAdmin/', admin.site.urls),
     # Global Routes
@@ -31,7 +32,7 @@ urlpatterns = [
     url(r'^community/', views.community, name='community'),
     url(r'^profile/me/', views.profileMe, name='profileMe'),
     url(r'^admin/', views.admin, name='admin'),
-    url(r'^settings/', views.settings, name='settings'),
+  #  url(r'^settings/', views.settings, name='settings'),
     url(r'^help/', views.help, name='help'),
     url(r'^$', views.index),
 ]
