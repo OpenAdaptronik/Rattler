@@ -115,7 +115,7 @@ def butterworth_filter(data,index,fs=10,order = 4, cofreq =1.5 , mode = 'low'):
 #Example
 def butterworth_example():
     plt.figure
-    plt.plot(masse.iloc[:, 0][1:], butterworth_filter(masse.iloc[:, 1][1:]), 'r')
+    plt.plot(masse.iloc[:, 0][1:], butterworth_filter(masse,1))
     plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
     plt.legend(('noisy signal', 'butterworth'), loc='best')
     plt.grid(True)
@@ -160,7 +160,7 @@ def get_interval(data,time_index):
 #Example
 def gaussian_example():
     plt.figure
-    plt.plot(masse.iloc[:, 0][1:], testGauss(masse.iloc[:, 1][1:],len(masse.iloc[:, 1][1:])), 'b')
+    plt.plot(masse.iloc[:, 0][1:], testGauss(masse,1,len(masse.iloc[:, 1][1:])), 'b')
     plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
     plt.legend(('Gauß','noisy signal'), loc='best')
     plt.grid(True)
@@ -169,7 +169,9 @@ def gaussian_example():
 
 #butterworth_example()
 resample_data(masse,0)
-print(masse)
+butterworth_example()
+gaussian_example()
+
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
 
