@@ -1,17 +1,19 @@
 from django.shortcuts import render
-
 from apps.login.forms import LoginForm
+from django.contrib.auth.decorators import login_required
 
 def index (request):
-    return render (request,'index/index.html', {'form': LoginForm()})
+    if not request.user.is_authenticated:
+        return render (request,'index/index.html', {'form': LoginForm()})
+    else:
+        return dashboard(request)
 
+@login_required
 def dashboard (request):
     return render (request,'dashboard/index.html')
 
 def error404 (request):
     return render (request,'error404/index.html')
-
-
 
 def registerTest (request):
     return render (request,'register/test/test.html')
