@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url, handler404
 from django.contrib import admin
 from . import views
 
@@ -33,5 +33,8 @@ urlpatterns = [
     url(r'^admin/', views.admin, name='admin'),
     url(r'^settings/', views.settings, name='settings'),
     url(r'^help/', views.help, name='help'),
-    url(r'^$', views.index),
+    url(r'^$', include('apps.index.urls', namespace='index'), name='index'),
 ]
+
+# Error Handlers
+handler404 = 'rattler.views.handler404'

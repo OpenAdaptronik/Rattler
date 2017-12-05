@@ -30,3 +30,6 @@ def settings (request):
 
 def help (request):
     return render (request,'help/index.html')
+
+def handler404(request):
+    return render(request, '404.html', status=404)

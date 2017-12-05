@@ -131,7 +131,7 @@ STATICFILES_FINDERS = [
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'rattler', 'static')
+    os.path.join(BASE_DIR, 'rattler', 'static'),
 ]
 
 # E-Mail Settings
@@ -146,4 +146,3 @@ LOGIN_URL = '/login/'
 APPEND_SLASH = True
 
 PASSWORD_HASHERS = 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-

@@ -1,7 +1,5 @@
 from .base import *
 
-print('HSLOO')
-
 # DEBUG = True equals Development-Mode
 DEBUG = True
 
@@ -13,7 +11,6 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS += [
     #'debug_toolbar'
 ]
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -27,10 +24,6 @@ DATABASES = {
         'HOST': 'db'
     }
 }
-
-
-
-
 
 #MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
 
