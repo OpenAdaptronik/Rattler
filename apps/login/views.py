@@ -7,7 +7,6 @@ def index(request):
     form = manager.getForm(request)
     if manager.authenticate(request, form):
         return manager.redirect(request)
-        return HttpResponseRedirect('/login/home') # braucht man das überhaupt?
     return render(request, 'login/index.html', {'form': form})
 
 @login_required
