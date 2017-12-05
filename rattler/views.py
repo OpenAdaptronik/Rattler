@@ -1,7 +1,9 @@
 from django.shortcuts import render
 
+from apps.login.forms import LoginForm
+
 def index (request):
-    return render (request,'index.html')
+    return render (request,'index.html', {'form': LoginForm()})
 
 def dashboard (request):
     return render (request,'dashboard/index.html')
@@ -9,8 +11,7 @@ def dashboard (request):
 def error404 (request):
     return render (request,'error404/index.html')
 
-def register (request):
-    return render (request,'register/index.html')
+
 
 def registerTest (request):
     return render (request,'register/test/test.html')
@@ -26,9 +27,6 @@ def admin (request):
 
 def settings (request):
     return render (request,'settings/index.html')
-
-def logout (request):
-    return render (request,'logout/index.html')
 
 def help (request):
     return render (request,'help/index.html')

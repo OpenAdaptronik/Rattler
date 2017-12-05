@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ['*']
 
 # Adding the debug_toolbar to the Installed_Apps
 INSTALLED_APPS += [
-    'debug_toolbar'
+    #'debug_toolbar'
 ]
 
 
@@ -32,17 +32,21 @@ DATABASES = {
 
 
 
-MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+#MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-DEBUG_TOOLBAR_CONFIG = {
-    'JQUERY_URL': '',
-}
+#DEBUG_TOOLBAR_CONFIG = {
+#    'JQUERY_URL': '',
+#}
 
 #
 # EMAIL_BACKEND = ''
-# EMAIL_HOST = ''
+EMAIL_HOST = 'smtp'
+DEFAULT_FROM_EMAIL ='rattler@openadaptronik.com'
+LOGIN_URL ='/login/'
+APPEND_SLASH = True
+
 # EMAIL_PORT =
 # EMAIL_HOST_USER =
 # EMAIL_HOST_PASSWORD =
