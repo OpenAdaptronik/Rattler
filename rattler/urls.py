@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^admin/', views.admin, name='admin'),
     url(r'^settings/', views.settings, name='settings'),
     url(r'^help/', views.help, name='help'),
-    url(r'^$', include('apps.index.urls', namespace='index'), name='index'),
+    url(r'^$', views.index, name='index'),
 ]
 
 # Error Handlers

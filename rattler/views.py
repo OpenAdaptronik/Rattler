@@ -3,7 +3,7 @@ from django.shortcuts import render
 from apps.login.forms import LoginForm
 
 def index (request):
-    return render (request,'index.html', {'form': LoginForm()})
+    return render (request,'index/index.html', {'form': LoginForm()})
 
 def dashboard (request):
     return render (request,'dashboard/index.html')

@@ -145,4 +145,8 @@ LOGIN_URL = '/login/'
 
 APPEND_SLASH = True
 
-PASSWORD_HASHERS = 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+PASSWORD_HASHERS = 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher'
+
+# Session Settings
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = os.path.join(BASE_DIR, 'rattler', 'tmp'),
