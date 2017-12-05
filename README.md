@@ -28,6 +28,14 @@ class User(models.Model):
 ```
 
 ### Feld Klassen
+#### Default Options
+- null: Erlauben von Null Werten (default=false)
+- blank: Erlauben von "leeren" Werten oder auch "not-required" (default=false)
+- choices: Ein eine Liste von Zweiertupeln, die Gültige Werte enthalten
+- default: Default Wert
+- primary_key: Als Schlüssel Attribut kenzeichnen
+- unique: Als Einzigartig kennzeichnen
+
 #### AutoField, BigAutoField
 Ein Integer Feld, der Automatisch hochgezählt wird.
 #### BigIntegerField
@@ -55,8 +63,14 @@ Feld für "Zeitdeltas"
 Wie `CharField`, jedoch mit EMail Validation.
 #### FloatField, IntegerField
 Feld für Nummern
+#### ForeignKey, ManyToManyField
+Fremdschlüssel
+Bsp.: `foregin = models.ForeignKey(ForeginModel)`
+Options:
+
 #### Weitere Felder:
 [https://docs.djangoproject.com/en/2.0/ref/models/fields/#field-types](Django Field Types)
 
-
-
+### Fremdschlüssel
+Fremdschlüssel werden mit dem 
+ manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
