@@ -1,4 +1,3 @@
-
 import pandas as pd
 import scipy as sci
 from scipy.signal import butter, gaussian
@@ -8,17 +7,12 @@ from plotly.offline  import download_plotlyjs, init_notebook_mode, plot , iplot
 import plotly.graph_objs as go
 import matplotlib.pyplot as plt
 
-
-
-
-
-
 # Header = None -> ignoriert
 head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 masse = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
 # Preview Daten
-#print('Daten wurden erfolgreich eingelesen: \n\n', daten2.head(10))
+print('Daten wurden erfolgreich eingelesen: \n\n', masse.head(10))
 
 colNames_User = []
 colUnits_User = []
@@ -58,10 +52,6 @@ def headerFormat(data):
 
 
         return data
-
-
-
-
 # Fragt den Nutzer nach den Bezeichnern der Spalte und in welcher Einheit diese Daten gemessen wurde und fügt die Einheiten an idx = 0 ein
 def firstFormat(data):
     '''
@@ -96,9 +86,6 @@ def firstFormat(data):
     #data.index = pd.to_datetime(data.index, unit=colUnits_User[Index])
    # data = data.sort_index()
     return data
-
-
-#masse = firstFormat(headerFormat(masse_read))
 
 #Highpass and lowpass filter
 def butterworth_filter(data,index,fs=10,order = 4, cofreq =1.5 , mode = 'low'):
@@ -139,27 +126,6 @@ def testGauss(data,index, gauss_M = 50,gauss_std = 2):
     b = gaussian(gauss_M, gauss_std)
     return filters.convolve1d(daten, b/b.sum())
 
-
-
-#@TODO: Noch nicht implementiert
-def resample_data(data, time_index):
-    interval = str(get_interval(data,time_index))+str(data.iloc[:,time_index][0])
-    print(interval)
-    #data.resample(interval, label='right').sum()
-
-def get_interval(data,time_index):
-    '''
-    This function calculates the average interval between the measurements
-    :param data: the data array
-    :param time_index: the index of the time column
-    :return: the average distance in the time column
-    '''
-    res=[]
-    for t1,t2 in zip(data.iloc[:,time_index][1:-1],data.iloc[:,time_index][2:]):
-        res.append(t2-t1)
-    return sum(res)/len(res)
-
-
 #Example
 def gaussian_example():
     plt.figure
@@ -170,34 +136,24 @@ def gaussian_example():
     plt.show()
 
 
-#butterworth_example()
-#resample_data(masse,0)
-#butterworth_example()
-#gaussian_example()
-
-
-# data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
-
-#head = headerFormat(firstFormat(head))
 def time_indexing(data, unit):
     zeit = data.iloc[0:,0]
     size =len(zeit[0:])
 
-
     i=0
     while i < size:
-        x =pd.to_datetime(zeit[i],unit=unit)
-        x =x.strftime('%H:%M:%S.%f')
+        x =pd.to_timedelta(zeit[i],unit=unit)
+
         zeit.iloc[i] =x
 
         i+=1
 
 
-    data.index = pd.to_datetime(zeit.iloc[0:])
-
-    #format -> index -> drop
+    data.index = zeit.iloc[0:]
     data=data.drop(data.columns[[0]],axis=1)
+
     colNames_User =data.columns
+
     return data
 
 
@@ -209,32 +165,15 @@ def resample_data(data,intervall):
     for value in data.columns:
         resampled_data[str(value)] = data[value].resample(intervall).mean()
 
-
-
     return resampled_data
 
 def exampleIndex():
 
-    test =headerFormat(head)
+    test =headerFormat(masse)
     test =firstFormat(test)
     test =time_indexing(test,'s')
-    resampled_data = resample_data(test,'50ms')
+    resampled_data = resample_data(test,'5ms')
+    print(resampled_data)
     #plot([go.Scatter(x=resampled_data.index[0:] , y = resampled_data['Kraft'])])
-    #plot([go.Scatter(x=resampled_data.index[0:] , y = resampled_data['Sens1'])])
-    plot([go.Scatter(x=resampled_data.index[0:] , y = resampled_data['Sens2'])])
-    #plot([go.Scatter(x=resampled_data.index[0:] , y = resampled_data['Geschwindigkeit'])])
 
 exampleIndex()
-
-
-
-
-
-#five_minutely_data = pd.DataFrame()
-#five_minutely_data['Velocity'] = test.Velocity.resample('5ms').mean()
-#five_minutely_data['Force'] =test.Force.resample('5ms').mean()
-#five_minutely_data['Displacement1']= test.Displacement1.resample('5ms').mean()
-#plot([go.Scatter(x=five_minutely_data.index[0:], y=five_minutely_data['Force'])])
-#print("test")
-
-
