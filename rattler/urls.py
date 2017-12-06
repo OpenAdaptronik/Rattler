@@ -21,8 +21,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     # Import Apps
     url(
-        'login/',
-        auth_views.LoginView.as_view(redirect_authenticated_user=True),
+        'login/', 
+        auth_views.LoginView.as_view(redirect_authenticated_user=True), 
         name='login'
     ),
     url(
@@ -31,6 +31,8 @@ urlpatterns = [
         name='logout'
     ),
     url('register/', include('apps.register.urls'), name='register'),
+    url('userSettings/', include('apps.userSettings.urls'), name='userSettings'),
+
     # Django Admin
     url('djangoAdmin/', admin.site.urls),
     # Global Routes
@@ -43,10 +45,9 @@ urlpatterns = [
     url('help/', views.help, name='help'),
 
 
-
     url('', include('django.contrib.auth.urls')),
-
-
+    
+    
     url('', include('apps.index.urls'), name='index'),
 ]
 
