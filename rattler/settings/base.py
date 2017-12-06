@@ -24,8 +24,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = ''
 INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
-    'apps.login.apps.LoginConfig',
-    'apps.logout.apps.LogoutConfig',
     'apps.register.apps.RegisterConfig',
     'apps.index.apps.IndexConfig',
     'django.contrib.admin',
@@ -145,4 +143,7 @@ LOGIN_URL = '/login/'
 
 APPEND_SLASH = True
 
-PASSWORD_HASHERS = 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+PASSWORD_HASHERS = ['django.contrib.auth.hashers.BCryptSHA256PasswordHasher']
+
+AUTH_USER_MODEL = 'user.User'
+LOGIN_REDIRECT_URL = '/'

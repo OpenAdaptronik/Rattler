@@ -45,3 +45,10 @@ APPEND_SLASH = True
 # EMAIL_HOST_PASSWORD =
 # EMAIL_USE_TLS =
 
+
+
+
+
+
+
+
