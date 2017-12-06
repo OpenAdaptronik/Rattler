@@ -7,13 +7,11 @@ from scipy.ndimage import filters
 import matplotlib.pyplot as plt
 
 
-
-
-
 # Header = None -> ignoriert
 head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 masse_read = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
+phyphox = pd.read_excel('CSV_files/Phyphox/phyphox Erik 1.xls',dtype=np.float_)
 # Preview Daten
 print('Daten wurden erfolgreich eingelesen: \n\n', masse_read.head())
 
@@ -53,7 +51,6 @@ def headerFormat(data):
             data.iloc[0][i] = np.float_(data.iloc[0][i])
             i+=1
 
-
         return data
 
 
@@ -84,7 +81,6 @@ def get_column_names(data):
         # @TODO: Frontend, Dropdown Liste
         colUnits_User.append(input('Bitte geben Sie die Einheit der Spalte ' + colNames_User[i] + ' ein: '))
 
-
     data.columns = colNames_User
     #data.loc[-1] = colUnits_User
     # @TODO Frontend Click liste der Titel
@@ -94,36 +90,36 @@ def get_column_names(data):
    # data = data.sort_index()
     return data
 
-
-masse = get_column_names(headerFormat(masse_read))
-
 #Highpass and lowpass filter
-def butterworth_filter(data,index,fs=10,order = 4, cofreq =1.5 , mode = 'low'):
+def butterworth_filter(data,data_index,time_index =0 ,order = 4, cofreq =1.5 , mode = 'low'):
     '''
 
     :param data: The data array
-    :param index: The index of interest for the data
-    :param fs: the sampling rate
+    :param data_index: The index of interest for the data
+    :param time_index: the index of the sampling time
     :param order: The order of the butter filter.
     :param cofreq: The cuttoff frequency
     :param mode: disdinguish between 'high' for highpass and 'low' for lowpass
     :return: the filtered data sequence
     '''
-    b, a = butter(order, cofreq/ (fs*0.5),btype=mode, analog=False)
-    return sci.signal.filtfilt(b,a,data.iloc[:,index])
+    #@TODO: Parameter abklären
+    #fs = 1/get_interval(data,time_index)
+    fs = 10
+    b, a = butter(order, cofreq/(fs*0.5),btype=mode, analog=False)
+    return sci.signal.filtfilt(b,a,data.iloc[:,data_index])
 
 #Example
-def butterworth_example():
+def butterworth_example(data):
     plt.figure
-    plt.plot(masse.iloc[:, 0], butterworth_filter(masse,1))
-    plt.plot(masse.iloc[:, 0], masse.iloc[:, 1], 'b', alpha=0.75)
-    plt.legend(('noisy signal', 'butterworth'), loc='best')
+    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
+    plt.plot(data.iloc[:, 0], butterworth_filter(data,1,mode='high'), 'r')
+    plt.legend(('noisy signal','butterworth'), loc='best')
     plt.grid(True)
     plt.show()
 
 
 #@TODO: Standartwerte mit Frauenhofer abklären
-def testGauss(data,index, gauss_M = 50,gauss_std = 2):
+def gaussian_filter(data, index, gauss_M = 50, gauss_std = 2):
     '''
     :param data: The data array
     :param index: The index of interest for the data
@@ -138,13 +134,18 @@ def testGauss(data,index, gauss_M = 50,gauss_std = 2):
 
 
 
-#@TODO: Noch nicht implementiert
-def resample_data(data, time_index):
-    print(data)
-    print(sci.signal.resample(data, data.iloc[:,0]))
-    #data.resample(interval, label='right').sum()
+def resample_data(data):
+    '''
+    This function takes the data as pandas dataFrame and resamples it to a constant intervall with the same
+    number of samples in the resulting data. The Values get rearreanged but not interpolated
+    :param data: pandas DataFrame
+    :return: resampled DataFrame
+    '''
+    df =pd.DataFrame(sci.signal.resample(data, len(data.iloc[:,0])),dtype=np.float_)
+    df.columns = data.columns
+    return df
 
-def get_interval(data,time_index):
+def get_interval(data,time_index=0):
     '''
     This function calculates the average interval between the measurements
     :param data: the data array
@@ -158,18 +159,21 @@ def get_interval(data,time_index):
 
 
 #Example
-def gaussian_example():
+def gaussian_example(data):
     plt.figure
-    plt.plot(masse.iloc[:, 0], testGauss(masse,1,len(masse.iloc[:, 1])), 'b')
-    plt.plot(masse.iloc[:, 0], masse.iloc[:, 1], 'b', alpha=0.75)
-    plt.legend(('Gauß','noisy signal'), loc='best')
+    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
+    plt.plot(data.iloc[:, 0], gaussian_filter(data, 1, len(data.iloc[:, 1])), 'r')
+    plt.legend(('noisy signal','Gauß'), loc='best')
     plt.grid(True)
     plt.show()
 
 
-resample_data(masse,0)
-#butterworth_example()
-#gaussian_example()
+# Normalize Data
+phyphox = resample_data(get_column_names(headerFormat(phyphox)))
+
+#Filter Data
+butterworth_example(phyphox)
+gaussian_example(phyphox)
 
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
