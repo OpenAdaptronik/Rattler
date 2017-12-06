@@ -25,17 +25,6 @@ DATABASES = {
     }
 }
 
-#MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-#DEBUG_TOOLBAR_CONFIG = {
-#    'JQUERY_URL': '',
-#}
-
-#
-# EMAIL_BACKEND = ''
-EMAIL_HOST = 'smtp'
 DEFAULT_FROM_EMAIL ='rattler@openadaptronik.com'
 LOGIN_URL ='/login/'
 APPEND_SLASH = True
