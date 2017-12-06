@@ -31,6 +31,8 @@ urlpatterns = [
         name='logout'
     ),
     url('register/', include('apps.register.urls'), name='register'),
+    url('userSettings/', include('apps.userSettings.urls'), name='userSettings'),
+
     # Django Admin
     url('djangoAdmin/', admin.site.urls),
     # Global Routes
@@ -41,8 +43,7 @@ urlpatterns = [
     url('admin/', views.admin, name='admin'),
     url('settings/', views.settings, name='settings'),
     url('help/', views.help, name='help'),
-    
-    
+
 
     url('', include('django.contrib.auth.urls')),
     

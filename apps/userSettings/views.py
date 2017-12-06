@@ -3,4 +3,6 @@ from django.shortcuts import render
 
 # Create your views here.
 def userSettings(request):
-    return render(request, 'userSettings/index.html')
+   '''current_user = request.user
+    print(current_user)'''
+   return render(request, 'userSettings/index.html')
