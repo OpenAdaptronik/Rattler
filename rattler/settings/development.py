@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ['*']
 
 # Adding the debug_toolbar to the Installed_Apps
 INSTALLED_APPS += [
-    #'debug_toolbar'
+    # 'debug_toolbar'
 ]
 
 
