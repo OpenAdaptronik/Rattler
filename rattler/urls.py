@@ -13,26 +13,44 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url, handler404
 from django.contrib import admin
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Import Apps
-    url(r'^login/', include('apps.login.urls', namespace='login'), name='login'),
-    url(r'^logout/', include('apps.logout.urls', namespace='logout'), name='logout'),
-    url(r'^register/', include('apps.register.urls', namespace='register'), name='register'),
-    url(r'^userSettings/', include('apps.userSettings.urls', namespace='userSettings'), name='userSettings'),
+    url(
+        'login/', 
+        auth_views.LoginView.as_view(redirect_authenticated_user=True), 
+        name='login'
+    ),
+    url(
+        'logout/',
+        auth_views.LogoutView.as_view(next_page='/'),
+        name='logout'
+    ),
+    url('register/', include('apps.register.urls'), name='register'),
     # Django Admin
-    url(r'^djangoAdmin/', admin.site.urls),
+    url('djangoAdmin/', admin.site.urls),
     # Global Routes
-    url(r'^dashboard/', views.dashboard, name='dashboard'),
-    url(r'^register/test/', views.registerTest, name='registerTest'),
-    #url(r'^register/', views.register, name='register'),
-    url(r'^community/', views.community, name='community'),
-    url(r'^profile/me/', views.profileMe, name='profileMe'),
-    url(r'^admin/', views.admin, name='admin'),
-  #  url(r'^settings/', views.settings, name='settings'),
-    url(r'^help/', views.help, name='help'),
-    url(r'^$', views.index),
+    url('dashboard/', views.dashboard, name='dashboard'),
+    url('register/test/', views.registerTest, name='registerTest'),
+    url('community/', views.community, name='community'),
+    url('profile/me/', views.profileMe, name='profileMe'),
+    url('admin/', views.admin, name='admin'),
+    url('settings/', views.settings, name='settings'),
+    url('help/', views.help, name='help'),
+    
+    
+
+    url('', include('django.contrib.auth.urls')),
+    
+    
+    url('', include('apps.index.urls'), name='index'),
 ]
+
+# Error Handlers
+handler404 = 'rattler.views.handler404'
+
+
