@@ -1,0 +1,7 @@
+Hallo {{ user.username }},
+
+vielen dank für deine Regestrierung. 
+
+Damit es losgehen kann, musst du lediglich deine E-Mail Verfifizieren, in dem du den untenstehenden Link öffnest.
+
+{% if request.is_secure%}https{% else %}http{% endif %}://{% if request.get_host %}{{ request.get_host }}{% else %}localhost{% endif %}{% url 'register:activate' token=token %}

@@ -8,22 +8,7 @@
 <form method="POST">
     {% csrf_token %}
     <h5>Jetzt registrieren:</h5>
-    {% for field in form %}
-        <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-            {% for error in field.errors %}
-                <div class="invalid-feedback">
-                    {{ error }}
-                </div>
-            {% endfor %}
-            {% if field.help_text %}
-                <small class="form-text text-muted">
-                    {{ field.help_text|safe }}
-                </small>
-            {% endif %}
-        </div>
-    {% endfor %}
+    {{ form.as_p }}
     <button type="submit">Regestrieren</button>
 </form>
 

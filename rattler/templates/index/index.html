@@ -4,6 +4,7 @@
     {% include 'includeDefs/indexNavi.html' %}
 {% endblock %}
 {% block container %}
+    <h1>{% if user.is_authenticated %}{{user.username}}{% endif %}</h1>
     <h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
     <div class="card">
         <!-- TODO: Schritte über die ersten 3 Bilder!
