@@ -24,8 +24,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = ''
 INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
-    'apps.login.apps.LoginConfig',
-    'apps.logout.apps.LogoutConfig',
     'apps.register.apps.RegisterConfig',
     'apps.userSettings.apps.UserSettingsConfig',
     'apps.index.apps.IndexConfig',
