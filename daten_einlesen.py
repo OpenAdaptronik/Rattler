@@ -15,7 +15,7 @@ head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 masse_read = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
 # Preview Daten
-print('Daten wurden erfolgreich eingelesen: \n\n', masse.head(10))
+print('Daten wurden erfolgreich eingelesen: \n\n', masse_read.head())
 
 colNames_User = []
 colUnits_User = []
@@ -88,7 +88,7 @@ def get_column_names(data):
     data.columns = colNames_User
     #data.loc[-1] = colUnits_User
     # @TODO Frontend Click liste der Titel
-    Index = int(input('Bitte geben Sie den Index des Namen von ' + str(colNames_User) + ' ein: '))
+    #Index = int(input('Bitte geben Sie den Index des Namen von ' + str(colNames_User) + ' ein: '))
     #data.index = data.index+1
     #data.index = pd.to_datetime(data.index, unit=colUnits_User[Index])
    # data = data.sort_index()
@@ -110,13 +110,13 @@ def butterworth_filter(data,index,fs=10,order = 4, cofreq =1.5 , mode = 'low'):
     :return: the filtered data sequence
     '''
     b, a = butter(order, cofreq/ (fs*0.5),btype=mode, analog=False)
-    return sci.signal.filtfilt(b,a,data.iloc[:,index][1:])
+    return sci.signal.filtfilt(b,a,data.iloc[:,index])
 
 #Example
 def butterworth_example():
     plt.figure
-    plt.plot(masse.iloc[:, 0][1:], butterworth_filter(masse,1))
-    plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
+    plt.plot(masse.iloc[:, 0], butterworth_filter(masse,1))
+    plt.plot(masse.iloc[:, 0], masse.iloc[:, 1], 'b', alpha=0.75)
     plt.legend(('noisy signal', 'butterworth'), loc='best')
     plt.grid(True)
     plt.show()
@@ -132,7 +132,7 @@ def testGauss(data,index, gauss_M = 50,gauss_std = 2):
     :param gauss_std: The standard deviation, sigma.
     :return: The filtered Data
     '''
-    daten = np.asarray(data.iloc[:,index][1:], dtype=np.result_type(float, np.ravel(data.iloc[:,index][1:])[0]))
+    daten = np.asarray(data.iloc[:,index], dtype=np.result_type(float, np.ravel(data.iloc[:,index])[0]))
     b = gaussian(gauss_M, gauss_std)
     return filters.convolve1d(daten, b/b.sum())
 
@@ -140,8 +140,8 @@ def testGauss(data,index, gauss_M = 50,gauss_std = 2):
 
 #@TODO: Noch nicht implementiert
 def resample_data(data, time_index):
-    interval = str(get_interval(data,time_index))+str(data.iloc[:,time_index][0])
-    print(interval)
+    print(data)
+    print(sci.signal.resample(data, data.iloc[:,0]))
     #data.resample(interval, label='right').sum()
 
 def get_interval(data,time_index):
@@ -149,10 +149,10 @@ def get_interval(data,time_index):
     This function calculates the average interval between the measurements
     :param data: the data array
     :param time_index: the index of the time column
-    :return: the average distance in the time column
+    :return: the average distance in the time column[1:]
     '''
     res=[]
-    for t1,t2 in zip(data.iloc[:,time_index][1:-1],data.iloc[:,time_index][2:]):
+    for t1,t2 in zip(data.iloc[:,time_index][:-1],data.iloc[:,time_index][1:]):
         res.append(t2-t1)
     return sum(res)/len(res)
 
@@ -160,17 +160,16 @@ def get_interval(data,time_index):
 #Example
 def gaussian_example():
     plt.figure
-    plt.plot(masse.iloc[:, 0][1:], testGauss(masse,1,len(masse.iloc[:, 1][1:])), 'b')
-    plt.plot(masse.iloc[:, 0][1:], masse.iloc[:, 1][1:], 'b', alpha=0.75)
+    plt.plot(masse.iloc[:, 0], testGauss(masse,1,len(masse.iloc[:, 1])), 'b')
+    plt.plot(masse.iloc[:, 0], masse.iloc[:, 1], 'b', alpha=0.75)
     plt.legend(('Gauß','noisy signal'), loc='best')
     plt.grid(True)
     plt.show()
 
 
-#butterworth_example()
 resample_data(masse,0)
-butterworth_example()
-gaussian_example()
+#butterworth_example()
+#gaussian_example()
 
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
