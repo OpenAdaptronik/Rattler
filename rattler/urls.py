@@ -16,11 +16,20 @@ Including another URLconf
 from django.conf.urls import include, url, handler404
 from django.contrib import admin
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Import Apps
-    url('login/', include('apps.login.urls'), name='login'),
-    url('logout/', include('apps.logout.urls'), name='logout'),
+    url(
+        'login/', 
+        auth_views.LoginView.as_view(redirect_authenticated_user=True), 
+        name='login'
+    ),
+    url(
+        'logout/',
+        auth_views.LogoutView.as_view(next_page='/'),
+        name='logout'
+    ),
     url('register/', include('apps.register.urls'), name='register'),
     # Django Admin
     url('djangoAdmin/', admin.site.urls),
@@ -32,6 +41,12 @@ urlpatterns = [
     url('admin/', views.admin, name='admin'),
     url('settings/', views.settings, name='settings'),
     url('help/', views.help, name='help'),
+    
+    
+
+    url('', include('django.contrib.auth.urls')),
+    
+    
     url('', include('apps.index.urls'), name='index'),
 ]
 

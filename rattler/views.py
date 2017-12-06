@@ -1,16 +1,10 @@
 from django.shortcuts import render
 
-from apps.login.forms import LoginForm
-
-def index (request):
-    return render (request,'index.html', {'form': LoginForm()})
-
 def dashboard (request):
     return render (request,'dashboard/index.html')
 
 def error404 (request):
     return render (request,'error404/index.html')
-
 
 
 def registerTest (request):
