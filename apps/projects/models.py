@@ -15,4 +15,14 @@ class Projects(models.Model):
     notiz = models.TextField(max_length=500)
 
 
+class Kategorie(models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
+class Unterkategorie(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+class Hersteller(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+class Typ(models.Model):
+    name = models.CharField(max_length=100, unique=True)
