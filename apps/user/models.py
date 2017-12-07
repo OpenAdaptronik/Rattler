@@ -40,6 +40,8 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True, default=None)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+    firma = models.CharField(max_length=255, default=None)
+    adresse = models.CharField(max_length=255, default=None)
 
     USERNAME_FIELD = 'mail'
     EMAIL_FIELD = 'mail'
