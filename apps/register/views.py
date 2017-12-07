@@ -1,32 +1,40 @@
 '''
 Views of the register app.
 '''
-from django.shortcuts import render
-from django.views.generic import FormView
+from django.contrib.sites.shortcuts import get_current_site
+from django.views.generic import FormView, View
+from django.template.loader import render_to_string
+from django.contrib import auth
+from django.shortcuts import HttpResponseRedirect
+
 from .forms import RegisterForm
-from django.contrib.auth import get_user_model
-
-#class IndexView(TemplateView):
-#    User = get_user_model()
-#    def get(self, request):
-#        return render(request, 'register/index.html')
-#    def post(self, request):
-#        username = request.POST['input-password']
-#        email = request.POST['input-mail']
-#        user = self.User.objects.create_user(email, username)
-#        user.save()
-#        return render(request, 'register/index.html')
-
+from .models import VerificationToken
 
 class IndexView(FormView):
     template_name = 'register/index.html'
     form_class = RegisterForm
     success_url = '/register'
     def form_valid(self, form):
-            form.save()
-            return super().form_valid(form)
+        user = form.save()
+        token = VerificationToken.objects.create_user_token(user)
+        user.email_user(
+            'Test',
+            render_to_string(
+                'register/mail/verification.html',
+                {
+                    'user': user,
+                    'token': token,
+                }
+            )
+        )
+        return super().form_valid(form)
 
-
-
-
-
+class ActivateView(View):
+    def get(self, request, token):
+        token = VerificationToken.objects.get(token=token)
+        if token == None:
+            return HttpResponseRedirect('index:index')
+        token.user.is_active = True
+        token.user.save()
+        auth.login(request, token.user)
+        return HttpResponseRedirect('/')

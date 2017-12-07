@@ -1,4 +1,6 @@
-		<div class="section">
+<form method="POST">
+    {% csrf_token %}
+        <div class="section">
 			<div class="container">
 				<h2>{{username}} &bull; Einstellungen</h2>
 				    <div class="row"><form>
@@ -39,8 +41,10 @@
 												<tr>
 													<td>
 														<div class="input-field col s12">
-															<input placeholder={{firma}} id="firma" type="text" class="validate">
+
+															<input placeholder={{firma}} id="firma" type="text" class="validate"  name="firma">
 															<label for="firma">Firma/Institution:</label>
+
 														</div>
 													</td>
 													<td>
@@ -58,7 +62,7 @@
 												<tr>
 													<td>
 														<div class="input-field col s12">
-															<input placeholder={{infos}} id="adresse" type="text" class="validate">
+															<input placeholder={{infos}} id="adresse" type="text" class="validate" name="adresse">
 															<label for="adresse">Kontaktinformation/Adresse:</label>
 														</div>
 													</td>
@@ -142,3 +146,4 @@
 					</form></div>
 			</div>
 		</div>
+</form>
