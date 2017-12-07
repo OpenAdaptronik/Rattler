@@ -12,14 +12,15 @@ head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 masse_read = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
 phyphox = pd.read_excel('CSV_files/Phyphox/phyphox Erik 1.xls',dtype=np.float_)
-# Preview Daten
-print('Daten wurden erfolgreich eingelesen: \n\n', masse_read.head())
 
 colNames_User = []
 colUnits_User = []
 
 
 def headerFormat(data):
+    # Preview Daten
+    print('Daten wurden erfolgreich eingelesen: \n\n', data.head())
+
     headerColumns = data.columns.values
     hasHeader = False
     i=0
@@ -27,11 +28,6 @@ def headerFormat(data):
             float(headerColumns[0])
     except:
         hasHeader = True
-
-    if(hasHeader):
-        print("hat header")
-    else:
-        print("hat kein header")
 
     colHeader = []
 
@@ -167,13 +163,39 @@ def gaussian_example(data):
     plt.grid(True)
     plt.show()
 
+def fourier_transform(data, data_index):
+    '''
+    This Method Applies a fourier transformation on an data interval in the data
+    :param data: the pandas DataFrame of the data
+    :param data_index: The index of the data intervall of
+    :return: the list of fourrier transformed values
+    '''
+    fft = [sci.sqrt(x.real**2 + x.imag**2) for x in sci.fft(data.iloc[:, data_index])] #sci.fft(data.iloc[:, data_index])
+    return fft
+
+def fourier_example(data):
+    plt.figure
+    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
+    plt.plot(data.iloc[:, 0], fourier_transform(data, 1), 'r')
+    plt.legend(('noisy signal','fourier'), loc='best')
+    plt.grid(True)
+    plt.show()
+
+def get_sinus():
+    N = 512  # Sample count
+    return pd.DataFrame([ [t, sci.sin(t)]for t in range(N)],dtype=np.float_)
+
 
 # Normalize Data
-phyphox = resample_data(get_column_names(headerFormat(phyphox)))
-
+#phyphox = resample_data(get_column_names(headerFormat(phyphox)))
+#masse  = resample_data(get_column_names(headerFormat(masse_read)))
+sinus = get_sinus()
 #Filter Data
-butterworth_example(phyphox)
-gaussian_example(phyphox)
+#butterworth_example(phyphox)
+#gaussian_example(phyphox)
+fourier_example(sinus)
+
+
 
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
