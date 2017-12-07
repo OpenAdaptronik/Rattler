@@ -191,9 +191,11 @@ phyphox = resample_data(get_column_names(headerFormat(phyphox)))
 #masse  = resample_data(get_column_names(headerFormat(masse_read)))
 #sinus = get_sinus()
 
+
 #Filter Data
 #butterworth_example(phyphox)
 #gaussian_example(phyphox)
+#fourier_example(sinus)
 #fourier_example(sinus)
 #@TODO: Welche Daten kommen denn da rein?
 print(tess.tess(phyphox.iloc[:,0],phyphox.iloc[:,1],phyphox.iloc[:,2]))
@@ -203,4 +205,21 @@ print(tess.tess(phyphox.iloc[:,0],phyphox.iloc[:,1],phyphox.iloc[:,2]))
 
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
+
+def getDelta(data,index):
+    res = []
+    for t1, t2 in zip(data.iloc[:, index][:-1], data.iloc[:, index][1:]):
+        res.append(t2 - t1)
+
+    return res
+
+def numericalApprox(data,diff_Value1_Index,diff_Value2_Index):
+    diff_Value = []
+    for v1, t1 in zip(getDelta(data,diff_Value1_Index), getDelta(data,diff_Value2_Index)):
+        diff_Value.append(v1/t1)
+
+    return diff_Value
+
+print(numericalApprox(masse_read,2,0))
+
 
