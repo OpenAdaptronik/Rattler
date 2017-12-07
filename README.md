@@ -74,3 +74,14 @@ Options:
 ### Fremdschlüssel
 Fremdschlüssel werden mit dem 
  manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
+
+
+## Wenn man eingeloggt sein soll
+```python
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import HttpResponse
+
+@login_required()
+def user(request):
+    return HttpResponse(request.user.username)
+```
