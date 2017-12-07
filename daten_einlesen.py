@@ -5,7 +5,7 @@ from scipy.signal import butter, gaussian
 import numpy as np
 from scipy.ndimage import filters
 import matplotlib.pyplot as plt
-
+from apps.tess.tess import tess
 
 # Header = None -> ignoriert
 head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
@@ -187,13 +187,17 @@ def get_sinus():
 
 
 # Normalize Data
-#phyphox = resample_data(get_column_names(headerFormat(phyphox)))
+phyphox = resample_data(get_column_names(headerFormat(phyphox)))
 #masse  = resample_data(get_column_names(headerFormat(masse_read)))
-sinus = get_sinus()
+#sinus = get_sinus()
+
 #Filter Data
 #butterworth_example(phyphox)
 #gaussian_example(phyphox)
-fourier_example(sinus)
+#fourier_example(sinus)
+#@TODO: Welche Daten kommen denn da rein?
+print(tess.tess(phyphox.iloc[:,0],phyphox.iloc[:,1],phyphox.iloc[:,2]))
+
 
 
 

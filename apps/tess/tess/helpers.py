@@ -5,10 +5,11 @@ Created on 16.11.2017
 '''
 import numpy
 from numpy import NaN as NaN
-import detect_peaks
+from apps.tess.tess import detect_peaks
+
 
 def findFreeSpace(FFTdata, Fdata, Finterval, level):
-    
+
     if Finterval[0] < Fdata[0]:
         Finterval[0] = Fdata[0]
     if Finterval[1] > Fdata[-1]:

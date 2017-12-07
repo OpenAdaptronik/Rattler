@@ -5,20 +5,25 @@ Created on 10.11.2017
 '''
 
 import csv
-
 from numpy import argwhere, transpose
 import numpy
-from scipy import disp
 import scipy.io
-import waterfalls
-import helpers
+from apps.tess.tess import helpers, waterfalls
 
 
-if __name__ == '__main__':
-    
-    measurementdataFILENAME = 'C:\\Users\\stoll\\Desktop\\openadaptronik\\TESS\\Data\\MMS_Messdaten_Sim.mat'
-    tfFILENAME = 'TF.mat'
-    analysisweightsFILENAME = 'C:\\Users\\stoll\\Desktop\\openadaptronik\\TESS\\Data\\analysisweights.csv'
+
+def tess(time,data,data2):
+    '''
+    TESS is a software project that is part of the OpenAdaptronics program, conducted at the Fraunhofer LBF.
+    Its preliminary title is an acronym for “Tool zur Empfehlung von Strategien zur Schwingungsberuhigung”
+
+    :param time: time data
+    :param data: acceleration of the instrument
+    :param data2: exciting acceleration
+    :return:
+    '''
+
+    analysisweightsFILENAME = 'apps/tess/tess_input/analysis_weights.csv'
     DesiredAmpLevel = 8
     MinFrequency = 3;               # general minimum frequency taken into account in Hz
     TFMode = 0
@@ -51,9 +56,7 @@ if __name__ == '__main__':
                                     # | 0% -> the amp level in the HFD is virtually never considered unproblematic
                                     # | 100% -> the amp level in the HFD is very easily considered unproblematic
     SV = numpy.zeros(17)
-    
-    # reading data from file ... put database request here:
-    measurementdata = scipy.io.loadmat(measurementdataFILENAME);
+
     
     # solution identifiers
     SID = []
@@ -86,10 +89,10 @@ if __name__ == '__main__':
     analysisweights = transpose([[float(j) for j in i] for i in analysisweights])
     
 
-
-    t = measurementdata['t'][0]
-    a_0 = measurementdata['a_0'][0]
-    a_1 = measurementdata['a_1'][0]
+    #@TODO: Daten einlesen überprüfen
+    t = time
+    a_0 = data
+    a_1 = data2
     A_0, f, tout = waterfalls.waterfall(t,a_0,256, overlap=.5)
     A_1, f, tout = waterfalls.waterfall(t,a_1,256, overlap=.5)
     tfmat = numpy.divide(A_1,A_0)
@@ -178,15 +181,8 @@ if __name__ == '__main__':
     srt = numpy.argsort(SV)
     lst = numpy.sort(SV)
     
-            
-    disp(' ')
-    disp(' ')
-    disp('     ----------------- Ergebnisse der Analyse -----------------')
-    disp(''.join(['            beste Strategie: ', SID[srt[-1]], ', ', str(SV[srt[-1]]) ]))
-    disp(''.join(['       zweitbeste Strategie: ', SID[srt[-2]], ', ', str(SV[srt[-2]]) ]))
-    disp(''.join(['       drittbeste Strategie: ', SID[srt[-3]], ', ', str(SV[srt[-3]]) ]))
-    disp(''.join(['       viertbeste Strategie: ', SID[srt[-4]], ', ', str(SV[srt[-4]]) ]))
-    disp(''.join(['      fuenftbeste Strategie: ', SID[srt[-5]], ', ', str(SV[srt[-5]]) ]))
-    disp('     ----------------------------------------------------------')
-    disp(' ')
-    disp(' ') 
+    return   ''.join(['            beste Strategie: ', SID[srt[-1]], ', ', str(SV[srt[-1]]) ]) +'\b' \
+            +''.join(['       zweitbeste Strategie: ', SID[srt[-2]], ', ', str(SV[srt[-2]]) ]) +'\b' \
+            +''.join(['       drittbeste Strategie: ', SID[srt[-3]], ', ', str(SV[srt[-3]]) ]) +'\b' \
+            +''.join(['       viertbeste Strategie: ', SID[srt[-4]], ', ', str(SV[srt[-4]]) ]) +'\b' \
+            +''.join(['      fuenftbeste Strategie: ', SID[srt[-5]], ', ', str(SV[srt[-5]]) ])
