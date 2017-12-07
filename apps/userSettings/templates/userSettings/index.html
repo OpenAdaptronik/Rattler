@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block container %}
 <form method="POST">
     {% csrf_token %}
         <div class="section">
@@ -11,14 +13,14 @@
 										<p>
 											<div class="input-field col s12">
 												<input placeholder={{username}} id="user_name" disabled type="text" class="validate">
-												<label for="user_name">User-Name</label>
+                                                <!--<label for="user_name">User-Name</label>-->
 											</div>
 											<table>
 												<tr>
 													<td>
 														<div class="input-field col s12">
 															<input placeholder={{email}} id="e_mail" disabled type="text" class="validate">
-															<label for="e_mail">E-mail</label>
+															<!--<label for="e_mail">E-mail</label>-->
 														</div>
 													</td>
 													<td>
@@ -43,7 +45,7 @@
 														<div class="input-field col s12">
 
 															<input placeholder={{firma}} id="firma" type="text" class="validate"  name="firma">
-															<label for="firma">Firma/Institution:</label>
+															<!--<label for="firma">Firma/Institution:</label>-->
 
 														</div>
 													</td>
@@ -63,7 +65,7 @@
 													<td>
 														<div class="input-field col s12">
 															<input placeholder={{infos}} id="adresse" type="text" class="validate" name="adresse">
-															<label for="adresse">Kontaktinformation/Adresse:</label>
+															<!--<label for="adresse">Kontaktinformation/Adresse:</label>-->
 														</div>
 													</td>
 													<td>
@@ -147,3 +149,4 @@
 			</div>
 		</div>
 </form>
+{% endblock %}

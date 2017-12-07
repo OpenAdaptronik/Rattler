@@ -6,9 +6,14 @@ from apps.userSettings.forms import userSettingsForm
 
 
 def userSettings(request):
-   #current_user = request.user
+
+    #current_user = request.user
+    #current_user = request.user
+    respo = {'username': request.user.username, 'email': request.user.mail, 'firma': request.user.firma, 'infos': request.user.adresse}
+
+
    #print(current_user)
-   if request.method == 'POST':
+    if request.method == 'POST':
 
        form = userSettingsForm(data=request.POST, instance=request.user)
 
@@ -16,5 +21,5 @@ def userSettings(request):
            user = form.save()
            user.save()
            return render(request, 'userSettings/index.html')
-   return render(request, 'userSettings/index.html')
+    return render(request, 'userSettings/index.html', respo)
 
