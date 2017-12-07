@@ -12,6 +12,8 @@ head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 masse_read = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
 phyphox = pd.read_excel('CSV_files/Phyphox/phyphox Erik 1.xls',dtype=np.float_)
+# Preview Daten
+
 
 colNames_User = []
 colUnits_User = []
@@ -28,6 +30,7 @@ def headerFormat(data):
             float(headerColumns[0])
     except:
         hasHeader = True
+
 
     colHeader = []
 
@@ -189,14 +192,33 @@ def get_sinus():
 # Normalize Data
 #phyphox = resample_data(get_column_names(headerFormat(phyphox)))
 #masse  = resample_data(get_column_names(headerFormat(masse_read)))
-sinus = get_sinus()
+#sinus = get_sinus()
+
+
 #Filter Data
 #butterworth_example(phyphox)
 #gaussian_example(phyphox)
-fourier_example(sinus)
+#fourier_example(sinus)
 
 
 
 
 # data.iloc[rows , columns ]     rows :=    [0] select idx 0      [1:] 1bis ende     [1:5] 1-5      [:,-1] last column
+
+def getDelta(data,index):
+    res = []
+    for t1, t2 in zip(data.iloc[:, index][:-1], data.iloc[:, index][1:]):
+        res.append(t2 - t1)
+
+    return res
+
+def numericalApprox(data,diff_Value1_Index,diff_Value2_Index):
+    diff_Value = []
+    for v1, t1 in zip(getDelta(data,diff_Value1_Index), getDelta(data,diff_Value2_Index)):
+        diff_Value.append(v1/t1)
+
+    return diff_Value
+
+print(numericalApprox(masse_read,2,0))
+
 
