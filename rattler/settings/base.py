@@ -147,6 +147,7 @@ PASSWORD_HASHERS = ['django.contrib.auth.hashers.BCryptSHA256PasswordHasher']
 
 AUTH_USER_MODEL = 'user.User'
 LOGIN_REDIRECT_URL = '/'
+SESSION_COOKIE_AGE = 900 #15 Minuten = 900 Sekunden TimeOut fuer Sessions
 
 
 # Cache
