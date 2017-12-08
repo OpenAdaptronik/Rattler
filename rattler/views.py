@@ -6,7 +6,6 @@ def dashboard (request):
 def error404 (request):
     return render (request,'error404/index.html')
 
-
 def registerTest (request):
     return render (request,'register/test/test.html')
 
