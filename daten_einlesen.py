@@ -11,7 +11,7 @@ from apps.tess.tess import tess
 head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
 nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 masse_read = pd.read_csv('CSV_files/Massenschwinger/Simulation_3_Massenschwinger_Zeitdaten.txt')
-phyphox = pd.read_excel('CSV_files/Phyphox/phyphox Erik 1.xls',dtype=np.float_)
+phyphox = pd.read_excel('CSV_files/Phyphox/phyphox Erik 2.xls',dtype=np.float_)
 
 colNames_User = []
 colUnits_User = []
@@ -191,9 +191,11 @@ phyphox = resample_data(get_column_names(headerFormat(phyphox)))
 #masse  = resample_data(get_column_names(headerFormat(masse_read)))
 #sinus = get_sinus()
 
+
 #Filter Data
 #butterworth_example(phyphox)
 #gaussian_example(phyphox)
+#fourier_example(sinus)
 #fourier_example(sinus)
 #@TODO: Welche Daten kommen denn da rein?
 print(tess.tess(phyphox.iloc[:,0],phyphox.iloc[:,1],phyphox.iloc[:,2]))
