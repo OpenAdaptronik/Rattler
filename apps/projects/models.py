@@ -8,21 +8,11 @@ class Projects(models.Model):
         on_delete=models.CASCADE,)
 
     name = models.CharField(max_length=100, unique=True)
-    kategorie = models.CharField(max_length=100)
-    unterkategorie = models.CharField(max_length=100)
-    hersteller = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
+    subcategory = models.CharField(max_length=100)
+    producer = models.CharField(max_length=100)
     typ = models.CharField(max_length=100)
-    notiz = models.TextField(max_length=500)
+    note = models.TextField(max_length=500)
 
-
-class Kategorie(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-class Unterkategorie(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-class Hersteller(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-class Typ(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+# hier müssen wir uns noch überlegen, wie wir die verschiedenen Felder wie category und subcategory miteinander
+# verknüpfen wollen, zur Auswahl stehen im Moment zwei Möglichkeiten, wer das bearbeitet bitte bei Alex oder Maren fragen welche :)

@@ -32,6 +32,7 @@ urlpatterns = [
     ),
     url('register/', include('apps.register.urls'), name='register'),
     url('userSettings/', include('apps.userSettings.urls'), name='userSettings'),
+    url('profil/', include('apps.profil.urls'), name='profil'),
 
     # Django Admin
     url('djangoAdmin/', admin.site.urls),

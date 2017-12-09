@@ -2,13 +2,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 # Create your views here.
-from apps.userSettings.forms import userSettingsForm
+from apps.userSettings.forms import UserSettingsForm
 
 
 def userSettings(request):
-    respo = {'username': request.user.username, 'email': request.user.mail, 'firma': request.user.firma, 'infos': request.user.adresse}
+    respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.address}
     if request.method == 'POST':
-        form = userSettingsForm(data=request.POST, instance=request.user)
+        form = UserSettingsForm(data=request.POST, instance=request.user)
         if form.is_valid():
            user = form.save()
            user.save()
