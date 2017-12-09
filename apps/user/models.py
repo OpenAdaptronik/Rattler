@@ -40,8 +40,8 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True, default=None)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    firma = models.CharField(max_length=255, default=None)
-    adresse = models.CharField(max_length=255, default=None)
+    firma = models.CharField(max_length=255, null=True, blank=True)
+    adresse = models.CharField(max_length=255, null=True, blank=True)
 
     USERNAME_FIELD = 'mail'
     EMAIL_FIELD = 'mail'
@@ -49,7 +49,17 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def email_user(self, subject, message, from_email=None, **kwargs):
+        """Sends an EMail to the User
+
+        Sends an email to the user mail address. Uses the django internal mail system.
+
+        Arguments:
+            subject {string} -- The mail subject
+            message {string} -- The mail message
+            **kwargs {[type]} -- [description]
+
+        Keyword Arguments:
+            from_email {tuple|list} -- [description] (default: {None})
         """
-        Sends an email to this User.
-        """
+
         send_mail(subject, message, from_email, [self.mail], **kwargs)

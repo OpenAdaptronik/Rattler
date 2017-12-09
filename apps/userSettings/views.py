@@ -6,15 +6,12 @@ from apps.userSettings.forms import userSettingsForm
 
 
 def userSettings(request):
-   #current_user = request.user
-   #print(current_user)
-   if request.method == 'POST':
-
-       form = userSettingsForm(data=request.POST, instance=request.user)
-
-       if form.is_valid():
+    respo = {'username': request.user.username, 'email': request.user.mail, 'firma': request.user.firma, 'infos': request.user.adresse}
+    if request.method == 'POST':
+        form = userSettingsForm(data=request.POST, instance=request.user)
+        if form.is_valid():
            user = form.save()
            user.save()
-           return render(request, 'userSettings/index.html')
-   return render(request, 'userSettings/index.html')
+           return render(request, 'userSettings/index.html', respo) # hier neuladen, aber ich weiß den Befehl leider nicht
+    return render(request, 'userSettings/index.html', respo)
 

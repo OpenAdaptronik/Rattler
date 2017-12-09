@@ -1,24 +1,42 @@
-'''
+"""
 Views of the register app.
-'''
-from django.contrib.sites.shortcuts import get_current_site
-from django.views.generic import FormView, View
+"""
+from django.views.generic import FormView
 from django.template.loader import render_to_string
 from django.contrib import auth
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, render
+
+from rattler.auth.mixins import NoLoginRequiredMixin
+from rattler.auth.decorators import not_login_required
 
 from .forms import RegisterForm
 from .models import VerificationToken
 
-class IndexView(FormView):
+
+class IndexView(NoLoginRequiredMixin, FormView):
+    """Register Index View Class
+
+    Shows and handles the registrations url
+    """
     template_name = 'register/index.html'
     form_class = RegisterForm
-    success_url = '/register'
+    success_url = 'success'
+
     def form_valid(self, form):
+        """Called if the form is valid
+
+        Saves the new generated user and sends an verification email
+
+        Arguments:
+            form {RegisterForm} -- The registration form.
+
+        Returns:
+            HttpResponseRedirect -- Form valid redirection
+        """
         user = form.save()
         token = VerificationToken.objects.create_user_token(user)
         user.email_user(
-            'Test',
+            'Account Verifikation',
             render_to_string(
                 'register/mail/verification.html',
                 {
@@ -29,12 +47,42 @@ class IndexView(FormView):
         )
         return super().form_valid(form)
 
-class ActivateView(View):
-    def get(self, request, token):
-        token = VerificationToken.objects.get(token=token)
-        if token == None:
-            return HttpResponseRedirect('index:index')
-        token.user.is_active = True
-        token.user.save()
+
+@not_login_required
+def register_success(request):
+    """The registration success view
+
+    Renders the registration view
+
+    Decorators:
+        not_login_required
+
+    Arguments:
+        request {Request} -- The called request
+
+    Returns:
+        HttpResponse -- The rendered Response
+    """
+    return render(request, 'register/success.html')
+
+@not_login_required
+def register_activate(request, token):
+    """Verifies the user by the given token.
+
+    Verifies the user and redirects to home
+
+    Decorators:
+        not_login_required
+
+    Arguments:
+        request {Request} -- The called request
+        token {string} -- The verify token
+
+    Returns:
+        HttpResponse -- The redirection response
+    """
+    token = VerificationToken.objects.get_token(token)
+    if not token is None:
+        VerificationToken.objects.verify_user(token.user)
         auth.login(request, token.user)
-        return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/')
