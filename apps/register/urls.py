@@ -1,10 +1,8 @@
-"""URLs for the registration app"""
-from django.urls import path
-from .views import IndexView, register_success, register_activate 
+from django.conf.urls import url
 
-app_name = 'register'
+from . import views
+
 urlpatterns = [
-    path('activate/<slug:token>/', register_activate, name='activate'),
-    path('success/', register_success, name='success'),
-    path('', IndexView.as_view(), name='index'),
+    url(r'^$', views.index, name='index'),
+    url(r'^home/$', views.home, name='home'),
 ]

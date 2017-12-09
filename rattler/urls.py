@@ -13,44 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url, handler404
+from django.conf.urls import include, url
 from django.contrib import admin
 from . import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    # Import Apps
-    url(
-        'login/', 
-        auth_views.LoginView.as_view(redirect_authenticated_user=True), 
-        name='login'
-    ),
-    url(
-        'logout/',
-        auth_views.LogoutView.as_view(next_page='/'),
-        name='logout'
-    ),
-    url('register/', include('apps.register.urls'), name='register'),
-    # Django Admin
-    url('djangoAdmin/', admin.site.urls),
-    # Global Routes
-    url('dashboard/', views.dashboard, name='dashboard'),
-    url('register/test/', views.registerTest, name='registerTest'),
-    url('community/', views.community, name='community'),
-    url('profile/me/', views.profileMe, name='profileMe'),
-    url('admin/', views.admin, name='admin'),
-    url('settings/', views.settings, name='settings'),
-    url('help/', views.help, name='help'),
-    
-    
-
-    url('', include('django.contrib.auth.urls')),
-    
-    
-    url(r'^$', views.index, name='index'),
+    url(r'dashboard', views.dashboard, name='dashboard'),
+    url(r'register/test/', views.registerTest, name='registerTest'),
+    url(r'register/', views.register, name='register'),
+    url(r'community/', views.community, name='community'),
+    url(r'profile/me/', views.profileMe, name='profileMe'),
+    url(r'admin/', views.admin, name='admin'),
+    url(r'settings/', views.settings, name='settings'),
+    url(r'logout/', views.logout, name='logout'),
+    url(r'help/', views.help, name='help'),
+    url(r'^djangoAdmin/', admin.site.urls),
+    url(r'', views.index),
+    url(r'^', views.error404, name='error404')
 ]
-
-# Error Handlers
-handler404 = 'rattler.views.handler404'
-
-

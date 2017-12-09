@@ -12,7 +12,7 @@ services:
     links:
       - db:db
       - smtp:smtp
- 
+
   db:
       image: mysql:8.0
       volumes:
@@ -30,8 +30,3 @@ services:
       ports:
         - 25:25
         - 8080:80
-
-  memcached:
-      image: memcached
-      ports:
-        - "11211:11211"

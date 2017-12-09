@@ -4,7 +4,6 @@
     {% include 'includeDefs/indexNavi.html' %}
 {% endblock %}
 {% block container %}
-    <!--<h1>{% if user.is_authenticated %}{{user.username}}{% endif %}</h1>-->
     <h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
     <div class="card">
         <!-- TODO: Schritte über die ersten 3 Bilder!
@@ -45,7 +44,7 @@
         <div class="col s12 m12 l4">
             <div class="card">
                 <div class="card-content">
-                    <form method="POST" action="{% url 'login' %}">
+                    <form method="POST" action="{% url 'login:index' %}">
                         {% csrf_token %}
                         <h5>Login:</h5>
                         <div class="row">
