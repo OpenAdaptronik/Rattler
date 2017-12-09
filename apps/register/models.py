@@ -16,6 +16,17 @@ class VerificationTokenManager(models.Manager):
         token.save()
         return token.token
 
+    def get_token(self, token):
+        try:
+            return self.model.objects.get(token=token)
+        except self.model.DoesNotExist:
+            return None 
+
+    def verify_user(self, user):
+        user.is_active = True
+        user.save()
+
+
 class VerificationToken(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
     token = models.CharField(max_length=255, unique=True)

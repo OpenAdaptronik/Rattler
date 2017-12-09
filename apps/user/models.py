@@ -47,7 +47,17 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def email_user(self, subject, message, from_email=None, **kwargs):
+        """Sends an EMail to the User
+        
+        Sends an email to the user mail address. Uses the django internal mail system.
+        
+        Arguments:
+            subject {string} -- The mail subject
+            message {string} -- The mail message
+            **kwargs {[type]} -- [description]
+        
+        Keyword Arguments:
+            from_email {tuple|list} -- [description] (default: {None})
         """
-        Sends an email to this User.
-        """
+        
         send_mail(subject, message, from_email, [self.mail], **kwargs)
