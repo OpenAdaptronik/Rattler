@@ -53,6 +53,10 @@ def get_column_names(data):
     Die Methode fragt den Nutzer nach den Bezeichnern der Spalte ab und in welcher Einheit diese Daten gemessen wurden.
     Die Bezeichner/Namen werden in den Head geschrieben und die Einheiten werden in die Zeile mit den Listenindex
     idx = 0 geschrieben. Somit fangen die Werte erst ab Index 1 an, dies muss bei Berechnungen beachtet werden.
+
+    Warning: Since this method uses the public class Variables colNames_User, colUnits_User -use this Function only once
+    per Instance!!!
+
     :param data: List mit
     :return: Datenliste mit Bezeichnern im Head und Einheiten in Zeile mit Index 0
     '''
@@ -95,15 +99,6 @@ def butterworth_filter(data, data_index, time_index=0, order=4, cofreq=1.5, mode
     return sci.signal.filtfilt(b, a, data.iloc[:, data_index])
 
 
-def butterworth_example(data):
-    plt.figure
-    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
-    plt.plot(data.iloc[:, 0], butterworth_filter(data, 1, mode='high'), 'r')
-    plt.legend(('noisy signal', 'butterworth'), loc='best')
-    plt.grid(True)
-    plt.show()
-
-
 # @TODO: Standartwerte mit Frauenhofer abklären
 def gaussian_filter(data, index, gauss_M=50, gauss_std=2):
     '''
@@ -131,7 +126,7 @@ def resample_data(data):
     return df
 
 
-def get_interval(data, time_index=0):
+def get_average_delta(data, time_index=0):
     '''
     This function calculates the average interval between the measurements
     :param data: the data array
@@ -144,14 +139,17 @@ def get_interval(data, time_index=0):
     return sum(res) / len(res)
 
 
-# Example
-def gaussian_example(data):
-    plt.figure
-    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
-    plt.plot(data.iloc[:, 0], gaussian_filter(data, 1, len(data.iloc[:, 1])), 'r')
-    plt.legend(('noisy signal', 'Gauß'), loc='best')
-    plt.grid(True)
-    plt.show()
+def get_delta(data, index):
+    '''
+    This function calculates the average difference between the values of one column
+    :param data: the data array
+    :param time_index: the index of the column of interest
+    :return: a list of distances between all values in the column
+    '''
+    res = []
+    for t1, t2 in zip(data.iloc[:, index][:-1], data.iloc[:, index][1:]):
+        res.append(t2 - t1)
+    return res
 
 
 def fourier_transform(data, data_index):
@@ -165,6 +163,20 @@ def fourier_transform(data, data_index):
            sci.fft(data.iloc[:, data_index])]  # sci.fft(data.iloc[:, data_index])
     return fft
 
+def numerical_approx(data, diff_Value1_Index, diff_Value2_Index = 0):
+    '''
+    This method derives one Data Column by another
+    Example: d Speed / d Time = Acceleration
+    :param data: the pandas DataFrame of the data
+    :param diff_Value1_Index: Index of the Column to get the derivative of
+    :param diff_Value2_Index: Index of the deriving Column (Usually the Time index)
+    :return:
+    '''
+    diff_Value = []
+    for v1, t1 in zip(get_delta(data, diff_Value1_Index), get_delta(data, diff_Value2_Index)):
+        diff_Value.append(v1 / t1)
+
+    return diff_Value
 
 def fourier_example(data):
     plt.figure
@@ -174,6 +186,22 @@ def fourier_example(data):
     plt.grid(True)
     plt.show()
 
+def gaussian_example(data):
+    plt.figure
+    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
+    plt.plot(data.iloc[:, 0], gaussian_filter(data, 1, len(data.iloc[:, 1])), 'r')
+    plt.legend(('noisy signal', 'Gauß'), loc='best')
+    plt.grid(True)
+    plt.show()
+
+
+def butterworth_example(data):
+    plt.figure
+    plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
+    plt.plot(data.iloc[:, 0], butterworth_filter(data, 1, mode='high'), 'r')
+    plt.legend(('noisy signal', 'butterworth'), loc='best')
+    plt.grid(True)
+    plt.show()
 
 #Just to generate Test Sinus Function
 def get_sinus():
@@ -182,32 +210,20 @@ def get_sinus():
 
 
 #-------- Normalize Data --------
-#phyphox = resample_data(get_column_names(header_format(phyphox)))
+# phyphox = resample_data(get_column_names(header_format(phyphox)))
 # masse  = resample_data(get_column_names(headerFormat(masse_read)))
 # sinus = get_sinus()
+# acceleration = numerical_approx(masse_read, 2, 0)
 
 #-------- Filter Data --------
 # butterworth_example(phyphox)
 # gaussian_example(phyphox)
 # fourier_example(sinus)
 # fourier_example(sinus)
-# @TODO: Welche Daten kommen denn da rein?
+
+# @TODO: Welche Daten kommen denn in Tess rein?
 #print(tess.tess(phyphox.iloc[:, 0], phyphox.iloc[:, 1], phyphox.iloc[:, 2]))
 
 
-def get_delta(data, index):
-    res = []
-    for t1, t2 in zip(data.iloc[:, index][:-1], data.iloc[:, index][1:]):
-        res.append(t2 - t1)
-    return res
 
 
-def numerical_approx(data, diff_Value1_Index, diff_Value2_Index):
-    diff_Value = []
-    for v1, t1 in zip(get_delta(data, diff_Value1_Index), get_delta(data, diff_Value2_Index)):
-        diff_Value.append(v1 / t1)
-
-    return diff_Value
-
-
-print(numerical_approx(masse_read, 2, 0))
