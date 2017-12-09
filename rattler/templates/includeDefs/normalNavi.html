@@ -1,7 +1,7 @@
-{% load static  %}
+{% load static %}
 <!-- Haupt-Navigation auf grossem Bildschirm -->
     <ul id="nav" class="left hide-on-med-and-down">
-        <li class="active"><a href="../dashboard/">Dashboard</a></li>
+        <li class="active"><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li><a href="{% url 'community' %}">Community</a></li>
     </ul>
 <!-- Menu-Symbol fuer SideNav -->
@@ -21,7 +21,7 @@
             <i class="material-icons">settings</i>
             <div>Einstellungen</div>
         </a></li>
-        <li><a href="{% url 'logout:index' %}">
+        <li><a href="{% url 'logout' %}">
             <i class="material-icons">power_settings_new</i>
             <div>Logout</div>
         </a></li>

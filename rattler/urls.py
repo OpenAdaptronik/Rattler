@@ -48,7 +48,7 @@ urlpatterns = [
     url('', include('django.contrib.auth.urls')),
     
     
-    url('', include('apps.index.urls'), name='index'),
+    url(r'^$', views.index, name='index'),
 ]
 
 # Error Handlers
