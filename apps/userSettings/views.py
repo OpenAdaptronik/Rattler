@@ -6,7 +6,7 @@ from apps.userSettings.forms import UserSettingsForm
 
 
 def userSettings(request):
-    respo = {'username': request.user.username, 'email': request.user.mail, 'firma': request.user.firma, 'infos': request.user.adresse}
+    respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.address}
     if request.method == 'POST':
         form = UserSettingsForm(data=request.POST, instance=request.user)
         if form.is_valid():
