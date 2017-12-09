@@ -1,5 +1,7 @@
 from .base import *
 
+print('HSLOO')
+
 # DEBUG = True equals Development-Mode
 DEBUG = True
 
@@ -11,6 +13,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS += [
     #'debug_toolbar'
 ]
+
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -25,6 +28,21 @@ DATABASES = {
     }
 }
 
+
+
+
+
+#MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#DEBUG_TOOLBAR_CONFIG = {
+#    'JQUERY_URL': '',
+#}
+
+#
+# EMAIL_BACKEND = ''
+EMAIL_HOST = 'smtp'
 DEFAULT_FROM_EMAIL ='rattler@openadaptronik.com'
 LOGIN_URL ='/login/'
 APPEND_SLASH = True
@@ -33,11 +51,4 @@ APPEND_SLASH = True
 # EMAIL_HOST_USER =
 # EMAIL_HOST_PASSWORD =
 # EMAIL_USE_TLS =
-
-
-
-
-
-
-
 
