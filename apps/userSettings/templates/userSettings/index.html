@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% block container %}
-<form method="POST">
-    {% csrf_token %}
+
         <div class="section">
 			<div class="container">
 				<h2>{{username}} &bull; Einstellungen</h2>
-				    <div class="row"><form>
+				    <div class="row">
+                        <form method="post">
+                        {% csrf_token %}
 						<div class="col s12 m12 13" style="min-width: 300px">
 							<div class="card">
 								<div class="card-content">
@@ -40,6 +41,7 @@
 													<button class="btn waves-effect waves-light" type="submit">Passwort ändern<i class="material-icons left">lock</i></button>
 												</div>
 											<table>
+
 												<tr>
 													<td>
 														<div class="input-field col s12">
@@ -79,8 +81,6 @@
 													</td>
 												</tr>
 											</table>
-
-										</p>
 										<div class="card-action">
 											<button class="btn waves-effect waves-light" type="submit">Speichern<i class="material-icons left">save</i></button>
 										</div>
@@ -148,5 +148,4 @@
 					</form></div>
 			</div>
 		</div>
-</form>
 {% endblock %}
