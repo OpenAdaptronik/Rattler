@@ -4,6 +4,11 @@ from django.db import models
 from django.contrib.auth.tokens import default_token_generator
 
 class VerificationTokenManager(models.Manager):
+    """Verification token manager
+    
+    Handles default methods for token generation and verification
+    """
+    
     def create_user_token(self, user):
         if hasattr(user, 'verificationtoken'):
             return user.verificationtoken.token
