@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'apps.userSettings.apps.UserSettingsConfig',
     'apps.index.apps.IndexConfig',
     'apps.projects.apps.ProjectsConfig',
+    'apps.profil.apps.ProfilConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
