@@ -14,15 +14,5 @@ class Projects(models.Model):
     typ = models.CharField(max_length=100)
     note = models.TextField(max_length=500)
 
-
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-class Subcategory(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-class Producer(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-class Typ(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+# hier müssen wir uns noch überlegen, wie wir die verschiedenen Felder wie category und subcategory miteinander
+# verknüpfen wollen, zur Auswahl stehen im Moment zwei Möglichkeiten, wer das bearbeitet bitte bei Alex oder Maren fragen welche :)
