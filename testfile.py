@@ -6,8 +6,8 @@ import numpy as np
 
 
 
-head = pd.read_csv('CSV_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
-nohead = pd.read_csv('CSV_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
+head = pd.read_csv('data_files/multidata_equal_/single_time+multidata_equal_Time_data.csv', dtype=np.float_)
+nohead = pd.read_csv('data_files/multidata_equal_/none_time+multidata_equal_Time_data.csv', dtype=np.float_)
 #print((daten["Force"]))
 
 
