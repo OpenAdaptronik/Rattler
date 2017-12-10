@@ -1,6 +1,9 @@
-from django.conf.urls import url
+
+from django.urls import path
+
 from . import views
 
+app_name='userSettings'
 urlpatterns = [
-    url(r'^$', views.userSettings, name='index'),
-]
+    path('userSettings', views.userSettings, name='userSettings')
+    ]
