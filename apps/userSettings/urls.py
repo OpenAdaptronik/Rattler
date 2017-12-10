@@ -1,8 +1,10 @@
-from django.urls import path
+from django.conf.urls import url
 
 from . import views
 
 app_name='userSettings'
 urlpatterns = [
-    path('', views.userSettings, name='userSettings')
+    #url('changeEmail/', views.changeEmail, name='changeEmail'),
+    #url(r'^changePassword/', views.ChangePassword, name='changePassword'),
+    url(r'^$', views.userSettings, name='userSettings')
     ]
