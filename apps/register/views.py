@@ -82,7 +82,7 @@ def register_activate(request, token):
         HttpResponse -- The redirection response
     """
     token = VerificationToken.objects.get_token(token)
-    if not token is None:
+    if token is not None:
         VerificationToken.objects.verify_user(token.user)
         auth.login(request, token.user)
     return HttpResponseRedirect('/')

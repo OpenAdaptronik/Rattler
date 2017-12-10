@@ -18,7 +18,8 @@ Connect to DB
 docker-compose exec db mysql -uroot -p123456 -hlocalhost
 
 Connect to shell Web
-docker-compose exec web /bin/ash
+docker-compose exec web ash
+python manage.py runserver --settings rattler.settings.development
 
 Connect to Shell DB
 docker-compose exec db /bin/bash
