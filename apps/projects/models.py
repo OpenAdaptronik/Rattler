@@ -26,5 +26,7 @@ class Projects(models.Model):
 class Category(models.Model):
     categoryID = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
-    parent = models.IntegerField()
+    parent = models.ForeignKey('self',
+                               on_delete=models.CASCADE,
+                               )
 
