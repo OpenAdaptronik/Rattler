@@ -30,8 +30,12 @@ urlpatterns = [
         auth_views.LogoutView.as_view(next_page='/'),
         name='logout'
     ),
+    #url(
+     #   'changePassword/',
+      #  auth_views.PasswordChangeView.as_view(success_url=),
+    #),
     url('register/', include('apps.register.urls'), name='register'),
-    url('userSettings/', include('apps.userSettings.urls'), name='userSettings'),
+    url('settings/', include('apps.userSettings.urls'), name='settings'),
     url('profile/', include('apps.profile.urls'), name='profile'),
 
     # Django Admin
@@ -42,7 +46,6 @@ urlpatterns = [
     url('community/', views.community, name='community'),
     url('profile/me/', views.profileMe, name='profileMe'),
     url('admin/', views.admin, name='admin'),
-    url('userSettings/', views.settings, name='settings'),
     url('help/', views.help, name='help'),
 
 

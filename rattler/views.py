@@ -25,7 +25,7 @@ def admin (request):
 
 @login_required
 def settings (request):
-    return render (request,'settings/index.html')
+    return render (request,'settings/index')
 
 @login_required
 def help (request):

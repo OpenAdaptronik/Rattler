@@ -1,10 +1,10 @@
-from django.conf.urls import url
-
+from django.urls import path
+from django.contrib.auth.views import password_change
 from . import views
 
 app_name='userSettings'
 urlpatterns = [
     #url('changeEmail/', views.changeEmail, name='changeEmail'),
-    #url(r'^changePassword/', views.ChangePassword, name='changePassword'),
-    url(r'^$', views.userSettings, name='userSettings')
+    path('changePassword/', password_change, name='changePassword'),
+    path('', views.userSettings, name='index')
     ]
