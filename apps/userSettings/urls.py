@@ -1,10 +1,16 @@
+from django.test.signals import auth_password_validators_changed
 from django.urls import path
-from django.contrib.auth.views import password_change
+from django.contrib.auth import views as auth_views
 from . import views
 
 app_name='userSettings'
 urlpatterns = [
     #url('changeEmail/', views.changeEmail, name='changeEmail'),
-    path('changePassword/', password_change, name='changePassword'),
+    path(
+        'changePassword/',
+         auth_views.PasswordChangeView.as_view(
+            success_url='userSettings.index.html'
+         ),
+    name='changePassword'),
     path('', views.userSettings, name='index')
     ]
