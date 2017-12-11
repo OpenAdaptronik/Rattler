@@ -30,9 +30,13 @@
             </div>
         </div>
 
-        <div class="card-action">
-            <button type="submit" class="waves-effect waves-light btn">Login</button>
-            <a href="{% url 'password_reset' %}">Passwort vergessen?</a>
+        <div class="card-action row">
+            <div class="col s6">
+                <button type="submit" class="waves-effect waves-light btn">Login</button>
+            </div>
+            <div class="col s6">
+                <a href="{% url 'password_reset' %}">Passwort vergessen?</a>
+            </div>
         </div>
     </form>
 </div>
