@@ -1,0 +1,149 @@
+
+        <div class="section">
+			<div class="container">
+				<h2>{{username}} &bull; Einstellungen</h2>
+				    <div class="row">
+                        <form method="post">
+                        {% csrf_token %}
+						<div class="col s12 m12 13" style="min-width: 300px">
+							<div class="card">
+								<p class="card-content">
+									<span class="card-title">Meine Daten</span>
+										<p>
+											<div class="input-field col s12">
+												<input placeholder={{user.username}} id="user_name" disabled type="text" class="validate">
+                                                <label for="user_name">User-Name</label>
+											</div>
+											<table>
+												<tr>
+													<td>
+														<div class="input-field col s12">
+															<input placeholder={{user.mail}} id="mail" disabled type="text" class="validate">
+															<label for="mail">E-mail</label>
+														</div>
+													</td>
+													<td>
+														<div class="switch">
+															<label>
+															<input type="checkbox">
+															<span class="lever"></span>
+															Sichtbar
+															</label>
+														</div>
+													</td>
+												</tr>
+												</table>
+												<div>
+													<a class="waves-effect waves-light" type="button"><img src="img/user.jpg"><i class="material-icons ">mode_edit</i></a>
+													<button class="btn waves-effect waves-light" onclick="location.href='ChangeEmail.html'" type="button">E-mail ändern<i class="material-icons left">email</i></button>
+													<button class="btn waves-effect waves-light" onclick="location.href='/ChangePassword/'" type="button">Passwort ändern<i class="material-icons left">lock</i></button>
+												</div>
+											<table>
+
+												<tr>
+													<td>
+														<div class="input-field col s12">
+
+															<input placeholder={{user.company}} id="company" type="text" class="validate"  name="company">
+															<label for="firma">Firma/Institution:</label>
+
+														</div>
+													</td>
+													<td>
+														<div class="switch">
+															<label>
+															<input type="checkbox">
+															<span class="lever"></span>
+															Sichtbar
+															</label>
+														</div>
+													</td>
+												</tr>
+											</table>
+											<table>
+												<tr>
+													<td>
+														<div class="input-field col s12">
+															<input placeholder={{user.info}} id="info" type="text" class="validate" name="info">
+															<label for="info">Weitere Informationen:</label>
+														</div>
+													</td>
+													<td>
+														<div class="switch">
+															<label>
+															<input type="checkbox">
+															<span class="lever"></span>
+															Sichtbar
+															</label>
+														</div>
+													</td>
+												</tr>
+											</table>
+										<div class="card-action">
+											<button class="btn waves-effect waves-light" type="submit">Speichern<i class="material-icons left">save</i></button>
+										</div>
+                                    </p>
+								</div>
+							</div>
+						</div>
+						<div class="col s12 m12 13" style="min-width: 300px">
+							<div class="card">
+								<div class="card-content">
+									<table><tr>
+										<td><span class="card-title">Experten-Modus</span></td>
+										<td><div class="switch">
+											<label>
+											OFF
+											<input type="checkbox">
+											<span class="lever"></span>
+											On
+											</label>
+										</div></td>
+									</tr></table>
+									<p>
+										<div class="input-field col s4">
+											<input placeholder={{var1}} id="var1" type="text" class="validate">
+											<label for="var1">X1:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var2}} id="var2" type="text" class="validate">
+											<label for="var2">X2:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var3}} id="var3" type="text" class="validate">
+											<label for="var3">X3:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var4}} id="var4" type="text" class="validate">
+											<label for="var4">X4:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var5}} id="var5" type="text" class="validate">
+											<label for="var5">X5:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var6}} id="var6" type="text" class="validate">
+											<label for="var6">X6:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var7}} id="var7" type="text" class="validate">
+										<label for="var7">X7:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var8}} id="var8" type="text" class="validate">
+											<label for="var8">X8:</label>
+										</div>
+										<div class="input-field col s4">
+											<input placeholder={{var9}} id="var9" type="text" class="validate">
+											<label for="var9">X9:</label>
+										</div>
+									</p>
+									<div class="card-action">
+											<button class="btn waves-effect waves-light" type="submit">Speichern<i class="material-icons left">save</i></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form></div>
+			</div>
+		</div>

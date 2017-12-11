@@ -25,7 +25,10 @@ SECRET_KEY = ''
 INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
     'apps.register.apps.RegisterConfig',
+    'apps.userSettings.apps.UserSettingsConfig',
     'apps.index.apps.IndexConfig',
+    'apps.projects.apps.ProjectsConfig',
+    'apps.profile.apps.ProfileConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
