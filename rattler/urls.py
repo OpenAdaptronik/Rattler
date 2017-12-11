@@ -32,6 +32,11 @@ urlpatterns = [
     ),
     url('register/', include('apps.register.urls'), name='register'),
     url('userSettings/', include('apps.userSettings.urls'), name='userSettings'),
+   # url(
+    #    'profile/',
+    #    auth_views.ProfileView.as_view(),
+    #    name='profile'
+    #),
     url('profile/', include('apps.profile.urls'), name='profile'),
 
     # Django Admin
