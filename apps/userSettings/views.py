@@ -6,10 +6,12 @@ from apps.userSettings.forms import UserSettingsForm
 
 
 def userSettings(request):
-    respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.info}
+   # respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.info}
     if request.method == 'POST':
-        return render(request, 'userSettings/index.html', respo)
-    return render(request, 'userSettings/index.html', respo)
+        form = UserSettingsForm(data=request.POST, instance=request.user)
+        user = form.save()
+        return render(request, 'userSettings/index.html')
+    return render(request, 'userSettings/index.html')
 
 def ChangePassword(request):
 
