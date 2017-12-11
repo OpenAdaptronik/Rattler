@@ -3,6 +3,7 @@ from django.db import models
 
 from django.contrib.auth.tokens import default_token_generator
 
+
 class VerificationTokenManager(models.Manager):
     """Verification token manager
     
@@ -15,7 +16,7 @@ class VerificationTokenManager(models.Manager):
 
         token = self.model(
             user=user,
-            token = default_token_generator.make_token(user)
+            token=default_token_generator.make_token(user)
         )
 
         token.save()
