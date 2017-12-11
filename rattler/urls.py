@@ -47,7 +47,7 @@ urlpatterns = [
     url('community/', views.community, name='community'),
     url('profile/me/', views.profileMe, name='profileMe'),
     url('admin/', views.admin, name='admin'),
-    url('settings/', views.settings, name='settings'),
+    url('userSettings/', views.settings, name='settings'),
     url('help/', views.help, name='help'),
 
 
