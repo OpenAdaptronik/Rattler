@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
 ]
 
 MIDDLEWARE = [
@@ -49,13 +50,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'rattler.urls'
 
+# Template Settings
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'rattler', 'templates' , 'jinja2')],
-        'APP_DIRS': True,
-        'OPTIONS': {'environment': 'rattler.jinja2.Environment',}
-    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'rattler', 'templates')],
@@ -70,6 +66,9 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
 
 WSGI_APPLICATION = 'rattler.wsgi.application'
 
@@ -144,13 +143,15 @@ PASSWORD_HASHERS = ['django.contrib.auth.hashers.BCryptSHA256PasswordHasher']
 
 AUTH_USER_MODEL = 'user.User'
 LOGIN_REDIRECT_URL = '/'
-SESSION_COOKIE_AGE = 900 #15 Minuten = 900 Sekunden TimeOut fuer Sessions
+SESSION_COOKIE_AGE = 60*15 #15 Minuten = 60*15 = 900 Sekunden TimeOut fuer Sessions
 
 
 # Cache
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
+        'LOCATION': 'cache:11211',
     }
 }
+SESSION_CACHE_ALIAS = 'default'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'

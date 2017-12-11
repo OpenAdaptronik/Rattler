@@ -12,6 +12,7 @@ services:
     links:
       - db:db
       - smtp:smtp
+      - cache:cache
  
   db:
       image: mysql:8.0
@@ -31,7 +32,7 @@ services:
         - 25:25
         - 8080:80
 
-  memcached:
-      image: memcached
+  cache:
+      image: memcached:alpine
       ports:
         - "11211:11211"

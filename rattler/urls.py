@@ -40,10 +40,7 @@ urlpatterns = [
         include('apps.password.urls'),
         name='password'
     ),
-    #path(
-     #   'changePassword/',
-      #  auth_views.PasswordChangeView.as_view(success_url=),
-    #),
+
     path('register/', include('apps.register.urls'), name='register'),
     # Django Admin
     path('djangoAdmin/', admin.site.urls),
@@ -53,7 +50,7 @@ urlpatterns = [
     path('community/', views.community, name='community'),
     path('profile/me/', views.profileMe, name='profileMe'),
     path('admin/', views.admin, name='admin'),
-    path('settings/',  include('apps.userSettings.urls'), name='settings'),
+    path('settings/', views.settings, name='settings'),
     path('help/', views.help, name='help'),
     path('', include('apps.index.urls'), name='index'),
 ]
