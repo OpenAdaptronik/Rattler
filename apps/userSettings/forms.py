@@ -4,4 +4,4 @@ from apps.user.models import User
 class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['company', 'address']
+        fields = ['company', 'info']

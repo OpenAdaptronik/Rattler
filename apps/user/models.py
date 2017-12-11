@@ -41,7 +41,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     company = models.CharField(max_length=255, null=True, blank=True)
-    address = models.CharField(max_length=255, null=True, blank=True)
+    info = models.CharField(max_length=255, null=True, blank=True)
 
     USERNAME_FIELD = 'mail'
     EMAIL_FIELD = 'mail'
