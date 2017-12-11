@@ -6,7 +6,7 @@ from apps.userSettings.forms import UserSettingsForm
 
 
 def userSettings(request):
-    respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.address}
+    respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.info}
     if request.method == 'POST':
         return render(request, 'userSettings/index.html', respo)
     return render(request, 'userSettings/index.html', respo)

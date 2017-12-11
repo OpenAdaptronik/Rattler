@@ -1,6 +1,0 @@
-3
-USERID; EMAIL                              ; SALT                            ; HASHED
-
-1       khuynguyen96@gmail.com               b'$2b$12$r5sl6Ydyf6kTsJlJnHNs/O'  b'$2b$12$r5sl6Ydyf6kTsJlJnHNs/O0JZ5IxOffbxo4eRvXJENzykkrKx3aSW'
-2       HuyNguyen96                          b'$2b$12$IJNVGs5jb0tUTSwTVcG2ye'  b'$2b$12$IJNVGs5jb0tUTSwTVcG2ye6BJ82t5.IHcd/edGJCT9WGxlmkjR24y'
-3       gjfcvhgv                             b'$2b$12$V1hbPe4NzvDTRZYqaeTque'  b'$2b$12$V1hbPe4NzvDTRZYqaeTque7JngVMD3/M7A.35d7iHSFEIOXBqYdLC'
