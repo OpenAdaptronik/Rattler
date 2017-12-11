@@ -1,13 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth.forms import AuthenticationForm
 
 def index(request):
-    context = {
-        'test': 'Hallo Welt. Next',
-        'value': None
-    }
-
-    if request.method == 'POST':
-        context.update({'value': request.POST['value']})
-    return render(request, 'index/index.html', context)
-
-
+    return render(
+        request, 
+        'index/index.html', 
+        {
+            'login_form': AuthenticationForm()
+        }
+    )
