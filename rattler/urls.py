@@ -24,7 +24,7 @@ urlpatterns = [
     # Login View
     path(
         'login/', 
-        auth_views.LoginView.as_view(redirect_authenticated_user=True), 
+        auth_views.LoginView.as_view(redirect_authenticated_user=True),
         name='login'
     ),
     # Logout View
@@ -50,7 +50,7 @@ urlpatterns = [
     path('community/', views.community, name='community'),
     path('profile/me/', views.profileMe, name='profileMe'),
     path('admin/', views.admin, name='admin'),
-    path('settings/', views.settings, name='settings'),
+    path('settings/', include('apps.userSettings.urls'), name='settings'),
     path('help/', views.help, name='help'),
     path('', include('apps.index.urls'), name='index'),
 ]

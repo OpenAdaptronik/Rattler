@@ -42,9 +42,9 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     company = models.CharField(max_length=255, null=True, blank=True)
     info = models.CharField(max_length=255, null=True, blank=True)
-    visibility_mail = models.BooleanField(default=False)
-    visibility_company = models.BooleanField(default=False)
-    visibility_info = models.BooleanField(default=False)
+    #visibility_mail = models.BooleanField(default=False)
+    #visibility_company = models.BooleanField(default=False)
+    #visibility_info = models.BooleanField(default=False)
 
 
     USERNAME_FIELD = 'mail'
