@@ -4,7 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 from apps.userSettings.forms import UserSettingsForm
 
-
+'''changes company and info'''
 def userSettings(request):
    # respo = {'username': request.user.username, 'email': request.user.mail, 'company': request.user.company, 'infos': request.user.info}
     if request.method == 'POST':
@@ -12,7 +12,7 @@ def userSettings(request):
         user = form.save()
         return render(request, 'userSettings/index.html')
     return render(request, 'userSettings/index.html')
-
+'''changes password'''
 def ChangePassword(request):
 
     return render(request, 'userSettings/ChangePassword.html')
