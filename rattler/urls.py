@@ -13,44 +13,47 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url, handler404
+from django.conf.urls import handler404
+from django.urls import path, include
 from django.contrib import admin
-from . import views
 from django.contrib.auth import views as auth_views
 
+from . import views
+
 urlpatterns = [
-    # Import Apps
-    url(
+    # Login View
+    path(
         'login/', 
         auth_views.LoginView.as_view(redirect_authenticated_user=True), 
         name='login'
     ),
-    url(
+    # Logout View
+    path(
         'logout/',
         auth_views.LogoutView.as_view(next_page='/'),
         name='logout'
     ),
-    url('register/', include('apps.register.urls'), name='register'),
-    # Django Admin
-    url('djangoAdmin/', admin.site.urls),
-    # Global Routes
-    url('dashboard/', views.dashboard, name='dashboard'),
-    url('register/test/', views.registerTest, name='registerTest'),
-    url('community/', views.community, name='community'),
-    url('profile/me/', views.profileMe, name='profileMe'),
-    url('admin/', views.admin, name='admin'),
-    url('settings/', views.settings, name='settings'),
-    url('help/', views.help, name='help'),
-    
-    
 
-    url('', include('django.contrib.auth.urls')),
-    
-    
-    url(r'^$', views.index, name='index'),
+    # Password Views
+    path(
+        'password/',
+        include('apps.password.urls'),
+        name='password'
+    ),
+
+    path('register/', include('apps.register.urls'), name='register'),
+    # Django Admin
+    path('djangoAdmin/', admin.site.urls),
+    # Global Routes
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('register/test/', views.registerTest, name='registerTest'),
+    path('community/', views.community, name='community'),
+    path('profile/me/', views.profileMe, name='profileMe'),
+    path('admin/', views.admin, name='admin'),
+    path('settings/', views.settings, name='settings'),
+    path('help/', views.help, name='help'),
+    path('', include('apps.index.urls'), name='index'),
 ]
 
 # Error Handlers
 handler404 = 'rattler.views.handler404'
-
-

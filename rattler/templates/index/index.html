@@ -43,32 +43,7 @@
             </div>
         </div>
         <div class="col s12 m12 l4">
-            <div class="card">
-                <div class="card-content">
-                    <form method="POST" action="{% url 'login' %}">
-                        {% csrf_token %}
-                        <h5>Login:</h5>
-                        <div class="row">
-                            <div class="col s12 m12 l12 input-field">
-                                <i class="material-icons prefix">account_circle</i>
-                                {{ form.name }}
-                                <label for="input_text">Nutzername</label>
-                            </div>
-                            <div class="col s12 m12 l12 input-field">
-                                <i class="material-icons prefix">lock</i>
-                                {{ form.password }}
-                                <label for="input_text">Passwort</label>
-                            </div>
-                            <div class="col s6">
-                                <button class="btn waves-effect waves-light" type="submit">Einloggen <i class="material-icons right">send</i></button>
-                            </div>
-                            <div class="col s6">
-                                <a href="forgotpw/" class="right">Passwort vergessen</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            {% include 'registration/forms/login.html' with form=login_form %}
         </div>
     </div>
 {% endblock %}
