@@ -40,7 +40,7 @@ urlpatterns = [
         include('apps.password.urls'),
         name='password'
     ),
-
+    #
     path('register/', include('apps.register.urls'), name='register'),
     # Django Admin
     path('djangoAdmin/', admin.site.urls),
