@@ -31,12 +31,9 @@ def settings (request):
 def help (request):
     return render (request,'help/index.html')
 
-def handler404(request):
-    return render(request, '404.html', status=404)
-
 def index(request):
     if not request.user.is_authenticated:
         return render(request, 'index/index.html')
     else:
         return render(request, 'dashboard/index.html')
-    
+
