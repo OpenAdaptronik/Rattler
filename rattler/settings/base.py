@@ -146,7 +146,7 @@ LOGIN_REDIRECT_URL = '/'
 SESSION_COOKIE_AGE = 60*15 #15 Minuten = 60*15 = 900 Sekunden TimeOut fuer Sessions
 
 
-# Cache
+'''# Cache
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -155,3 +155,4 @@ CACHES = {
 }
 SESSION_CACHE_ALIAS = 'default'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+'''
