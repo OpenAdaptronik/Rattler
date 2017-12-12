@@ -35,7 +35,7 @@ def handler404(request):
     return render(request, '404.html', status=404)
 
 def index(request):
-    if not request.user.is_authenticated: #das geht nicht mehr nach dem login !!
+    if not request.user.is_authenticated:
         return render(request, 'index/index.html')
     else:
         return dashboard(request)
