@@ -16,7 +16,7 @@
                                             <br/>
                                             <div>
                                             <a class="waves-effect waves-light" type="button"><img src="img/user.jpg"><i class="material-icons ">mode_edit</i></a>
-                                            <button class="btn waves-effect waves-light" type="button" >E-mail ändern<i class="material-icons left">email</i></button>
+                                            <button class="btn waves-effect waves-light" type="button" onclick="location.href='{% url 'settings:changeEmail' %}'">E-mail ändern<i class="material-icons left">email</i></button>
                                             <button class="btn waves-effect waves-light" type="button" onclick="location.href='{% url 'settings:changePassword' %}'">Passwort ändern<i class="material-icons left">lock</i></button>
                                             </div>
                                             <div>
@@ -32,7 +32,7 @@
 													<td>
 														<div class="switch">
 															<label>
-															<input type="checkbox" name="visibilityEmail" {% if user.visibility_mail is TRUE %} checked {% endif %}>
+															<input type="checkbox" name="visibilityEmail" {% if user.visibility_mail == 1 %} checked {% endif %} value="1">
 															<span class="lever"></span>
 															Sichtbar
 															</label>
@@ -51,7 +51,7 @@
 													<td>
 														<div class="switch">
 															<label>
-															<input type="checkbox" name="visibilityCompany" {% if user.visibility_company is 1 %} value="1"  {% endif %} value="0">
+															<input type="checkbox" name="visibilityCompany" {% if user.visibility_company == 1 %} checked {% endif %} value="1">
 															<span class="lever"></span>
 															Sichtbar
 															</label>
@@ -68,7 +68,7 @@
 													<td>
 														<div class="switch">
 															<label>
-															<input type="checkbox" name="visibilityInfo" {% if user.visibility_info  is 1 %} value="on"  {% endif %} value="off">
+															<input type="checkbox" name="visibilityInfo" {% if user.visibility_info == 1 %} checked {% endif %} value="1">
 															<span class="lever"></span>
 															Sichtbar
 															</label>
@@ -98,7 +98,7 @@
 											</label>
 										</div></td>
 									</tr></table>
-									<p>
+                                    <p>
 										<div class="input-field col s4">
 											<input placeholder={{var1}} id="var1" type="text" class="validate">
 											<label for="var1">X1:</label>
