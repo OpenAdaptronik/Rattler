@@ -7,8 +7,8 @@ Created on 10.11.2017
 import csv
 from numpy import argwhere, transpose
 import numpy
-from apps.calc.tess.tess import helpers
-from apps.calc.tess.tess import waterfalls
+import helpers
+import waterfalls
 
 
 def tess(time,data,data2):
@@ -22,7 +22,7 @@ def tess(time,data,data2):
     :return:
     '''
 
-    analysisweightsFILENAME = 'apps/tess/tess_input/analysis_weights.csv'
+    analysisweightsFILENAME = 'apps/tess_module/tess_input/analysis_weights.csv'
     DesiredAmpLevel = 8
     MinFrequency = 3;               # general minimum frequency taken into account in Hz
     TFMode = 0

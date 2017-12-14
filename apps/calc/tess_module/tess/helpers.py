@@ -5,7 +5,7 @@ Created on 16.11.2017
 '''
 import numpy
 from numpy import NaN as NaN
-from apps.calc.tess.tess import detect_peaks
+import detect_peaks
 
 
 def findFreeSpace(FFTdata, Fdata, Finterval, level):
