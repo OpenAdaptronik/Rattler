@@ -5,3 +5,4 @@ class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['mail','visibility_mail', 'company', 'visibility_company','info','visibility_info']
+
