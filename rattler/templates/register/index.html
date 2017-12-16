@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block siteTitle %}Registrieren{% endblock %}
 {% block container %}
 <div class="card">
     {% if form.errors %}
@@ -11,7 +11,7 @@
     <form method="post" action="{% url 'register:index' %}">
         {% csrf_token %}
         <div class="card-content">
-            <span class="card-title">Jetzt Regestrieren</span>
+            <span class="card-title">Jetzt Registrieren</span>
             
             {% for field in form %}
                 <div class="input-field">
@@ -22,7 +22,7 @@
 
         </div>
         <div class="card-action">
-            <button type="submit" class="waves-effect waves-light btn">Regestrieren</button>
+            <button type="submit" class="waves-effect waves-light btn">Registrieren</button>
         </div>
     </form>
 </div>
