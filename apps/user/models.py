@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username ,password=None):
+    def create_user(self, email, username, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -40,12 +40,9 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True, default=None)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    company = models.CharField(max_length=255, null=True, blank=True)
-    info = models.CharField(max_length=255, null=True, blank=True)
-    visibility_mail = models.BooleanField(default=False)
-    visibility_company = models.BooleanField(default=False)
-    visibility_info = models.BooleanField(default=False)
-
+    is_staff = models.BooleanField(default=False)
+    created = models.DateTimeField
+    updated = models.DateTimeField
 
     USERNAME_FIELD = 'mail'
     EMAIL_FIELD = 'mail'

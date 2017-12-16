@@ -65,6 +65,7 @@ def register_success(request):
     """
     return render(request, 'register/success.html')
 
+
 @not_login_required
 def register_activate(request, token):
     """Verifies the user by the given token.
