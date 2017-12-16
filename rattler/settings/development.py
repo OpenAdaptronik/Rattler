@@ -3,18 +3,22 @@ from .base import *
 # DEBUG = True equals Development-Mode
 DEBUG = True
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dqfc+6=p^h_qo0^j_bs4yb1q%6r%$)=y8)c_q)7s_b$qp4ldx$'
-ALLOWED_HOSTS = ['*']
+# Cache Settings https://docs.djangoproject.com/en/2.0/ref/settings/#caches
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'cache:11211',
+        'KEY_PREFIX': 'rattler-default',
+    },
+    'sessions': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'cache:11211',
+        'KEY_PREFIX': 'rattler-session',
+    },
+}
 
-# Adding the debug_toolbar to the Installed_Apps
-INSTALLED_APPS += [
-    #'debug_toolbar'
-]
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+# Databses https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -25,19 +29,10 @@ DATABASES = {
     }
 }
 
-DEFAULT_FROM_EMAIL ='rattler@openadaptronik.com'
-LOGIN_URL ='/login/'
-APPEND_SLASH = True
+# E-Mails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp'
 
-# EMAIL_PORT =
-# EMAIL_HOST_USER =
-# EMAIL_HOST_PASSWORD =
-# EMAIL_USE_TLS =
-
-
-
-
-
-
-
-
+# Sessions
+SESSION_CACHE_ALIAS = 'default'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
