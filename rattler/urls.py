@@ -1,5 +1,4 @@
 """rattler URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
 Examples:
@@ -15,9 +14,8 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
-
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Login View
@@ -26,8 +24,7 @@ urlpatterns = [
         auth_views.LoginView.as_view(redirect_authenticated_user=True),
         name='login'
     ),
-    # Logout View
-    path(
+    url(
         'logout/',
         auth_views.LogoutView.as_view(next_page='/'),
         name='logout'
@@ -45,7 +42,6 @@ urlpatterns = [
     path('djangoAdmin/', admin.site.urls),
     # Global Routes
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('register/test/', views.registerTest, name='registerTest'),
     path('community/', views.community, name='community'),
     path('profile/me/', views.profileMe, name='profileMe'),
     path('admin/', views.admin, name='admin'),

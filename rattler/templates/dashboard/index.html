@@ -1,5 +1,9 @@
 ﻿{% extends "base.html" %}
+{% load static %}
 {% block siteTitle %}Dashboard{% endblock %}
+{% block moreStylesheets %}
+    <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+{% endblock %}
 {% block naviSpace %}
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
@@ -7,30 +11,42 @@
     <h2>Willkommen!</h2>
     <div class="row">
         <div class="col s12 m12 l6" style="min-width: 300px">
-            <div class="card"><form>
+            <div class="card">
+
+
+                                <!--<form action="/upload-target" class="dropzone"></form>-->
+
+                <form>
                 <div class="card-content">
-                    <span class="card-title">Neue Schwingungsdaten analysieren</span>
-                    <p>
-                        <div class="processSteps">
-                            <ul>
-                                <li class="active">1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
-                            </ul>
-                        </div><span style="display: inline-block">Schritt 1: <b>Hochladen</b></span>
-                    </p><br/>
-                    <p>
+                    <div class="section">
+                        <span class="card-title">Neue Schwingungsdaten analysieren</span>
+                        <p>
+                            <div class="processSteps">
+                                <ul>
+                                    <li class="active">1</li>
+                                    <li>2</li>
+                                    <li>3</li>
+                                    <li>4</li>
+                                </ul>
+                            </div><span style="display: inline-block">Schritt 1: <b>Hochladen</b></span>
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
                         <p>
                             <input name="group1" type="radio" id="test1" />
                             <label for="test1">nur Sensor</label>&emsp;&emsp;
                             <input name="group1" type="radio" id="test2" />
                             <label for="test2">Aktor &amp; Sensor</label>
                         </p>
-                        <br/>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
                         <p><b>Datei:</b></p>
                         <p><div class="row">
-                            <div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>
+                            <!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
+                            <div class="col s8 dropzone" id="dropzoneDiv" style="">
+                            </div>
                             <div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>
                         </div></p>
                         <p style="margin: 0 0 0 7px;">&rarr; Wie ist die Datei aufgebaut?</p>
@@ -78,12 +94,15 @@
                             <input  id="erfassungs-datum" type="text" class="datepicker">
                             <label for="erfassungs-datum">Datum der Erfassung</label>
                         </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
                         <p><b>Angaben zum Objekt:</b></p>
                         HIER WEITER
-                    </p>
 
 
-                    BUTTON UNTEN HAT FALSCHE FARBE BEIM HOVERN!
+                        BUTTON UNTEN HAT FALSCHE FARBE BEIM HOVERN!
+                    </div>
                 </div>
                 <div class="card-action">
                     <button class="btn waves-effect waves-light" type="submit">nächster Schritt <i class="material-icons right">send</i></button>
@@ -118,4 +137,8 @@
 {% endblock %}
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}
+    <script type="text/javascript" src="{% static 'dropzone/dropzone.min.js' %}"></script>
+    <script type="text/javascript">
+        var myDropzone = new Dropzone("div#dropzoneDiv", { url: "/file/post"});
+    </script>
 {% endblock %}
