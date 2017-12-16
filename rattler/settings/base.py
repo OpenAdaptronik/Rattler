@@ -57,7 +57,6 @@ DATABASES = {
 DEFAULT_FROM_EMAIL = 'noreply@rattler.openadaptronik.com'
 EMAIL_SUBJECT_PREFIX = '[ Rattler ]'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp'
 SERVER_EMAIL = 'root@rattler.openadaptronik.com'
 
 # File https://docs.djangoproject.com/en/2.0/ref/settings/#file-upload-handlers
