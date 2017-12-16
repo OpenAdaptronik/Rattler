@@ -11,6 +11,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.contrib.auth import login
 from apps.userSettings.forms import UserSettingsForm
+from apps.user.models import User
 
 '''UserSettings'''
 def userSettings(request):
@@ -94,28 +95,37 @@ def changeEmail(request):
             mes = render_to_string('userSettings/newMail.html', {
                 'domain': get_current_site(request),
                 'mail' : mailer.get('mail'),
-                'uid':urlsafe_base64_encode(force_bytes(request.user.pk)),
-                'token':default_token_generator.make_token(request.user)
+                'uid': urlsafe_base64_encode(force_bytes(request.user.id)),
+                'token': default_token_generator.make_token(user=request.user)
             })
-            email = EmailMessage (
-                    'Rattler: Email ändern',mes,'rattler@openadaptronik.com',mailer.get('mail'))
+            email = EmailMessage(
+                    subject='Rattler: Email ändern',
+                    body=mes,
+                    to= [mailer.get('mail')]
+            )
             email.send()
+            update_session_auth_hash(request, request.user)
             return HttpResponse('''Bitte neue E-Mail Adresse Bestätigen. <br/>
                                 Die E-mail wurde verschickt. <br/>
                                 Solange diese nicht bestätigt wurde beleibt die alte E-mail zum Login aktuell.''')
 
     return render(request, 'userSettings/changeEmail.html')
-def changeEmailsucess (request,email,uidb64,token):
+
+
+def changeEmailsuccess (request,email,uidb64,token):
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
-            user = request.user.objects.get(pk=uid)
-        except(TypeError, ValueError, OverflowError, request.user.DoesNotExist):
+            uid = urlsafe_base64_decode(uidb64).decode()
+
+            return HttpResponse(uid)
+            return HttpResponse('bla bla!')
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-        if user is not None and default_token_generator.check_token(user, token):
+            return HttpResponse('da da!')
+        if user is not None and default_token_generator.check_token(user=request.user, token=token):
             user.mail = email
             user.save()
-            login(request, user)
+            login(request=request,user= user)
             # return redirect('home')
-            return HttpResponse('Neue E-Mail wurde bestätigt')
+            return render(request, 'userSettings/index.html', {'change': 'E-Mail Adresse erfolgreich geändert!'})
         else:
             return HttpResponse('Aktivierungslink ist ungültig!')
