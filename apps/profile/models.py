@@ -6,8 +6,8 @@ from django.conf import settings
 
 class Profile(models.Model):
     profileID = models.IntegerField(primary_key=True)
-    userID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
-    userImageID = models.ForeignKey('UserImage', on_delete=models.CASCADE,)
+    userID = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
+    userImageID = models.ForeignKey('UserImage', on_delete=models.CASCADE,default=None,null=True, blank=True)
     company = models.CharField(max_length=255, null=True, blank=True)
     info = models.CharField(max_length=255, null=True, blank=True)
     expert = models.BooleanField(default=False)
