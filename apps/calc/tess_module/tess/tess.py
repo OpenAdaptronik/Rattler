@@ -22,7 +22,7 @@ def tess(time,data,data2):
     :return:
     '''
 
-    analysisweightsFILENAME = 'apps/tess_module/tess_input/analysis_weights.csv'
+    analysisweightsFILENAME = '/home/erik/PycharmProjects/Webapp/apps/calc/tess_module/tess_input/analysis_weights.csv'
     DesiredAmpLevel = 8
     MinFrequency = 3;               # general minimum frequency taken into account in Hz
     TFMode = 0
@@ -54,7 +54,7 @@ def tess(time,data,data2):
     sens_UnproblematicHFD = 50;     # sensitivity of considering the amplitude level in the high frequency domain (HFD) of A_0 to be unproblematic
                                     # | 0% -> the amp level in the HFD is virtually never considered unproblematic
                                     # | 100% -> the amp level in the HFD is very easily considered unproblematic
-    SV = numpy.zeros(17)
+    SV = numpy.zeros(16)
 
     
     # solution identifiers
@@ -169,7 +169,6 @@ def tess(time,data,data2):
         else:
             nfdunproblematic = False
             SV = SV + analysisweights[9]
-    
     if numpy.mean(ishfdunproblematic) >= .95:
         hfdunproblematic = True
         SV = SV + analysisweights[10]
