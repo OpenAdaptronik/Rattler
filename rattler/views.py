@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
+import pprint
 
 @login_required
 def dashboard (request):
@@ -36,4 +37,8 @@ def index(request):
         return render(request, 'index/index.html')
     else:
         return render(request, 'dashboard/index.html')
+
+def header(request):
+    pp = pprint.PrettyPrinter(indent=4)
+    return HttpResponse(pp.pformat(request.META), content_type="text/plain")
 
