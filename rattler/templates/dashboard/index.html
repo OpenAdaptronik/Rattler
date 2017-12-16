@@ -16,7 +16,7 @@
 
                                 <!--<form action="/upload-target" class="dropzone"></form>-->
 
-                <form>
+                <form action="{% url "process:index" %}" method="post" enctype="multipart/form-data">
                 <div class="card-content">
                     <div class="section">
                         <span class="card-title">Neue Schwingungsdaten analysieren</span>
