@@ -5,6 +5,7 @@ from django.views.generic import FormView
 from django.template.loader import render_to_string
 from django.contrib import auth
 from django.shortcuts import HttpResponseRedirect, render
+from django.contrib.sites.shortcuts import get_current_site
 
 from rattler.auth.mixins import NoLoginRequiredMixin
 from rattler.auth.decorators import not_login_required
@@ -35,11 +36,15 @@ class IndexView(NoLoginRequiredMixin, FormView):
         """
         user = form.save()
         token = VerificationToken.objects.create_user_token(user)
+        current_site = get_current_site(self.request)
+        domain = current_site.domain
         user.email_user(
             'Account Verifikation',
             render_to_string(
                 'register/mail/verification.html',
                 {
+                    'use_https': self.request.is_secure(),
+                    'domain':domain,
                     'user': user,
                     'token': token,
                 }
