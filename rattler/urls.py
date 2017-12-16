@@ -51,7 +51,5 @@ urlpatterns = [
     path('admin/', views.admin, name='admin'),
     path('settings/', include('apps.userSettings.urls'), name='settings'),
     path('help/', views.help, name='help'),
-    path('header/', views.header, name='header'),
     path('', include('apps.index.urls'), name='index'),
-
 ]
