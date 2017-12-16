@@ -181,4 +181,4 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Sessions
-SESSION_COOKIE_AGE = 1000000 * 60 * 15 # 15 Minuten = 60*15 = 900 Sekunden TimeOut fuer Sessions
+SESSION_COOKIE_AGE = 60 * 15 # 15 Minuten = 60*15 = 900 Sekunden TimeOut fuer Sessions
