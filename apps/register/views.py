@@ -10,6 +10,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from rattler.auth.mixins import NoLoginRequiredMixin
 from rattler.auth.decorators import not_login_required
 
+from apps.profile.models import Profile
+
 from .forms import RegisterForm
 from .models import VerificationToken
 
@@ -38,6 +40,10 @@ class IndexView(NoLoginRequiredMixin, FormView):
         token = VerificationToken.objects.create_user_token(user)
         current_site = get_current_site(self.request)
         domain = current_site.domain
+        Profile.objects.create( profileID=user.id,
+                                userID_id = user.id,
+                                userImageID_id=None,
+                                visibility_mail = 1)
         user.email_user(
             'Account Verifikation',
             render_to_string(
