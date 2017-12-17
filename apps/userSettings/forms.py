@@ -1,7 +1,9 @@
 from django import forms
-from apps.user.models import User
+from apps.profile.models import Profile
 
-class UserSettingsForm(forms.ModelForm):
+
+class UserSettings(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['company', 'info']
+        model = Profile
+        fields = ['company', 'info', 'visibility_info', 'visibility_company',
+                  'visibility_mail', 'expert']
