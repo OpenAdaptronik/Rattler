@@ -1,7 +1,7 @@
 
         <div class="section">
 			<div class="container">
-				<h2>{{username}} &bull; Einstellungen</h2>
+				<h2>{{user.profil.username}} &bull; Einstellungen</h2>
 				    <div class="row">
                         <form method="post">
                         {% csrf_token %}
@@ -25,7 +25,7 @@
 													<td>
 														<div class="switch">
 															<label>
-															<input type="checkbox" name="visibility_mail" {% if user.profile.visibility_mail is True %} value = "1" checked {% endif %}>
+															<input type="checkbox" name="visibility_mail" {% if user.profile.visibility_mail is True %} checked {% endif %} value = "1">
 															<span class="lever"></span>
 															Sichtbarkeit
 															</label>
@@ -43,15 +43,15 @@
 												<tr>
 													<td>
 														<div class="input-field col s12">
-															<input placeholder={% if user.profile.company is None %} '' {% else %}{{user.profile.company}} {% endif %} id="company" type="text" class="validate"  name="company">
-															<label for="firma">Firma/Institution:</label>
+															<input placeholder= "Info" value={{ user.profile.company }} id="company" type="text" class="validate"  name="company">
+															<label for="company">Firma/Institution:</label>
 
 														</div>
 													</td>
 													<td>
 														<div class="switch">
 															<label>
-															<input type="checkbox" name="visibility_company" {% if user.profile.visibility_company is True %} value = "1" checked {% endif %}>
+															<input type="checkbox" name="visibility_company" {% if user.profile.visibility_company is True %} checked {% endif %} value = "1">
 															<span class="lever"></span>
 															Sichtbarkeit
 															</label>
@@ -63,14 +63,14 @@
 												<tr>
 													<td>
 														<div class="input-field col s12">
-															<input placeholder= {% if user.mail is None %} '' {% else %}{{user.profile.info}} {% endif %} id="info" type="text" class="validate" name="info">
+															<input placeholder= {% if not user.profile.info is Null %} {{ user.profile.info }} {% else %} "" {% endif %} id="info" type="text" class="validate" name="info">
 															<label for="info">Weitere Informationen:</label>
 														</div>
 													</td>
 													<td>
 														<div class="switch">
 															<label>
-															<input type="checkbox" name="visibility_info" {% if user.profile.visibility_info is True %} value = "1" checked {% endif %}>
+															<input type="checkbox" name="visibility_info" {% if user.profile.visibility_info == 1 %} checked {% endif %} value = "1">
 															<span class="lever"></span>
 															Sichtbarkeit
 															</label>
@@ -89,7 +89,7 @@
 										<td><span class="card-title">Experten-Modus</span></td>
 										<td><div class="switch">
 											<label>
-											<input type="checkbox" name ="expert" {% if user.profile.expert is True %} value = "1" checked {% endif %}>
+											<input type="checkbox" name ="expert" {% if user.profile.expert == 1 %} checked {% endif %} value = "1">
 											<span class="lever"></span>
 											Sichtbarkeit
 											</label>

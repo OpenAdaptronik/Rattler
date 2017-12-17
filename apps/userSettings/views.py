@@ -13,7 +13,7 @@ from django.contrib.auth import login
 from apps.user.models import User
 
 # Create your views here.
-from apps.userSettings.forms import UserSettings
+from apps.userSettings.forms import ProfileSettingsForm
 from apps.profile.models import Profile
 
 '''changes company and info'''
@@ -24,7 +24,7 @@ def userSettings(request):
     current_company = Profile.objects.filter(userID=userid).values('company')
     current_info = Profile.objects.filter(userID=userid).values('info')
     if request.method == 'POST':
-        form = UserSettings(data=request.POST, instance=request.user.profile)
+        form = ProfileSettingsForm(data=request.POST, instance=request.user.profile)
         if form.is_valid():
             updated_data = request.POST.copy()
             if form.cleaned_data['company'] is None:
@@ -39,7 +39,7 @@ def userSettings(request):
                 updated_data.update({'visibility_company': 0})
             if not('visibility_info' in updated_data):
                 updated_data.update({'visibility_info': 0})
-            form = UserSettings(data=updated_data, instance=request.user.profile)
+            form = ProfileSettingsForm(data=updated_data, instance=request.user.profile)
             user = form.save()
             update_session_auth_hash(request, user)
     return render(request, 'userSettings/index.html')
