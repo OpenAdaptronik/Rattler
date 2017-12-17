@@ -1,11 +1,15 @@
 // Upload-Script für das Dashboard
 
 // setzt die Dropzone auf
+Dropzone.autoDiscover = false;
 var myDropzone = new Dropzone("div#dropzoneDiv", {
-url: "/file/post", // @TODO vllt noch ändern, ieine URL muss aber da stehen, damit Dropzone funktioniert 
-autoQueue: false, // wichtig, damit Files nicht sofort hochgeladen werden
-maxFiles: 1 // wieviele Files man gleichzeitig hochladen kann
+    url: "/file/post", // @TODO vllt noch ändern, ieine URL muss aber da stehen, damit Dropzone funktioniert
+    addRemoveLinks: false,
+    autoQueue: false, // wichtig, damit Files nicht sofort hochgeladen werden
+    maxFiles: 1 // wieviele Files man gleichzeitig hochladen kann 
 });
+Dropzone.options.myDropzone = {
+}
 // wird ausgeführt sobald ein File in die Dropzone geladen wird
 myDropzone.on("addedfile", function(file){
 // FileReader instanzieren
@@ -87,7 +91,7 @@ reader.onload = () => {
     for(i=0; i < anzSpalten; i++){
         for(j=0; j < results.data.length && j < 51; j++){
             bspDaten += parseFloat(results.data[j][i]);
-            if(j==results.data.length-1 || j==50){
+            if(j!=results.data.length-1 || j!=50){
                 bspDaten += "\r\n";
             }
         }
