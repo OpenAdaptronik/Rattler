@@ -147,12 +147,12 @@
         });
         myDropzone.on("addedfile", function(origFile){
             var reader = new FileReader();
-
+            
             reader.addEventListener("load", function(event){
                 src = event.target.result;
                 console.log(toString(event.target.result));
                 console.log(toString(origFile[0]));
-
+                
             });
             reader.readAsDataURL(origFile);
         });
