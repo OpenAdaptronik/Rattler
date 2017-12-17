@@ -1,3 +1,5 @@
+// Upload-Script für das Dashboard
+
 // setzt die Dropzone auf
 var myDropzone = new Dropzone("div#dropzoneDiv", {
 url: "/file/post", // @TODO vllt noch ändern, ieine URL muss aber da stehen, damit Dropzone funktioniert 
