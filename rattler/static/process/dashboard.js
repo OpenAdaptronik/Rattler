@@ -49,10 +49,10 @@ reader.onload = () => {
     // Grundgerüst für Spalten-Formular aufbauen
     $('#schritt1-card').append("<div class='divider'></div>" +
     "                    <div class='section'>" +
-    "                        <div class='row'>" +
+    "                        <div class='row' style='margin:0;'>" +
     "                            Wir haben deine Datei analysiert.<br/>" +
     "                            Aber: <b>was steht in welcher Spalte?</b><br/>" +
-    "                            <ul class='collapsible collapsible-accordion' data-collapsible='accordion'>" +
+    "                            <ul class='collapsible collapsible-accordion' data-collapsible='accordion' style=''>" +
     "                                <li>" +
     "                                    <div class='collapsible-header'><i class='material-icons'>help</i>Hilfe beim Ausfüllen</div>" +
     "                                    <div class='collapsible-body'>" +
@@ -90,15 +90,18 @@ reader.onload = () => {
             }
         }
         // vor einem Pärchen von 2 Spalten eine Row einfügen
-        if(i % 2 == 0){
-            $("#allDataColsRow").append("<div class='row'>");
+        if(i % 4 == 0){
+            $("#allDataColsRow").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
+        } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
+            $("#allDataColsRow").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
         }
+        // bisheriger Name der Spalte
         if(header[i]!=""){
             var bisherigerName = "               Bisheriger Name: <b>" + header[i] + "</b>";
         } else {
             var bisherigerName = "";
         }
-        $("#allDataColsRow").append("" +
+        $("#dataColumnRow" + (i - (i%2)) ).append("" +
             "   <div class='col m6 s12' style=''>" +
             "       <div class='row' style='margin: 0'>" +
             "           <div class='col s12'>" +
@@ -148,10 +151,6 @@ reader.onload = () => {
             "       </div>" +
             "   </div>"
         );
-        // nach einem Pärchen von zwei Spalten (oder nach der letzten Spalte) die row schließen
-        if(i % 2 == 1 || i == anzSpalten-1){
-            $("#allDataColsRow").append("</div>");
-        }
         checked = "";
         bspDaten = "";
     }
