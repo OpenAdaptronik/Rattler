@@ -1,17 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-#from apps.process import forms as ProcessForms
 
 @login_required
 def dashboard (request):
-    return render(
-        request,
-        'dashboard/index.html',
-        #{
-        #    'upload_form': ProcessForms.UploadFileForm()
-        #}
-    )
+    return render (request,'dashboard/index.html')
 
 def error404 (request):
     return render (request,'error404/index.html')
@@ -22,7 +15,7 @@ def community (request):
 
 @login_required
 def profileMe (request):
-    return render (request,'profile/me/index.html')
+    return render (request,'profileMe/index.html')
 
 @login_required
 def admin (request):
