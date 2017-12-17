@@ -148,9 +148,10 @@
         myDropzone.on("addedfile", function(file){
             const reader = new FileReader();
             reader.onload = () => {
-            const fileAsBinaryString = reader.result;
-            // do whatever you want with the file content
-            console.log(reader.result);
+
+                // do whatever you want with the file content
+                var results = Papa.parse(reader.result);
+                console.log(results.data);
         };
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
