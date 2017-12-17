@@ -4,4 +4,4 @@ vielen Dank für deine Registrierung.
 
 Damit es losgehen kann, musst du lediglich deine E-Mail verfifizieren, in dem du den untenstehenden Link öffnest.
 
-<a href="{% if request.is_secure%}https{% else %}http{% endif %}://{% if request.get_host %}{{ request.get_host }}{% else %}localhost{% endif %}{% url 'register:activate' token=token %}">{% if request.is_secure%}https{% else %}http{% endif %}://{% if request.get_host %}{{ request.get_host }}{% else %}localhost{% endif %}{% url 'register:activate' token=token %}</a>
+{% if use_https%}https{% else %}http{% endif %}://{{ domain }}{% url 'register:activate' token=token %}
