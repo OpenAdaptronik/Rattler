@@ -74,7 +74,7 @@
       }
 
       tapTargetWrapper.removeClass('open');
-      tapTargetOriginEl.off('click.tapTarget')
+      tapTargetOriginEl.off('click.tapTarget');
       $(document).off('click.tapTarget');
       $(window).off('resize.tapTarget');
     };
@@ -162,7 +162,7 @@
         width: tapTargetWaveWidth,
         height: tapTargetWaveHeight
       });
-    }
+    };
 
     if (options == 'open') {
       calculateTapTarget();

@@ -3,6 +3,7 @@
 {% block siteTitle %}Dashboard{% endblock %}
 {% block moreStylesheets %}
     <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+    <script type="text/javascript" src="{% static 'plotly/plotly.min.js' %}"></script>
 {% endblock %}
 {% block naviSpace %}
     {% include 'includeDefs/normalNavi.html' %}
@@ -40,7 +41,7 @@
                         <b>Datei hochladen</b><br/>
                         <span style="color: #d00">Momentan beschränkt auf eine Datei.<br/>
                         Momentan wird beim Dateiupload die Fehlermeldung "upload canceled" angezeigt.<br/>
-                        Es kann aber ohne Bedenken fortgefahren werden, die Seite funktioniert trotzdem.    
+                        Es kann aber ohne Bedenken fortgefahren werden, die Seite funktioniert trotzdem.
                         </span>
                     </p>
                     <p><div class="row"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
@@ -50,7 +51,7 @@
                                 </div>
                         </div>
 
-                        
+
                 </div>
                         <!--<div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>-->
                     </p>
@@ -222,7 +223,53 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Eriks Plotly Playground</span>
-                <p>HIER</p>
+                <div id="graph"></div>
+
+                    <script>
+                        var trace1 = {
+                                  x: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                  y: [8, 7, 6, 5, 4, 3, 2, 1, 0],
+                                  type: 'scatter'
+                                };
+                        var trace2 = {
+                                  type: 'scatter',
+                                  name: 'trace in range slider plot',
+                                  visible: 'rangeslideronly',  // similar to `visible: 'legendonly'`
+                                  x: [1,2,3],
+                                  y: [1.5]
+                                }
+
+                        var data = [trace1,trace2]
+
+                        var layout = {
+                            title: 'Time series with range slider and selectors',
+                            xaxis: {
+                                autotick: false,
+                                ticks: 'outside',
+                                tick0: 0,
+                                dtick: 0.25,
+                                ticklen: 8,
+                                tickwidth: 4,
+                                tickcolor: '#000',
+                                rangeslider: {}
+                            },
+                            yaxis: {
+                                autotick: false,
+                                ticks: 'outside',
+                                tickwidth: 4,
+                                tickcolor: '#000',
+                                fixedrange: true
+                            }}
+
+
+
+                        Plotly.newPlot('graph', data, layout);
+
+                        document.getElementById('graph').on('plotly_click', function(data) {
+                        alert(data.points[0].x)
+                        });
+
+                    </script>
             </div>
             <div class="card-action">
                 <a href="#">ACTION</a>
@@ -230,6 +277,7 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 {% block sideNavBlock %}
     {% include 'includeDefs/sideNav.html' %}

@@ -106,7 +106,7 @@
 
           $(this).removeClass('tabbed');
         });
-        return;
+
       }
     });
 
@@ -226,7 +226,7 @@
       var min = parseFloat(range.attr('min'));
       var percent = (parseFloat(range.val()) - min) / (max - min);
       return percent * width;
-    }
+    };
 
     var range_wrapper = '.range-field';
     $(document).on('change', range_type, function(e) {
@@ -363,7 +363,7 @@
           var resetCurrentElement = function() {
             activeIndex = -1;
             $autocomplete.find('.active').removeClass('active');
-          }
+          };
 
           // Remove autocomplete elements
           var removeAutocomplete = function() {

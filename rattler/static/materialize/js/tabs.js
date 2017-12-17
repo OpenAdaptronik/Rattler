@@ -169,7 +169,7 @@
 
         // Make the old tab inactive.
         $active.removeClass('active');
-        var $oldContent = $content
+        var $oldContent = $content;
 
         // Update the variables with the new link and content
         $active = $(this);

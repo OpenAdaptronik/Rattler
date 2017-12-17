@@ -987,7 +987,7 @@
 					if (typeof fieldCountPrevRow === 'undefined')
 					{
 						fieldCountPrevRow = fieldCount;
-						continue;
+
 					}
 					else if (fieldCount > 1)
 					{

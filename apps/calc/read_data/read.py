@@ -1,41 +1,49 @@
 import pandas as pd
 import numpy as np
+import scipy.interpolate as spi
 from calculus import get_delta
 from collections import Counter
 
 class Measurement(object):
-    colNames_User = []
-    colUnits_User = []
-    data = pd.DataFrame
 
     def __init__(self, raw):
+        self.colNames_User =[]
+        self.colUnits_User =[]
         self.data = self.get_column_names(self.header_format(raw))
 
-    def new_resample_data(self,time_index=0):
+    def resample_data(self,time_index=0,scale = 1.0):
         '''
+        This function resamples the data it. Within this it uses the already most frequently used time interval.
+        It can also upscale the datapoints (get more Datapoints)[scale > 1] or downscale the data [scale <1]
 
-        :param time_index:
-        :return:
+        If the scale is 1.0 it projects it only on a constant intervall
+        e.g. if it is already constant, there will be no changes.
+
+        the used function is described here: https://dsp.stackexchange.com/questions/8488/what-is-an-algorithm-to-re
+        -sample-from-a-variable-rate-to-a-fixed-rate
+
+        !Attention!: The data needs distinct column names!
+        :param time_index: The index of the time column
+        :param scale: The scale, the Data should be resampled
         '''
-        cnt=Counter(get_delta(self.data,time_index,4))
-        N_new = int(round((self.data.iloc[:,0].iloc[-1]-self.data.iloc[:,0].iloc[0])/cnt.most_common(1)[0][0]))
-        print('N_new: ',N_new)
-        m, n = (len(self.data.iloc[:,0]), N_new)
-        T = 1. / n
-        A = np.zeros((m, n))
+        begin = self.data.iloc[:, time_index].iloc[0]
+        end = self.data.iloc[:, time_index].iloc[-1]
+        cnt=Counter(get_delta(self.data,time_index,3))
+        X_new = np.linspace(0.0, end , int(
+            (round((end-begin) / cnt.most_common(1)[0][0])) * scale))
 
         production_data = {}  # Create dict with the resampled Data
 
+
         for i in range(0,len(self.data.columns)):
             if i == time_index:
-                production_data[self.data.keys()[i]] = np.linspace(self.data.iloc[:, i].iloc[0], self.data.iloc[:, i].iloc[-1], N_new)
+                production_data[self.data.keys()[i]] = X_new
             else:
-                for j in range(0, m):
-                    A[j, :] = np.sinc((self.data.iloc[:,i].iloc[j] - N_new) / T)
-                production_data[self.data.keys()[i]] = np.linalg.lstsq(A, self.data.iloc[:,time_index])[0]
+                s = spi.splrep(self.data.iloc[:, time_index],self.data.iloc[:,i])
+                production_data[self.data.keys()[i]] = spi.splev(X_new,s)
 
-        self.data = pd.DataFrame(production_data, columns=self.data.keys())  # Generate new DataFrame from new Data
-        print(self.data)
+        self.data = pd.DataFrame(production_data, columns=self.data.keys())
+
 
     def header_format(self,data):
         '''
@@ -47,7 +55,7 @@ class Measurement(object):
         :return: print a Data Preview of the Data
         :return: The header-normalized DataFrame
         '''
-        # Preview Daten50
+        # Preview Daten
         print('Daten wurden erfolgreich eingelesen: \n\n', data.head())
 
         headerColumns = data.columns.values
@@ -58,11 +66,12 @@ class Measurement(object):
         except:
             return data #Has Head
 
+
         #Fill Head with its Index
         data.loc[-1] = headerColumns
         data.index = data.index + 1
         data = data.sort_index()
-        data.columns = range(len(headerColumns)-1)
+        data.columns = range(len(headerColumns))
 
         return data
 

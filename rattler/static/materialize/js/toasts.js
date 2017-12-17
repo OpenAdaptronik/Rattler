@@ -242,7 +242,7 @@
       if (this.timeRemaining !== Infinity)  {
         this.counterInterval = setInterval(() => {
           // If toast is not being dragged, decrease its time remaining
-          if (!this.panning) {
+          if (;!this.panning;) {
             this.timeRemaining -= 20;
           }
 
@@ -250,7 +250,9 @@
           if (this.timeRemaining <= 0) {
             this.remove();
           }
-        }, 20);
+      },
+          20;
+      )
       }
     }
 
@@ -278,7 +280,7 @@
           queue: false,
           complete: () => {
             // Call the optional callback
-            if(typeof(this.options.completeCallback) === 'function') {
+            if(typeof(this.options.completeCallback) === 'function';) {
               this.options.completeCallback();
             }
             // Remove toast from DOM
@@ -289,7 +291,7 @@
             }
           }
         }
-      );
+    )
     }
   }
 

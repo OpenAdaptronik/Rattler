@@ -93,7 +93,7 @@
      */
     destroy() {
       this.removeEventHandlers();
-      this.$el[0].removeAttribute('style')
+      this.$el[0].removeAttribute('style');
       if (!!this.$overlay[0].parentNode) {
         this.$overlay[0].parentNode.removeChild(this.$overlay[0]);
       }
@@ -207,13 +207,13 @@
         ease: 'easeOutCubic',
         // Handle modal ready callback
         complete: () => {
-          if (typeof(this.options.ready) === 'function') {
+          if (typeof(this.options.ready;) === 'function';) {
             this.options.ready.call(this, this.$el, this.openingTrigger);
           }
         }
-      };
+    }
 
-      // Bottom sheet animation
+        // Bottom sheet animation
       if (this.$el[0].classList.contains('bottom-sheet')) {
         Vel(
           this.$el[0],
@@ -257,9 +257,9 @@
           }
           this.$overlay[0].parentNode.removeChild(this.$overlay[0]);
         }
-      };
+    }
 
-      // Bottom sheet animation
+        // Bottom sheet animation
       if (this.$el[0].classList.contains('bottom-sheet')) {
         Vel(
           this.$el[0],
