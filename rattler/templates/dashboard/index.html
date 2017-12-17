@@ -8,222 +8,228 @@
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
 {% block container %}
-    <h2>Willkommen!</h2>
-    <div class="row">
-        <div class="col s12 m12 l6" style="min-width: 300px">
-            <div class="card">
-
-
-                                <!--<form action="/upload-target" class="dropzone"></form>-->
-
-                <form action="" method="post" enctype="multipart/form-data">
-                <div class="card-content" id="schritt1-card">
-                    <span class="card-title">Neue Schwingungsdaten analysieren</span>
+<h2>Willkommen!</h2>
+<div class="row">
+    <div class="col s12 m12 l6" style="min-width: 300px">
+        <div class="card">
+            <form action="" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
+            <div class="card-content" id="schritt1-card">
+                <span class="card-title">Neue Schwingungsdaten analysieren</span>
+                <p>
+                    <div class="processSteps">
+                        <ul>
+                            <li class="active">1</li>
+                            <li>2</li>
+                            <li>3</li>
+                            <li>4</li>
+                        </ul>
+                    </div><span style="display: inline-block">Schritt 1: <b>Hochladen</b></span>
+                </p>
+                <div class="divider"></div>
+                <!--<div class="section">
                     <p>
-                        <div class="processSteps">
-                            <ul>
-                                <li class="active">1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
-                            </ul>
-                        </div><span style="display: inline-block">Schritt 1: <b>Hochladen</b></span>
+                        <input name="sensorAktorChoice" type="radio" id="test1" value="sensor"/>
+                        <label for="test1">nur Sensor</label>&emsp;&emsp;
+                        <input name="sensorAktorChoice" type="radio" id="test2" value="aktorSensor" />
+                        <label for="test2">Aktor &amp; Sensor</label>
                     </p>
-                    <div class="divider"></div>
-                    <!--<div class="section">
-                        <p>
-                            <input name="sensorAktorChoice" type="radio" id="test1" value="sensor"/>
-                            <label for="test1">nur Sensor</label>&emsp;&emsp;
-                            <input name="sensorAktorChoice" type="radio" id="test2" value="aktorSensor" />
-                            <label for="test2">Aktor &amp; Sensor</label>
-                        </p>
+                </div>
+                <div class="divider"></div>-->
+                <!--<div class="section" id="DataUploadSection">-->
+                    <p>
+                        <b>Datei hochladen</b><br/>
+                        <span style="color: #d00">Momentan beschränkt auf eine Datei.<br/>
+                        Momentan wird beim Dateiupload die Fehlermeldung "upload canceled" angezeigt.<br/>
+                        Es kann aber ohne Bedenken fortgefahren werden, die Seite funktioniert trotzdem.    
+                        </span>
+                    </p>
+                    <p><div class="row"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
+                        <div class="col s8 dropzone dz-clickable" id="dropzoneDiv" style="">
+                                <div class="dz-message">
+                                    Daten hier hinziehen oder klicken um hochzuladen.
+                                </div>
+                        </div>
+
+                        
+                </div>
+                        <!--<div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>-->
+                    </p>
+                <!--</div>-->
+                <!--<div class="divider"></div>
+                <div class="section">
+                    <p>
+                        Wir haben deine Datei analysiert.<br/>
+                        Aber: <b>was steht in welcher Spalte?</b><br/>
+                        Die Spaltennamen sind für dich zur Orientierung. Die eingestellten Einheiten wird auch unser Programm im weiteren Verlauf verwenden, lass dabei also bitte Sorgfalt walten, damit du die richtigen Ergebnisse erhälst.
+                    </p>
+                    <div class="row" style="margin: 0 0 0 7px;">
+                        <div class="col l6 m6 s12">
+                            Spalte 1:
+                            <div class="input-field">
+                                <select>
+                                    <option value="1" selected>Zeitstempel</option>
+                                    <option value="2">Schwingungen</option>
+                                </select>
+                                <label>Inhalt der Spalte</label>
+                            </div>
+                            <div class="input-field">
+                                <select>
+                                    <option value="1" selected>ms</option>
+                                    <option value="2">ns</option>
+                                </select>
+                                <label>Einheit</label>
+                            </div>
+                        </div>
+                        <div class="col l6 m6 s12">
+                            Spalte 2:
+                            <div class="input-field">
+                                <select>
+                                    <option value="1">Zeitstempel</option>
+                                    <option value="2" selected>Schwingungen</option>
+                                </select>
+                                <label>Inhalt der Spalte</label>
+                            </div>
+                            <div class="input-field">
+                                <select>
+                                    <option value="1" selected>xyz</option>
+                                    <option value="2">abc</option>
+                                </select>
+                                <label>Einheit</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="divider"></div>-->
-                    <!--<div class="section" id="DataUploadSection">-->
-                        <p>
-                            <b>Datei hochladen</b><br/>
-                            <span style="color: #d00">Momentan beschränkt auf eine Datei.</span>
-                        </p>
-                        <p><div class="row"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
-                            <div class="col s8 dropzone" id="dropzoneDiv" style="">
-                            </div>
-                            <!--<div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>-->
-                        </div></p>
-                    <!--</div>-->
-                    <!--<div class="divider"></div>
-                    <div class="section">
-                        <p>
-                            Wir haben deine Datei analysiert.<br/>
-                            Aber: <b>was steht in welcher Spalte?</b><br/>
-                            Die Spaltennamen sind für dich zur Orientierung. Die eingestellten Einheiten wird auch unser Programm im weiteren Verlauf verwenden, lass dabei also bitte Sorgfalt walten, damit du die richtigen Ergebnisse erhälst.
-                        </p>
-                        <div class="row" style="margin: 0 0 0 7px;">
-                            <div class="col l6 m6 s12">
-                                Spalte 1:
-                                <div class="input-field">
-                                    <select>
-                                        <option value="1" selected>Zeitstempel</option>
-                                        <option value="2">Schwingungen</option>
-                                    </select>
-                                    <label>Inhalt der Spalte</label>
+                    <div class="input-field">
+                        <input id="input_text" type="text" data-length="40"/>
+                        <label for="input_text">Name des Datensatzes</label>
+                    </div>
+                    <div class="input-field">
+                        <input  id="erfassungs-datum" type="text" class="datepicker">
+                        <label for="erfassungs-datum">Datum der Erfassung</label>
+                    </div>
+                </div>-->
+                <!--<div class="divider"></div>
+                <div class="section">
+                    <div class="row">
+                        Wir haben deine Datei analysiert.<br/>
+                        Aber: <b>was steht in welcher Spalte?</b><br/>
+                        <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">help</i>Hilfe beim Ausfüllen</div>
+                                <div class="collapsible-body">
+                                    <ul class="browser-default" style="margin:0;padding:0 0 0 15px;">
+                                        <li>Die <u>Spaltennamen</u> sind für dich zur Orientierung.</li>
+                                        <li>Die eingestellten <u>Einheiten</u> wird auch unser Programm
+                                            im weiteren Verlauf verwenden, lass dabei also bitte
+                                            Sorgfalt walten, damit du die richtigen Ergebnisse erhälst.</li>
+                                        <li>Kreuze bitte auch an, welche Spalte die Zeitreihe enthält.</li>
+                                        <li>Bei der Einordnung der Spalten helfen dir Auszüge aus den
+                                            Daten der jeweiligen Spalte.</li>
+                                    </ul>
                                 </div>
-                                <div class="input-field">
-                                    <select>
-                                        <option value="1" selected>ms</option>
-                                        <option value="2">ns</option>
-                                    </select>
-                                    <label>Einheit</label>
-                                </div>
-                            </div>
-                            <div class="col l6 m6 s12">
-                                Spalte 2:
-                                <div class="input-field">
-                                    <select>
-                                        <option value="1">Zeitstempel</option>
-                                        <option value="2" selected>Schwingungen</option>
-                                    </select>
-                                    <label>Inhalt der Spalte</label>
-                                </div>
-                                <div class="input-field">
-                                    <select>
-                                        <option value="1" selected>xyz</option>
-                                        <option value="2">abc</option>
-                                    </select>
-                                    <label>Einheit</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-field">
-                            <input id="input_text" type="text" data-length="40"/>
-                            <label for="input_text">Name des Datensatzes</label>
-                        </div>
-                        <div class="input-field">
-                            <input  id="erfassungs-datum" type="text" class="datepicker">
-                            <label for="erfassungs-datum">Datum der Erfassung</label>
-                        </div>
-                    </div>-->
-                    <!--<div class="divider"></div>
-                    <div class="section">
+                            </li>
+                        </ul>
+                    </div>
+                    <fieldset id="ZeitreihenSpalte" style="border:none">
                         <div class="row">
-                            Wir haben deine Datei analysiert.<br/>
-                            Aber: <b>was steht in welcher Spalte?</b><br/>
-                            <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
-                                <li>
-                                    <div class="collapsible-header"><i class="material-icons">help</i>Hilfe beim Ausfüllen</div>
-                                    <div class="collapsible-body">
-                                        <ul class="browser-default" style="margin:0;padding:0 0 0 15px;">
-                                            <li>Die <u>Spaltennamen</u> sind für dich zur Orientierung.</li>
-                                            <li>Die eingestellten <u>Einheiten</u> wird auch unser Programm
-                                                im weiteren Verlauf verwenden, lass dabei also bitte
-                                                Sorgfalt walten, damit du die richtigen Ergebnisse erhälst.</li>
-                                            <li>Kreuze bitte auch an, welche Spalte die Zeitreihe enthält.</li>
-                                            <li>Bei der Einordnung der Spalten helfen dir Auszüge aus den
-                                                Daten der jeweiligen Spalte.</li>
-                                        </ul>
+                            <div class="col m6 s12" style="/*border: 1px solid #ccc;*/ position: relative;">
+                                <div class="row" style="margin: 0">
+                                    <div class="col s12">
+                                        <b>Spalte 1</b>&emsp;
+                                        <input name="ZeitreihenSpalte" type="radio" id="sensorAktorChoiceSpalte1" value="1" checked="checked"/>
+                                        <label for="sensorAktorChoiceSpalte1">Zeitreihe</label>
                                     </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <fieldset id="ZeitreihenSpalte" style="border:none">
-                            <div class="row">
-                                <div class="col m6 s12" style="/*border: 1px solid #ccc;*/ position: relative;">
-                                    <div class="row" style="margin: 0">
-                                        <div class="col s12">
-                                            <b>Spalte 1</b>&emsp;
-                                            <input name="ZeitreihenSpalte" type="radio" id="sensorAktorChoiceSpalte1" value="1" checked="checked"/>
-                                            <label for="sensorAktorChoiceSpalte1">Zeitreihe</label>
-                                        </div>
-                                        <div class="input-field col s12">
-                                            <input placeholder="Time (s)" id="first_name" type="text" value="">
-                                            <label for="first_name">Titel</label>
-                                        </div>
-                                        <div class="input-field col s12" style="background: yellow, z-index: 5000">
-                                            <select style="width: 100%">
-                                                <optgroup label="Kraft">
-                                                    <option value="kr-n" selected>N</option>
-                                                    <option value="kr-kn">kN</option>
-                                                </optgroup>
-                                                <optgroup label="Weg">
-                                                    <option value="we-m">m</option>
-                                                    <option value="we-mm">mm</option>
-                                                    <option value="we-cm">cm</option>
-                                                    <option value="we-microm">Micro-m</option>
-                                                </optgroup>
-                                                <optgroup label="Geschwindigkeit">
-                                                    <option value="ge-m-s">m/s</option>
-                                                    <option value="ge-km-h">km/h</option>
-                                                    <option value="ge-mm-s">mm/s</option>
-                                                </optgroup>
-                                                <optgroup label="Beschleunigung">
-                                                    <option value="be-m-s2">m/s²</option>
-                                                    <option value="be-g">g</option>
-                                                    <option value="be-mm-s2">mm/s²</option>
-                                                </optgroup>
-                                            </select>
-                                            <label>Einheit</label>
-                                        </div>
-                                        <textarea class="col s12" style="resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;" disabled>
+                                    <div class="input-field col s12">
+                                        <input placeholder="Time (s)" id="first_name" type="text" value="">
+                                        <label for="first_name">Titel</label>
+                                    </div>
+                                    <div class="input-field col s12" style="background: yellow, z-index: 5000">
+                                        <select style="width: 100%">
+                                            <optgroup label="Kraft">
+                                                <option value="kr-n" selected>N</option>
+                                                <option value="kr-kn">kN</option>
+                                            </optgroup>
+                                            <optgroup label="Weg">
+                                                <option value="we-m">m</option>
+                                                <option value="we-mm">mm</option>
+                                                <option value="we-cm">cm</option>
+                                                <option value="we-microm">Micro-m</option>
+                                            </optgroup>
+                                            <optgroup label="Geschwindigkeit">
+                                                <option value="ge-m-s">m/s</option>
+                                                <option value="ge-km-h">km/h</option>
+                                                <option value="ge-mm-s">mm/s</option>
+                                            </optgroup>
+                                            <optgroup label="Beschleunigung">
+                                                <option value="be-m-s2">m/s²</option>
+                                                <option value="be-g">g</option>
+                                                <option value="be-mm-s2">mm/s²</option>
+                                            </optgroup>
+                                        </select>
+                                        <label>Einheit</label>
+                                    </div>
+                                    <textarea class="col s12" style="resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;" disabled>
 0.000000000E0
 1.886941493E-2
 -4.687856883E-2
 7.026004791E-2
 8.654553349E-2
-                                        </textarea>
-                                    </div>
+                                    </textarea>
                                 </div>
+                            </div>
 
-                                <div class="col m6 s12" style="/*border: 1px solid #ccc;*/ border-left: none;">
-                                    <div class="row" style="margin: 0">
-                                        <div class="col s12">
-                                            <b>Spalte 2</b>&emsp;
-                                            <input name="ZeitreihenSpalte" type="radio" id="sensorAktorChoiceSpalte2" value="2"/>
-                                            <label for="sensorAktorChoiceSpalte2">Zeitreihe</label>
-                                        </div>
+                            <div class="col m6 s12" style="/*border: 1px solid #ccc;*/ border-left: none;">
+                                <div class="row" style="margin: 0">
+                                    <div class="col s12">
+                                        <b>Spalte 2</b>&emsp;
+                                        <input name="ZeitreihenSpalte" type="radio" id="sensorAktorChoiceSpalte2" value="2"/>
+                                        <label for="sensorAktorChoiceSpalte2">Zeitreihe</label>
                                     </div>
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
+                    </fieldset>
 
-                    </div>-->
-                    <!--<div class="divider"></div>
-                    <div class="section">
-                        <p><b>Angaben zum Objekt:</b></p>
-                        HIER WEITER
+                </div>-->
+                <!--<div class="divider"></div>
+                <div class="section">
+                    <p><b>Angaben zum Objekt:</b></p>
+                    HIER WEITER
 
 
-                        BUTTON UNTEN HAT FALSCHE FARBE BEIM HOVERN!
-                        <pre id="ArrayAusgabe">
+                    BUTTON UNTEN HAT FALSCHE FARBE BEIM HOVERN!
+                    <pre id="ArrayAusgabe">
 
-                        </pre>
-                    </div>-->
-                </div>
-                <div class="card-action">
-                    <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">nächster Schritt <i class="material-icons right">send</i></button>
-                    <button class="btn-flat waves-effect" type="reset" style="position: relative; z-index: auto;">alle Felder löschen</button>
-                </div>
-            </form></div>
-        </div>
-        <div class="col s12 m12 l6" style="min-width: 300px">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Meine Schwingungsdaten</span>
-                    <p>Die letzten 5 von Ihnen hochgeladenen Schwingungsdatensätze.</p>
-                </div>
-                <div class="card-action">
-                    <a href="#">Alle meine Schwingungsdaten anzeigen</a>
-                </div>
+                    </pre>
+                </div>-->
             </div>
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Eriks Plotly Playground</span>
-                    <p>HIER</p>
-                </div>
-                <div class="card-action">
-                    <a href="#">ACTION</a>
-                </div>
+            <!--<div class="card-action">
+                <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">nächster Schritt <i class="material-icons right">send</i></button>
+                <button class="btn-flat waves-effect" type="reset" style="position: relative; z-index: auto;">alle Felder löschen</button>
+            </div>-->
+            </form>
+        </div>
+    </div>
+    <div class="col s12 m12 l6" style="min-width: 300px">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Meine Schwingungsdaten</span>
+                <p>Die letzten 5 von Ihnen hochgeladenen Schwingungsdatensätze.</p>
+            </div>
+            <div class="card-action">
+                <a href="#">Alle meine Schwingungsdaten anzeigen</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Eriks Plotly Playground</span>
+                <p>HIER</p>
+            </div>
+            <div class="card-action">
+                <a href="#">ACTION</a>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 {% block sideNavBlock %}
     {% include 'includeDefs/sideNav.html' %}
