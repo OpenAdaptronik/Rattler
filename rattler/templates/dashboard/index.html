@@ -138,7 +138,23 @@
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}
     <script type="text/javascript" src="{% static 'dropzone/dropzone.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'papaparse/papaparse.min.js' %}"></script>
     <script type="text/javascript">
-        var myDropzone = new Dropzone("div#dropzoneDiv", { url: "/file/post"});
+        var myDropzone = new Dropzone("div#dropzoneDiv", {
+            url: "/file/post",
+            autoQueue: false,
+            maxFiles: 1
+        });
+        myDropzone.on("addedfile", function(origFile){
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function(event){
+                src = event.target.result;
+                console.log(toString(event.target.result));
+                console.log(toString(origFile[0]));
+
+            });
+            reader.readAsDataURL(origFile);
+        });
     </script>
 {% endblock %}
