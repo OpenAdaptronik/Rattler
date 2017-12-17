@@ -1,4 +1,4 @@
-﻿﻿{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% load static %}
 {% block siteTitle %}Dashboard{% endblock %}
 {% block moreStylesheets %}
@@ -102,6 +102,9 @@
 
 
                         BUTTON UNTEN HAT FALSCHE FARBE BEIM HOVERN!
+                        <pre id="ArrayAusgabe">
+
+                        </pre>
                     </div>
                 </div>
                 <div class="card-action">
@@ -148,18 +151,25 @@
         myDropzone.on("addedfile", function(file){
             const reader = new FileReader();
             reader.onload = () => {
-
-                // do whatever you want with the file content
                 var results = Papa.parse(reader.result);
+                var floatTemp = 1;
+                var header = [];
+                for(i = 0; i < results.data[0].length; i++){
+                    floatTemp = parseFloat(results.data[0][i]);
+                    if(isNaN(floatTemp)){
+                        header = results.data.shift();
+                        break;
+                    }
+                }
+                console.log("Der Header:");
+                console.log(header);
+                console.log("restliches Array:");
                 console.log(results.data);
-        };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
-
-        reader.readAsText(file);
-
-
-
+                //console.log(results.data);
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+            reader.readAsText(file);
         });
 
 
