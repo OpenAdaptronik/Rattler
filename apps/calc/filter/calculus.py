@@ -1,14 +1,16 @@
-
-def get_delta(data, index):
+import numpy as np
+def get_delta(data, index,decimals=0):
     '''
     This function calculates the difference between the values of one column
     :param data: the data array
     :param time_index: the index of the column of interest
+    :param decimals: Number of decimal places to round to (default: 0).
+    If decimals is negative, it specifies the number of positions to the left of the decimal point.
     :return: a list of distances between all values in the column
     '''
     res = []
     for t1, t2 in zip(data.iloc[:, index][:-1], data.iloc[:, index][1:]):
-        res.append(t2 - t1)
+        res.append(np.around(t2 - t1,decimals))
     return res
 
 

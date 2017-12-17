@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+﻿﻿{% extends "base.html" %}
 {% load static %}
 {% block siteTitle %}Dashboard{% endblock %}
 {% block moreStylesheets %}
@@ -145,16 +145,22 @@
             autoQueue: false,
             maxFiles: 1
         });
-        myDropzone.on("addedfile", function(origFile){
-            var reader = new FileReader();
-            
-            reader.addEventListener("load", function(event){
-                src = event.target.result;
-                console.log(toString(event.target.result));
-                console.log(toString(origFile[0]));
-                
-            });
-            reader.readAsDataURL(origFile);
+        myDropzone.on("addedfile", function(file){
+            const reader = new FileReader();
+            reader.onload = () => {
+            const fileAsBinaryString = reader.result;
+            // do whatever you want with the file content
+            console.log(reader.result);
+        };
+        reader.onabort = () => console.log('file reading was aborted');
+        reader.onerror = () => console.log('file reading has failed');
+
+        reader.readAsText(file);
+
+
+
         });
+
+
     </script>
 {% endblock %}

@@ -72,7 +72,7 @@ def butterworth_filter(data, data_index, time_index=0, order=4, cofreq=None, mod
         else:
             print('Wrong Input format: butterworth_filter : ',mode,cofreq)
         print('cofreq: ',cofreq)
-    #@TODO: Nochmal überprüfen
+    #@TODO: Nochmal korrektheit überprüfen
     
     cut = cofreq / nyq
     b, a = butter(order, cut, btype=mode, analog=False)
@@ -87,5 +87,5 @@ def get_average_delta(data,index):
     :param time_index: the index of the column of interest
     :return: average between all values in the column
     '''
-    deltas = get_delta(data,index)
+    deltas = get_delta(data,index,10)
     return sum(deltas)/len(deltas)
