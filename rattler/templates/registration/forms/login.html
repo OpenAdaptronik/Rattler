@@ -1,0 +1,42 @@
+<div class="card">
+    {% if form.errors %}
+        <div class="card-content deep-orange orange darken-1">
+            Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuche es erneut.
+        </div>
+    {% endif %}
+
+    {% if next %}
+        <div class="card-content deep-orange orange darken-1">
+        {% if user.is_authenticated %}
+            Ihr Konto hat keinen Zugriff auf diese Seite. Um fortzufahren, loggen Sie sich bitte mit einem Konto ein, das Zugriff hat.
+        {% else %}
+            Bitte loggen Sie sich ein, um diese Seite zu sehen.            
+        {% endif %}
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}{% url 'dashboard' %}{% endif %}" />
+        <div class="card-content">
+            <span class="card-title">Login</span>
+            <div class="input-field">
+                {{ form.username }}
+                {{ form.username.label_tag }}
+            </div>
+            <div class="input-field">
+                {{ form.password }}
+                {{ form.password.label_tag }}
+            </div>
+        </div>
+
+        <div class="card-action row">
+            <div class="col s6">
+                <button type="submit" class="waves-effect waves-light btn">Login</button>
+            </div>
+            <div class="col s6">
+                <a href="{% url 'password:forget' %}">Passwort vergessen?</a>
+            </div>
+        </div>
+    </form>
+</div>
