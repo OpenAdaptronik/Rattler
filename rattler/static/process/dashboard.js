@@ -94,7 +94,7 @@ reader.onload = () => {
             $("#allDataColsRow").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
         } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
             $("#allDataColsRow").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
-        }
+        } 
         // bisheriger Name der Spalte
         if(header[i]!=""){
             var bisherigerName = "               Bisheriger Name: <b>" + header[i] + "</b>";
