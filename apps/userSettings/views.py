@@ -10,57 +10,38 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.contrib.auth import login
-from apps.userSettings.forms import UserSettingsForm
 from apps.user.models import User
+
+# Create your views here.
+from apps.userSettings.forms import UserSettings
+from apps.profile.models import Profile
+
+'''changes company and info'''
 
 '''UserSettings'''
 def userSettings(request):
-
-    '''Submit Press'''
+    userid = request.user.id
+    current_company = Profile.objects.filter(userID=userid).values('company')
+    current_info = Profile.objects.filter(userID=userid).values('info')
     if request.method == 'POST':
-        #prueft of Submit "Speichern" war
-        if 'saveUser' in request.POST:
-            #weil request.POST nicht ohne Fehlermeldung ueberschrieben oder kopiert werden kann
-            resp = {'mail': request.user.mail,
-                    'visibility_mail': request.POST.get('visibilityEmail'),
-                    'company': request.POST.get('company'),
-                    'visibility_company': request.POST.get('visibilityCompany'),
-                    'info' : request.POST.get('info'),
-                    'visibility_info':request.POST.get('visibilityInfo')
-                    }
-            #checkboxen IM html dokument haben ihre Probleme
-            # Output Value '' --> 0 fuer Datenbank
-            if resp.get('visibility_mail') == '':
-                resp.update({'visibility_mail': '0'})
-
-            # Output Value '' --> 0 fuer Datenbank
-            if resp.get('visibility_company') == '':
-                resp.update({'visibility_company': '0'})
-
-            # Output Value '' --> 0 fuer Datenbank
-            if resp.get('visibility_info') == '':
-                resp.update({'visibility_info': '0'})
-
-            #prueft auf leere feld "Firma"
-            if resp.get('company') == '':
-                resp.update({'company': request.user.company})
-
-            #prueft auf leere feld "info"
-            if resp.get('info') == '':
-                resp.update({'info': request.user.info})
-
-            form = UserSettingsForm(data=resp,instance=request.user)
-            if form.is_valid():
-                user = form.save()
-                update_session_auth_hash(request, user)
-                return render(request, 'userSettings/index.html',{'change':'Ihre User Daten wurden erfolgreich geändert und gespeichert!'})
-            else:
-                return render(request, 'userSettings/index.html',{'change': 'Error Invalid form'})
-        #Experten Settings
-        elif 'saveExpert' in request.POST:
-            return render(request, 'userSettings/index.html')
-
-        return render(request, 'userSettings/index.html')
+        form = UserSettings(data=request.POST, instance=request.user.profile)
+        if form.is_valid():
+            updated_data = request.POST.copy()
+            if form.cleaned_data['company'] is None:
+                updated_data['company'] = current_company
+            if form.cleaned_data['info'] is None:
+                updated_data['info'] = current_info
+            if not('expert' in updated_data):
+                updated_data.update({'expert': 0})
+            if not('visibility_mail' in updated_data):
+                updated_data.update({'visibility_mail': 0})
+            if not('visibility_company' in updated_data):
+                updated_data.update({'visibility_company': 0})
+            if not('visibility_info' in updated_data):
+                updated_data.update({'visibility_info': 0})
+            form = UserSettings(data=updated_data, instance=request.user.profile)
+            user = form.save()
+            update_session_auth_hash(request, user)
     return render(request, 'userSettings/index.html')
 
 '''Passwort aendern'''
