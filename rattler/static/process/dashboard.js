@@ -59,7 +59,7 @@ myDropzone.on("addedfile", function(file){
         // Nun werden dem User die Spalten angezeigt und er gibt die jeweiligen Daten ein
         // Grundgerüst für Spalten-Formular aufbauen
         $('#schritt1-card').append("<div class='divider'></div>" +
-        "                    <div class='section'>" +
+        "                    <div class='section' id='spaltenInfosDiv'>" +
         "                        <div class='row' style='margin:0;'>" +
         "                            Wir haben deine Datei analysiert.<br/>" +
         "                            Aber: <b>was steht in welcher Spalte?</b><br/>" +
@@ -170,7 +170,6 @@ myDropzone.on("addedfile", function(file){
         $("#allDataColsRow").append(""+
             "   <div id='validateDataColumnFormRow' class='row'>" +
             "       <button type='button' class='btn waves-effect waves-light' id='validateDataColumnForm' style=position: relative; z-index: auto;'><i class='material-icons left'>timeline</i> Alle Spalten bestimmt!</button>" +
-            
             "   </div>"
             );
 
@@ -194,11 +193,62 @@ myDropzone.on("addedfile", function(file){
             console.log(spaltenTitel);
             console.log("Die Spalteneinheiten:");
             console.log(spaltenEinheiten);
-            $("#validateDataColumnFormRow").hide();
-            $('#schritt1-card').append("<div class='divider'></div>"+
-                ""
+            $("#spaltenInfosDiv").hide();
+            $("#neueSchwingungsdatenCol").removeClass("l6");
+            $('#schritt1-card').append("<div class='section' id='visualisationSection'>"+
+                "Wir haben die hochgeladenen Daten jetzt für dich visualisiert. "+
+                "Wähle diejenigen aus, die du in die Analyse geben möchtest." +
+                "<div id='graph'></div></div>"
                 );
+            // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
+            // https://stackoverflow.com/a/34979219
+            const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
+            /*
+            console.log("Zeitreihe: ");
+            console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
+            */
+            var traces = [];
+            // s. Variablenname
+            zeitreihenSpalteAlsZeile = arrayColumnAsRow(results.data, zeitreihenSpalte);
+            // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+            for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
+                if(i!=zeitreihenSpalte){
+                    traces[i] = {
+                        x: zeitreihenSpalteAlsZeile,
+                        y: arrayColumnAsRow(results.data, i),
+                        name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+                        type: 'scatter'
+                    }
+                }
+            }
+            traces[zeitreihenSpalte] = [];
+            traces[zeitreihenSpalte].shift();
+            console.log("traces:");
+            console.log(traces);
             
+            // Plotly: Graph
+                var layout = {
+                    /*title: 'Erste Visualisierung',*/
+                    xaxis: {
+                        autotick: true,
+                        ticks: 'outside',
+                        tickcolor: '#000',
+                        rangeslider: {}
+                    },
+                    yaxis: {
+                        autotick: true,
+                        ticks: 'outside',
+                        tickcolor: '#000'
+                    }
+                }
+                Plotly.newPlot('graph', traces, layout);
+            
+            // Nachricht wegen Beta
+            $('#schritt1-card').append("<span style='color: #d00'>" +
+                "An diesem Punkt wird man in Zukunft, nach dem man seine Auswahl getroffen hat, " +
+                "die Analyse starten.<br/>" +
+                "Zudem werden der Graph und das Formular noch etwas schöner gestaltet."
+                );
         });
     };
 
