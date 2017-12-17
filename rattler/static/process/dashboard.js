@@ -59,6 +59,7 @@ myDropzone.on("addedfile", function(file){
         // Nun werden dem User die Spalten angezeigt und er gibt die jeweiligen Daten ein
         // Grundgerüst für Spalten-Formular aufbauen
         $('#schritt1-card').append("<div class='divider'></div>" +
+        "                    <div class='section'>" +
         "                        <div class='row' style='margin:0;'>" +
         "                            Wir haben deine Datei analysiert.<br/>" +
         "                            Aber: <b>was steht in welcher Spalte?</b><br/>" +
@@ -83,7 +84,8 @@ myDropzone.on("addedfile", function(file){
         "                            <!-- Reihe aller Spalten -->" +
         "                            <div class='row' id='allDataColsRow'>" +
         "                            </div>" +
-        "                        </fieldset>"
+        "                        </fieldset>" +
+        "                    </div>"   
         );
         // Die einzelnen Datenspalten einfügen
         // Damit die erste Spalte standardmäßig als Zeitreihe ausgewählt ist.
