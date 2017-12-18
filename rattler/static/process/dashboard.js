@@ -193,7 +193,7 @@ myDropzone.on("addedfile", function(file){
             console.log(spaltenTitel);
             console.log("Die Spalteneinheiten:");
             console.log(spaltenEinheiten);
-            $("#spaltenInfosDiv").hide();
+            $("#spaltenInfosDiv").hide(); // @TODO statt hide: remove! Damit die enthaltenen Inputs nicht dem process übergeben werden.
             $("#neueSchwingungsdatenCol").removeClass("l6");
             $('#schritt1-card').append("<div class='section' id='visualisationSection'>"+
                 "Wir haben die hochgeladenen Daten jetzt für dich visualisiert. "+
