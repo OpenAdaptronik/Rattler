@@ -1,15 +1,20 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+#from apps.process import forms as ProcessForms
 
 @login_required
 def dashboard (request):
-    return render (request,'dashboard/index.html')
+    return render(
+        request,
+        'dashboard/index.html',
+        #{
+        #    'upload_form': ProcessForms.UploadFileForm()
+        #}
+    )
 
 def error404 (request):
     return render (request,'error404/index.html')
-
-def registerTest (request):
-    return render (request,'register/test/test.html')
 
 @login_required
 def community (request):
@@ -17,7 +22,7 @@ def community (request):
 
 @login_required
 def profileMe (request):
-    return render (request,'profileMe/index.html')
+    return render (request,'profile/me/index.html')
 
 @login_required
 def admin (request):
@@ -33,6 +38,13 @@ def help (request):
 
 def index(request):
     if not request.user.is_authenticated:
-        return render(request, 'index/index.html')
+        return render(
+            request,
+            'index/index.html',
+            {
+                'login_form': AuthenticationForm()
+            }
+        )
     else:
         return render(request, 'dashboard/index.html')
+

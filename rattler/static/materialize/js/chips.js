@@ -180,7 +180,7 @@
           e.preventDefault();
           self.selectChip(chipsLength - 1, $chips);
           $target.blur();
-          return;
+
         }
       });
 
@@ -220,7 +220,7 @@
           self.addChip({tag: val}, $chips);
           input.val('');
           input.focus();
-        }
+        };
         input.autocomplete(curr_options.autocompleteOptions);
       }
     };
