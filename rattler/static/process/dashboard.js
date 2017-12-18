@@ -58,7 +58,7 @@ myDropzone.on("addedfile", function(file){
         
         // Nun werden dem User die Spalten angezeigt und er gibt die jeweiligen Daten ein
         // Grundgerüst für Spalten-Formular aufbauen
-        $('#schritt1-card').append("<div class='divider'></div>" +
+        $('#schritt1-card').append("<div class='divider' id='dashboardProcessDivider'></div>" +
         "                    <div class='section' id='spaltenInfosDiv'>" +
         "                        <div class='row' style='margin:0;'>" +
         "                            Wir haben deine Datei analysiert.<br/>" +
@@ -193,12 +193,22 @@ myDropzone.on("addedfile", function(file){
             console.log(spaltenTitel);
             console.log("Die Spalteneinheiten:");
             console.log(spaltenEinheiten);
-            $("#spaltenInfosDiv").hide(); // @TODO statt hide: remove! Damit die enthaltenen Inputs nicht dem process übergeben werden.
+
+            // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
+            $("#jsonHeader").html(JSON.stringify(spaltenTitel));
+            // Spalteneinheiten in textarea "#jsonEinheiten" einfügen, um sie python später zu übergeben
+            $("#jsonEinheiten").html(JSON.stringify(spaltenEinheiten));
+            // Zeitreihenspalte in input "#zeitreihenSpalte" einfügen, um sie python später zu übergeben
+            $("#zeitreihenSpalte").val(zeitreihenSpalte);
+
+            $("#spaltenInfosDiv").remove();
             $("#neueSchwingungsdatenCol").removeClass("l6");
             $('#schritt1-card').append("<div class='section' id='visualisationSection'>"+
                 "Wir haben die hochgeladenen Daten jetzt für dich visualisiert. "+
                 "Wähle diejenigen aus, die du in die Analyse geben möchtest." +
-                "<div id='graph'></div></div>"
+                "<div id='graph'></div>"+
+                "<button type='button' class='btn waves-effect waves-light' id='validateGraphSelection' style=position: relative; z-index: auto;'>Bereich ausgewählt!</button>" +
+                "</div>"
                 );
             // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
             // https://stackoverflow.com/a/34979219
@@ -225,14 +235,18 @@ myDropzone.on("addedfile", function(file){
             traces[zeitreihenSpalte].shift();
             console.log("traces:");
             console.log(traces);
+
+            //var selectorOptions = 
             
             // Plotly: Graph
+                //var d3 = Plotly.d3;
                 var layout = {
                     /*title: 'Erste Visualisierung',*/
                     xaxis: {
                         autotick: true,
                         ticks: 'outside',
                         tickcolor: '#000',
+                        //rangeselector: selectorOptions,
                         rangeslider: {}
                     },
                     yaxis: {
@@ -242,6 +256,30 @@ myDropzone.on("addedfile", function(file){
                     }
                 }
                 Plotly.newPlot('graph', traces, layout);
+
+                /*
+                $("#graph").on('plotly_relayout', function(eventData) {
+                    console.log(eventData);
+                });
+                */
+                
+                document.getElementById("graph").on('plotly_relayout',
+                    function(eventdata){  
+                        // Hier muss man dann also eine Fallunterscheidung machen, weil Plotly bloed ist.
+                        console.log("Zugriff über eventdata['xaxis.range[i]'] (geht für großen Graph)");
+                        console.log(eventdata['xaxis.range[0]']);
+                        console.log("Zugriff über eventdata['xaxis.range'][i] (geht für Slider)");
+                        console.log(eventdata['xaxis.range'][0]);
+                    });
+            
+            // sobald der User seinen Bereich im Graphen ausgesucht hat
+            $("#validateGraphSelection").click(function() {
+                $("#visualisationSection").remove();
+                $("#dashboardProcessDivider").remove();
+                $("#neueSchwingungsdatenCardAction").show();
+                $(".datensatzInformationenFelder").show();
+                $("#neueSchwingungsdatenCol").addClass("l6");
+            })
             
             // Nachricht wegen Beta
             $('#schritt1-card').append("<span style='color: #d00'>" +
