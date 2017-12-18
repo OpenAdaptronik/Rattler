@@ -42,4 +42,4 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='profile.UserImage'),
         ),
     ]
-
+    
