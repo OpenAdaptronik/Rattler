@@ -1,5 +1,6 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 
 @login_required
 def dashboard (request):
@@ -7,9 +8,6 @@ def dashboard (request):
 
 def error404 (request):
     return render (request,'error404/index.html')
-
-def registerTest (request):
-    return render (request,'register/test/test.html')
 
 @login_required
 def community (request):
@@ -33,6 +31,13 @@ def help (request):
 
 def index(request):
     if not request.user.is_authenticated:
-        return render(request, 'index/index.html')
+        return render(
+            request,
+            'index/index.html',
+            {
+                'login_form': AuthenticationForm()
+            }
+        )
     else:
         return render(request, 'dashboard/index.html')
+

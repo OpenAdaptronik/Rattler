@@ -23,7 +23,7 @@
 		right : 0,
 		bottom : 0,
 		left : 0,
-	}
+	};
 
 	/**
 	 * Find elements that are within the boundary

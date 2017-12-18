@@ -142,7 +142,7 @@
           if (typeof(options.onClose) === 'function') {
             options.onClose.call(this, menu);
           }
-        }
+        };
 
 
 
