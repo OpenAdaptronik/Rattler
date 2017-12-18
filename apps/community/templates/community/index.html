@@ -1,32 +1,43 @@
-
-        <div class="section">
-			<div class="container">
-				<h2>{{username}} &bull; Einstellungen</h2>
-				    <div class="row">
-                        <form method="post">
-                        {% csrf_token %}
-						<div class="col s12 m12 13" style="min-width: 300px">
-							<div class="card">
-								<p class="card-content">
-									<span class="card-title">Meine Daten</span>
-										<p>
-												<tr>
-													<td>
-														<div class="input-field col s12">
-															<input placeholder={% if user.profile.username is None %} '' {% else %}{{user.profile.username}} {% endif %} id="username" type="text" class="validate"  name="username">
-															<label for="username">Author:</label>
-
-														</div>
-													</td>
-
-												</tr>
-											</table>
-                                            <div class="card-action">
-											<button class="btn waves-effect waves-light" type="submit">Filtern<i class="material-icons left">save</i></button>
-                                            </div>
-                                        </p>
-								</div>
-							</div>
-					</form></div>
-			</div>
-		</div>
+<div class="section">
+  <div class="container">
+    <h2> Community</h2>
+    <div class="row">
+      <form method="post">
+        {% csrf_token %}
+        <div class="col s12 m12 13" style="min-width: 300px">
+          <div class="card">
+            <p class="card-content">
+              <span class="card-title">Filter</span>
+              <p>
+                <table>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="search">Suchbegriff:</label>
+                        <input placeholder={%if user.profile.company is None %} '' {% else %}{{user.profile.company}} {% endif %} id="search" type="text" class="validate" name="search">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="author">Autor</label>
+                        <input placeholder={ % if user.mail is None %} '' {% else %}{{user.profile.info}} {% endif %} id="author" type="text" class="validate" name="author">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="card-action">
+                        <button class="btn waves-effect waves-light" type="submit">Suchen<i class="material-icons left"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
