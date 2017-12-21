@@ -11,5 +11,5 @@ def show_me(request):
 
 
 def show_user(request, name):
-    requestUser = User.objects.get(username="")
+    requestUser = User.objects.get(username='username')
     return render(request, 'profile/index.html')
