@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=nginx
+Group=www-data
+WorkingDirectory=/usr/share/nginx/rattler
+ExecStart=/usr/share/nginx/rattler/venv/bin/gunicorn --workers 4 --bind unix:/usr/share/nginx/rattler/rattler.sock --error-logfile /var/log/gunicorn/error.log --log-file /var/log/gunicorn/console.log --log-level error rattler.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

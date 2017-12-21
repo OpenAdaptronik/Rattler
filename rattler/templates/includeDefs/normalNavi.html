@@ -1,0 +1,32 @@
+{% load static %}
+<!-- Haupt-Navigation auf grossem Bildschirm -->
+    <ul id="nav" class="left hide-on-med-and-down">
+        <li class="active"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'apps.community' %}">Community</a></li>
+    </ul>
+<!-- Menu-Symbol fuer SideNav -->
+    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+<!-- Profil-Menue -->
+    <a class='dropdown-button right dropdown-profile-avatar' href='#' data-activates='dropdown-profile' data-alignment="right" data-belowOrigin="true" data-hover="true" data-constrainWidth="false"><img src="{% static 'img/user.jpg' %}"></a>
+    <ul id='dropdown-profile' class='dropdown-content'>
+        <li><a href="{% url 'profileMe' %}">
+            <i class="material-icons">person</i>
+            <div>Profil anzeigen</div>
+        </a></li>
+        <li><a href="{% url 'admin' %}">
+            <i class="material-icons">vpn_key</i>
+            <div>Admin-Bereich</div>
+        </a></li>
+        <li><a href="{% url 'settings:index' %}">
+            <i class="material-icons">settings</i>
+            <div>Einstellungen</div>
+        </a></li>
+        <li><a href="{% url 'logout' %}">
+            <i class="material-icons">power_settings_new</i>
+            <div>Logout</div>
+        </a></li>
+    </ul>
+<!-- Hilfe-Button -->
+    <ul id="nav" class="right hide-on-med-and-down">
+        <li><a href="{% url 'help' %}"><i class="material-icons">help</i></a></li>
+    </ul>

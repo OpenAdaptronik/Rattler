@@ -1,0 +1,13 @@
+{% if form.non_field_errors %}
+    <h2>Errors</h2>
+        {% for error in form.non_field_errors %}
+            <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+        {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <h5>Jetzt registrieren:</h5>
+    {{ form.as_p }}
+    <button type="submit">Registrieren</button>
+</form>
