@@ -14,7 +14,7 @@
     <div class="col s12 m12 l6" style="min-width: 300px" id="neueSchwingungsdatenCol">
         <div class="card">
             <!-- action muss eig process:index sein, klappt aber iwie nicht -->
-            <form action="{% url 'process:index' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
+            <form action="{% url 'process:fromDashboard' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
                 <!-- Dinge,die wie python übergeben -->
                 {% csrf_token %}
                 <textarea style="display: none;" id="jsonHeareder" name="jsonHeader"></textarea>
