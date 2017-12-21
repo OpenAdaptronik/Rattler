@@ -84,21 +84,24 @@ def changeEmail(request):
         except:
             mailc=None
         if mailc is None:
-            token = VerificationToken.objects.create_user_token(request.user)
+            try:
+                token = VerificationToken.objects.create_user_token(request.user)
+                mes = render_to_string('userSettings/newMail.html', {
+                    'domain': get_current_site(request),
+                    'mail': mail,
+                    'username': request.user.username,
+                    'token': token
+                })
 
-            mes = render_to_string('userSettings/newMail.html', {
-                'domain': get_current_site(request),
-                'mail' : mail,
-                'username': request.user.username,
-                'token': token
-            })
+                email = EmailMessage(
+                    subject='Rattler: Email ändern',
+                    body=mes,
+                    to=[mail]
+                )
+                email.send()
+            except (VerificationToken.MultipleObjectsReturned):
+                token = None
 
-            email = EmailMessage(
-                subject='Rattler: Email ändern',
-                body=mes,
-                to= [mail]
-            )
-            email.send()
             update_session_auth_hash(request, request.user)
             return HttpResponse('''Die E-mail wurde verschickt.  <br/>
                                 Bitte neue E-Mail Adresse Bestätigen.<br/>
