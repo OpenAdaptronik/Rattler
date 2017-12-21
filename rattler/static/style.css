@@ -1617,6 +1617,9 @@
 body {
   background: #eee; }
 
+.navbar-fixed nav {
+  top: 0; }
+
 a#logo-container {
   display: flex;
   align-items: center;
