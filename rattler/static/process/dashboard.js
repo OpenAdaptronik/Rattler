@@ -253,15 +253,15 @@ myDropzone.on("addedfile", function(file){
                     /*title: 'Erste Visualisierung',*/
                     xaxis: {
                         autotick: true,
-                        ticks: 'outside',
-                        tickcolor: '#000',
+                        //ticks: 'outside',
+                        //tickcolor: '#000',
                         //rangeselector: selectorOptions,
                         rangeslider: {}
                     },
                     yaxis: {
-                        autotick: true,
-                        ticks: 'outside',
-                        tickcolor: '#000'
+                        autotick: true //,
+                        //ticks: 'outside',
+                        //tickcolor: '#000'
                     }
                 }
                 Plotly.newPlot('graph', traces, layout);
