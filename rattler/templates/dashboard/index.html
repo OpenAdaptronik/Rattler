@@ -30,19 +30,18 @@
                                 <li>2</li>
                                 <li>3</li>
                             </ul>
-                        </div><span style="display: inline-block">Schritt 1: <b>Hochladen & Visualisieren</b></span>
+                        </div><span style="display: inline-block">Schritt 1: 
+                            <b>Hochladen & Visualisieren</b></span>&emsp;<span style="display: inline-block">
+                                <a href="{% url 'dashboard' %}">Von vorne beginnen</a>
+                            </span>
                     </p>
                 <div class="divider"></div>
-                <div class="section">
+                <div class="section" id="dataUploadSection" style="padding-bottom:0">
                     <p>
-                        <b>Datei hochladen</b><br/>
-                        <span style="color: #d00">Momentan beschränkt auf eine Datei.<br/>
-                        Momentan wird beim Dateiupload die Fehlermeldung "upload canceled" angezeigt.<br/>
-                        Es kann aber ohne Bedenken fortgefahren werden, die Seite funktioniert trotzdem.
-                        </span>
+                        <b>Datei hochladen</b>
                     </p>
                     <p>
-                        <div class="row"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
+                        <div class="row" style="margin:0"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
                             <div class="col s8 dropzone dz-clickable" id="dropzoneDiv" style="">
                                     <div class="dz-message">
                                         Daten hier hinziehen oder klicken um hochzuladen.
