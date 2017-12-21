@@ -21,6 +21,11 @@ myDropzone.on("addedfile", function(file){
         myDropzone.disable();
         // Papaparse parses our csv data into an array
         var results = Papa.parse(reader.result);
+        // Falls letzte Zeile(n) leer ist/sind, wird sie entfernt
+        for(i = results.data.length - 1; i >= 0 && results.data[i][0] == ""; i--){
+            results.data.splice(i, 1); // entfernt die Zeile i ("ab Zeile i wird 1 Zeile entfernt") 
+        };
+        //console.log(results.data);
         // Anz. der Spalten abspeichern
         anzSpalten = results.data[0].length;
         // Leeren Header erstellen
@@ -181,7 +186,7 @@ myDropzone.on("addedfile", function(file){
         $("#validateDataColumnForm").click(function() {
             // In welcher Zeile steht die Zeitreihe?
             zeitreihenSpalte = $("input[name='ZeitreihenSpalte']:checked").val();
-            console.log("Die Zeitreihe steht in Spalte: " + zeitreihenSpalte);
+            //console.log("Die Zeitreihe steht in Spalte: " + zeitreihenSpalte);
             var spaltenTitel = [];
             var spaltenEinheiten = [];
             // Die Titel und Einheiten der Spalten holen
@@ -189,10 +194,12 @@ myDropzone.on("addedfile", function(file){
                 spaltenTitel[i] = $("#spaltenname" + i).val();
                 spaltenEinheiten[i] = $('#einheitSpalte' + i).val();
             }
+            /*
             console.log("Die Spaltentitel:");
             console.log(spaltenTitel);
             console.log("Die Spalteneinheiten:");
             console.log(spaltenEinheiten);
+            */
 
             // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
             $("#jsonHeader").html(JSON.stringify(spaltenTitel));
@@ -233,8 +240,10 @@ myDropzone.on("addedfile", function(file){
             }
             traces[zeitreihenSpalte] = [];
             traces[zeitreihenSpalte].shift();
+            /*
             console.log("traces:");
             console.log(traces);
+            */
 
             //var selectorOptions = 
             
@@ -263,22 +272,67 @@ myDropzone.on("addedfile", function(file){
                 });
                 */
                 
-                document.getElementById("graph").on('plotly_relayout',
-                    function(eventdata){  
-                        // Hier muss man dann also eine Fallunterscheidung machen, weil Plotly bloed ist.
-                        console.log("Zugriff über eventdata['xaxis.range[i]'] (geht für großen Graph)");
-                        console.log(eventdata['xaxis.range[0]']);
-                        console.log("Zugriff über eventdata['xaxis.range'][i] (geht für Slider)");
-                        console.log(eventdata['xaxis.range'][0]);
-                    });
+            // Variablen, in denen die Auswahl des Users gespeichert wird.
+            // Werden so definiert, dass zu Anfang der ganze Datenbereich ausgewählt ist
+            var rangeStart = results.data[0][zeitreihenSpalte];
+            /*
+            console.log(results.data.length);
+            console.log(results.data);
+            console.log(results.data[(results.data.length) - 1]);
+            console.log(results.data[results.data.length-1][zeitreihenSpalte]);
+            */
+            var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
+            //console.log("rangeStart: " + rangeStart + " | rangeEnd: " + rangeEnd);
+            
+            // Funktion, die aufgerufen wird, wenn der 
+            document.getElementById("graph").on('plotly_relayout',
+                function(eventdata){  
+                    // Hier muss man dann also eine Fallunterscheidung machen, weil Plotly bloed ist.
+                    /*
+                    console.log("Zugriff über eventdata['xaxis.range[i]'] (geht für großen Graph)");
+                    console.log(eventdata['xaxis.range[0]']);
+                    console.log("Zugriff über eventdata['xaxis.range'][i] (geht für Slider)");
+                    console.log(eventdata['xaxis.range'][0]);
+                    */
+                    if(eventdata['xaxis.range[0]']){
+                        rangeStart = eventdata['xaxis.range[0]'];
+                        rangeEnd = eventdata['xaxis.range[1]'];
+                    } else {
+                        rangeStart = eventdata['xaxis.range'][0];
+                        rangeEnd = eventdata['xaxis.range'][1];
+                    }
+                });
             
             // sobald der User seinen Bereich im Graphen ausgesucht hat
             $("#validateGraphSelection").click(function() {
-                $("#visualisationSection").remove();
-                $("#dashboardProcessDivider").remove();
-                $("#neueSchwingungsdatenCardAction").show();
+                $("#visualisationSection").remove(); // der Graph wird gelöscht
+                $("#dashboardProcessDivider").remove(); // der Divider vor dem Graphen wird gelöscht
+                $("#neueSchwingungsdatenCardAction").show(); // 
                 $(".datensatzInformationenFelder").show();
                 $("#neueSchwingungsdatenCol").addClass("l6");
+                //console.log("rangeStart: " + rangeStart + " | rangeEnd: " + rangeEnd);
+                // Der ausgewählte Teil des Graphen wird ausgeschnitten
+                    // Schritt 1: Wir suchen die Indizes in results.data raus, die den Begrenzungen des ausgewählten Bereichs entsprechen
+                        // Beginn bestimmen
+                        var rangeStartIndex = 0;
+                        for(i = 0; i < results.data.length - 1; i++){
+                            if(parseFloat(results.data[i+1][zeitreihenSpalte]) > parseFloat(rangeStart)){
+                                rangeStartIndex = i;
+                                break;
+                            }
+                        }
+                        console.log("A: " + rangeStartIndex);
+                        // Ende bestimmen
+                        var rangeEndIndex = results.data.length - 1;
+                        for(i = results.data.length - 1; i > 0; i--){
+                            if(parseFloat(results.data[i-1][zeitreihenSpalte]) < parseFloat(rangeEnd)){
+                                rangeEndIndex = i;
+                                break;
+                            }
+                        }
+                        console.log("E: " + rangeEndIndex);
+                    // Schritt 2: tatsächlich ausschneiden, in JSON konvertieren & in Textarea schreiben
+                    $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
             })
             
             // Nachricht wegen Beta
