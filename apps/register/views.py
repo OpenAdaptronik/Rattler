@@ -43,7 +43,9 @@ class IndexView(NoLoginRequiredMixin, FormView):
         Profile.objects.create( profileID=user.id,
                                 userID_id = user.id,
                                 userImageID_id=None,
-                                visibility_mail = 1)
+                                visibility_mail = 1,
+                                #Profilebild default setzen
+                                 )
         user.email_user(
             'Account Verifikation',
             render_to_string(
