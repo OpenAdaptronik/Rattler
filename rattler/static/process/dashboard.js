@@ -244,7 +244,7 @@ myDropzone.on("addedfile", function(file){
                     'xaxis': {
                         autotick: true,
                         //ticks: 'outside',
-                        tickcolor: '#f00',
+                        //tickcolor: '#f00',
                         //rangeselector: selectorOptions,
                         rangeslider: {}
                     }
