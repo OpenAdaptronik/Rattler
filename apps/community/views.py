@@ -1,38 +1,36 @@
-from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
+from apps.user.models import User
+from apps.profile.models import Profile
 
 
 '''Community'''
-def projectFilter(request):
-    '''Submit Press'''
+
+
+def user_filter(request):
+    # Submit User Search
     if request.method == 'POST':
-
         post_data = request.POST.copy()
+        username = post_data['username']
+        company = post_data['company']
+        email = post_data['mail']
+        # empty search
+        if (username == '') and (email == '') and (company == ''):
+            return render(request, 'community/index.html', {'empty_search': 'Please enter something!'})
+        # legitimate search
+        filtered_ids = list(User.objects.values_list('id', flat=True))
+        if not(username == ''):
+            matching_ids = list(User.objects.filter(username=username).values_list('id', flat=True))
+            filtered_ids = list(set(matching_ids) & set(filtered_ids))
+        if not(email == ''):
+            matching_ids = list(User.objects.filter(mail=email).values_list('id', flat=True))
+            filtered_ids = list(set(matching_ids) & set(filtered_ids))
+        if not(company == ''):
+            matching_ids = list(Profile.objects.filter(company=company).values_list('userID_id', flat=True))
+            filtered_ids = list(set(matching_ids) & set(filtered_ids))
+        # no id matches
+        if len(filtered_ids) == 0:
+            return render(request, 'community/index.html', {'no_match': 'No user matches with your search, try again!'})
 
-        # prueft of Submit "Speichern" war
-        if 'saveUser' in update_data:
-            # Output Value '' fuer Checkboxen --> 0 fuer Datenbank
-            if not ('expert' in update_data):
-                update_data.update({'expert': 0})
-            if not ('visibility_company' in update_data):
-                update_data.update({'visibility_company': 0})
-            if not ('visibility_info' in update_data):
-                update_data.update({'visibility_info': 0})
-            if not ('visibility_mail' in update_data):
-                update_data.update({'visibility_mail': 0})
-
-            # Output Value '' fuer Textfeld --> Alte wert wieder in Datenbank
-            if update_data.get('info') == '':
-                update_data.update({'info': userProfile.company})
-            if update_data.get('company') == '':
-                update_data.update({'company': userProfile.info})
-
-        #Uebergabe und Ueberschreibung
-            updated_user = form.save()
-            update_session_auth_hash(request, updated_user)
-            return render(request, 'community/index.html',
-                              {'change': 'Ihre User Daten wurden erfolgreich geändert und gespeichert!'})
-        else:
-            return render(request, 'community/index.html', {'change': 'Error Invalid form'})
+        return render(request, 'community/index.html', {'filtered_ids': filtered_ids[0]})
 
     return render(request, 'community/index.html')

@@ -14,42 +14,50 @@
                     <td>
                       <div class="input-field col s12">
                         <label for="search">Suchbegriff:</label>
-                        <input placeholder={%if user.profile.company is None %} '' {% else %}{{user.profile.company}} {% endif %} id="search" type="text" class="validate" name="search">
+                        <input placeholder='' id="search" type="text" class="validate" name="search">
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <div class="input-field col s12">
-                        <label for="author">Autor: </label>
-                        <input placeholder={ % if user.mail is None %} '' {% else %}{{user.profile.info}} {% endif %} id="author" type="text" class="validate" name="author">
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="author">Email: </label>
-                        <input placeholder={ % if user.mail is None %} '' {% else %}{{user.profile.info}} {% endif %} id="email" type="text" class="validate" name="email">
+                        <label for="username">Username: </label>
+                        <input placeholder='' id="username" type="text" class="validate" name="username">
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <div class="input-field col s12">
-                        <label for="author">Firma: </label>
-                        <input placeholder={ % if user.mail is None %} '' {% else %}{{user.profile.info}} {% endif %} id="firma" type="text" class="validate" name="firma">
+                        <label for="mail">Email: </label>
+                        <input placeholder='' id="mail" type="text" class="validate" name="mail">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="company">Firma: </label>
+                        <input placeholder='' id="firma" type="text" class="validate" name="company">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="res">Result:</label>
+                        <input placeholder={{ filtered_ids }} id="res" type="text" class="validate" name="res">
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <div class="card-action">
-                        <button class="btn waves-effect waves-light" type="submit">Suchen<i class="material-icons left"></i></button>
+                        <button class="btn waves-effect waves-light" type="submit">Filtern<i class="material-icons left"></i></button>
+                          {{ empty_search }} {{ no_match }}
                       </div>
                     </td>
-                  </tr>>
+                  </tr>
                 </table>
               </p>
           </div>
