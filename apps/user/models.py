@@ -2,39 +2,43 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.contrib.auth.models import PermissionsMixin
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
+
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
+    def create_user(self, mail, username, password=None):
         """
         Creates and saves a User with the given email and password.
         """
-        if not email:
+        if not mail:
             raise ValueError('Users must have an email address')
         user = self.model(
-            mail=self.normalize_email(email),
+            mail=self.normalize_email(mail),
             username=username
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
+    def create_superuser(self, mail, password):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
-            mail=self.normalize_email(email),
-            username=username,
+            mail=mail,
+            username='Admin',
             password=password
         )
+        user.is_staff = True
+        user.is_superuser = True
         user.is_active = True
         user.save(using=self._db)
         return user
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser,PermissionsMixin):
     mail = models.EmailField(unique=True)
     username = models.CharField(max_length=255, unique=True, default=None)
     is_active = models.BooleanField(default=False)
