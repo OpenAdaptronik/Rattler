@@ -19,7 +19,7 @@ def user_filter(request):
         # legitimate search
         filtered_ids = list(User.objects.values_list('id', flat=True))
         if not(username == ''):
-            matching_ids = list(User.objects.filter(username=username).values_list('id', flat=True))
+            matching_ids = list(User.objects.filter(username__contains=username).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(email == ''):
             matching_ids = list(User.objects.filter(mail=email).values_list('id', flat=True))
