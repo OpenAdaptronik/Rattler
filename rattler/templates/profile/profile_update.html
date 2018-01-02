@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Speichern</button>
-</form>
 
-
-
+{% block siteTitle %}Einstellungen &bull; {{ user.username }}{% endblock %}
 
 {% block container %}
 <div class="section">
