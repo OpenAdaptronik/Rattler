@@ -15,7 +15,7 @@
         <div class="card">
             <!-- action muss eig process:index sein, klappt aber iwie nicht -->
             <form action="{% url 'process:fromDashboard' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
-                <!-- Dinge,die wie python übergeben -->
+                <!-- Dinge, die wir python übergeben -->
                 {% csrf_token %}
                 <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
                 <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>

@@ -51,8 +51,6 @@ myDropzone.on("addedfile", function(file){
         }
         // Jetzt fangen die Daten in jedem Fall bei Zeile 0 an.
 
-        
-
         // Einige Ausgaben zur Überprüfung:
         /*
         console.log("Der Header:");
@@ -102,6 +100,7 @@ myDropzone.on("addedfile", function(file){
         var bspDaten = "";
         // for-Schleife über die Datenspalten
         for(i=0; i < anzSpalten; i++){
+            // Bsp-Daten vorbereiten
             for(j=0; j < results.data.length && j < 51; j++){
                 bspDaten += parseFloat(results.data[j][i]);
                 if(j!=results.data.length-1 || j!=50){
@@ -116,7 +115,7 @@ myDropzone.on("addedfile", function(file){
             } 
             // bisheriger Name der Spalte
             if(header[i]!=""){
-                var bisherigerName = "               Bisheriger Name: <b>" + header[i] + "</b>";
+                var bisherigerName = "               Bisheriger Name: <b class='bisherigerSpaltenname'>" + header[i] + "</b>";
             } else {
                 var bisherigerName = "";
             }
@@ -351,7 +350,7 @@ myDropzone.on("addedfile", function(file){
                         console.log("E: " + rangeEndIndex);
                     // Schritt 2: tatsächlich ausschneiden, in JSON konvertieren & in Textarea schreiben
                     $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
-            })
+            }) 
             
             // Nachricht wegen Beta
             /*

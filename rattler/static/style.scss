@@ -12,10 +12,13 @@
 	$secondary-color: $primary-color;
 	$success-color: $primary-color;
 	$error-color: #d70022;
-	$link-color: $primary-color-dark;
+	$link-color: $primary-color-dark; 
 	
 	$card-link-color: $primary-color;
 	$card-link-color-light: $primary-color-light;
+
+	// Input Label Farbe
+	$input-border-color: #222;
 	
 // xyz
 	$roboto-font-path: "materialize/fonts/roboto/";
@@ -35,9 +38,14 @@
 // Form Colors
 	//$button-raised-color;
 	$button-raised-background: $primary-color;
+	// Checkbox-Color
+	label{
+		color: #222;
+   }
 
 // ALLES
-	*:not(input) {
+	/*
+	*:not(input):not(.bisherigerSpaltenname) {
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-khtml-user-select: none;
@@ -45,6 +53,7 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
+	*/
 // BODY
 	body {
 		background: #eee;
