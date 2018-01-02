@@ -116,7 +116,7 @@ myDropzone.on("addedfile", function(file){
             } 
             // bisheriger Name der Spalte
             if(header[i]!=""){
-                var bisherigerName = "               Bisheriger Name: <b>" + header[i] + "</b>";
+                var bisherigerName = "               Bisheriger Name: <span class='bisherigerSpaltenname'><b>" + header[i] + "</b></span>";
             } else {
                 var bisherigerName = "";
             }

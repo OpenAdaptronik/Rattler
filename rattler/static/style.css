@@ -1606,7 +1606,7 @@
 ::selection {
   background: rgba(0, 147, 116, 0.2); }
 
-*:not(input) {
+*:not(input):not(.bisherigerSpaltenname) {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

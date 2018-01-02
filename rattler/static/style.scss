@@ -37,7 +37,7 @@
 	$button-raised-background: $primary-color;
 
 // ALLES
-	*:not(input) {
+	*:not(input):not(.bisherigerSpaltenname) {
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-khtml-user-select: none;
