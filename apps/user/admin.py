@@ -21,7 +21,11 @@ class UserAdmin(auth_admin.UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
-    list_display = ('username', 'email', 'is_staff')
+    list_display = ('username', 'email', 'is_staff', 'get_company')
+
+    def get_company(instance, abc):
+        return 'TEST'#instance.profile.company
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
