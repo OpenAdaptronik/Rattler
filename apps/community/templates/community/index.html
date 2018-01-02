@@ -60,9 +60,10 @@
                       </div>
                     </td>
                   </tr>
-            <ul>
-                        {% for filtered in filtered_ids %}
-                        <li>{{ user.name }}</li>
+                        <ul>
+                        {% for id in filtered_ids %}
+                            <li> <a href="">{{ user.username }}</a>
+                            </li>
                         {% endfor %}
                         </ul>
                 </table>

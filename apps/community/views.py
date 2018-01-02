@@ -19,7 +19,7 @@ def user_filter(request):
         # legitimate search
         filtered_ids = list(User.objects.values_list('id', flat=True))
         if not(username == ''):
-            matching_ids = list(User.objects.filter(username__contains=username).values_list('id', flat=True))
+            matching_ids = list(User.objects.filter(username__icontains=username).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(email == ''):
             matching_ids = list(User.objects.filter(mail=email).values_list('id', flat=True))
@@ -31,6 +31,6 @@ def user_filter(request):
         if len(filtered_ids) == 0:
             return render(request, 'community/index.html', {'no_match': 'No user matches with your search, try again!'})
 
-        return render(request, 'community/index.html', {'filtered_ids': filtered_ids[0]})
+        return render(request, 'community/index.html', {'filtered_ids': filtered_ids})
 
     return render(request, 'community/index.html')
