@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block siteTitle %}Start{% endblock %}
-{% block naviSpace %}
-    {% include 'includeDefs/indexNavi.html' %}
-{% endblock %}
 {% block container %}
     <!--<h1>{% if user.is_authenticated %}{{user.username}}{% endif %}</h1>-->
     <h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
@@ -47,9 +44,11 @@
                 </div>
             </div>
         </div>
+        {% if not user.is_authenticated %}
         <div class="col s12 m12 l4">
             {% include 'registration/forms/login.html' with form=login_form %}
         </div>
+        {% endif %}
     </div>
 {% endblock %}
 {% block moreScripts %}
