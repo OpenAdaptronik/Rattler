@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<div class="section">
+			<div class="container">
+				<h2>{{user.username}} &bull; {{ user.mail }}</h2>
+				    <div class="row">
+                        <form method="post">
+                        {% csrf_token %}
+						<div class="col s12 m12 13" style="min-width: 300px">
+							<div class="card">
+								<p class="card-content">
+    <input id="mail1" type="email" class="validate" name="mail">
+    <label for="mail1">Neue E-mail</label>
+    <br/>
+    <input id="mail2" type="email" class="validate" name="newMail2">
+    <label for="mail2">Neue Email Wiederholen</label>
+    <br/>
+    {{ error }}
+                                    <br/>
+    <button class="btn waves-effect waves-light" type="button" onclick="location.href={% url 'settings:index' %}">Zurück<i class="material-icons left">arrow_back</i></button>
+    <button class="btn waves-effect waves-light" type="submit"name="saveUser">änderung bestätigen<i class="material-icons left">save</i></button>
+
+                                </p>
+								</div>
+							</div>
+               </form> </div>
+			</div>
+</div>
+
+{% endblock %}
