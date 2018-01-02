@@ -62,7 +62,7 @@
                   </tr>
                         <ul>
                         {% for id in filtered_ids %}
-                            <li> <a href="">{{ user.username }}</a>
+                            <li> <a href="{%  url 'profile:profile' id %}">{{ User.objects.get(id=id).username }}</a>
                             </li>
                         {% endfor %}
                         </ul>
