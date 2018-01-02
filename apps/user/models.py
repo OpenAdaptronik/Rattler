@@ -20,4 +20,6 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    visibility_first_name = models.BooleanField(default=False)
+    visibility_last_name = models.BooleanField(default=False)
     objects = UserManager()
