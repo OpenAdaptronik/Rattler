@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Speichern</button>
+</form>
+
+
+
+
+{% block container %}
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <form method="post">
+                {% csrf_token %}
+                <div class="col s12 m10 offset-m1" style="min-width: 300px;">
+                    <h2>{{user.username}} &bull; Einstellungen</h2>
+                    <div class="card">
+                        <div class="card-image">
+                            {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
+                                <img src="/{{ user.profile.profileimage.path.url }}">
+                            {% else %}
+                                <span class="card-title">{{user.username}}</span>
+                            {% endif %}
+                            <span class="card-title">{{user.username}}</span>
+                            <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'profile:edit_image' %}"><i class="material-icons">edit</i></a>
+                        </div>       
+                       
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="email" value="{{user.email}}" placeholder="E-Mail" id="mail" disabled class="validate">
+                                    <label for="mail">E-Mail</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_mail" {% if user.profile.visibility_mail %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                    <button class="btn waves-effect waves-light" type="button" href="{% url 'settings:changeEmail' %}">E-mail ändern<i class="material-icons left">email</i></button>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" value="{{user.profile.company}}" id="company" class="validate"  name="company">
+                                    <label for="firma">Firma/Institution:</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_company" {% if user.profile.visibility_company %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" value="{{user.profile.info}}" id="company" class="validate"  name="info">
+                                    <label for="firma">Weitere Informationen:</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_info" {% if user.profile.visibility_info %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="expert" {% if user.profile.expert %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Experten-Modus
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+
+                        <div class="card-action">
+                            <button class="btn waves-effect waves-light" type="submit"name="saveUser">Speichern<i class="material-icons left">save</i></button>
+                            {{ change }}
+                            <button class="btn waves-effect waves-light" type="button" href="{% url 'settings:changePassword' %}">Passwort ändern<i class="material-icons left">lock</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </div>
+    </div>
+</div>
+{% endblock %}

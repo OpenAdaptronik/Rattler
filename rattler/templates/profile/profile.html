@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block siteTitle %}Profil - {{ user.username }}{% endblock %}
+{% block container %}
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 13" style="min-width: 300px">
+                <div class="card">
+                    {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
+                        <div class="card-image">
+                            <img src="/{{ user.profile.profileimage.path.url }}">
+                            <span class="card-title">{{user.username}}</span>
+                        </div>
+                    {% else %}
+                            <span class="card-title">{{user.username}}</span>
+                    {% endif %}
+                        {% if user.profile %}
+                            <ul class="collection card-content">
+                                {% if user.profile.visibility_mail %}
+                                    <li class="collection-item avatar">
+                                        <i class="material-icons circle">email</i>
+                                        <span class="title">E-Mail</span>
+                                        <p>{{user.email}}</p>
+                                    </li>
+                                {% endif %}
+
+                                {% if user.profile.visibility_company and  user.profile.company %}
+                                    <li class="collection-item avatar">
+                                        <i class="material-icons circle">work</i>
+                                        <span class="title">Unternehmen</span>
+                                        <p>{{user.profile.company}}</p>
+                                    </li>
+                                {% endif %}
+
+                                {% if user.profile.visibility_info and  user.profile.info %}
+                                    <li class="collection-item avatar">
+                                        <i class="material-icons circle">info</i>
+                                        <span class="title">Info</span>
+                                        <p>{{user.profile.info}}</p>
+                                    </li>
+                                {% endif %}     
+                            </ul>                
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

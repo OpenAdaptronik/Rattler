@@ -6,5 +6,4 @@ from rattler.forms import BaseForm
 class RegisterForm(UserCreationForm, BaseForm):
     class Meta:
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ('mail', 'password1', 'password2')
-
+        fields = UserCreationForm.Meta.fields + ('email', 'password1', 'password2')
