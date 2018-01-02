@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def fromDashboard(request):
     if request.method == 'POST':
-
         # Variablen aus dem Post-Request auslesen
         jsonHeader = request.POST.get("jsonHeader", "")
         jsonEinheiten = request.POST.get("jsonEinheiten", "")
@@ -18,18 +17,25 @@ def fromDashboard(request):
 
         measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
 
-
-
         # Daten zur Übergabe vorbereiten
         dataForRender = {
-            'LOG': str(measurement.get_data()),
+            #'LOG': str(measurement.get_data()),
             'jsonHeader': jsonHeader,
             'jsonEinheiten': jsonEinheiten,
             'zeitreihenSpalte': zeitreihenSpalte,
             'jsonData': jsonData,
+            'measurementObject': measurement,
             'saveExperiment': saveExperiment,
             'datensatzName': datensatzName,
-            'erfassungsDatum': erfassungsDatum
+            'erfassungsDatum': erfassungsDatum,
+            #'dataAsString': str(measurement.get_data()).replace('\n', ' ').replace('\r', ''),
+            #'headerAsString': str(measurement.get_data()).replace('\n', ' ').replace('\r', ''),
+            #'dataAsString': str(measurement.colNames_User).replace('\n', ' ').replace('\r', ''),
+            #'unitsAsString': str(measurement.colUnits_User).replace('\n', ' ').replace('\r', ''),
+            'expertMode': True
         }
 
         return render(request, "process/index.html", dataForRender)
+
+def analysis(request):
+    return render(request, "process/analysis.html")

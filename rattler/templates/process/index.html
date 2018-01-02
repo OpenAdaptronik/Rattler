@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Analyse{% endblock %}
+{% block moreStylesheets %}
+    <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+{% block container %}
+<form action="{% url 'process:analysis' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
+    {% csrf_token %}
+    <h2>Schwingungsdaten analysieren</h2>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="section" style="padding-top:0">
+                        Wähle nun aus, welche Analyse-Features angewendet werden sollen.
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                        <h5>Graph zur Orientierung:</h5>
+                        <div id="firstGraph"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                        <h5>Features für das gesamte Experiment:</h5>
+                        <p>
+                            <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
+                            <label for="resampling">Resampling anwenden</label>
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section" id="dataColsSection">
+                        <h5>Spaltenweise Features:</h5>
+                        <div style="display:none" class="col m6 s12" id="spaltenColTemplate">
+                            <p>
+                                <h6 class="colHeader">Spaltenname</h6>
+                            </p>
+                            <p>
+                                <div class="row" style="padding:0; margin:0">
+                                    <div class="col m6 s12">
+                                        <input type="checkbox" class="filled-in" id="hochpass" name="hochpass"/>
+                                        <label class="hochpassLabel" for="hochpass">Hochpass-Filter</label>
+                                        {% if expertMode %}
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="hochpassOrder" name="hochpassOrder" value="4" type="text">
+                                                    <label class="hochpassOrderLabel" for="hochpassOrder">order</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="hochpassCofreq" name="hochpassOrder" value="0.1" type="text">
+                                                    <label class="hochpassCofreqLabel" for="hochpassCofreq">cofreq</label>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col m6 s12">
+                                        <input type="checkbox" class="filled-in" id="tiefpass" name="tiefpass"/>
+                                        <label class="tiefpassLabel" for="tiefpass">Tiefpass-Filter</label>
+                                        {% if expertMode %}
+                                        <div class="row" style="padding:0; margin:0">
+                                            <div class="input-field col s6">
+                                                <input id="tiefpassOrder" name="tiefpassOrder" value="4" type="text">
+                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="tiefpassCofreq" name="tiefpassOrder" value="0.9" type="text">
+                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">cofreq</label>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row" style="padding:0; margin:0">
+                                    <div class="col m6 s12">
+                                        <input type="checkbox" class="filled-in" id="gauss" name="gauss"/>
+                                        <label class="gaussLabel" for="gauss">Gauss-Filter</label>
+                                        {% if expertMode %}
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s12">
+                                                    <input id="gaussStd" name="gaussStd" value="2.0" type="text">
+                                                    <label class="gaussStdLabel" for="gaussStd">std</label>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<!--
+LOG:
+{{ LOG }}
+<hr/>
+Header:
+{{ jsonHeader }}
+<hr/>
+Einheiten:
+{{ jsonEinheiten }}
+<hr/>
+zeitreihenSpalte:
+{{ zeitreihenSpalte }}
+<hr/>
+Data:
+{{ jsonData }}
+<hr/>
+saveExperiment:
+{{ saveExperiment }}
+<hr/>
+datensatzName:
+{{ datensatzName }}
+<hr/>
+erfassungsDatum:
+{{ erfassungsDatum }}
+<hr/>-->
+
+{% endblock %}
+{% block sideNavBlock %}
+    {% include 'includeDefs/sideNav.html' %}
+{% endblock %}
+{% block moreScripts %}
+    {% include 'includeDefs/javascript-forms.html' %}
+    <script>
+        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
+        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
+        var dataArray = JSON.parse('{{ jsonData|safe }}');
+        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var anzSpalten = dataArray[0].length;
+    </script>
+    <script type="text/javascript" src="{% static 'process/index.js' %}"></script>
+{% endblock %}
