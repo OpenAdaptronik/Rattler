@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from apps.calc.read_data import read
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -14,8 +15,13 @@ def fromDashboard(request):
         datensatzName = request.POST.get("datensatzName", "")
         erfassungsDatum = request.POST.get("erfassungsDatum", "")
 
+        measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
+
+
+
         # Daten zur Übergabe vorbereiten
         dataForRender = {
+            'LOG': str(measurement.get_data()),
             'jsonHeader': jsonHeader,
             'jsonEinheiten': jsonEinheiten,
             'zeitreihenSpalte': zeitreihenSpalte,
@@ -24,5 +30,5 @@ def fromDashboard(request):
             'datensatzName': datensatzName,
             'erfassungsDatum': erfassungsDatum
         }
-        
+
         return render(request, "process/index.html", dataForRender)

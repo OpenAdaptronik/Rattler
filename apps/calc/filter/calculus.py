@@ -1,4 +1,5 @@
 import numpy as np
+
 def get_delta(data, index,decimals=0):
     '''
     This function calculates the difference between the values of one column

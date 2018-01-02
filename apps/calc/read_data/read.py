@@ -1,15 +1,29 @@
-import pandas as pd
+import json
 import numpy as np
-import scipy.interpolate as spi
-from calculus import get_delta
 from collections import Counter
+import scipy as spi
+from apps.calc.filter.calculus import get_delta
+
+
+
 
 class Measurement(object):
 
-    def __init__(self, raw):
-        self.colNames_User =[]
-        self.colUnits_User =[]
-        self.data = self.get_column_names(self.header_format(raw))
+    def __init__(self, raw,User_Names,Unit_Names,time=0):
+        self.timeIndex = time
+        self.data = np.array(json.loads(raw))
+        self.colUnits_User = np.array(json.loads(Unit_Names))
+        self.colNames_User = np.array(json.loads(User_Names))
+
+
+
+
+    def get_data(self):
+        return self.data
+
+    def save_to_db(self):
+        return True
+
 
     def resample_data(self,time_index=0,scale = 1.0):
         '''
@@ -42,7 +56,7 @@ class Measurement(object):
                 s = spi.splrep(self.data.iloc[:, time_index],self.data.iloc[:,i])
                 production_data[self.data.keys()[i]] = spi.splev(X_new,s)
 
-        self.data = pd.DataFrame(production_data, columns=self.data.keys())
+        self.data = np.array(production_data, columns=self.data.keys())
 
 
     def header_format(self,data):
@@ -106,4 +120,3 @@ class Measurement(object):
 
         data.columns = self.colNames_User
         return data
-
