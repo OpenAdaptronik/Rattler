@@ -40,7 +40,6 @@ class IndexView(NoLoginRequiredMixin, FormView):
         token = VerificationToken.objects.create_user_token(user)
         current_site = get_current_site(self.request)
         domain = current_site.domain
-
         user.email_user(
             'Account Verifikation',
             render_to_string(

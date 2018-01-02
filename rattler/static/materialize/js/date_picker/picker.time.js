@@ -376,7 +376,7 @@
 		raiseCallback(this.options.beforeShow);
 		$(':input').each(function() {
 			$(this).attr('tabindex', -1);
-		})
+		});
 		var self = this;
 		// Initialize
 		this.input.blur();

@@ -158,7 +158,7 @@
             .css({
               opacity: 0,
               left: 0
-            })
+            });
 
           var offsetRight = origin.position().left + originWidth - activates.width();
           gutterSpacing = -curr_options.gutter;

@@ -2,7 +2,7 @@
 // MaterializeCSS Std.-Variablen Import
 	@import "materialize/sass/components/color";
 	@import "materialize/sass/components/variables";
-	
+
 // Farben
 	$primary-color: #009372;
 	$primary-color-light: #3db298;
@@ -15,9 +15,10 @@
 	$link-color: $primary-color-dark;
 	
 	$card-link-color: $primary-color;
+	$card-link-color-light: $primary-color-light;
 	
 // xyz
-	//$roboto-font-path: "materialize/fonts/roboto/";
+	$roboto-font-path: "materialize/fonts/roboto/";
 	
 // Mixins
 	@mixin noselect {
@@ -278,10 +279,9 @@
 				fill: $footer-font-color;
 			}
 		
-		
 
 // Schlechter Fix fuer Roboto
-	@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700');
+	//@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700');
 	
 	
 // MaterializeCSS Import
