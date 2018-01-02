@@ -1,4 +1,5 @@
 from scipy import interpolate, signal,ndimage
+import scipy as sci
 import json
 import numpy as np
 from collections import Counter
@@ -51,6 +52,29 @@ class Measurement(object):
 
         self.data = np.asarray(new_data,dtype="float64").transpose()
 
+
+    def fourier_transform(self, data_index):
+        '''
+        This Method Applies a fourier transformation on an data interval in the data
+        :param data: the pandas DataFrame of the data
+        :param data_index: The index of the data intervall of
+        :return: the list of fourrier transformed values
+
+        Example:
+        import matplotlib.pyplot as plt
+        def fourier_example(data):
+            plt.figure
+            n = len(data.iloc[:, 0])
+            plt.plot(data.iloc[:round(n/2), 0], data.iloc[:round(n/2), 1], 'b', alpha=0.75)
+            plt.plot(data.iloc[:round(n/2), 0], fourier_transform(data, 1), 'r')
+            plt.legend(('noisy signal', 'fourier'), loc='best')
+            plt.grid(True)
+            plt.show()
+        '''
+
+        # @TODO: Parameter überprüfen
+        fft = [abs(x) for x in sci.fft(self.data[:,data_index])]
+        self.data[:,data_index]= fft[:round(len(fft))]
 
 
 
