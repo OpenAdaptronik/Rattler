@@ -66,8 +66,8 @@ FILE_UPLOAD_HANDLERS = [
 ]
 DATA_UPLOAD_MAX_MEMORY_SIZE = 3 * 1024 * 1024 # 3MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 3 * 1024 * 1024 # 3 MB
-# MEDIA_ROOT
-# MEDIA_URL
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
 
 # i18n and l10n
 USE_I18N = True
@@ -115,6 +115,7 @@ INSTALLED_APPS = [
     'apps.index.apps.IndexConfig',
     'apps.projects.apps.ProjectsConfig',
     'apps.profile.apps.ProfileConfig',
+    'apps.community.apps.CommunityConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

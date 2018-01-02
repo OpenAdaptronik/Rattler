@@ -1,0 +1,28 @@
+<dl>
+    <dt>Username</dt>
+    <dd>{{ user.username }}</dd>
+
+    {% if user.profile %}
+        {% if user.profile.profileimage and user.profile.profileimage.path %}
+            <dt>Profile Image</dt>
+            <dd><img src="/{{ user.profile.profileimage.path.url }}" alt="{{ user.username }}" width="100" ></dd>
+        {% endif %}
+
+
+        {% if user.profile.visibility_mail%}
+            <dt>E-Mail</dt>
+            <dd>{{ user.mail }}</dd>
+        {% endif %}
+
+        {% if user.profile.visibility_company and  user.profile.company %}
+            <dt>Company</dt>
+            <dd>{{ user.profile.company }}</dd>
+        {% endif %}
+        
+        {% if user.profile.visibility_info and  user.profile.info %}
+            <dt>Info</dt>
+            <dd>{{ user.profile.info }}</dd>
+        {% endif %}
+
+    {% endif %}
+</dl>

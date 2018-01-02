@@ -10,11 +10,12 @@ from django.contrib.auth import login
 from apps.register.models import VerificationToken
 
 
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 from apps.userSettings.forms import ProfileSettingsForm
 from apps.user.models import User
-
+from apps.profile.models import Profile
 
 '''UserSettings'''
 def userSettings(request):
@@ -22,7 +23,10 @@ def userSettings(request):
     if request.method == 'POST':
 
         update_data = request.POST.copy()
-        userProfile = request.user.profile
+        try:
+            userProfile = request.user.profile
+        except ObjectDoesNotExist:
+            userProfile = Profile(user=request.user)
 
         # prueft of Submit "Speichern" war
         if 'saveUser' in update_data:
@@ -65,6 +69,7 @@ def changePassword(request):
     return render(request, 'userSettings/changePassword.html', {
         'form': form
     })
+
 '''Email aendern'''
 def changeEmail(request):
 
