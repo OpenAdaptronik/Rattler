@@ -17,8 +17,8 @@ def fromDashboard(request):
         erfassungsDatum = request.POST.get("erfassungsDatum", "")
 
         measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
-
-
+        #measurement.resample_data()
+        measurement.gaussian_filter(1)
 
         # Daten zur Übergabe vorbereiten
         dataForRender = {
