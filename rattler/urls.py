@@ -45,7 +45,7 @@ urlpatterns = [
     path('djangoAdmin/', admin.site.urls),
     # Global Routes
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('community/', views.community, name='community'),
+    path('community/', include('apps.community.urls'), name='community'),
     path('profile/', include('apps.profile.urls'), name='profile'),
     path('admin/', views.admin, name='admin'),
     path('settings/', include('apps.userSettings.urls'), name='settings'),
