@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db import IntegrityError
 
 from django.contrib.auth.tokens import default_token_generator
 
@@ -18,8 +19,10 @@ class VerificationTokenManager(models.Manager):
             user=user,
             token=default_token_generator.make_token(user)
         )
-
-        token.save()
+        try:
+            token.save()
+        except IntegrityError:
+            VerificationTokenManager.create_user_token(self,user)
         return token.token
 
     def get_token(self, token):
@@ -34,7 +37,7 @@ class VerificationTokenManager(models.Manager):
 
 
 class VerificationToken(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
     token = models.CharField(max_length=255, unique=True)
 
     objects = VerificationTokenManager()
