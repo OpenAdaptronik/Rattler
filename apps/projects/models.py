@@ -31,12 +31,13 @@ parent as Foreignkey from itself'''
 
 
 class Category(models.Model):
-    category = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE,)
 
+def project_image_path(instance, filename):
+    return 'project/%s%s' % (instance.project.id, os.path.splitext(filename)[1])
 
 class ProjectImage(models.Model):
-    project_image = models.IntegerField(primary_key=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE,)
-    image = models.ImageField
+    path = models.ImageField(upload_to=project_image_path)
+

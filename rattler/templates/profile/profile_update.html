@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="row">
-                                    <button class="btn waves-effect waves-light" type="button" href="{% url 'settings:changeEmail' %}">E-mail ändern<i class="material-icons left">email</i></button>
+                                    <button class="btn waves-effect waves-light" type="button" href="{% url 'profile:change_email' %}">E-mail ändern<i class="material-icons left">email</i></button>
                             </div>
 
                             <div class="row">
@@ -91,7 +91,7 @@
                         <div class="card-action">
                             <button class="btn waves-effect waves-light" type="submit"name="saveUser">Speichern<i class="material-icons left">save</i></button>
                             {{ change }}
-                            <button class="btn waves-effect waves-light" type="button" href="{% url 'settings:changePassword' %}">Passwort ändern<i class="material-icons left">lock</i></button>
+                            <button class="btn waves-effect waves-light" type="button" href="{% url 'profile:change_password' %}">Passwort ändern<i class="material-icons left">lock</i></button>
                         </div>
                     </div>
                 </div>
