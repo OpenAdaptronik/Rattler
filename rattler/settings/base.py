@@ -116,6 +116,7 @@ INSTALLED_APPS = [
     'apps.projects.apps.ProjectsConfig',
     'apps.profile.apps.ProfileConfig',
     'apps.community.apps.CommunityConfig',
+    'apps.process.apps.ProcessConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

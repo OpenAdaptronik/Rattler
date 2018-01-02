@@ -21,16 +21,6 @@
 	$roboto-font-path: "materialize/fonts/roboto/";
 	
 // Mixins
-	@mixin noselect {
-		  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-	}
-	
 	
 // Selection Color
 	@mixin selection {
@@ -46,6 +36,15 @@
 	//$button-raised-color;
 	$button-raised-background: $primary-color;
 
+// ALLES
+	*:not(input):not(.bisherigerSpaltenname) {
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 // BODY
 	body {
 		background: #eee;
@@ -56,6 +55,10 @@
 	// Hoehe des Headers
 		$navbar-height: 55px !default;
 		$navbar-height-mobile: 55px !default;
+	// Fix für https://github.com/IT-PM-OpenAdaptronik/Webapp/issues/36
+		.navbar-fixed nav {
+			top: 0;
+		}
 	// Logo im Header
 		// http://howtocenterincss.com/#contentType=div&horizontal=left&vertical=middle&browser.IE=9
 		a#logo-container {

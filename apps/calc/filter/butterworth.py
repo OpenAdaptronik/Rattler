@@ -1,5 +1,5 @@
 from scipy.signal import butter,filtfilt
-from calculus import get_delta
+from .calculus import get_delta
 
 
 def butterworth_band_filter(data, data_index, time_index=0, order=4, lowcut = None, highcut = None):

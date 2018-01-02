@@ -19,8 +19,15 @@ myDropzone.on("addedfile", function(file){
     reader.onload = () => {
         // Dropzone disablen
         myDropzone.disable();
+        // Bereich mit Dropzone löschen
+        $("#dataUploadSection").remove();
         // Papaparse parses our csv data into an array
         var results = Papa.parse(reader.result);
+        // Falls letzte Zeile(n) leer ist/sind, wird sie entfernt
+        for(i = results.data.length - 1; i >= 0 && results.data[i][0] == ""; i--){
+            results.data.splice(i, 1); // entfernt die Zeile i ("ab Zeile i wird 1 Zeile entfernt") 
+        };
+        //console.log(results.data);
         // Anz. der Spalten abspeichern
         anzSpalten = results.data[0].length;
         // Leeren Header erstellen
@@ -58,8 +65,8 @@ myDropzone.on("addedfile", function(file){
         
         // Nun werden dem User die Spalten angezeigt und er gibt die jeweiligen Daten ein
         // Grundgerüst für Spalten-Formular aufbauen
-        $('#schritt1-card').append("<div class='divider'></div>" +
-        "                    <div class='section' id='spaltenInfosDiv'>" +
+        $('#schritt1-card').append("" +
+        "                    <div class='section' id='spaltenInfosDiv' style='margin:0; padding-bottom:0'>" +
         "                        <div class='row' style='margin:0;'>" +
         "                            Wir haben deine Datei analysiert.<br/>" +
         "                            Aber: <b>was steht in welcher Spalte?</b><br/>" +
@@ -72,7 +79,8 @@ myDropzone.on("addedfile", function(file){
         "                                            <li>Die eingestellten <u>Einheiten</u> wird auch unser Programm" +
         "                                                im weiteren Verlauf verwenden, lass dabei also bitte" +
         "                                                Sorgfalt walten, damit du die richtigen Ergebnisse erhälst.</li>" +
-        "                                            <li>Kreuze bitte auch an, welche Spalte die Zeitreihe enthält.</li>" +
+        "                                            <li>Kreuze bitte auch an, welche Spalte die Zeitreihe enthält." +
+                                                         "Diese dient gleich als x-Achse der ersten Visualisierung.</li>" +
         "                                            <li>Bei der Einordnung der Spalten helfen dir Auszüge aus den" +
         "                                                Daten der jeweiligen Spalte.</li>" +
         "                                        </ul>" +
@@ -80,9 +88,9 @@ myDropzone.on("addedfile", function(file){
         "                                </li>" +
         "                            </ul>" +
         "                        </div>" +
-        "                        <fieldset id='ZeitreihenSpalte' style='border:none'>" +
+        "                        <fieldset id='ZeitreihenSpalte' style='border:none; padding-bottom: 0'>" +
         "                            <!-- Reihe aller Spalten -->" +
-        "                            <div class='row' id='allDataColsRow'>" +
+        "                            <div class='row' id='allDataColsRow' style='margin:0'>" +
         "                            </div>" +
         "                        </fieldset>" +
         "                    </div>"   
@@ -108,7 +116,7 @@ myDropzone.on("addedfile", function(file){
             } 
             // bisheriger Name der Spalte
             if(header[i]!=""){
-                var bisherigerName = "               Bisheriger Name: <b>" + header[i] + "</b>";
+                var bisherigerName = "               Bisheriger Name: <span class='bisherigerSpaltenname'><b>" + header[i] + "</b></span>";
             } else {
                 var bisherigerName = "";
             }
@@ -168,7 +176,7 @@ myDropzone.on("addedfile", function(file){
         
         // Button zum Überprüfen des Forms einfügen
         $("#allDataColsRow").append(""+
-            "   <div id='validateDataColumnFormRow' class='row'>" +
+            "   <div id='validateDataColumnFormRow' style='margin:0' class='row'>" +
             "       <button type='button' class='btn waves-effect waves-light' id='validateDataColumnForm' style=position: relative; z-index: auto;'><i class='material-icons left'>timeline</i> Alle Spalten bestimmt!</button>" +
             "   </div>"
             );
@@ -181,7 +189,7 @@ myDropzone.on("addedfile", function(file){
         $("#validateDataColumnForm").click(function() {
             // In welcher Zeile steht die Zeitreihe?
             zeitreihenSpalte = $("input[name='ZeitreihenSpalte']:checked").val();
-            console.log("Die Zeitreihe steht in Spalte: " + zeitreihenSpalte);
+            //console.log("Die Zeitreihe steht in Spalte: " + zeitreihenSpalte);
             var spaltenTitel = [];
             var spaltenEinheiten = [];
             // Die Titel und Einheiten der Spalten holen
@@ -189,16 +197,28 @@ myDropzone.on("addedfile", function(file){
                 spaltenTitel[i] = $("#spaltenname" + i).val();
                 spaltenEinheiten[i] = $('#einheitSpalte' + i).val();
             }
+            /*
             console.log("Die Spaltentitel:");
             console.log(spaltenTitel);
             console.log("Die Spalteneinheiten:");
             console.log(spaltenEinheiten);
-            $("#spaltenInfosDiv").hide();
+            */
+
+            // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
+            $("#jsonHeader").html(JSON.stringify(spaltenTitel));
+            // Spalteneinheiten in textarea "#jsonEinheiten" einfügen, um sie python später zu übergeben
+            $("#jsonEinheiten").html(JSON.stringify(spaltenEinheiten));
+            // Zeitreihenspalte in input "#zeitreihenSpalte" einfügen, um sie python später zu übergeben
+            $("#zeitreihenSpalte").val(zeitreihenSpalte);
+
+            $("#spaltenInfosDiv").remove();
             $("#neueSchwingungsdatenCol").removeClass("l6");
             $('#schritt1-card').append("<div class='section' id='visualisationSection'>"+
                 "Wir haben die hochgeladenen Daten jetzt für dich visualisiert. "+
                 "Wähle diejenigen aus, die du in die Analyse geben möchtest." +
-                "<div id='graph'></div></div>"
+                "<div id='graph'></div>"+
+                "<button type='button' class='btn waves-effect waves-light' id='validateGraphSelection' style=position: relative; z-index: auto;'>Bereich ausgewählt!</button>" +
+                "</div>"
                 );
             // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
             // https://stackoverflow.com/a/34979219
@@ -210,45 +230,137 @@ myDropzone.on("addedfile", function(file){
             var traces = [];
             // s. Variablenname
             zeitreihenSpalteAlsZeile = arrayColumnAsRow(results.data, zeitreihenSpalte);
-            // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
-            for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
-                if(i!=zeitreihenSpalte){
-                    traces[i] = {
-                        x: zeitreihenSpalteAlsZeile,
-                        y: arrayColumnAsRow(results.data, i),
-                        name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
-                        type: 'scatter'
-                    }
-                }
-            }
-            traces[zeitreihenSpalte] = [];
-            traces[zeitreihenSpalte].shift();
+            /*
             console.log("traces:");
             console.log(traces);
+            */
+
+            //var selectorOptions = 
             
             // Plotly: Graph
+                //var d3 = Plotly.d3;
                 var layout = {
                     /*title: 'Erste Visualisierung',*/
-                    xaxis: {
+                    'xaxis': {
                         autotick: true,
-                        ticks: 'outside',
-                        tickcolor: '#000',
+                        //ticks: 'outside',
+                        //tickcolor: '#f00',
+                        //rangeselector: selectorOptions,
                         rangeslider: {}
-                    },
-                    yaxis: {
-                        autotick: true,
-                        ticks: 'outside',
-                        tickcolor: '#000'
                     }
                 }
+
+                // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+                for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
+                    //if(i!=zeitreihenSpalte){
+                        traces[i] = {
+                            x: zeitreihenSpalteAlsZeile,
+                            y: arrayColumnAsRow(results.data, i),
+                            name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+                            type: 'scatter',
+                            line: {
+                                width: 1.5,
+                            }
+                        }
+                    //}
+                    var yaxisTitle;
+                    if(i==0){
+                        traces[i]['yaxis'] = 'y';
+                        yaxisTitle = 'yaxis';
+                    } else {
+                        traces[i]['yaxis'] = 'y' + (i+1);
+                        yaxisTitle = 'yaxis' + (i+1);
+                    }
+                    layout[yaxisTitle] = {
+                        showgrid: false,
+                        zeroline: false,
+                        showline: false,
+                        autotick: true,
+                        showticklabels: false,
+                    }
+                    if(i!=0){
+                        layout[yaxisTitle]['overlaying'] = 'y';
+                    }
+                }
+                /*
+                console.log(traces);
+                console.log(layout);
+                */
+                traces[zeitreihenSpalte] = [];
+                traces[zeitreihenSpalte].shift();
+                
                 Plotly.newPlot('graph', traces, layout);
+                
+            // Variablen, in denen die Auswahl des Users gespeichert wird.
+            // Werden so definiert, dass zu Anfang der ganze Datenbereich ausgewählt ist
+            var rangeStart = results.data[0][zeitreihenSpalte];
+            /*
+            console.log(results.data.length);
+            console.log(results.data);
+            console.log(results.data[(results.data.length) - 1]);
+            console.log(results.data[results.data.length-1][zeitreihenSpalte]);
+            */
+            var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
+            //console.log("rangeStart: " + rangeStart + " | rangeEnd: " + rangeEnd);
+            
+            // Funktion, die aufgerufen wird, wenn der 
+            document.getElementById("graph").on('plotly_relayout',
+                function(eventdata){  
+                    // Hier muss man dann also eine Fallunterscheidung machen, weil Plotly bloed ist.
+                    /*
+                    console.log("Zugriff über eventdata['xaxis.range[i]'] (geht für großen Graph)");
+                    console.log(eventdata['xaxis.range[0]']);
+                    console.log("Zugriff über eventdata['xaxis.range'][i] (geht für Slider)");
+                    console.log(eventdata['xaxis.range'][0]);
+                    */
+                    if(eventdata['xaxis.range[0]']){
+                        rangeStart = eventdata['xaxis.range[0]'];
+                        rangeEnd = eventdata['xaxis.range[1]'];
+                    } else {
+                        rangeStart = eventdata['xaxis.range'][0];
+                        rangeEnd = eventdata['xaxis.range'][1];
+                    }
+                });
+            
+            // sobald der User seinen Bereich im Graphen ausgesucht hat
+            $("#validateGraphSelection").click(function() {
+                $("#visualisationSection").remove(); // der Graph wird gelöscht
+                $("#neueSchwingungsdatenCardAction").show(); // 
+                $(".datensatzInformationenFelder").show();
+                $("#neueSchwingungsdatenCol").addClass("l6");
+                //console.log("rangeStart: " + rangeStart + " | rangeEnd: " + rangeEnd);
+                // Der ausgewählte Teil des Graphen wird ausgeschnitten
+                    // Schritt 1: Wir suchen die Indizes in results.data raus, die den Begrenzungen des ausgewählten Bereichs entsprechen
+                        // Beginn bestimmen
+                        var rangeStartIndex = 0;
+                        for(i = 0; i < results.data.length - 1; i++){
+                            if(parseFloat(results.data[i+1][zeitreihenSpalte]) > parseFloat(rangeStart)){
+                                rangeStartIndex = i;
+                                break;
+                            }
+                        }
+                        console.log("A: " + rangeStartIndex);
+                        // Ende bestimmen
+                        var rangeEndIndex = results.data.length - 1;
+                        for(i = results.data.length - 1; i > 0; i--){
+                            if(parseFloat(results.data[i-1][zeitreihenSpalte]) < parseFloat(rangeEnd)){
+                                rangeEndIndex = i;
+                                break;
+                            }
+                        }
+                        console.log("E: " + rangeEndIndex);
+                    // Schritt 2: tatsächlich ausschneiden, in JSON konvertieren & in Textarea schreiben
+                    $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
+            })
             
             // Nachricht wegen Beta
+            /*
             $('#schritt1-card').append("<span style='color: #d00'>" +
                 "An diesem Punkt wird man in Zukunft, nach dem man seine Auswahl getroffen hat, " +
                 "die Analyse starten.<br/>" +
                 "Zudem werden der Graph und das Formular noch etwas schöner gestaltet."
                 );
+            */
         });
     };
 

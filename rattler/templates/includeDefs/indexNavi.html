@@ -1,3 +1,10 @@
-<ul id="nav" class="left hide-on-med-and-down">
-    <li class=""><a href="{% url 'register:index' %}">Registrieren</a></li>
-</ul>
+<!-- Haupt-Navigation auf grossem Bildschirm -->
+    <ul id="nav" class="left hide-on-med-and-down">
+        <li class=""><a href="{% url 'register:index' %}"><!--<i class="material-icons">person_add</i>-->Registrieren</a></li>
+    </ul>
+<!-- Menu-Symbol fuer SideNav -->
+    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+<!-- Register-Button (@TODO evtl. bei med & small verbergen!!) -->
+    <ul id="nav" class="right">
+        <li><a href="{% url 'register:index' %}"><i class="material-icons">person_add</i></a></li>
+    </ul>
