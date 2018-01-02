@@ -13,8 +13,8 @@ note as TextField
 
 
 class Project(models.Model):
-    projectID = models.IntegerField(primary_key=True)
-    userID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
+    project = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
     project_visibility = models.BooleanField(default=True)
     name = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set')
@@ -33,12 +33,29 @@ parent as Foreignkey from itself'''
 
 
 class Category(models.Model):
-    categoryID = models.IntegerField(primary_key=True)
+    category = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE,)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name= 'main_category')
 
 
 class ProjectImage(models.Model):
-    project_imageID = models.IntegerField(primary_key=True)
-    projectID = models.ForeignKey('Project', on_delete=models.CASCADE,)
+    project_image = models.IntegerField(primary_key=True)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE,)
     image = models.ImageField
+
+class Experiment(models.Model):
+    experiment = models.IntegerField(primary_key=True),
+    project = models.ForeignKey('Project', on_delete=models.CASCADE,),
+    performed_on = models.DateField,
+    description = models.TextField(max_length=500)
+
+class Datarow(models.Model):
+    datarow = models.IntegerField(primary_key=True),
+    experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE,),
+    unit = models.CharField(max_length=10),
+    description = models.TextField(max_length=500)
+
+class Value(models.Model):
+    id = models.IntegerField(primary_key=True),
+    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE,),
+    value = models.IntegerField()
