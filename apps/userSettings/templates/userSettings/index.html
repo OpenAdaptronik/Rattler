@@ -42,7 +42,7 @@
                                                 <tr>
 													<td>
 														<div class="input-field col s12">
-															<input placeholder={% if not user.profile.company is Null %} {{user.profile.company}}{% else %} "" {% endif %}
+															<input value={% if not user.profile.company is Null %} {{user.profile.company}}{% else %} "" {% endif %}
                                                                            id="company" type="text" class="validate"  name="company">
 															<label for="firma">Firma/Institution:</label>
 
@@ -60,7 +60,7 @@
                                                 </tr>
                                                     <td>
 														<div class="input-field col s12">
-															<input placeholder={% if not user.profile.info is Null %} {{user.profile.info}}{% else %} "" {% endif %}
+															<input value={% if not user.profile.info is Null %} {{user.profile.info}}{% else %} "" {% endif %}
                                                                            id="info" type="text" class="validate" name="info">
 															<label for="info">Weitere Informationen:</label>
 														</div>

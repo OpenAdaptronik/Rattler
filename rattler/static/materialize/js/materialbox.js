@@ -105,7 +105,7 @@
           height: windowHeight,
           left: -1 * overlayOffset.left,
           top: -1 * overlayOffset.top
-        })
+        });
 
         // Animate Overlay
         overlay.velocity({opacity: 1},

@@ -1,15 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
-from django.utils.encoding import force_bytes, force_text
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.contrib.auth import login
+from apps.register.models import VerificationToken
+
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -41,11 +40,6 @@ def userSettings(request):
             if not ('visibility_mail' in update_data):
                 update_data.update({'visibility_mail': 0})
 
-            # Output Value '' fuer Textfeld --> Alte wert wieder in Datenbank
-            if update_data.get('info') == '':
-                update_data.update({'info': userProfile.company})
-            if update_data.get('company') == '':
-                update_data.update({'company': userProfile.info})
 
         #Uebergabe und Ueberschreibung
         form = ProfileSettingsForm(data=update_data, instance=userProfile)
@@ -78,46 +72,70 @@ def changePassword(request):
 
 '''Email aendern'''
 def changeEmail(request):
+
     if request.method == 'POST':
-        mailer = {'mail': request.POST.get('mail'),
+        mailer = {'newMail1': request.POST.get('mail'),
                   'newMail2': request.POST.get('newMail2'),}
-        #pueft auf verschiedene fehler
-        if not mailer.get('newMail2') == mailer.get('mail'):
-            return render(request, 'userSettings/changeEmail.html', {'error': 'E-mail Adresse stimmt nicht überein!'})
+        mail = mailer.get('newMail1')
+        try:
+            # prueft auf verschiedene fehler (dopplung in DB und beide felder gleich)
+            if not mailer.get('newMail2') == mail:
+                return render(request, 'userSettings/changeEmail.html',{'error': 'E-mail Adresse stimmt nicht überein!'})
+            elif mail == '':
+                return render(request, 'userSettings/changeEmail.html', {'error': 'Bitte geben sie eine Email Adresse an'})
+            else:
+                mailc = User.objects.get(mail=mail)
+                return render(request, 'userSettings/changeEmail.html', {'error': 'E-mail bereits vergeben'})
+        except:
+            mailc=None
+        if mailc is None:
+            try:
+                token = VerificationToken.objects.create_user_token(request.user)
+                mes = render_to_string('userSettings/newMail.html', {
+                    'domain': get_current_site(request),
+                    'mail': mail,
+                    'username': request.user.username,
+                    'token': token
+                })
 
-        else:
-            mes = render_to_string('userSettings/newMail.html', {
-                'domain': get_current_site(request),
-                'mail' : mailer.get('mail'),
-                'uid': urlsafe_base64_encode(force_bytes(request.user.mail)),
-                'token': default_token_generator.make_token(user=request.user)
-            })
-
-            email = EmailMessage(
+                email = EmailMessage(
                     subject='Rattler: Email ändern',
                     body=mes,
-                    to= [mailer.get('mail')]
-            )
-            email.send()
+                    to=[mail]
+                )
+                email.send()
+            except (VerificationToken.MultipleObjectsReturned):
+                token = None
+
             update_session_auth_hash(request, request.user)
-            return HttpResponse('''Bitte neue E-Mail Adresse Bestätigen. <br/>
-                                Die E-mail wurde verschickt. <br/>
-                                Solange diese nicht bestätigt wurde beleibt die alte E-mail zum Login aktuell.''')
+            return HttpResponse('''Die E-mail wurde verschickt.  <br/>
+                                Bitte neue E-Mail Adresse Bestätigen.<br/>
+                                Solange diese nicht bestätigt wurde beleibt die alte E-mail zum Login aktuell.
+                                <br/>
+                                <br/>
+                                Sie müssen beim bestätigen der E-mail weiterhin eingelogt bleiben!!''')
+
 
     return render(request, 'userSettings/changeEmail.html')
 
 
-def changeEmailsuccess (request,email,uidb64,token):
+def changeEmailsuccess (request,email,username,token):
+
+        #checkt ob user der Eingeloggt ist auch user der mail ist
+        #und ob die mail noch nicht vergeben wurde werend des Zeitfensteres des vergebens
         try:
-            return HttpResponse('noch im test')
+            if request.user.username == username:
+                user = User.objects.get(username=username)
+                token = VerificationToken.objects.get_token(token)
+
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-            return HttpResponse('da da!')
-        if user is not None and default_token_generator.check_token(user=request.user, token=token):
+        if user is not None and token.user_id == user.id:
             user.mail = email
             user.save()
+            update_session_auth_hash(request, user)
             login(request=request,user= user)
-            # return redirect('home')
-            return render(request, 'userSettings/index.html', {'change': 'E-Mail Adresse erfolgreich geändert!'})
+            # return redirect('settings')
+            return redirect('/settings/')
         else:
-            return HttpResponse('Aktivierungslink ist ungültig!')
+            return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
