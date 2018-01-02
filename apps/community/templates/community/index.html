@@ -10,14 +10,14 @@
               <span class="card-title">Filter</span>
               <p>
                 <table>
-                  <tr>
+                  <!--<tr>
                     <td>
                       <div class="input-field col s12">
                         <label for="search">Suchbegriff:</label>
                         <input placeholder='' id="search" type="text" class="validate" name="search">
                       </div>
                     </td>
-                  </tr>
+                  </tr>-->
                   <tr>
                     <td>
                       <div class="input-field col s12">
@@ -42,14 +42,14 @@
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                 <!-- <tr>
                     <td>
                       <div class="input-field col s12">
                         <label for="res">Result:</label>
                         <input placeholder={{ filtered_usernames }} id="res" type="text" class="validate" name="res">
                       </div>
                     </td>
-                  </tr>
+                  </tr>-->
 
 
                   <tr>
@@ -59,13 +59,17 @@
                           {{ empty_search }} {{ no_match }}
                       </div>
                     </td>
+
                   </tr>
-                        <ul>
+               <td> Ergebnisse:
+                          <ul>
                         {% for name in filtered_usernames %}
                             <li> <a href="">{{ name }}</a>
                             </li>
                         {% endfor %}
                         </ul>
+                      </td>
+
                 </table>
               </p>
           </div>

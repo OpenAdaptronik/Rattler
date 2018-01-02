@@ -22,10 +22,10 @@ def user_filter(request):
             matching_ids = list(User.objects.filter(username__icontains=username).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(email == ''):
-            matching_ids = list(User.objects.filter(mail=email).values_list('id', flat=True))
+            matching_ids = list(User.objects.filter(mail__icontains=email).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(company == ''):
-            matching_ids = list(Profile.objects.filter(company=company).values_list('userID_id', flat=True))
+            matching_ids = list(Profile.objects.filter(company__icontains=company).values_list('userID_id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         i = 0
         filtered_usernames = list()
