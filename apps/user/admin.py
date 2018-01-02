@@ -8,7 +8,7 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = 'Profile'
-    fk_name = 'userID'
+    fk_name = 'user'
 
 
 @admin.register(User)
