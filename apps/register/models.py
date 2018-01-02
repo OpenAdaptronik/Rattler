@@ -20,8 +20,10 @@ class VerificationTokenManager(models.Manager):
             token=default_token_generator.make_token(user)
         )
         try:
+            print(token.token)
             token.save()
         except IntegrityError:
+            print("FEHLER")
             VerificationTokenManager.create_user_token(self,user)
         return token.token
 

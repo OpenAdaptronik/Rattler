@@ -61,7 +61,6 @@ class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
 
 
 def change_email(request):
-
     if request.method == 'POST':
         mailer = {'newMail1': request.POST.get('mail'),
                   'newMail2': request.POST.get('newMail2'),}
@@ -79,9 +78,12 @@ def change_email(request):
             mailc=None
         if mailc is None:
             try:
+                
                 token = VerificationToken.objects.create_user_token(request.user)
+
                 mes = render_to_string('userSettings/newMail.html', {
                     'domain': get_current_site(request),
+                    
                     'mail': mail,
                     'username': request.user.username,
                     'token': token
@@ -128,6 +130,9 @@ def change_email_success (request,email,username,token):
         else:
             return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
 
+
+
+#@TODO only login and change to FormView
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
