@@ -23,10 +23,6 @@ class Profile(models.Model):
     created = models.DateTimeField
     updated = models.DateTimeField
 
-
-    def curruser_company_finder(self):
-        return self.objects.filter(userID=user.id).values['company']
-
 def profile_image_path(instance, filename):
     return 'profile/%s%s' % (instance.profile.id, os.path.splitext(filename)[1])
 

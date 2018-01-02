@@ -166,6 +166,7 @@ STATICFILES_DIRS = [
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
+#AUTHENTICATION_BACKENDS = ['path.to.class.YourBackend']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
