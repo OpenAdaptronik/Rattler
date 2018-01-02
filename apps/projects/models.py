@@ -13,8 +13,8 @@ note as TextField
 
 
 class Project(models.Model):
-    projectID = models.IntegerField(primary_key=True)
-    userID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
+    project = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
     name = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set')
     subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set')

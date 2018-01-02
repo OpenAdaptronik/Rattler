@@ -26,6 +26,4 @@ class ProfileImage(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     path = models.ImageField(upload_to=profile_image_path)
     created = models.DateTimeField(auto_now_add=True)
-updated = models.DateTimeField(auto_now=True)
-
-#change
+    updated = models.DateTimeField(auto_now=True)
