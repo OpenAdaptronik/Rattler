@@ -27,6 +27,7 @@ def user_filter(request):
         if not(company == ''):
             matching_ids = list(Profile.objects.filter(company__icontains=company).values_list('userID_id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
+        #return usernames in filtered_usernames
         i = 0
         filtered_usernames = list()
         while i < len(filtered_ids):

@@ -50,8 +50,6 @@
                       </div>
                     </td>
                   </tr>-->
-
-
                   <tr>
                     <td>
                       <div class="card-action">
@@ -59,17 +57,15 @@
                           {{ empty_search }} {{ no_match }}
                       </div>
                     </td>
-
                   </tr>
-               <td> Ergebnisse:
-                          <ul>
+                    <td> Ergebnisse:
+                        <ul>
                         {% for name in filtered_usernames %}
                             <li> <a href="">{{ name }}</a>
                             </li>
                         {% endfor %}
                         </ul>
                       </td>
-
                 </table>
               </p>
           </div>
