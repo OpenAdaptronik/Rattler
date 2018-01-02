@@ -38,13 +38,11 @@ urlpatterns = [
     ),
     #
     path('register/', include('apps.register.urls'), name='register'),
-    # Django Admin
-    path('djangoAdmin/', admin.site.urls),
     # Global Routes
     path('dashboard/', views.dashboard, name='dashboard'),
     path('community/', views.community, name='community'),
     path('profile/me/', views.profileMe, name='profileMe'),
-    path('admin/', views.admin, name='admin'),
+    path('admin/', admin.site.urls, name='admin'),
     path('settings/', include('apps.userSettings.urls'), name='settings'),
     path('help/', views.help, name='help'),
     path('process/', include('apps.process.urls'), name='process'),
