@@ -46,7 +46,7 @@
                     <td>
                       <div class="input-field col s12">
                         <label for="res">Result:</label>
-                        <input placeholder={{ filtered_ids }} id="res" type="text" class="validate" name="res">
+                        <input placeholder={{ filtered_usernames }} id="res" type="text" class="validate" name="res">
                       </div>
                     </td>
                   </tr>
@@ -61,8 +61,8 @@
                     </td>
                   </tr>
                         <ul>
-                        {% for id in filtered_ids %}
-                            <li> <a href="">{{ user.username }}</a>
+                        {% for name in filtered_usernames %}
+                            <li> <a href="">{{ name }}</a>
                             </li>
                         {% endfor %}
                         </ul>

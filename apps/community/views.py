@@ -27,10 +27,16 @@ def user_filter(request):
         if not(company == ''):
             matching_ids = list(Profile.objects.filter(company=company).values_list('userID_id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
+        i = 0
+        filtered_usernames = list()
+        while i < len(filtered_ids):
+            currid = filtered_ids[i]
+            filtered_usernames.append(User.objects.get(id=currid).username)
+            i += 1
         # no id matches
         if len(filtered_ids) == 0:
             return render(request, 'community/index.html', {'no_match': 'No user matches with your search, try again!'})
 
-        return render(request, 'community/index.html', {'filtered_ids': filtered_ids})
+        return render(request, 'community/index.html', {'filtered_usernames': filtered_usernames})
 
     return render(request, 'community/index.html')
