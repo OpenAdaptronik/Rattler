@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def fromDashboard(request):
     if request.method == 'POST':
+
         # Variablen aus dem Post-Request auslesen
         jsonHeader = request.POST.get("jsonHeader", "")
         jsonEinheiten = request.POST.get("jsonEinheiten", "")
