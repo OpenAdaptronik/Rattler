@@ -1,10 +1,19 @@
-from django.shortcuts import render, reverse
-from django.utils.functional import lazy
-from django.views.generic import UpdateView, DetailView
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 
+from django.shortcuts import render, reverse, redirect, HttpResponse
+from django.utils.functional import lazy
+from django.views.generic import UpdateView, DetailView
+
+
+from apps.register.models import VerificationToken
+from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 
 # curent user model
@@ -115,8 +124,7 @@ def change_email_success (request,email,username,token):
             user.save()
             update_session_auth_hash(request, user)
             login(request=request,user= user)
-            # return redirect('settings')
-            return redirect('/settings/')
+            return redirect(reverse('profile:edit'))
         else:
             return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
 
@@ -126,7 +134,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('/settings/')
+            return redirect(reverse('profile:edit'))
         else:
             messages.error(request, 'Neues Passwort stimmt nicht überein')
     else:
