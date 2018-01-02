@@ -6,6 +6,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.contrib.auth import login
 
 from django.shortcuts import render, reverse, redirect, HttpResponse
 from django.utils.functional import lazy
@@ -16,9 +17,12 @@ from apps.register.models import VerificationToken
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 
-# curent user model
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
-
+from apps.register.tokens import account_activation_token
 from . import models
 
 reverse_lazy = lazy(reverse, str)
@@ -79,14 +83,19 @@ def change_email(request):
         if mailc is None:
             try:
                 
-                token = VerificationToken.objects.create_user_token(request.user)
+                token = account_activation_token.make_token(request.user)
+                uid = urlsafe_base64_encode(force_bytes(request.user.pk)).decode()
+                umail = urlsafe_base64_encode(force_bytes(mail)).decode()
+                current_site = get_current_site(request)
+                domain = current_site.domain
 
                 mes = render_to_string('userSettings/newMail.html', {
-                    'domain': get_current_site(request),
-                    
-                    'mail': mail,
-                    'username': request.user.username,
-                    'token': token
+                    'use_https': request.is_secure(),
+                    'domain':domain,
+                    'uid': uid,
+                    'token': token,
+                    'mail': umail,
+                    'user': request.user,
                 })
 
                 email = EmailMessage(
@@ -110,29 +119,26 @@ def change_email(request):
     return render(request, 'userSettings/changeEmail.html')
 
 
-def change_email_success (request,email,username,token):
+def change_email_success (request, mail, uidb64, token):
+    # get user from user id
+    from django.contrib.auth import get_user_model
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
 
-        #checkt ob user der Eingeloggt ist auch user der mail ist
-        #und ob die mail noch nicht vergeben wurde werend des Zeitfensteres des vergebens
-        try:
-            if request.user.username == username:
-                user = User.objects.get(username=username)
-                token = VerificationToken.objects.get_token(token)
-
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-        if user is not None and token.user_id == user.id:
-            user.mail = email
-            user.save()
-            update_session_auth_hash(request, user)
-            login(request=request,user= user)
-            return redirect(reverse('profile:edit'))
-        else:
-            return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
-
+    if not user is None:
+        email = force_text(urlsafe_base64_decode(mail))
+        user.email = email
+        user.save()
+        update_session_auth_hash(request, user)
+        login(request=request,user= user)
+        return redirect(reverse('profile:edit'))
+    else:
+        return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
 
 
-#@TODO only login and change to FormView
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
