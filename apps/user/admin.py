@@ -14,12 +14,10 @@ class ProfileInline(admin.StackedInline):
     verbose_name_plural = 'Profile'
     fk_name = 'user'
 
-class ImgInline(admin.StackedInline):
-    model = ProfileImage
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
-    inlines = (ProfileInline, ImgInline)
+    inlines = (ProfileInline, )
     fieldsets = (
         (None, {'fields': ('username', 'email','password')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
