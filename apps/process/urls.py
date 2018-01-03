@@ -4,6 +4,6 @@ from apps.process import views
 
 app_name = 'process'
 urlpatterns = [
-    path('', views.fromDashboard, name='fromDashboard'),
+    path('', views.from_dashboard, name='from_dashboard'),
     path('analysis/', views.analysis, name='analysis')
 ]

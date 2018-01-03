@@ -26,69 +26,74 @@
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Features für das gesamte Experiment:</h5>
-                        <p>
-                            <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
-                            <label for="resampling">Resampling anwenden</label>
-                            <input id="resamplingScale" name="resamplingScale" type="text">
-                            <label for="resamplingScale">scale</label>
-                        </p>
+                        <div class="row">
+                            <div class="col s6">
+                                <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
+                                <label for="resampling">Resampling anwenden</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="resamplingScale" name="resamplingScale" type="text">
+                                <label for="resamplingScale">scale</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="divider"></div>
                     <div class="section" id="dataColsSection">
                         <h5>Spaltenweise Features:</h5>
                         Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
-                        <div style="display:none" class="col m6 s12" id="spaltenColTemplate">
-                            <p>
-                                <h6 class="colHeader">Spaltenname</h6>
-                            </p>
-                            <p>
-                                <div class="row" style="padding:0; margin:0">
-                                    <div class="col m6 s12">
-                                        <input type="checkbox" class="filled-in" id="hochpass" name="hochpass"/>
-                                        <label class="hochpassLabel" for="hochpass">Hochpass-Filter</label>
-                                        <div class="row" style="padding:0; margin:0">
-                                            <div class="input-field col s6">
-                                                <input id="hochpassOrder" name="hochpassOrder" type="text">
-                                                <label class="hochpassOrderLabel" for="hochpassOrder">order</label>
+                        <div style="display:none" class="row" id="spaltenColTemplate">
+                            <div class="section col s12">
+                                <p>
+                                    <h6 class="colHeader">Spaltenname</h6>
+                                </p>
+                                <p>
+                                    <div class="row" style="padding:0; margin:0">
+                                        <div class="col s4">
+                                            <input type="checkbox" class="filled-in" id="hochpass" name="hochpass"/>
+                                            <label class="hochpassLabel" for="hochpass">Hochpass-Filter</label>
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="hochpassOrder" name="hochpassOrder" type="text">
+                                                    <label class="hochpassOrderLabel" for="hochpassOrder">order</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="hochpassCofreq" name="hochpassOrder" type="text">
+                                                    <label class="hochpassCofreqLabel" for="hochpassCofreq">cofreq</label>
+                                                </div>
                                             </div>
-                                            <div class="input-field col s6">
-                                                <input id="hochpassCofreq" name="hochpassOrder" type="text">
-                                                <label class="hochpassCofreqLabel" for="hochpassCofreq">cofreq</label>
+                                        </div>
+                                        <div class="col s4">
+                                            <input type="checkbox" class="filled-in" id="tiefpass" name="tiefpass"/>
+                                            <label class="tiefpassLabel" for="tiefpass">Tiefpass-Filter</label>
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="tiefpassOrder" name="tiefpassOrder" type="text">
+                                                    <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="tiefpassCofreq" name="tiefpassOrder" type="text">
+                                                    <label class="tiefpassCofreqLabel" for="tiefpassCofreq">cofreq</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s4">
+                                            <input type="checkbox" class="filled-in" id="gauss" name="gauss"/>
+                                            <label class="gaussLabel" for="gauss">Gauss-Filter</label>
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="gaussStd" name="gaussStd" type="text">
+                                                    <label class="gaussStdLabel" for="gaussStd">std</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="gaussM" name="gaussM" type="text">
+                                                    <label class="gaussMLabel" for="gaussM">m</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col m6 s12">
-                                        <input type="checkbox" class="filled-in" id="tiefpass" name="tiefpass"/>
-                                        <label class="tiefpassLabel" for="tiefpass">Tiefpass-Filter</label>
-                                        <div class="row" style="padding:0; margin:0">
-                                            <div class="input-field col s6">
-                                                <input id="tiefpassOrder" name="tiefpassOrder" type="text">
-                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <input id="tiefpassCofreq" name="tiefpassOrder" type="text">
-                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">cofreq</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="padding:0; margin:0">
-                                    <div class="col m6 s12">
-                                        <input type="checkbox" class="filled-in" id="gauss" name="gauss"/>
-                                        <label class="gaussLabel" for="gauss">Gauss-Filter</label>
-                                        <div class="row" style="padding:0; margin:0">
-                                            <div class="input-field col s6">
-                                                <input id="gaussStd" name="gaussStd" type="text">
-                                                <label class="gaussStdLabel" for="gaussStd">std</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <input id="gaussM" name="gaussM" type="text">
-                                                <label class="gaussMLabel" for="gaussM">m</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </p>
+                                </p>
+                                <div class="divider"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="divider"></div>

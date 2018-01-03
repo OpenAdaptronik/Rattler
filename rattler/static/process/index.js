@@ -3,10 +3,8 @@
 // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
 // https://stackoverflow.com/a/34979219
 const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
-/*
-console.log("Zeitreihe: ");
-console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
-*/
+
+
 
 
 // Plotly: Graph von vorheriger Seite wieder plotten
@@ -51,10 +49,6 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             layout[yaxisTitle]['overlaying'] = 'y';
         }
     }
-    /*
-    console.log(traces);
-    console.log(layout);
-    */
     traces[zeitreihenSpalte] = [];
     traces[zeitreihenSpalte].shift();
 
@@ -64,16 +58,12 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
         if(i!=zeitreihenSpalte){
+
             // vor einem Pärchen von 2 Spalten eine Row einfügen
-            if(i % 4 == 0){
-                $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
-            } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
-                $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
-            }
-            $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColumnRow" + (i - (i%2))).show();
+            $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColsSection").show();
             
             // Spaltentitel einfügen
-            $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + " <b>" + spaltenTitel[i] + "</b>");
+            $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + ": <b>" + spaltenTitel[i] + "</b>");
             
             // IDs, names, fors
                 $("#spaltenCol" + i + " #hochpass").attr("name", "hochpass" + i).attr("id", "hochpass" + i);
