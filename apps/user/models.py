@@ -66,6 +66,6 @@ class User(AbstractUser):
     """
     email = models.EmailField(_('email address'))
     is_active = models.BooleanField(_('active'), default=False)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     objects = UserManager()
