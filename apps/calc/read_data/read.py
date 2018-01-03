@@ -200,6 +200,28 @@ class Measurement(object):
         b, a = signal.butter(order, cut, btype=mode, analog=False)
         self.data[:,data_index] = signal.filtfilt(b, a, np.float64(self.data[:, data_index]))
 
+    def trapez_for_each(self, index_x, index_y):
+        """
+        This method integrates the given Values with the Trapeziodal Rule
+        :param index_x: index der X Achse
+        :param index_y: index der Y Achse
+        :return: integrated Values from x,y
+        """
+        i = 1
+        sol = []
+        while i < len(self[index_x]):
+            res = sci.trapz(self[0:i, index_y], self[0:i, index_x])
+            sol.append(res)
+            i += 1
+        i = 1
+        realsol = []
+        while i < len(sol):
 
+            intervall = sol[i] - sol[i - 1]
+
+            if i == 1:
+                realsol.append(np.float_(0))
+            realsol.append(intervall)
+            i += 1
 
 
