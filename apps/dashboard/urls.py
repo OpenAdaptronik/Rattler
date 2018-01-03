@@ -1,8 +1,8 @@
 from django.urls import path
 from . import views
 
-app_name = 'projects'
+app_name = 'dashboard'
 urlpatterns = [
 
-    path('', views.save_project, name='index')
+    path('', views.show_projects, name='index')
     ]

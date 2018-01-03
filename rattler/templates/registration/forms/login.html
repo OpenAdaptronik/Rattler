@@ -17,7 +17,7 @@
 
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}{% url 'dashboard' %}{% endif %}" />
+        <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}{% url 'dashboard:index' %}{% endif %}" />
         <div class="card-content">
             <span class="card-title">Login</span>
             <div class="input-field">
