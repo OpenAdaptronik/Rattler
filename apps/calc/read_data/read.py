@@ -10,7 +10,7 @@ from apps.calc.filter.calculus import get_delta,get_average_delta
 class Measurement(object):
     def __init__(self, raw, Column_Names, Unit_Names, time=0):
         self.timeIndex = int(time)
-        self.data = np.array(json.loads(raw))
+        self.data = np.array(json.loads(raw), dtype=np.float64)
         self.colUnits = np.array(json.loads(Unit_Names))
         self.colNames = np.array(json.loads(Column_Names))
 
@@ -73,8 +73,10 @@ class Measurement(object):
         '''
 
         # @TODO: Parameter überprüfen
-        fft = [abs(x) for x in sci.fft(self.data[:,data_index])]
-        self.data[:,data_index]= fft[:round(len(fft))]
+        fft = [np.real(x) for x in sci.fft(self.data[:,data_index])]
+        cut = int(len(self.data[:,data_index])/2)
+        self.data[:cut,data_index]= fft[:cut]
+        self.data[cut:] = False
 
 
 
@@ -223,5 +225,33 @@ class Measurement(object):
                 realsol.append(np.float_(0))
             realsol.append(intervall)
             i += 1
+    def trapez_for_each(self, index_x, index_y):
+        """
+        This method integrates the given Values with the Trapeziodal Rule
+        :param index_x: index der X Achse
+        :param index_y: index der Y Achse
+        :return: integrated Values from x,y
+        """
+        i = 1
+        sol = []
+
+        while i < len(self.data[:,index_x]):
+            res = sci.trapz(self.data[0:i, index_y], self.data[0:i, index_x])
+            res = np.float_(res)
+            sol.append(res)
+            i += 1
+        i = 1
+        realsol = []
+        while i < len(sol):
+
+            intervall = sol[i] - sol[i - 1]
+
+            if i == 1:
+                realsol.append(np.float_(0))
+
+            realsol.append(intervall)
+            i += 1
+        return np.asarray(realsol)
+
 
 

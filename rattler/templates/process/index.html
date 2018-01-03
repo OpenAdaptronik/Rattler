@@ -21,7 +21,6 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <h5>Graph zur Orientierung:</h5>
                         <div id="firstGraph"></div>
                     </div>
                     <div class="divider"></div>
@@ -30,6 +29,10 @@
                         <p>
                             <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
                             <label for="resampling">Resampling anwenden</label>
+                            {% if expertMode %}
+                                <input id="resamplingScale" name="resamplingScale" value="1" type="text">
+                                <label for="resamplingScale">order</label>
+                            {% endif %}
                         </p>
                     </div>
                     <div class="divider"></div>
@@ -80,9 +83,13 @@
                                         <label class="gaussLabel" for="gauss">Gauss-Filter</label>
                                         {% if expertMode %}
                                             <div class="row" style="padding:0; margin:0">
-                                                <div class="input-field col s12">
+                                                <div class="input-field col s6">
                                                     <input id="gaussStd" name="gaussStd" value="2.0" type="text">
                                                     <label class="gaussStdLabel" for="gaussStd">std</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="gaussM" name="gaussM" value="50" type="text">
+                                                    <label class="gaussMLabel" for="gaussM">m</label>
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -91,39 +98,15 @@
                             </p>
                         </div>
                     </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                        <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">analysieren! <i class="material-icons right">send</i></button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
-
-
-
-<!--
-LOG:
-{{ LOG }}
-<hr/>
-Header:
-{{ jsonHeader }}
-<hr/>
-Einheiten:
-{{ jsonEinheiten }}
-<hr/>
-zeitreihenSpalte:
-{{ zeitreihenSpalte }}
-<hr/>
-Data:
-{{ jsonData }}
-<hr/>
-saveExperiment:
-{{ saveExperiment }}
-<hr/>
-datensatzName:
-{{ datensatzName }}
-<hr/>
-erfassungsDatum:
-{{ erfassungsDatum }}
-<hr/>-->
 
 {% endblock %}
 {% block sideNavBlock %}
@@ -137,6 +120,7 @@ erfassungsDatum:
         var dataArray = JSON.parse('{{ jsonData|safe }}');
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
+        //var newDataArray = JSON.parse('{{ newData|safe }}');
     </script>
     <script type="text/javascript" src="{% static 'process/index.js' %}"></script>
 {% endblock %}

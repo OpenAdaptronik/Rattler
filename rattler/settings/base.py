@@ -167,7 +167,7 @@ STATICFILES_DIRS = [
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
-AUTHENTICATION_BACKENDS = ['apps.register.NewModelBackend.NewModelBackend']
+AUTHENTICATION_BACKENDS = ['apps.register.auth.UsernameEmailAuthBackend']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
