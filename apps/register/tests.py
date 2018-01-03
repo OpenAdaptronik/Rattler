@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from unittest.mock import patch, PropertyMock, sentinel
+from unittest.mock import patch, sentinel, Mock
 
 from django.test import TestCase
-from django.contrib.auth.backends import ModelBackend as django_ModelBackend
 
 from .auth import UsernameEmailAuthBackend, UserModel
+from . import tokens
 
 class RegisterAuthTestCase(TestCase):
     """ Test cases of the auth module.
@@ -38,25 +38,60 @@ class RegisterAuthTestCase(TestCase):
         self.backend = UsernameEmailAuthBackend()
 
     @patch('django.contrib.auth.backends.ModelBackend.authenticate')
-    def test_call_super_authenticate(self, django_model):
+    def test_call_super_authenticate(self, auth_mock):
+        """ Test if the super method authenticate was called.
+        """
         request = sentinel.some_object
         self.backend.authenticate(request, username='Test', password='test')
-        self.assertTrue(django_model.called)
-        django_model.assert_called_once_with(request, password='test', username='Test')
+        self.assertTrue(auth_mock.called)
+        auth_mock.assert_called_once_with(request, password='test', username='Test')
 
     @patch('django.contrib.auth.backends.ModelBackend.authenticate')
     def test_call_super_with_username(self, auth_mock):
+        """ Test if the super with username.
+        """
         request = sentinel.some_object
         self.backend.authenticate(request, username='Test', password='test')
         self.assertEqual(UserModel.USERNAME_FIELD, 'username')
+        auth_mock.assert_called_once_with(request, password='test', username='Test')
 
     @patch('django.contrib.auth.backends.ModelBackend.authenticate')
     def test_call_super_with_email(self, auth_mock):
+        """ Test if the super with email.
+        """
         request = sentinel.some_object
         self.backend.authenticate(request, username='test@test.de', password='test')
         self.assertEqual(UserModel.USERNAME_FIELD, 'username')
+        auth_mock.assert_called_once_with(request, password='test', username='test@test.de')
+
+class AccountActivationTokenGeneratorTestCase(TestCase):
+    """ Test cases for AccountActivationTokenGenerator
+    """
+    def test_instance(self):
+        """ Test if account_activation_token is an instance of AccountActivationTokenGenerator
+        """
+        self.assertIsInstance(
+            tokens.account_activation_token,
+            tokens.AccountActivationTokenGenerator
+        )
+
+    def test__make_hash_value(self):
+        """ Test method _make_hash_value
+        """
+        user = Mock(id=1, is_active=False, email='test@test.de')
+        # pylint: disable=W0212
+        self.assertEqual(
+            tokens.account_activation_token._make_hash_value(user, 12),
+            '112Falsetest@test.de'
+        )
+        user = Mock(id=532, is_active=True, email='rattler@test.de')
+        # pylint: disable=W0212
+        self.assertEqual(
+            tokens.account_activation_token._make_hash_value(user, 421),
+            '532421Truerattler@test.de'
+        )
 
 class RegisterTestCase(TestCase):
-    """ Test cases of the refister app.
+    """ Test cases of the register app.
     """
     pass
