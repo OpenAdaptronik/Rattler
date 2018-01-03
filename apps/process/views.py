@@ -74,7 +74,7 @@ def analysis(request):
                 hochpassCofreq = request.POST.get('hochpassCofreq' + str(i),'')
                 tiefpassOrder = request.POST.get('tiefpassOrder' + str(i),'')
                 tiefpassCofreq = request.POST.get('tiefpassCofreq' + str(i),'')
-                if request.POST.get('hochpass' + str(i),'') == 'on' & request.POST.get('tiefpass' + str(i),'') == 'on':
+                if request.POST.get('hochpass' + str(i),'') == 'on' and request.POST.get('tiefpass' + str(i),'') == 'on':
                     if hochpassOrder != '':
                         if hochpassCofreq != '' and tiefpassCofreq != '':
                             measurement.butterworth_band_filter(data_index=i, lowcut=float(tiefpassCofreq),

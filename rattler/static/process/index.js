@@ -73,7 +73,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColumnRow" + (i - (i%2))).show();
             
             // Spaltentitel einfügen
-            $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + " <b>" + spaltenTitel[i] + "</b>");
+            $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + ": <b>" + spaltenTitel[i] + "</b>");
             
             // IDs, names, fors
                 $("#spaltenCol" + i + " #hochpass").attr("name", "hochpass" + i).attr("id", "hochpass" + i);

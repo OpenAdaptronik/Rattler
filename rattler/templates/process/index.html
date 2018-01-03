@@ -26,12 +26,16 @@
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Features für das gesamte Experiment:</h5>
-                        <p>
-                            <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
-                            <label for="resampling">Resampling anwenden</label>
-                            <input id="resamplingScale" name="resamplingScale" type="text">
-                            <label for="resamplingScale">scale</label>
-                        </p>
+                        <div class="row">
+                            <div class="col s6">
+                                <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
+                                <label for="resampling">Resampling anwenden</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="resamplingScale" name="resamplingScale" type="text">
+                                <label for="resamplingScale">scale</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="divider"></div>
                     <div class="section" id="dataColsSection">
