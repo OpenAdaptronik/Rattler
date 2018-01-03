@@ -22,7 +22,10 @@ def fromDashboard(request):
         measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
 
         #measurement in Session-Variable speichern
-        request.session['measurementObject'] = measurement
+        request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
+        request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
+        request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
+        request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
 
         #measurement.resample_data()
         #measurement.gaussian_filter(1)
@@ -55,6 +58,7 @@ def fromDashboard(request):
 
 def analysis(request):
     '''
+
     if bool(resampling):
 
     if bool(hochpass) && tiefpass:
@@ -69,8 +73,8 @@ def analysis(request):
 
     return render(request, "process/analysis.html")'''
     if request.method == 'POST':
-        # measurement-Objekt aus der Session holen
-        measurement = request.session['measurementObject']
+        measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+                                       request.session['measurementUnits'],request.session['measurementTimeIndex'])
 
         # Experten-Modus?
         expert = True
@@ -84,7 +88,7 @@ def analysis(request):
         # über alle Spalten iterieren
         #for i in xrange(0, anzSpalten-1):
             #usw
-        uebergabe = [request.session['hochpass0'], request.session['tiefpass0']]
+        uebergabe = [request.POST.get('hochpass0',''), request.POST.get('tiefpass0','')]
 
 
         return render(request, "process/analysis.html", {'info': uebergabe})
