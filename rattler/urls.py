@@ -49,6 +49,7 @@ urlpatterns = [
     path('community/', include('apps.community.urls'), name='community'),
     path('profile/', include('apps.profile.urls'), name='profile'),
     path('createProjects/', include('apps.projects.urls'), name='createProjects'),
+    #path('createExperiment/', include('apps.process.urls'), name='createExperiment'),
     path('help/', views.help, name='help'),
     path('process/', include('apps.process.urls'), name='process'),
     path('', include('apps.index.urls'), name='index'),
