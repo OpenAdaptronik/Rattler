@@ -14,7 +14,7 @@ note as TextField
 
 class Project(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set')
     subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set')
     manufacturer = models.CharField(max_length=100)
@@ -33,8 +33,10 @@ parent as Foreignkey from itself'''
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE,)
+    name = models.CharField(max_length=100)
+    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE,)
+    class Meta:
+        unique_together = ('name', 'parent',)
 
 def project_image_path(instance, filename):
     return 'project/%s%s' % (instance.project.id, os.path.splitext(filename)[1])
