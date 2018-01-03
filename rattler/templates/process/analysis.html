@@ -21,7 +21,9 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        
+                        <div class="section">
+                            <div id="secondGraph"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,7 +38,11 @@
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}
     <script>
-        
+        var dataArray = JSON.parse('{{ jsonData|safe }}');
+        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
+        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
+        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var anzSpalten = dataArray[0].length;
     </script>
     <script type="text/javascript" src="{% static 'process/analysis.js' %}"></script>
 {% endblock %}

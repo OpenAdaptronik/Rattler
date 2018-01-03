@@ -43,10 +43,6 @@ def fromDashboard(request):
             #'saveExperiment': saveExperiment,
             'datensatzName': datensatzName,
             'erfassungsDatum': erfassungsDatum,
-            #'dataAsString': str(measurement.get_data()).replace('\n', ' ').replace('\r', ''),
-            #'headerAsString': str(measurement.get_data()).replace('\n', ' ').replace('\r', ''),
-            #'dataAsString': str(measurement.colNames_User).replace('\n', ' ').replace('\r', ''),
-            #'unitsAsString': str(measurement.colUnits_User).replace('\n', ' ').replace('\r', ''),
             'expertMode': False #@TODO: wirklich den Expert-Mode auslesen! mit request.user
         }
         return render(request, "process/index.html", dataForRender)
@@ -57,21 +53,7 @@ def fromDashboard(request):
 
 
 def analysis(request):
-    '''
 
-    if bool(resampling):
-
-    if bool(hochpass) && tiefpass:
-        measurement.butterworth_band_filter(1)
-    else:
-        if hochpass:
-            measurement.butterworth_filter(mode='high')
-        if tiefpass:
-            measurement.butterworth_filter(mode='low')
-    if bool(gauss):
-        measurement.gaussian_filter()
-
-    return render(request, "process/analysis.html")'''
     if request.method == 'POST':
         # measurement-Objekt aus den Session-Variablen auslesen und wieder erstellen
         measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
@@ -80,9 +62,6 @@ def analysis(request):
         # Experten-Modus?
         expert = True #@TODO: Wahre Abfrage, ob User Experte ist!
 
-        # Variablen aus dem Post-Request auslesen
-        #jsonHeader = request.POST.get("jsonHeader", "")
-
         # Anz der Spalten
         anzSpalten = len(measurement.data[0])
 
@@ -90,29 +69,53 @@ def analysis(request):
         if request.POST.get('resampling','') == 'on':
             resamplingScale = request.POST.get('resamplingScale','1')
             # Resampling aufrufen
+            measurement.resample_data(float(resamplingScale))
 
         # über alle Spalten iterieren
-        for i in xrange(0, anzSpalten-1):
-            hochpassOrder = request.POST.get('hochpassOrder' + str(i),'4')
-            hochpassCofreq = request.POST.get('hochpassCofreq' + str(i),'0.1')
-            tiefpassOrder = request.POST.get('tiefpassOrder' + str(i),'4')
-            tiefpassCofreq = request.POST.get('tiefpassCofreq' + str(i),'0.9')
-            if request.POST.get('hochpass' + str(i),'') == 'on' && request.POST.get('tiefpass' + str(i),'') == 'on':
-                # hier Bandpass Bro IMMER MIT DEN VARIABLEN hochpassOrder, hochpassCofreq, tiefpassOrder, tiefpassCofreq
-            else:
-                if request.POST.get('hochpass' + str(i),'') == 'on':
-                    # hier hochpass Bro IMMER MIT hochpassOrder, hochpassCofreq
-                if request.POST.get('tiefpass' + str(i),'') == 'on':
-                    # hier tiefpass Brudi IMMER MIT tiefpassOrder, tiefpassCofreq
-            if request.POST.get('gauss' + str(i),'') == 'on':
-                gaussStd = request.POST.get('gaussStd' + str(i),'2')
-                gaussM = request.POST.get('gaussM' + str(i),'50')
-                # hier gauss Vallah IMMER MIT gaussStd, gaussM
-        
+        for i in range(0, anzSpalten-1):
+            if i != measurement.timeIndex:
+                hochpassOrder = request.POST.get('hochpassOrder' + str(i),4)
+                hochpassCofreq = request.POST.get('hochpassCofreq' + str(i),None)
+                tiefpassOrder = request.POST.get('tiefpassOrder' + str(i),4)
+                tiefpassCofreq = request.POST.get('tiefpassCofreq' + str(i),None)
+                if request.POST.get('hochpass' + str(i),'') == 'on' & request.POST.get('tiefpass' + str(i),'') == 'on':
+                    if expert == True:
+                        measurement.butterworth_band_filter(data_index=i, lowcut=float(tiefpassCofreq),
+                                                           highcut=float(hochpassCofreq), order=int(hochpassOrder))
+                    else:
+                        measurement.butterworth_band_filter(data_index=i)
+
+                else:
+                    if request.POST.get('hochpass' + str(i),'') == 'on':
+                        if expert == True:
+                            measurement.butterworth_filter(data_index=i,cofreq=float(hochpassCofreq),
+                                                           order= int(hochpassOrder),moder='high')
+                        else:
+                            measurement.butterworth_filter(data_index=i,moder='high')
+
+                    if request.POST.get('tiefpass' + str(i),'') == 'on':
+                        if expert == True:
+                            measurement.butterworth_filter(data_index=i, cofreq=float(tiefpassCofreq),
+                                                           order=int(tiefpassOrder),moder='low')
+                        else:
+                            measurement.butterworth_filter(data_index=i,moder='low')
+
+
+                if request.POST.get('gauss' + str(i),'') == 'on':
+                    gaussStd = request.POST.get('gaussStd' + str(i),'2')
+                    gaussM = request.POST.get('gaussM' + str(i),'50')
+                    if expert == True:
+                        measurement.gaussian_filter_expert(i,gaussM,gaussStd)
+                    else:
+                        measurement.gaussian_filter(i,gaussStd)
 
         # Daten zum Rendern vorbereiten
         dataForRender = {
-
+            'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
+            'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
+            'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
+            'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
+            'expertMode': expert
         }
 
         return render(request, "process/analysis.html", dataForRender)
