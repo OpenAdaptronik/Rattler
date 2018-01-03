@@ -1,15 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 
 from .forms import AuthenticationForm
 def index(request):
-   
-    if not request.user.is_authenticated:
-        return render(
-            request,
-            'index/index.html',
-            {
-                'login_form': AuthenticationForm()
-            }
-        )
-    else:
-        return render(request, 'dashboard/index.html')
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/dashboard')
+
+    return render(
+        request,
+        'index/index.html',
+        {
+            'login_form': AuthenticationForm()
+        }
+    )

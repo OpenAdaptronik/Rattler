@@ -22,12 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from django.urls import path
-from .views import IndexView, register_success, register_activate
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils import six
 
-app_name = 'register'
-urlpatterns = [
-    path('activate/<uidb64>/<slug:token>/', register_activate, name='activate'),
-    path('success/', register_success, name='success'),
-    path('', IndexView.as_view(), name='index'),
-]
+class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
+    """ Token generator for the account activation.
+    Attributes:
+        See django.contrib.auth.tokens.PasswordResetTokenGenerator.
+    """
+    def _make_hash_value(self, user, timestamp):
+        """ Create a hash value.
+        Creates a hash for a given user and the timestamp.
+
+        Args:
+            user: The user to create the hash for.
+            timestamp: The timestamp to create the hash for.
+        """
+        return (
+            six.text_type(user.id) + six.text_type(timestamp) +
+            six.text_type(user.is_active) + six.text_type(user.email)
+        )
+
+account_activation_token = AccountActivationTokenGenerator()

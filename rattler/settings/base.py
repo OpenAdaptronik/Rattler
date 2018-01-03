@@ -116,6 +116,7 @@ INSTALLED_APPS = [
     'apps.profile.apps.ProfileConfig',
     'apps.process.apps.ProcessConfig',
     'apps.community.apps.CommunityConfig',
+    'apps.dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -166,7 +167,7 @@ STATICFILES_DIRS = [
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
-AUTHENTICATION_BACKENDS = ['apps.register.NewModelBackend.NewModelBackend']
+AUTHENTICATION_BACKENDS = ['apps.register.auth.UsernameEmailAuthBackend']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
