@@ -7,7 +7,7 @@ ENV PYTHONFAULTHANDLER 1
 LABEL maintainer Alexander Kopp "alexander.kopp@stud.tu-darmstadt.de"
 
 RUN apk add --no-cache --virtual build-base && \
-    apk add --no-cache ca-certificates mariadb-dev libffi-dev libjpeg freetype freetype-dev lcms2 lcms2-dev libjpeg-turbo libjpeg-turbo-dev zlib zlib-dev libwebp musl libgcc libgfortran libstdc++ gfortran openjpeg tiff lapack-dev openblas && \
+    apk add --no-cache ca-certificates mariadb-dev libffi-dev libjpeg freetype freetype-dev lcms2 lcms2-dev libjpeg-turbo libjpeg-turbo-dev zlib zlib-dev libwebp musl libgcc libgfortran libstdc++ gfortran openjpeg tiff lapack-dev openblas gettext && \
     python3 -m ensurepip && \
     pip3 install --upgrade pip setuptools && \
     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \

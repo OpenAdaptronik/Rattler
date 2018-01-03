@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 '''crates model Projects with
 userId as ForeignKey from User
@@ -11,18 +12,17 @@ typ as CharField
 note as TextField
 '''
 
-
 class Project(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
-    name = models.CharField(max_length=100)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set')
-    subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set')
-    manufacturer = models.CharField(max_length=100)
-    typ = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
-    visibility = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'), on_delete=models.CASCADE,)
+    name = models.CharField(_('name'), max_length=100)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set', verbose_name=_('category'))
+    subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set', verbose_name=_('subcategory'))
+    manufacturer = models.CharField(_('manufacturer'), max_length=100)
+    typ = models.CharField(_('type'), max_length=100)
+    description = models.TextField(_('description') ,max_length=500)
+    visibility = models.BooleanField(_('visibility'), default=True)
+    created = models.DateTimeField(_('created'), auto_now_add=True)
+    updated = models.DateTimeField(_('updated'), auto_now=True)
 
     def __str__(self):
         return self.name    
