@@ -12,6 +12,7 @@ services:
     links:
       - db:db
       - smtp:smtp
+      - cache:cache
 
   db:
       image: mariadb:latest
@@ -30,3 +31,8 @@ services:
       ports:
         - 25:25
         - 8080:80
+
+  cache:
+      image: memcached:alpine
+      ports:
+        - "11211:11211"
