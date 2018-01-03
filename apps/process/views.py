@@ -68,9 +68,12 @@ def analysis(request):
 
     # Resampling?
     if request.POST.get('resampling','') == 'on':
-        resamplingScale = request.POST.get('resamplingScale',1)
+        resamplingScale = request.POST.get('resamplingScale','')
         # Resampling aufrufen
-        measurement.resample_data(float(resamplingScale))
+        if resamplingScale == '':
+            measurement.resample_data()
+        else:
+            measurement.resample_data(float(resamplingScale))
 
     # über alle Spalten iterieren (von 0 bis anzSpalten)
     for i in range(0, anzSpalten):
