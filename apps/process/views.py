@@ -17,19 +17,29 @@ def fromDashboard(request):
         erfassungsDatum = request.POST.get("erfassungsDatum", "")
 
         measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
-        #measurement.resample_data()
+        measurement.resample_data()
         measurement.gaussian_filter(1)
+        measurement.butterworth_filter(1)
 
         # Daten zur Übergabe vorbereiten
         dataForRender = {
-            'LOG': str(measurement.get_data()),
+            #'LOG': measurement.data,
             'jsonHeader': jsonHeader,
             'jsonEinheiten': jsonEinheiten,
             'zeitreihenSpalte': zeitreihenSpalte,
             'jsonData': jsonData,
+            'measurementObject': measurement,
             'saveExperiment': saveExperiment,
             'datensatzName': datensatzName,
-            'erfassungsDatum': erfassungsDatum
+            'erfassungsDatum': erfassungsDatum,
+            #'dataAsString': str(measurement.get_data()).replace('\n', ' ').replace('\r', ''),
+            #'headerAsString': str(measurement.get_data()).replace('\n', ' ').replace('\r', ''),
+            #'dataAsString': str(measurement.colNames_User).replace('\n', ' ').replace('\r', ''),
+            #'unitsAsString': str(measurement.colUnits_User).replace('\n', ' ').replace('\r', ''),
+            'expertMode': True
         }
 
         return render(request, "process/index.html", dataForRender)
+
+def analysis(request):
+    return render(request, "process/analysis.html")

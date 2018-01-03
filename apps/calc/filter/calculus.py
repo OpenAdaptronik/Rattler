@@ -10,7 +10,7 @@ def get_delta(data, index,decimals=0):
     :return: a list of distances between all values in the column
     '''
     res = []
-    for t1, t2 in zip(data[index,:-1], data[index,1:]):
+    for t1, t2 in zip(data[:-1,index], data[1:,index]):
         res.append(np.around(np.float64(t2) - np.float64(t1),decimals))
     return res
 
@@ -21,7 +21,7 @@ def get_average_delta(data, index):
     :param time_index: the index of the column of interest
     :return: average between all values in the column
     '''
-    deltas = get_delta(data, index, 10)
+    deltas = get_delta(data, index, 7)
     return sum(deltas) / len(deltas)
 
 
