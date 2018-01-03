@@ -29,6 +29,10 @@
                         <p>
                             <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
                             <label for="resampling">Resampling anwenden</label>
+                            {% if expertMode %}
+                                <input id="resamplingScale" name="resamplingScale" value="1" type="text">
+                                <label for="resamplingScale">order</label>
+                            {% endif %}
                         </p>
                     </div>
                     <div class="divider"></div>

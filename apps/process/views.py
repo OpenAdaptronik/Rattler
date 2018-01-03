@@ -73,24 +73,48 @@ def analysis(request):
 
     return render(request, "process/analysis.html")'''
     if request.method == 'POST':
+        # measurement-Objekt aus den Session-Variablen auslesen und wieder erstellen
         measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
                                        request.session['measurementUnits'],request.session['measurementTimeIndex'])
 
         # Experten-Modus?
-        expert = True
+        expert = True #@TODO: Wahre Abfrage, ob User Experte ist!
 
         # Variablen aus dem Post-Request auslesen
-        jsonHeader = request.POST.get("jsonHeader", "")
+        #jsonHeader = request.POST.get("jsonHeader", "")
 
         # Anz der Spalten
         anzSpalten = len(measurement.data[0])
 
+        # Resampling?
+        if request.POST.get('resampling','') == 'on':
+            resamplingScale = request.POST.get('resamplingScale','1')
+            # Resampling aufrufen
+
         # über alle Spalten iterieren
-        #for i in xrange(0, anzSpalten-1):
-            #usw
-        uebergabe = [request.POST.get('hochpass0',''), request.POST.get('tiefpass0','')]
+        for i in xrange(0, anzSpalten-1):
+            hochpassOrder = request.POST.get('hochpassOrder' + str(i),'4')
+            hochpassCofreq = request.POST.get('hochpassCofreq' + str(i),'0.1')
+            tiefpassOrder = request.POST.get('tiefpassOrder' + str(i),'4')
+            tiefpassCofreq = request.POST.get('tiefpassCofreq' + str(i),'0.9')
+            if request.POST.get('hochpass' + str(i),'') == 'on' && request.POST.get('tiefpass' + str(i),'') == 'on':
+                # hier Bandpass Bro IMMER MIT DEN VARIABLEN hochpassOrder, hochpassCofreq, tiefpassOrder, tiefpassCofreq
+            else:
+                if request.POST.get('hochpass' + str(i),'') == 'on':
+                    # hier hochpass Bro IMMER MIT hochpassOrder, hochpassCofreq
+                if request.POST.get('tiefpass' + str(i),'') == 'on':
+                    # hier tiefpass Brudi IMMER MIT tiefpassOrder, tiefpassCofreq
+            if request.POST.get('gauss' + str(i),'') == 'on':
+                gaussStd = request.POST.get('gaussStd' + str(i),'2')
+                gaussM = request.POST.get('gaussM' + str(i),'50')
+                # hier gauss Vallah IMMER MIT gaussStd, gaussM
+        
 
+        # Daten zum Rendern vorbereiten
+        dataForRender = {
 
-        return render(request, "process/analysis.html", {'info': uebergabe})
+        }
+
+        return render(request, "process/analysis.html", dataForRender)
     else:
         return render(request, "dashboard/index.html")
