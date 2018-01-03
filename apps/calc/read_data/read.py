@@ -225,5 +225,33 @@ class Measurement(object):
                 realsol.append(np.float_(0))
             realsol.append(intervall)
             i += 1
+    def trapez_for_each(self, index_x, index_y):
+        """
+        This method integrates the given Values with the Trapeziodal Rule
+        :param index_x: index der X Achse
+        :param index_y: index der Y Achse
+        :return: integrated Values from x,y
+        """
+        i = 1
+        sol = []
+
+        while i < len(self.data[:,index_x]):
+            res = sci.trapz(self.data[0:i, index_y], self.data[0:i, index_x])
+            res = np.float_(res)
+            sol.append(res)
+            i += 1
+        i = 1
+        realsol = []
+        while i < len(sol):
+
+            intervall = sol[i] - sol[i - 1]
+
+            if i == 1:
+                realsol.append(np.float_(0))
+
+            realsol.append(intervall)
+            i += 1
+        return np.asarray(realsol)
+
 
 
