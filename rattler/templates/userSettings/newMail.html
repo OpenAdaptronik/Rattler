@@ -1,9 +1,6 @@
 
 Um ihre Email zu ändern klicken sie auf den Link
 
-Stellen Sie sicher das Sie noch eingeloggt sind mit ihrem Account bevor sie den link klicken!!
-falls sich tun sie das jetzt --> {{ domain }}/login
-
-
 hier neue E-Mail Adresse bestätigen
-{{ domain }}/profile/email/change/success/{{ mail}}/{{ username }}/{{ token }}
+
+{% if use_https%}https{% else %}http{% endif %}://{{ domain }}{% url 'profile:change_email_success' mail=mail uidb64=uid token=token %}

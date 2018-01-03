@@ -7,6 +7,7 @@ from django.contrib import auth
 from django.shortcuts import HttpResponseRedirect, render
 from django.contrib.sites.shortcuts import get_current_site
 
+
 from rattler.auth.mixins import NoLoginRequiredMixin
 from rattler.auth.decorators import not_login_required
 
@@ -14,6 +15,14 @@ from apps.profile.models import Profile
 
 from .forms import RegisterForm
 from .models import VerificationToken
+from .tokens import account_activation_token
+from django.contrib.auth import get_user_model
+
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+
 
 
 class IndexView(NoLoginRequiredMixin, FormView):
@@ -37,7 +46,8 @@ class IndexView(NoLoginRequiredMixin, FormView):
             HttpResponseRedirect -- Form valid redirection
         """
         user = form.save()
-        token = VerificationToken.objects.create_user_token(user)
+        token = account_activation_token.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
         current_site = get_current_site(self.request)
         domain = current_site.domain
         user.email_user(
@@ -48,6 +58,7 @@ class IndexView(NoLoginRequiredMixin, FormView):
                     'use_https': self.request.is_secure(),
                     'domain':domain,
                     'user': user,
+                    'uid': uid,
                     'token': token,
                 }
             )
@@ -73,7 +84,7 @@ def register_success(request):
     return render(request, 'register/success.html')
 
 @not_login_required
-def register_activate(request, token):
+def register_activate(request, uidb64, token):
     """Verifies the user by the given token.
 
     Verifies the user and redirects to home
@@ -88,8 +99,16 @@ def register_activate(request, token):
     Returns:
         HttpResponse -- The redirection response
     """
-    token = VerificationToken.objects.get_token(token)
-    if token is not None:
-        VerificationToken.objects.verify_user(token.user)
-        auth.login(request, token.user)
+
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        auth.login(request, user)
+
     return HttpResponseRedirect('/')
