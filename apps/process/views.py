@@ -42,8 +42,7 @@ def fromDashboard(request):
             #'measurementObject': measurement,
             #'saveExperiment': saveExperiment,
             'datensatzName': datensatzName,
-            'erfassungsDatum': erfassungsDatum,
-            'expertMode': False #@TODO: wirklich den Expert-Mode auslesen! mit request.user
+            'erfassungsDatum': erfassungsDatum
         }
         return render(request, "process/index.html", dataForRender)
     else:
@@ -59,9 +58,6 @@ def analysis(request):
         measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
                                        request.session['measurementUnits'],request.session['measurementTimeIndex'])
 
-        # Experten-Modus?
-        expert = True #@TODO: Wahre Abfrage, ob User Experte ist!
-
         # Anz der Spalten
         anzSpalten = len(measurement.data[0])
 
@@ -71,43 +67,69 @@ def analysis(request):
             # Resampling aufrufen
             measurement.resample_data(float(resamplingScale))
 
-        # über alle Spalten iterieren
-        for i in range(0, anzSpalten-1):
+        # über alle Spalten iterieren (von 0 bis anzSpalten)
+        for i in range(0, anzSpalten):
             if i != measurement.timeIndex:
-                hochpassOrder = request.POST.get('hochpassOrder' + str(i),4)
-                hochpassCofreq = request.POST.get('hochpassCofreq' + str(i),None)
-                tiefpassOrder = request.POST.get('tiefpassOrder' + str(i),4)
-                tiefpassCofreq = request.POST.get('tiefpassCofreq' + str(i),None)
+                hochpassOrder = request.POST.get('hochpassOrder' + str(i),'')
+                hochpassCofreq = request.POST.get('hochpassCofreq' + str(i),'')
+                tiefpassOrder = request.POST.get('tiefpassOrder' + str(i),'')
+                tiefpassCofreq = request.POST.get('tiefpassCofreq' + str(i),'')
                 if request.POST.get('hochpass' + str(i),'') == 'on' & request.POST.get('tiefpass' + str(i),'') == 'on':
-                    if expert == True:
-                        measurement.butterworth_band_filter(data_index=i, lowcut=float(tiefpassCofreq),
+                    if hochpassOrder != '':
+                        if hochpassCofreq != '' and tiefpassCofreq != '':
+                            measurement.butterworth_band_filter(data_index=i, lowcut=float(tiefpassCofreq),
                                                            highcut=float(hochpassCofreq), order=int(hochpassOrder))
-                    else:
-                        measurement.butterworth_band_filter(data_index=i)
-
+                        elif hochpassCofreq != '':
+                            measurement.butterworth_band_filter(data_index=i,
+                                                           highcut=float(hochpassCofreq), order=int(hochpassOrder))
+                        elif tiefpassCofreq != '':
+                            measurement.butterworth_band_filter(data_index=i,
+                                                           lowcut=float(tiefpassCofreq), order=int(hochpassOrder))
+                        else:
+                            measurement.butterworth_band_filter(data_index=i, order=int(hochpassOrder))
+                    elif hochpassCofreq != '':
+                        if tiefpassCofreq != '':
+                            measurement.butterworth_band_filter(data_index=i, lowcut=float(tiefpassCofreq),
+                                                           highcut=float(hochpassCofreq))
+                        else:
+                            measurement.butterworth_band_filter(data_index=i, highcut=float(hochpassCofreq))
+                    elif tiefpassCofreq != '':
+                        measurement.butterworth_band_filter(data_index=i, lowcut=float(tiefpassCofreq))
                 else:
                     if request.POST.get('hochpass' + str(i),'') == 'on':
-                        if expert == True:
+                        if hochpassOrder != '' and hochpassCofreq != '':
                             measurement.butterworth_filter(data_index=i,cofreq=float(hochpassCofreq),
-                                                           order= int(hochpassOrder),moder='high')
+                                                           order= int(hochpassOrder),mode='high')
+                        elif hochpassOrder != '':
+                            measurement.butterworth_filter(data_index=i,
+                                                           order= int(hochpassOrder),mode='high')
+                        elif hochpassCofreq != '':
+                            measurement.butterworth_filter(data_index=i,cofreq=float(hochpassCofreq),mode='high')
                         else:
-                            measurement.butterworth_filter(data_index=i,moder='high')
-
+                            measurement.butterworth_filter(data_index=i,mode='high')
                     if request.POST.get('tiefpass' + str(i),'') == 'on':
-                        if expert == True:
-                            measurement.butterworth_filter(data_index=i, cofreq=float(tiefpassCofreq),
-                                                           order=int(tiefpassOrder),moder='low')
+                        if tiefpassOrder != '' and tiefpassCofreq != '':
+                            measurement.butterworth_filter(data_index=i,cofreq=float(tiefpassCofreq),
+                                                           order= int(tiefpassOrder),mode='low')
+                        elif tiefpassOrder != '':
+                            measurement.butterworth_filter(data_index=i,
+                                                           order= int(tiefpassOrder),mode='low')
+                        elif tiefpassCofreq != '':
+                            measurement.butterworth_filter(data_index=i,cofreq=float(tiefpassCofreq),mode='low')
                         else:
-                            measurement.butterworth_filter(data_index=i,moder='low')
-
+                            measurement.butterworth_filter(data_index=i,mode='low')
 
                 if request.POST.get('gauss' + str(i),'') == 'on':
-                    gaussStd = request.POST.get('gaussStd' + str(i),'2')
-                    gaussM = request.POST.get('gaussM' + str(i),'50')
-                    if expert == True:
-                        measurement.gaussian_filter_expert(i,gaussM,gaussStd)
+                    gaussStd = request.POST.get('gaussStd' + str(i),'')
+                    gaussM = request.POST.get('gaussM' + str(i),'')
+                    if gaussStd != '' and gaussM != '':
+                        measurement.gaussian_filter_expert(index=i,gauss_M=gaussM,gauss_std=gaussStd)
+                    elif gaussStd != '':
+                        measurement.gaussian_filter_expert(index=i,gauss_std=gaussStd)
+                    elif gaussM != '':
+                        measurement.gaussian_filter_expert(index=i,gauss_M=gaussM)
                     else:
-                        measurement.gaussian_filter(i,gaussStd)
+                        measurement.gaussian_filter_expert(index=i)
 
         # Daten zum Rendern vorbereiten
         dataForRender = {
