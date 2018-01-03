@@ -91,6 +91,10 @@
                             </p>
                         </div>
                     </div>
+                    <div class="section">
+                        <h5>Graph zur Orientierung:</h5>
+                        <div id="secondGraph"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,6 +141,7 @@ erfassungsDatum:
         var dataArray = JSON.parse('{{ jsonData|safe }}');
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
+        var newDataArray = JSON.parse('{{ newData|safe }}');
     </script>
     <script type="text/javascript" src="{% static 'process/index.js' %}"></script>
 {% endblock %}

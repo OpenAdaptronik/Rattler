@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from apps.calc.read_data import read
 from django.contrib.auth.decorators import login_required
+import json
+import numpy as np
 
 # Create your views here.
 @login_required
@@ -17,10 +19,19 @@ def fromDashboard(request):
         erfassungsDatum = request.POST.get("erfassungsDatum", "")
 
         measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
-        measurement.resample_data()
-        measurement.gaussian_filter(1)
-        measurement.butterworth_filter(1)
+        #measurement.resample_data()
+        #measurement.gaussian_filter(1)
+        #measurement.butterworth_filter(1)
+        #measurement.fourier_transform(1)
 
+        class NumPyArangeEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, np.ndarray):
+                    return obj.tolist()  # or map(int, obj)
+                return json.JSONEncoder.default(self, obj)
+
+
+        #json.dumps(measurement.data.tolist(),separators=(',', ':'), sort_keys=True, indent=4),
         # Daten zur Übergabe vorbereiten
         dataForRender = {
             #'LOG': measurement.data,
@@ -28,6 +39,7 @@ def fromDashboard(request):
             'jsonEinheiten': jsonEinheiten,
             'zeitreihenSpalte': zeitreihenSpalte,
             'jsonData': jsonData,
+            'newData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
             'measurementObject': measurement,
             'saveExperiment': saveExperiment,
             'datensatzName': datensatzName,

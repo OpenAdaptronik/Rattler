@@ -59,6 +59,60 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
 
     Plotly.newPlot('firstGraph', traces, layout);
 
+
+
+    // Plotly: Graph von vorheriger Seite wieder plotten
+    var traces = [];
+    // s. Variablenname
+    zeitreihenSpalteAlsZeile = arrayColumnAsRow(newDataArray, zeitreihenSpalte);
+
+    var layout = {
+        'xaxis': {
+            autotick: true
+        }
+    }
+
+    // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+    for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
+        traces[i] = {
+            x: zeitreihenSpalteAlsZeile,
+            y: arrayColumnAsRow(newDataArray, i),
+            name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+            type: 'scatter',
+            line: {
+                width: 1.5,
+            }
+        }
+        var yaxisTitle;
+        if(i==0){
+            traces[i]['yaxis'] = 'y';
+            yaxisTitle = 'yaxis';
+        } else {
+            traces[i]['yaxis'] = 'y' + (i+1);
+            yaxisTitle = 'yaxis' + (i+1);
+        }
+        layout[yaxisTitle] = {
+            showgrid: false,
+            zeroline: false,
+            showline: false,
+            autotick: true,
+            showticklabels: false,
+        }
+        if(i!=0){
+            layout[yaxisTitle]['overlaying'] = 'y';
+        }
+    }
+
+
+    console.log(traces);
+    console.log(layout);
+
+
+    traces[zeitreihenSpalte] = [];
+    traces[zeitreihenSpalte].shift();
+    Plotly.newPlot('secondGraph', traces,layout);
+
+
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
         // vor einem Pärchen von 2 Spalten eine Row einfügen

@@ -73,8 +73,10 @@ class Measurement(object):
         '''
 
         # @TODO: Parameter überprüfen
-        fft = [abs(x) for x in sci.fft(self.data[:,data_index])]
-        self.data[:,data_index]= fft[:round(len(fft))]
+        fft = [np.real(x) for x in sci.fft(self.data[:,data_index])]
+        cut = int(len(self.data[:,data_index])/2)
+        self.data[:cut,data_index]= fft[:cut]
+        self.data[cut:] = False
 
 
 
