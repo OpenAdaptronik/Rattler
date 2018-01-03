@@ -1,4 +1,5 @@
 from .base import *
+import sys
 
 # DEBUG = True equals Development-Mode
 DEBUG = True
@@ -24,7 +25,7 @@ DATABASES = {
         'NAME': 'rattler',
         'USER': 'rattler',
         'PASSWORD': '123456',
-        'HOST': 'db'
+        'HOST': 'db',
     }
 }
 
@@ -35,3 +36,7 @@ EMAIL_HOST = 'smtp'
 # Sessions
 # SESSION_CACHE_ALIAS = 'sessions'
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+if 'test' in sys.argv or 'test_coverage' in sys.argv: #Covers regular testing and django-coverage
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+    DATABASES['default']['NAME'] = os.path.join(BASE_DIR, 'db/test.database.sqlite')

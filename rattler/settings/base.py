@@ -114,7 +114,9 @@ INSTALLED_APPS = [
     'apps.index.apps.IndexConfig',
     'apps.projects.apps.ProjectsConfig',
     'apps.profile.apps.ProfileConfig',
+    'apps.process.apps.ProcessConfig',
     'apps.community.apps.CommunityConfig',
+    'apps.dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -165,7 +167,7 @@ STATICFILES_DIRS = [
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
-AUTHENTICATION_BACKENDS = ['apps.register.NewModelBackend.NewModelBackend']
+AUTHENTICATION_BACKENDS = ['apps.register.auth.UsernameEmailAuthBackend']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -182,4 +184,4 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Sessions
-SESSION_COOKIE_AGE = 60 * 15 # 15 Minuten = 60*15 = 900 Sekunden TimeOut fuer Sessions
+SESSION_COOKIE_AGE = 60 * 200 # 15 Minuten = 60*15 = 900 Sekunden TimeOut fuer Sessions

@@ -1,4 +1,5 @@
 import numpy as np
+
 def get_delta(data, index,decimals=0):
     '''
     This function calculates the difference between the values of one column
@@ -9,9 +10,19 @@ def get_delta(data, index,decimals=0):
     :return: a list of distances between all values in the column
     '''
     res = []
-    for t1, t2 in zip(data.iloc[:, index][:-1], data.iloc[:, index][1:]):
-        res.append(np.around(t2 - t1,decimals))
+    for t1, t2 in zip(data[:-1,index], data[1:,index]):
+        res.append(np.around(np.float64(t2) - np.float64(t1),decimals))
     return res
+
+def get_average_delta(data, index):
+    '''
+    This function calculates the average difference between the values of one column
+    :param data: the data array
+    :param time_index: the index of the column of interest
+    :return: average between all values in the column
+    '''
+    deltas = get_delta(data, index, 7)
+    return sum(deltas) / len(deltas)
 
 
 def numerical_approx(data, diff_Value1_Index, diff_Value2_Index = 0):
