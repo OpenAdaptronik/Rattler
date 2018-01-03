@@ -65,12 +65,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
     for(i=0; i < anzSpalten; i++){
         if(i!=zeitreihenSpalte){
             // vor einem Pärchen von 2 Spalten eine Row einfügen
-            if(i % 4 == 0){
-                $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
-            } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
-                $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
-            }
-            $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColumnRow" + (i - (i%2))).show();
+            $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColsSection").show();
             
             // Spaltentitel einfügen
             $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + ": <b>" + spaltenTitel[i] + "</b>");
