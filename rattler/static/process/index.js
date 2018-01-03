@@ -63,42 +63,44 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
 
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
-        // vor einem Pärchen von 2 Spalten eine Row einfügen
-        if(i % 4 == 0){
-            $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
-        } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
-            $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
-        }
-        $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColumnRow" + (i - (i%2))).show();
-        
-        // Spaltentitel einfügen
-        $("#spaltenCol" + i + " .colHeader").html("Spalte <b>" + spaltenTitel[i] + "</b>");
-        
-        // IDs, names, fors
-            $("#spaltenCol" + i + " #hochpass").attr("name", "hochpass" + i).attr("id", "hochpass" + i);
-            $("#spaltenCol" + i + " .hochpassLabel").attr("for", "hochpass" + i);
-
-                $("#spaltenCol" + i + " #hochpassOrder").attr("id", "hochpassOrder" + i);
-                $("#spaltenCol" + i + " .hochpassOrderLabel").attr("for", "hochpassOrder" + i);
-
-                $("#spaltenCol" + i + " #hochpassCofreq").attr("id", "hochpassCofreq" + i);
-                $("#spaltenCol" + i + " .hochpassCofreqLabel").attr("for", "hochpassCofreq" + i);
-                
-            $("#spaltenCol" + i + " #tiefpass").attr("name", "tiefpass" + i).attr("id", "tiefpass" + i);
-            $("#spaltenCol" + i + " .tiefpassLabel").attr("for", "tiefpass" + i);
-
-                $("#spaltenCol" + i + " #tiefpassOrder").attr("id", "tiefpassOrder" + i);
-                $("#spaltenCol" + i + " .tiefpassOrderLabel").attr("for", "tiefpassOrder" + i);
-
-                $("#spaltenCol" + i + " #tiefpassCofreq").attr("id", "tiefpassCofreq" + i);
-                $("#spaltenCol" + i + " .tiefpassCofreqLabel").attr("for", "tiefpassCofreq" + i);
+        if(i!=zeitreihenSpalte){
+            // vor einem Pärchen von 2 Spalten eine Row einfügen
+            if(i % 4 == 0){
+                $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
+            } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
+                $("#dataColsSection").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
+            }
+            $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColumnRow" + (i - (i%2))).show();
             
-            $("#spaltenCol" + i + " #gauss").attr("name", "gauss" + i).attr("id", "gauss" + i);
-            $("#spaltenCol" + i + " .gaussLabel").attr("for", "gauss" + i);
+            // Spaltentitel einfügen
+            $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + " <b>" + spaltenTitel[i] + "</b>");
+            
+            // IDs, names, fors
+                $("#spaltenCol" + i + " #hochpass").attr("name", "hochpass" + i).attr("id", "hochpass" + i);
+                $("#spaltenCol" + i + " .hochpassLabel").attr("for", "hochpass" + i);
+
+                    $("#spaltenCol" + i + " #hochpassOrder").attr("id", "hochpassOrder" + i);
+                    $("#spaltenCol" + i + " .hochpassOrderLabel").attr("for", "hochpassOrder" + i);
+
+                    $("#spaltenCol" + i + " #hochpassCofreq").attr("id", "hochpassCofreq" + i);
+                    $("#spaltenCol" + i + " .hochpassCofreqLabel").attr("for", "hochpassCofreq" + i);
+                    
+                $("#spaltenCol" + i + " #tiefpass").attr("name", "tiefpass" + i).attr("id", "tiefpass" + i);
+                $("#spaltenCol" + i + " .tiefpassLabel").attr("for", "tiefpass" + i);
+
+                    $("#spaltenCol" + i + " #tiefpassOrder").attr("id", "tiefpassOrder" + i);
+                    $("#spaltenCol" + i + " .tiefpassOrderLabel").attr("for", "tiefpassOrder" + i);
+
+                    $("#spaltenCol" + i + " #tiefpassCofreq").attr("id", "tiefpassCofreq" + i);
+                    $("#spaltenCol" + i + " .tiefpassCofreqLabel").attr("for", "tiefpassCofreq" + i);
                 
-                $("#spaltenCol" + i + " #gaussStd").attr("id", "gaussStd" + i);
-                $("#spaltenCol" + i + " .gaussStdLabel").attr("for", "gaussStd" + i);
-                
-                $("#spaltenCol" + i + " #gaussM").attr("id", "gaussM" + i);
-                $("#spaltenCol" + i + " .gaussMLabel").attr("for", "gaussM" + i);
+                $("#spaltenCol" + i + " #gauss").attr("name", "gauss" + i).attr("id", "gauss" + i);
+                $("#spaltenCol" + i + " .gaussLabel").attr("for", "gauss" + i);
+                    
+                    $("#spaltenCol" + i + " #gaussStd").attr("id", "gaussStd" + i);
+                    $("#spaltenCol" + i + " .gaussStdLabel").attr("for", "gaussStd" + i);
+                    
+                    $("#spaltenCol" + i + " #gaussM").attr("id", "gaussM" + i);
+                    $("#spaltenCol" + i + " .gaussMLabel").attr("for", "gaussM" + i);
+        }
     }
