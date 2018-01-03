@@ -15,6 +15,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
     zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
 
     var layout = {
+        title: 'Graph zur Orientierung:',
         'xaxis': {
             autotick: true
         }
@@ -67,6 +68,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
     zeitreihenSpalteAlsZeile = arrayColumnAsRow(newDataArray, zeitreihenSpalte);
 
     var layout = {
+        title: 'Schöner Graph',
         'xaxis': {
             autotick: true
         }
@@ -79,8 +81,11 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             y: arrayColumnAsRow(newDataArray, i),
             name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
             type: 'scatter',
+            showlegend: true,
+            hoverinfo: 'all',
+            mode: 'lines',
             line: {
-                width: 1.5,
+                width: 1.5
             }
         }
         var yaxisTitle;
@@ -93,8 +98,8 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
         }
         layout[yaxisTitle] = {
             showgrid: false,
-            zeroline: false,
-            showline: false,
+            zeroline: true,
+            showline: true,
             autotick: true,
             showticklabels: false,
         }
@@ -102,10 +107,6 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             layout[yaxisTitle]['overlaying'] = 'y';
         }
     }
-
-
-    console.log(traces);
-    console.log(layout);
 
 
     traces[zeitreihenSpalte] = [];

@@ -10,7 +10,7 @@ from apps.calc.filter.calculus import get_delta,get_average_delta
 class Measurement(object):
     def __init__(self, raw, Column_Names, Unit_Names, time=0):
         self.timeIndex = int(time)
-        self.data = np.array(json.loads(raw))
+        self.data = np.array(json.loads(raw), dtype=np.float64)
         self.colUnits = np.array(json.loads(Unit_Names))
         self.colNames = np.array(json.loads(Column_Names))
 
