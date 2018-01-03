@@ -68,7 +68,7 @@ def analysis(request):
 
     # Resampling?
     if request.POST.get('resampling','') == 'on':
-        resamplingScale = request.POST.get('resamplingScale','1')
+        resamplingScale = request.POST.get('resamplingScale',1)
         # Resampling aufrufen
         measurement.resample_data(float(resamplingScale))
 
