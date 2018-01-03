@@ -20,8 +20,10 @@ class Project(models.Model):
     manufacturer = models.CharField(max_length=100)
     typ = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
-    created = models.DateTimeField
-    updated = models.DateTimeField
+    visibility = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
 
 
 '''creates model Category with
