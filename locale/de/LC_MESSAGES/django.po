@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-03 18:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/projects/admin.py:13
+msgid "attributes"
+msgstr "Attribute"
+
+#: apps/projects/admin.py:14 apps/user/admin.py:51
+msgid "Important dates"
+msgstr "Wichtige Daten"
+
+#: apps/projects/models.py:16
+msgid "user"
+msgstr "Benutzer"
+
+#: apps/projects/models.py:17
+msgid "name"
+msgstr "Name"
+
+#: apps/projects/models.py:18
+msgid "category"
+msgstr "Kategorie"
+
+#: apps/projects/models.py:19
+msgid "subcategory"
+msgstr "Unterkategorie"
+
+#: apps/projects/models.py:20
+msgid "manufacturer"
+msgstr "Hersteller"
+
+#: apps/projects/models.py:21
+msgid "type"
+msgstr "Typ"
+
+#: apps/projects/models.py:22
+msgid "description"
+msgstr "Beschreibung"
+
+#: apps/projects/models.py:23
+msgid "visibility"
+msgstr "Sichtbarkeit"
+
+#: apps/projects/models.py:24 apps/user/models.py:69
+msgid "created"
+msgstr "Erstellt"
+
+#: apps/projects/models.py:25
+msgid "updated"
+msgstr "Aktualisiert"
+
+#: apps/user/admin.py:50
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+#: apps/user/models.py:67
+msgid "email address"
+msgstr "E-Mail"
+
+#: apps/user/models.py:68
+msgid "active"
+msgstr "Aktiv"
+
+#: rattler/templates/index/index.html:5
+msgid "Test"
+msgstr "Test die übersetzung"
+
+#: rattler/templates/registration/password_reset_confirm.html:7
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+"Bitte geben Sie Ihr neues Passwort zweimal ein, damit wir überprüfen können, "
+"ob es richtig eingetippt wurde."
+
+#: rattler/templates/registration/password_reset_confirm.html:13
+msgid "New password:"
+msgstr "Neues Passwort:"
+
+#: rattler/templates/registration/password_reset_confirm.html:18
+msgid "Confirm password:"
+msgstr "Passwort wiederholen:"
+
+#: rattler/templates/registration/password_reset_confirm.html:21
+msgid "Change my password"
+msgstr "Mein Passwort ändern"
+
+#: rattler/templates/registration/password_reset_confirm.html:27
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+"Der Link zum Zurücksetzen Ihres Passworts ist ungültig, wahrscheinlich, weil "
+"er schon einmal benutzt wurde. Bitte setzen Sie Ihr Passwort erneut zurück."

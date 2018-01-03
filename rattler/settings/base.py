@@ -73,6 +73,9 @@ MEDIA_URL = 'media/'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 # https://docs.djangoproject.com/en/2.0/ref/settings/#language-code
 LANGUAGE_CODE = 'de-de'
