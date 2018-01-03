@@ -123,21 +123,20 @@ def analysis(request):
                     gaussStd = request.POST.get('gaussStd' + str(i),'')
                     gaussM = request.POST.get('gaussM' + str(i),'')
                     if gaussStd != '' and gaussM != '':
-                        measurement.gaussian_filter_expert(index=i,gauss_M=gaussM,gauss_std=gaussStd)
+                        measurement.gaussian_filter(index=i,gauss_M=gaussM,gauss_std=gaussStd)
                     elif gaussStd != '':
-                        measurement.gaussian_filter_expert(index=i,gauss_std=gaussStd)
+                        measurement.gaussian_filter(index=i,gauss_std=gaussStd)
                     elif gaussM != '':
-                        measurement.gaussian_filter_expert(index=i,gauss_M=gaussM)
+                        measurement.gaussian_filter(index=i,gauss_M=gaussM)
                     else:
-                        measurement.gaussian_filter_expert(index=i)
+                        measurement.gaussian_filter(index=i)
 
         # Daten zum Rendern vorbereiten
         dataForRender = {
             'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
             'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
             'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
-            'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
-            'expertMode': expert
+            'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
         }
 
         return render(request, "process/analysis.html", dataForRender)

@@ -64,6 +64,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
         if(i!=zeitreihenSpalte){
+            console.log(i)
             // vor einem Pärchen von 2 Spalten eine Row einfügen
             $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColsSection").show();
             

@@ -81,7 +81,7 @@ class Measurement(object):
 
 
 
-    def gaussian_filter(self, index, gauss_std=2):
+    def gaussian_filter(self, index, gauss_std=2 , gauss_M=5):
         '''
         The gaussian filter with the default number of points in the output window (Equal the points of the input)
         :param index: The index of interest for the data
@@ -98,37 +98,16 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
-        daten = np.asarray(self.data[index], dtype=np.float64)
-        b = signal.gaussian(len(self.data[:,0]), gauss_std)
-        self.data[index] = ndimage.convolve1d(daten, b / b.sum())
-
-
-
-    def gaussian_filter_expert(self, index, gauss_M=50, gauss_std=2):
-        '''
-        The gaussian filter with the customizable number of points in the output window
-        :param index: The index of interest for the data
-        :param gauss_M: Number of points in the output window of the gaussian Function.
-        If zero or less, an empty array is returned.
-        :param gauss_std: The standard deviation, sigma.
-        :return: The filtered Data
-
-        Example:
-        import matplotlib.pyplot as plt
-        def gaussian_example(data):
-            plt.figure
-            plt.plot(data.iloc[:, 0], data.iloc[:, 1], 'b', alpha=0.75)
-            plt.plot(data.iloc[:, 0], gaussian_filter(data, 1, 100), 'r')
-            plt.legend(('noisy signal', 'Gauß'), loc='best')
-            plt.grid(True)
-            plt.show()
-        '''
         daten = np.asarray(self.data[:,index], dtype=np.float64)
-        b = signal.gaussian(gauss_M, gauss_std)
+        if gauss_M == None:
+            b = signal.gaussian(len(self.data[:,0]), gauss_std)
+        else:
+            b = signal.gaussian(gauss_M, gauss_std)
         self.data[:,index] = ndimage.convolve1d(daten, b / b.sum())
 
 
-    def butterworth_band_filter(self,data_index, order=4, lowcut=None, highcut=None):
+
+    def butterworth_band_filter(self,data_index, order=4, lowcut=-1, highcut=-1):
         '''
         Filters high and lowpass
         :param data: The data array
@@ -153,9 +132,9 @@ class Measurement(object):
         nyq = 0.5 * fs
 
         # Default Values
-        if lowcut == None:
+        if lowcut == -1:
             lowcut = 0.1 * nyq
-        if highcut == None:
+        if highcut == -1:
             highcut = 0.9 * nyq
 
         low = lowcut / nyq
@@ -202,29 +181,8 @@ class Measurement(object):
         b, a = signal.butter(order, cut, btype=mode, analog=False)
         self.data[:,data_index] = signal.filtfilt(b, a, np.float64(self.data[:, data_index]))
 
-    def trapez_for_each(self, index_x, index_y):
-        """
-        This method integrates the given Values with the Trapeziodal Rule
-        :param index_x: index der X Achse
-        :param index_y: index der Y Achse
-        :return: integrated Values from x,y
-        """
-        i = 1
-        sol = []
-        while i < len(self[index_x]):
-            res = sci.trapz(self[0:i, index_y], self[0:i, index_x])
-            sol.append(res)
-            i += 1
-        i = 1
-        realsol = []
-        while i < len(sol):
 
-            intervall = sol[i] - sol[i - 1]
 
-            if i == 1:
-                realsol.append(np.float_(0))
-            realsol.append(intervall)
-            i += 1
     def trapez_for_each(self, index_x, index_y):
         """
         This method integrates the given Values with the Trapeziodal Rule
