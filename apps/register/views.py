@@ -56,6 +56,29 @@ class IndexView(NoLoginRequiredMixin, FormView):
     form_class = RegisterForm
     success_url = 'success'
 
+    def create_mail_context(self, user):
+        """ Creates the context data to render a verification mail.
+        """
+        return {
+            'use_https': self.request.is_secure(),
+            'domain': get_current_site(self.request).domain,
+            'user': user,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+            'token': account_activation_token.make_token(user),
+        }
+
+    def create_mail_message(self, user):
+        return render_to_string(
+            'register/mail/verification.html',
+            self.create_mail_context(user)
+        )
+
+    def mail_user(self, user):
+        user.email_user(
+            'Account Verifikation',
+            self.create_mail_message(user)
+        )
+
     def form_valid(self, form):
         """Called if the form is valid
 
@@ -67,25 +90,7 @@ class IndexView(NoLoginRequiredMixin, FormView):
         Returns:
             Form valid redirection
         """
-
-        user = form.save()
-        token = account_activation_token.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
-        current_site = get_current_site(self.request)
-        domain = current_site.domain
-        user.email_user(
-            'Account Verifikation',
-            render_to_string(
-                'register/mail/verification.html',
-                {
-                    'use_https': self.request.is_secure(),
-                    'domain':domain,
-                    'user': user,
-                    'uid': uid,
-                    'token': token,
-                }
-            )
-        )
+        self.mail_user(form.save())
         return super().form_valid(form)
 
 

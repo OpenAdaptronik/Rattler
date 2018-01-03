@@ -27,7 +27,7 @@ from unittest.mock import patch, sentinel, Mock
 from django.test import TestCase
 
 from .auth import UsernameEmailAuthBackend, UserModel
-from . import tokens
+from . import tokens, views, forms
 
 class RegisterAuthTestCase(TestCase):
     """ Test cases of the auth module.
@@ -90,6 +90,47 @@ class AccountActivationTokenGeneratorTestCase(TestCase):
             tokens.account_activation_token._make_hash_value(user, 421),
             '532421Truerattler@test.de'
         )
+
+class IndexViewTestCase(TestCase):
+    """ Tests cases for the IndexView
+    """
+
+    def test_is_instance_of_form_view(self):
+        from django.views.generic import FormView
+        view = views.IndexView()
+        self.assertIsInstance(view, FormView)
+
+    def test_is_instance_of_login_not_required(self):
+        from rattler.auth.mixins import NoLoginRequiredMixin
+        view = views.IndexView()
+        self.assertIsInstance(view, NoLoginRequiredMixin)
+
+    @patch('apps.register.forms.RegisterForm')
+    def test_save_user(self, form):
+        form.save.return_value = Mock(id=1)
+        
+        request = Mock()
+        request.get_host = Mock(return_value='test')
+
+        view = views.IndexView()
+        view.request = request
+        view.form_valid(form)
+        form.save.assert_called_once()
+
+    @patch('apps.register.forms.RegisterForm')
+    @patch('apps.register.tokens.AccountActivationTokenGenerator.make_token')
+    def test_creates_token(self, token_generator, form):
+        token_generator.return_value = 'token'
+        form.save.return_value = Mock(id=432)
+        
+        request = Mock()
+        request.get_host = Mock(return_value='test')
+
+        view = views.IndexView()
+        view.request = request
+        view.form_valid(form)
+
+        token_generator.assert_called_once_with(form.save.return_value)
 
 class RegisterTestCase(TestCase):
     """ Test cases of the register app.
