@@ -2,7 +2,8 @@ from django.shortcuts import render
 from apps.calc.read_data import read
 from django.contrib.auth.decorators import login_required
 import json
-import numpy as np
+from .json import NumPyArangeEncoder
+
 
 # Create your views here.
 @login_required
@@ -28,21 +29,8 @@ def fromDashboard(request):
         #measurement.butterworth_filter(1)
         #measurement.fourier_transform(1)
 
-
-        # @TODO Beschreibung!!
-        class NumPyArangeEncoder(json.JSONEncoder):
-            def default(self, obj):
-                if isinstance(obj, np.ndarray):
-                    return obj.tolist()  # or map(int, obj)
-                return json.JSONEncoder.default(self, obj)
-
-
-        #json.dumps(measurement.data.tolist(),separators=(',', ':'), sort_keys=True, indent=4),
-
-
         # Daten zur Übergabe vorbereiten
         dataForRender = {
-            #'LOG': measurement.data,
             'jsonHeader': jsonHeader,
             'jsonEinheiten': jsonEinheiten,
             'zeitreihenSpalte': zeitreihenSpalte,
@@ -58,7 +46,6 @@ def fromDashboard(request):
             #'unitsAsString': str(measurement.colUnits_User).replace('\n', ' ').replace('\r', ''),
             'expertMode': False #@TODO: wirklich den Expert-Mode auslesen! mit request.user
         }
-
         return render(request, "process/index.html", dataForRender)
     else:
         return render(request, "dashboard/index.html")
@@ -67,6 +54,20 @@ def fromDashboard(request):
 
 
 def analysis(request):
+    '''
+    if bool(resampling):
+
+    if bool(hochpass) && tiefpass:
+        measurement.butterworth_band_filter(1)
+    else:
+        if hochpass:
+            measurement.butterworth_filter(mode='high')
+        if tiefpass:
+            measurement.butterworth_filter(mode='low')
+    if bool(gauss):
+        measurement.gaussian_filter()
+
+    return render(request, "process/analysis.html")'''
     if request.method == 'POST':
         # measurement-Objekt aus der Session holen
         measurement = request.session['measurementObject']
@@ -84,7 +85,8 @@ def analysis(request):
         #for i in xrange(0, anzSpalten-1):
             #usw
         uebergabe = [request.session['hochpass0'], request.session['tiefpass0']]
-            
-        return render(request, "process/analysis.html", 'info' = uebergabe)
+
+
+        return render(request, "process/analysis.html", {'info': uebergabe})
     else:
         return render(request, "dashboard/index.html")
