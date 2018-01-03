@@ -25,10 +25,8 @@ class Measurement(object):
         '''
         This function resamples the data it.colNames_User Within this it uses the already most frequently used time interval.
         It can also upscale the datapoints (get more Datapoints)[scale > 1] or downscale the data [scale <1]
-
         If the scale is 1.0 it projects it only on a constant intervall
         e.g. if it is already constant, there will be no changes.
-
         the used function is described here: https://dsp.stackexchange.com/questions/8488/what-is-an-algorithm-to-re
         -sample-from-a-variable-rate-to-a-fixed-rate
         /process/
@@ -59,7 +57,6 @@ class Measurement(object):
         :param data: the pandas DataFrame of the data
         :param data_index: The index of the data intervall of
         :return: the list of fourrier transformed values
-
         Example:
         import matplotlib.pyplot as plt
         def fourier_example(data):
@@ -73,6 +70,7 @@ class Measurement(object):
         '''
 
         # @TODO: Parameter überprüfen
+        # .real from numpy/scipy
         fft = [abs(x) for x in sci.fft(self.data[:,data_index])]
         self.data[:,data_index]= fft[:round(len(fft))]
 
@@ -85,7 +83,6 @@ class Measurement(object):
         :param index: The index of interest for the data
         :param gauss_std: The standard deviation, sigma.
         :return: The filtered Data
-
         Example:
         import matplotlib.pyplot as plt
         def gaussian_example(data):
@@ -110,7 +107,6 @@ class Measurement(object):
         If zero or less, an empty array is returned.
         :param gauss_std: The standard deviation, sigma.
         :return: The filtered Data
-
         Example:
         import matplotlib.pyplot as plt
         def gaussian_example(data):
@@ -136,7 +132,6 @@ class Measurement(object):
         :param lowcut: The low frequency cutoff, default 10% of the input frequency
         :param highcut: The high frequency cutoff, default 90% of the input frequency
         :return: the filtered data sequence
-
         Example:
         import matplotlib.pyplot as plt
         def butterworth_example(data):
@@ -170,7 +165,6 @@ class Measurement(object):
         :param cofreq: The cuttoff frequency
         :param mode: disdinguish between 'high' for highpass and 'low' for lowpass
         :return: the filtered data sequence
-
         Example:
         import matplotlib.pyplot as plt
         def butterworth_example(data):
@@ -199,6 +193,32 @@ class Measurement(object):
         cut = cofreq / nyq
         b, a = signal.butter(order, cut, btype=mode, analog=False)
         self.data[:,data_index] = signal.filtfilt(b, a, np.float64(self.data[:, data_index]))
+
+    def trapez_for_each(self, index_x, index_y):
+        """
+        This method integrates the given Values with the Trapeziodal Rule
+        :param index_x: index der X Achse
+        :param index_y: index der Y Achse
+        :return: integrated Values from x,y
+        """
+        i = 1
+        sol = []
+        while i < len(self[index_x]):
+            res = sci.trapz(self[0:i, index_y], self[0:i, index_x])
+            sol.append(res)
+            i += 1
+        i = 1
+        realsol = []
+        while i < len(sol):
+
+            intervall = sol[i] - sol[i - 1]
+
+            if i == 1:
+                realsol.append(np.float_(0))
+            realsol.append(intervall)
+            i += 1
+
+
 
 
 

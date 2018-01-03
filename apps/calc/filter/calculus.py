@@ -1,4 +1,5 @@
 import numpy as np
+import scipy as sp
 
 def get_delta(data, index,decimals=0):
     '''
@@ -39,3 +40,5 @@ def numerical_approx(data, diff_Value1_Index, diff_Value2_Index = 0):
     for v1, t1 in zip(get_delta(data, diff_Value1_Index), get_delta(data, diff_Value2_Index)):
         diff_Value.append(v1 / t1)
     return diff_Value
+
+

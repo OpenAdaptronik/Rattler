@@ -18,7 +18,7 @@ def fourier_transform(data, data_index):
         plt.grid(True)
         plt.show()
     '''
-
+    # numpy import abs(x) change to x.real for  x in ...
     #@TODO: Parameter überprüfen
     fft = [abs(x) for x in sci.fft(data.iloc[:, data_index])]
     return fft[:round(len(fft)/2)]
