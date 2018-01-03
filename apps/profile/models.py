@@ -1,13 +1,17 @@
+import os
 from django.db import models
 from django.conf import settings
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 
 
 # Create your models here.
 
 class Profile(models.Model):
-    profileID = models.IntegerField(primary_key=True)
-    userID = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
-    userImageID = models.ForeignKey('UserImage', on_delete=models.CASCADE,default=None,null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
     company = models.CharField(max_length=255, null=True, blank=True)
     info = models.CharField(max_length=255, null=True, blank=True)
     expert = models.BooleanField(default=False)
@@ -19,15 +23,20 @@ class Profile(models.Model):
     created = models.DateTimeField
     updated = models.DateTimeField
 
+def profile_image_path(instance, filename):
+    return 'profile/%s%s' % (instance.profile.id, os.path.splitext(filename)[1])
 
-    def curruser_company_finder(self):
-        return self.objects.filter(userID=user.id).values['company']
+class ProfileImage(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    path = models.ImageField(upload_to=profile_image_path)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
+@receiver(post_save, sender=get_user_model())
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
-class UserImage(models.Model):
-    userImageID = models.IntegerField(primary_key=True)
-    type = models.CharField(max_length=255, unique=True, default=None)
-    data = models.ImageField
-    created = models.DateTimeField
-    updated = models.DateTimeField
-
+@receiver(post_save, sender=get_user_model())
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

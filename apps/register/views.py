@@ -40,12 +40,6 @@ class IndexView(NoLoginRequiredMixin, FormView):
         token = VerificationToken.objects.create_user_token(user)
         current_site = get_current_site(self.request)
         domain = current_site.domain
-        Profile.objects.create( profileID=user.id,
-                                userID_id = user.id,
-                                userImageID_id=None,
-                                visibility_mail = 1,
-                                #Profilebild default setzen
-                                 )
         user.email_user(
             'Account Verifikation',
             render_to_string(

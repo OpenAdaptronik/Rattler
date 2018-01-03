@@ -13,8 +13,7 @@ note as TextField
 
 
 class Project(models.Model):
-    projectID = models.IntegerField(primary_key=True)
-    userID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
     name = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set')
     subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set')
@@ -32,12 +31,13 @@ parent as Foreignkey from itself'''
 
 
 class Category(models.Model):
-    categoryID = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE,)
 
+def project_image_path(instance, filename):
+    return 'project/%s%s' % (instance.project.id, os.path.splitext(filename)[1])
 
 class ProjectImage(models.Model):
-    project_imageID = models.IntegerField(primary_key=True)
-    projectID = models.ForeignKey('Project', on_delete=models.CASCADE,)
-    image = models.ImageField
+    project = models.ForeignKey('Project', on_delete=models.CASCADE,)
+    path = models.ImageField(upload_to=project_image_path)
+

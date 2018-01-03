@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block container %}
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m10 offset-m1">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/media/{{ form.path.value }}" id="profile_image">
+                        </div>
+                        <div class="card-action">
+                            <label class="btn">
+                                    <input id="path" type="file" name="path" value="{{ form.path.value }}" accept="image/*" style="display:none">
+                                    Auswählen
+                            </label>
+                            <button class="btn" type="submit">Speichern</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> 
+    </div>
+</div>
+{% endblock %}
+
+{% block moreScripts %}
+<script>
+    $(document).ready(function() {
+        var VALID_FILETYPE = new RegExp('^image/.*');
+        $('#path').change(function(e) {
+            if (this.files.length != 1) {
+                return;
+            }
+            var file = this.files[0];
+            if (!VALID_FILETYPE.test(file.type)) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#profile_image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
+{% endblock %}
