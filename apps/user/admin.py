@@ -47,15 +47,18 @@ class UserAdmin(auth_admin.UserAdmin):
     """
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_superuser')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
-    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'date_joined', 'updated', )
-
+    list_display = ('username', 'email', 'is_superuser', 'date_joined', 'updated', )
+    list_filter = ('is_superuser', 'is_active')
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
+
+        
+
