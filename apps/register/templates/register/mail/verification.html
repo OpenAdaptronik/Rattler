@@ -2,6 +2,6 @@ Hallo {{ user.username }},
 
 vielen Dank für deine Registrierung. 
 
-Damit es losgehen kann, musst du lediglich deine E-Mail verfifizieren, in dem du den untenstehenden Link öffnest.
+Damit es losgehen kann, musst du lediglich deine E-Mail verifizieren, in dem du den untenstehenden Link öffnest.
 
 {% if use_https%}https{% else %}http{% endif %}://{{ domain }}{% url 'register:activate' uidb64=uid token=token %}
