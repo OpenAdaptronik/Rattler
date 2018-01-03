@@ -1,11 +1,8 @@
-from django.conf.urls import url
-
-from .views import IndexView
 from django.urls import path
+from . import views
 
-#app_name = 'projects'
-#urlpatterns = [
-    #url(r'^$', IndexView.as_view(), name='index'),
-#]
+app_name = 'projects'
+urlpatterns = [
 
-# ich glaube wir brauchen gar keine urls für projects
+    path('', views.save_project, name='index')
+    ]

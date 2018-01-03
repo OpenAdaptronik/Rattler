@@ -1,0 +1,81 @@
+<div class="section">
+  <div class="container">
+    <h2> Neues Projekt erstellen</h2>
+    <div class="row">
+      <form method="post">
+        {% csrf_token %}
+        <div class="col s12 m12 13" style="min-width: 300px">
+          <div class="card">
+            <p class="card-content">
+              <span class="card-title"></span>
+              <p>
+                <table>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="projectname">Projektname: </label>
+                        <input placeholder='' id="projectname" type="text" class="validate" name="projectname">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="category">Kategorie: </label>
+                        <input placeholder='' id="category" type="text" class="validate" name="category">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="subcategory">Subkategorie: </label>
+                        <input placeholder='' id="subcategory" type="text" class="validate" name="subcategory">
+                      </div>
+                    </td>
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="manufacturer">Hersteller: </label>
+                        <input placeholder='' id="manufacturer" type="text" class="validate" name="manufacturer">
+                      </div>
+                    </td>
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="typ">Typ: </label>
+                        <input placeholder='' id="typ" type="text" class="validate" name="typ">
+                      </div>
+                    </td>
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="description">Beschreibung: </label>
+                        <input placeholder='' id="description" type="text" class="validate" name="description">
+                      </div>
+                    </td>
+                  </tr>
+              <td>
+                  <div class="switch">
+                      <label>
+                          <input type="checkbox" name="visibility" {% if user.profile.visibility_mail == 1 %} checked {% endif %} value="1">
+                          <span class="lever"></span>
+                          Sichtbar
+                      </label>
+                  </div>
+              </td>
+                  <tr>
+                    <td>
+                      <div class="card-action">
+                        <button class="btn waves-effect waves-light" type="submit">Anlegen<i class="material-icons left"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -26,6 +26,10 @@ def settings (request):
     return render (request,'settings/index')
 
 @login_required
+def createProjects (request):
+    return render (request,'projects/index.html')
+
+@login_required
 def help (request):
     return render (request,'help/index.html')
 
