@@ -12,8 +12,6 @@ from django.shortcuts import render, reverse, redirect, HttpResponse
 from django.utils.functional import lazy
 from django.views.generic import UpdateView, DetailView
 
-
-from apps.register.models import VerificationToken
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 
@@ -81,31 +79,27 @@ def change_email(request):
         except:
             mailc=None
         if mailc is None:
-            try:
-                
-                token = account_activation_token.make_token(request.user)
-                uid = urlsafe_base64_encode(force_bytes(request.user.pk)).decode()
-                umail = urlsafe_base64_encode(force_bytes(mail)).decode()
-                current_site = get_current_site(request)
-                domain = current_site.domain
+            token = account_activation_token.make_token(request.user)
+            uid = urlsafe_base64_encode(force_bytes(request.user.pk)).decode()
+            umail = urlsafe_base64_encode(force_bytes(mail)).decode()
+            current_site = get_current_site(request)
+            domain = current_site.domain
 
-                mes = render_to_string('userSettings/newMail.html', {
-                    'use_https': request.is_secure(),
-                    'domain':domain,
-                    'uid': uid,
-                    'token': token,
-                    'mail': umail,
-                    'user': request.user,
-                })
+            mes = render_to_string('userSettings/newMail.html', {
+                'use_https': request.is_secure(),
+                'domain':domain,
+                'uid': uid,
+                'token': token,
+                'mail': umail,
+                'user': request.user,
+            })
 
-                email = EmailMessage(
-                    subject='Rattler: Email ändern',
-                    body=mes,
-                    to=[mail]
-                )
-                email.send()
-            except (VerificationToken.MultipleObjectsReturned):
-                token = None
+            email = EmailMessage(
+                subject='Rattler: Email ändern',
+                body=mes,
+                to=[mail]
+            )
+            email.send()
 
             update_session_auth_hash(request, request.user)
             return HttpResponse('''Die E-mail wurde verschickt.  <br/>

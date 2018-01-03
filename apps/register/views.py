@@ -14,7 +14,6 @@ from rattler.auth.decorators import not_login_required
 from apps.profile.models import Profile
 
 from .forms import RegisterForm
-from .models import VerificationToken
 from .tokens import account_activation_token
 from django.contrib.auth import get_user_model
 
