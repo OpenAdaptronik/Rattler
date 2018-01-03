@@ -38,6 +38,6 @@ def save_project(request):
 
         project.save()
 
-        return render(request, 'projects/index.html')
+        return render(request, 'projects/create.html')
 
-    return render(request, 'projects/index.html')
+    return render(request, 'projects/create.html')
