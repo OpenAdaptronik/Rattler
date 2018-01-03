@@ -15,6 +15,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
     zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
 
     var layout = {
+        title: 'Graph zur Orientierung:',
         'xaxis': {
             autotick: true
         }
@@ -59,6 +60,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
 
     Plotly.newPlot('firstGraph', traces, layout);
 
+
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
         // vor einem Pärchen von 2 Spalten eine Row einfügen
@@ -93,7 +95,10 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             
             $("#spaltenCol" + i + " #gauss").attr("name", "gauss" + i).attr("id", "gauss" + i);
             $("#spaltenCol" + i + " .gaussLabel").attr("for", "gauss" + i);
-
+                
                 $("#spaltenCol" + i + " #gaussStd").attr("id", "gaussStd" + i);
                 $("#spaltenCol" + i + " .gaussStdLabel").attr("for", "gaussStd" + i);
+                
+                $("#spaltenCol" + i + " #gaussM").attr("id", "gaussM" + i);
+                $("#spaltenCol" + i + " .gaussMLabel").attr("for", "gaussM" + i);
     }
