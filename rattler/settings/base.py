@@ -66,8 +66,8 @@ FILE_UPLOAD_HANDLERS = [
 ]
 DATA_UPLOAD_MAX_MEMORY_SIZE = 3 * 1024 * 1024 # 3MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 3 * 1024 * 1024 # 3 MB
-# MEDIA_ROOT
-# MEDIA_URL
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
 
 # i18n and l10n
 USE_I18N = True
@@ -111,11 +111,11 @@ SECRET_KEY = 'dqfc+6=p^h_qo0^j_bs4yb1q%6r%$)=y8)c_q)7s_b$qp4ldx$'
 INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
     'apps.register.apps.RegisterConfig',
-    'apps.userSettings.apps.UserSettingsConfig',
     'apps.index.apps.IndexConfig',
     'apps.projects.apps.ProjectsConfig',
     'apps.profile.apps.ProfileConfig',
     'apps.process.apps.ProcessConfig',
+    'apps.community.apps.CommunityConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -166,6 +166,7 @@ STATICFILES_DIRS = [
 
 # Authentication
 AUTH_USER_MODEL = 'user.User'
+AUTHENTICATION_BACKENDS = ['apps.register.NewModelBackend.NewModelBackend']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

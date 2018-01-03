@@ -33,5 +33,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp'
 
 # Sessions
-SESSION_CACHE_ALIAS = 'sessions'
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# SESSION_CACHE_ALIAS = 'sessions'
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
