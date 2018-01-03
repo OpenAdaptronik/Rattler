@@ -39,8 +39,8 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
         }
         layout[yaxisTitle] = {
             showgrid: false,
-            zeroline: true,
-            showline: true,
+            zeroline: false,
+            showline: false,
             autotick: true,
             showticklabels: false,
         }
