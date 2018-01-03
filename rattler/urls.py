@@ -45,7 +45,6 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     # Global Routes
     path('dashboard/', include('apps.dashboard.urls'), name='dashboard'),
-    #path('dashboard/', views.dashboard, name='dashboard'),
     path('community/', include('apps.community.urls'), name='community'),
     path('profile/', include('apps.profile.urls'), name='profile'),
     path('projects/', include('apps.projects.urls'), name='projects'),
