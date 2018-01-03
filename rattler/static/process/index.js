@@ -60,7 +60,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
     Plotly.newPlot('firstGraph', traces, layout);
 
 
-
+/*
     // Plotly: Graph von vorheriger Seite wieder plotten
     var traces = [];
     // s. Variablenname
@@ -111,7 +111,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
     traces[zeitreihenSpalte] = [];
     traces[zeitreihenSpalte].shift();
     Plotly.newPlot('secondGraph', traces,layout);
-
+*/
 
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
@@ -147,7 +147,10 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             
             $("#spaltenCol" + i + " #gauss").attr("name", "gauss" + i).attr("id", "gauss" + i);
             $("#spaltenCol" + i + " .gaussLabel").attr("for", "gauss" + i);
-
+                
                 $("#spaltenCol" + i + " #gaussStd").attr("id", "gaussStd" + i);
                 $("#spaltenCol" + i + " .gaussStdLabel").attr("for", "gaussStd" + i);
+                
+                $("#spaltenCol" + i + " #gaussM").attr("id", "gaussM" + i);
+                $("#spaltenCol" + i + " .gaussMLabel").attr("for", "gaussM" + i);
     }
