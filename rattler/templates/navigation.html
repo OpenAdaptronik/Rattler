@@ -14,10 +14,12 @@
     <i class="material-icons">person</i>
     <div>Profil anzeigen</div>
     </a></li>
-    <li><a href="{% url 'admin:index' %}">
-    <i class="material-icons">vpn_key</i>
-    <div>Admin-Bereich</div>
-    </a></li>
+    {% if user.is_staff and user.is_superuser %}
+        <li><a href="{% url 'admin:index' %}">
+        <i class="material-icons">vpn_key</i>
+        <div>Admin-Bereich</div>
+        </a></li>
+    {% endif %}
     <li><a href="{% url 'profile:edit' %}">
     <i class="material-icons">settings</i>
     <div>Einstellungen</div>

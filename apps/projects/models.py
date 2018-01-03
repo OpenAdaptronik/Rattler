@@ -23,7 +23,9 @@ class Project(models.Model):
     visibility = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    
+
+    def __str__(self):
+        return self.name    
 
 
 '''creates model Category with
@@ -34,7 +36,11 @@ parent as Foreignkey from itself'''
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE,)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE,)
+
+    def __str__(self):
+        return self.name
+
     class Meta:
         unique_together = ('name', 'parent',)
 
