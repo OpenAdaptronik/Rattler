@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 
 @login_required
-def dashboard (request):
-    return render (request,'dashboard/index.html')
+def dashboard(request):
+    return render(request, 'dashboard/index.html')
 
 def error404 (request):
     return render (request,'error404/index.html')

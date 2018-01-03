@@ -29,7 +29,7 @@
                             </ul>
                         </div><span style="display: inline-block">Schritt 1: 
                             <b>Hochladen & Visualisieren</b></span>&emsp;<span style="display: inline-block">
-                                <a href="{% url 'dashboard' %}">Von vorne beginnen</a>
+                                <a href="{% url 'dashboard:index' %}">Von vorne beginnen</a>
                             </span>
                     </p>
                     <div class="divider"></div>
@@ -87,6 +87,23 @@
                 <a href="#">Alle meine Schwingungsdaten anzeigen</a>
             </div>
         </div>
+        <tr>
+            <td>
+                <div class="card-action">
+                    <form action="/createProjects">
+                        <button class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <td> Meine Projekte:
+                        <ul>
+                        {% for project in my_projects %}
+                            <li> {{ project }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                      </td>
         <!--<div class="card">
             <div class="card-content">
                 <span class="card-title">Eriks Plotly Playground</span>
