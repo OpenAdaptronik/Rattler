@@ -19,8 +19,8 @@ WORKDIR /app
 
 EXPOSE 5000
 
-RUN pip3 install --no-cache-dir -r requirements.txt
-#RUN apk del build-base python3-dev
+RUN pip install --no-cache-dir -r requirements.txt
+RUN apk del build-base python3-dev
 
 ENTRYPOINT ["python", "/app/manage.py"]
 CMD ["runserver", "0:5000"]

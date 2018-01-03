@@ -3,10 +3,8 @@
 // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
 // https://stackoverflow.com/a/34979219
 const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
-/*
-console.log("Zeitreihe: ");
-console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
-*/
+
+
 
 
 // Plotly: Graph von vorheriger Seite wieder plotten
@@ -51,10 +49,6 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
             layout[yaxisTitle]['overlaying'] = 'y';
         }
     }
-    /*
-    console.log(traces);
-    console.log(layout);
-    */
     traces[zeitreihenSpalte] = [];
     traces[zeitreihenSpalte].shift();
 
@@ -64,7 +58,7 @@ console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
 // Spalten aufzählen, um spaltenweise Features auswählen zu können
     for(i=0; i < anzSpalten; i++){
         if(i!=zeitreihenSpalte){
-            console.log(i)
+
             // vor einem Pärchen von 2 Spalten eine Row einfügen
             $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColsSection").show();
             
