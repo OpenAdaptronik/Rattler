@@ -22,7 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from unittest.mock import patch, PropertyMock, sentinel
+
 from django.test import TestCase
+from django.contrib.auth.backends import ModelBackend as django_ModelBackend
+
+from .auth import UsernameEmailAuthBackend, UserModel
+
+class RegisterAuthTestCase(TestCase):
+    """ Test cases of the auth module.
+    """
+    def setUp(self):
+        """ Sets up the testcase
+        """
+        self.backend = UsernameEmailAuthBackend()
+
+    @patch('django.contrib.auth.backends.ModelBackend.authenticate')
+    def test_call_super_authenticate(self, django_model):
+        request = sentinel.some_object
+        self.backend.authenticate(request, username='Test', password='test')
+        self.assertTrue(django_model.called)
+        django_model.assert_called_once_with(request, password='test', username='Test')
+
+    @patch('django.contrib.auth.backends.ModelBackend.authenticate')
+    def test_call_super_with_username(self, auth_mock):
+        request = sentinel.some_object
+        self.backend.authenticate(request, username='Test', password='test')
+        self.assertEqual(UserModel.USERNAME_FIELD, 'username')
+
+    @patch('django.contrib.auth.backends.ModelBackend.authenticate')
+    def test_call_super_with_email(self, auth_mock):
+        request = sentinel.some_object
+        self.backend.authenticate(request, username='test@test.de', password='test')
+        self.assertEqual(UserModel.USERNAME_FIELD, 'username')
 
 class RegisterTestCase(TestCase):
     """ Test cases of the refister app.

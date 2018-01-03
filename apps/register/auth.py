@@ -25,7 +25,6 @@ SOFTWARE.
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
-# pylint: disable=C0103
 UserModel = get_user_model()
 
 class UsernameEmailAuthBackend(ModelBackend):
@@ -50,9 +49,8 @@ class UsernameEmailAuthBackend(ModelBackend):
             The authenticated user or None if not valid.
         """
         if '@' in username:
+            # TODO Wie kann man das mit unitttests testen?
             UserModel.USERNAME_FIELD = 'email'
-        else:
-            UserModel.USERNAME_FIELD = 'username'
 
         user = super(UsernameEmailAuthBackend, self).authenticate(
             request,
