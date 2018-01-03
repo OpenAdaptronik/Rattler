@@ -13,6 +13,9 @@ services:
       - db:db
       - smtp:smtp
       - cache:cache
+    entrypoint:
+      - watch
+      - ls
  
   db:
       image: mysql:8.0
