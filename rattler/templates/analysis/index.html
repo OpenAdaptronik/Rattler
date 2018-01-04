@@ -9,8 +9,12 @@
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
 {% block container %}
-<form action="{% url 'process:analysis' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
+<form action="{% url 'analysis:index' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
     {% csrf_token %}
+    <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
+    <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
+    <input type="hidden" id="zeitreihenSpalte" name="zeitreihenSpalte"/>
+    <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
     <h2>Schwingungsdaten analysieren</h2>
     <div class="row">
         <div class="col s12">
@@ -30,17 +34,79 @@
                             <div class="col s6">
                                 <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
                                 <label for="resampling">Resampling anwenden</label>
+                                <div class="input-field">
+                                    <input id="resamplingScale" name="resamplingScale" type="text">
+                                    <label for="resamplingScale">scale</label>
+                                </div>
                             </div>
-                            <div class="input-field col s6">
-                                <input id="resamplingScale" name="resamplingScale" type="text">
-                                <label for="resamplingScale">scale</label>
+                            <div class="col s6">
+                                <input type="checkbox" class="filled-in" id="fourier" name="fourier"/>
+                                <label for="fourier">Fourier-Transformation anwenden</label>
                             </div>
                         </div>
                     </div>
                     <div class="divider"></div>
                     <div class="section" id="dataColsSection">
-                        <h5>Spaltenweise Features:</h5>
-                        Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
+                        <h5 style="">Spaltenweise Features:</h5>
+                        <div class="row">
+                            <div class="col s8">
+                                Die Eingabefelder sind für Experten.<br/>
+                                Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
+                            </div>
+                            <div class="col s4">
+                                <button class="btn waves-effect waves-light right" type="submit" style="position: relative; z-index: auto;"><i class="material-icons left">autorenew</i>anwenden</button>
+                            </div>
+                        </div>
+                        <ul id="spaltenCollapsible" class="collapsible popout" data-collapsible="expandable">
+                            <li id="spaltenColTemplate" style="display:none;">
+                                <div class="collapsible-header colHeader">SPALTENTITEL</div>
+                                <div class="collapsible-body row">
+                                    <div class="col s4">
+                                        <input type="checkbox" class="filled-in" id="hochpass" name="hochpass"/>
+                                        <label class="hochpassLabel" for="hochpass">Hochpass-Filter</label>
+                                        <div class="row" style="padding:0; margin:0">
+                                            <div class="input-field col s6">
+                                                <input id="hochpassOrder" name="hochpassOrder" type="text">
+                                                <label class="hochpassOrderLabel" for="hochpassOrder">order</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="hochpassCofreq" name="hochpassOrder" type="text">
+                                                <label class="hochpassCofreqLabel" for="hochpassCofreq">cofreq</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s4">
+                                        <input type="checkbox" class="filled-in" id="tiefpass" name="tiefpass"/>
+                                        <label class="tiefpassLabel" for="tiefpass">Tiefpass-Filter</label>
+                                        <div class="row" style="padding:0; margin:0">
+                                            <div class="input-field col s6">
+                                                <input id="tiefpassOrder" name="tiefpassOrder" type="text">
+                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="tiefpassCofreq" name="tiefpassOrder" type="text">
+                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">cofreq</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s4">
+                                        <input type="checkbox" class="filled-in" id="gauss" name="gauss"/>
+                                        <label class="gaussLabel" for="gauss">Gauss-Filter</label>
+                                        <div class="row" style="padding:0; margin:0">
+                                            <div class="input-field col s6">
+                                                <input id="gaussStd" name="gaussStd" type="text">
+                                                <label class="gaussStdLabel" for="gaussStd">std</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="gaussM" name="gaussM" type="text">
+                                                <label class="gaussMLabel" for="gaussM">m</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </li>
+                        </ul>
                         <div style="display:none" class="row" id="spaltenColTemplate">
                             <div class="section col s12">
                                 <p>
@@ -92,13 +158,8 @@
                                         </div>
                                     </div>
                                 </p>
-                                <div class="divider"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">analysieren! <i class="material-icons right">send</i></button>
                     </div>
                 </div>
             </div>
@@ -120,5 +181,5 @@
         var anzSpalten = dataArray[0].length;
         //var newDataArray = JSON.parse('{{ newData|safe }}');
     </script>
-    <script type="text/javascript" src="{% static 'process/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'analysis/index.js' %}"></script>
 {% endblock %}
