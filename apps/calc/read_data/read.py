@@ -107,7 +107,7 @@ class Measurement(object):
 
 
 
-    def butterworth_band_filter(self,data_index, order=4, lowcut=-1, highcut=-1):
+    def butterworth_band_filter(self,data_index, order=4, lowcut=None, highcut=None):
         '''
         Filters high and lowpass
         :param data: The data array
@@ -132,10 +132,10 @@ class Measurement(object):
         nyq = 0.5 * fs
 
         # Default Values
-        if lowcut == -1:
-            lowcut = 0.1 * nyq
-        if highcut == -1:
-            highcut = 0.9 * nyq
+        if lowcut == None:
+            lowcut = 0.9 * nyq
+        if highcut == None:
+            highcut = 0.1 * nyq
 
         low = lowcut / nyq
         high = highcut / nyq
