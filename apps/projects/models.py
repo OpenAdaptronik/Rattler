@@ -60,18 +60,16 @@ class ProjectImage(models.Model):
     path = models.ImageField(upload_to=project_image_path)
 
 class Experiment(models.Model):
-    experiment = models.IntegerField(primary_key=True),
-    project = models.ForeignKey('Project', on_delete=models.CASCADE,),
-    performed_on = models.DateField,
-    description = models.TextField(max_length=500)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, )
+    created = models.DateTimeField(null=True)
+    description = models.TextField(max_length=500, null=True)
+
 
 class Datarow(models.Model):
-    datarow = models.IntegerField(primary_key=True),
-    experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE,),
-    unit = models.CharField(max_length=10),
-    description = models.TextField(max_length=500)
+    experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
+    unit = models.CharField(max_length=10, null=True)
+    description = models.TextField(max_length=500, null=True)
 
 class Value(models.Model):
-    id = models.IntegerField(primary_key=True),
-    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE,),
-    value = models.IntegerField()
+    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, )
+    value = models.IntegerField( null=True)
