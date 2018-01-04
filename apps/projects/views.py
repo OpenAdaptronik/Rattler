@@ -4,6 +4,11 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+def show_projects(request):
+    user_id = request.user.id
+    my_projects = Project.objects.filter(user_id=user_id) #.values_list('name', flat=True)
+    return render(request, 'projects/showProjects.html', {'my_projects': my_projects})
+
 def save_project(request):
     # Submit project attributes
     if request.method == 'POST':

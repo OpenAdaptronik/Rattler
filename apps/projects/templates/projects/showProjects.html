@@ -6,18 +6,17 @@
         {% csrf_token %}
         <div class="col s12 m12 13" style="min-width: 300px">
           <div class="card">
-            <ul>
+
             
               {% for project in my_projects %}
-              <p> <a href="{% url 'profile:profile' name=project %}">{{ project }}</a>
-                <p>erstellt am {{project.created}}</p></p>
+              <p> <a href="{% url 'projects:detail' name=project.name id=project.id %}">{{ project.name }}</a></p>
+                <p>erstellt am {{project.created}}</p>
               <!--nicht auf Profile sondern auf Experiment verlinken-->
               {% endfor %}
-            </ul>
+
             <div class="card-action">
-              <form action="/projects">
-                <button class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></button>
-              </form>
+                <a href="{% url 'projects:new' %}">Neues Projekt anlegen</a>
+
             </div>
 
             </p>
