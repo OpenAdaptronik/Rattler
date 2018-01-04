@@ -64,6 +64,16 @@ class NewProject(LoginRequiredMixin, CreateView):
 
 def detail(request, name, id):
     project = Project.objects.get(id = id)
-    my_experiments = Experiments.objects.filter()
+    my_experiments = Experiment.objects.filter()
 
-    return render(request, 'projects/showExperiment.html',{'project': project})
+    return render(request, 'projects/showExperiment.html',{'project': project, 'my_experiments': my_experiments})
+
+def createExperiment(request, name, id):
+    if request.method == 'POST':
+        post_data = request.POST.copy()
+        description = post_data['description']
+
+        new_experiment = Experiment(project_id=id, description=description)
+        new_experiment.save()
+
+    return render(request, 'projects/createExperiment.html')
