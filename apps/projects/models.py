@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import reverse
 
 '''crates model Projects with
 userId as ForeignKey from User
@@ -23,6 +24,13 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
+
+    def get_absolute_url(self):
+        kwargs = {
+            'id': self.id,
+            'name': self.name
+        }
+        return reverse('projects:detail', kwargs=kwargs)
 
     def __str__(self):
         return self.name    

@@ -1,6 +1,9 @@
 from apps.projects.models import Category, Project
 from django.shortcuts import render
 
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 def save_project(request):
     # Submit project attributes
     if request.method == 'POST':
@@ -41,3 +44,19 @@ def save_project(request):
         return render(request, 'projects/create.html')
 
     return render(request, 'projects/create.html')
+
+class NewProject(LoginRequiredMixin, CreateView):
+    model=Project
+    fields=('name', 'category', 'subcategory', )
+
+    template_name_suffix = '_create'
+    
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super(NewProject, self).form_valid(form)
+
+
+def detail(request, name, id):
+    from django.shortcuts import HttpResponse
+    return HttpResponse('%s %s' % (name, id))
