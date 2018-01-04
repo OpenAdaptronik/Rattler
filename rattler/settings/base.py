@@ -113,6 +113,7 @@ SECRET_KEY = 'dqfc+6=p^h_qo0^j_bs4yb1q%6r%$)=y8)c_q)7s_b$qp4ldx$'
 # Installed Apps https://docs.djangoproject.com/en/2.0/ref/settings/#installed-apps
 INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
+    'apps.analysis.apps.AnalysisConfig',
     'apps.register.apps.RegisterConfig',
     'apps.index.apps.IndexConfig',
     'apps.projects.apps.ProjectsConfig',
