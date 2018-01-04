@@ -3,7 +3,7 @@ import scipy as sci
 import json
 import numpy as np
 from collections import Counter
-from apps.calc.filter.calculus import get_delta,get_average_delta
+from apps.calc.measurement.calculus import get_average_delta,get_delta
 
 
 
@@ -53,8 +53,8 @@ class Measurement(object):
         self.data = np.asarray(new_data,dtype="float64").transpose()
 
 
-    def fourier_transform(self, data_index):
-        '''
+    def fourier_transform(self):
+        '''1.0
         This Method Applies a fourier transformation on an data interval in the data
         :param data: the pandas DataFrame of the data
         :param data_index: The index of the data intervall of
@@ -71,12 +71,19 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
+        #@TODO: für alles Spalten anwenden
+        new_data = []
+        cut = int(len(self.data[:, 0]) / 2)
+        for i in range(0,self.data.ndim):
+            if i == self.timeIndex:
+                X_new = np.fft.fftfreq(len(self.data[:cut,i]), d=get_average_delta(self.data,i))
+                new_data.append(np.array(X_new))
 
-        # @TODO: Parameter überprüfen
-        fft = [np.real(x) for x in sci.fft(self.data[:,data_index])]
-        cut = int(len(self.data[:,data_index])/2)
-        self.data[:cut,data_index]= fft[:cut]
-        self.data[cut:] = False
+            else:
+                fft = [x for x in sci.rfft(self.data[:, i])]
+                new_data.append(np.array(fft[:cut]))
+
+        self.data = np.asarray(new_data,dtype="float64").transpose()
 
 
 

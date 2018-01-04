@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from apps.calc.read_data import read
+from apps.calc.measurement import measurement_obj
 from django.contrib.auth.decorators import login_required
 import json
 from .json import NumPyArangeEncoder
@@ -22,7 +22,7 @@ def index(request):
     jsonData = request.POST.get("jsonData", "")
 
     # measurement-Objekt anlegen
-    measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
+    measurement = measurement_obj.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
     
     # Anz der Spalten
     anzSpalten = len(measurement.data[0])

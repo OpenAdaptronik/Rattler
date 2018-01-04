@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from apps.calc.read_data import read
+from apps.calc.measurement import measurement_obj
 from django.contrib.auth.decorators import login_required
 import json
 from .json import NumPyArangeEncoder
@@ -22,7 +22,7 @@ def from_dashboard(request):
     erfassungsDatum = request.POST.get("erfassungsDatum", "")
 
     # Das Experiment in das Objekt "measurement" einlesen
-    measurement = read.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
+    measurement = measurement_obj.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
 
     #measurement in Session-Variable speichern
     request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
@@ -60,7 +60,7 @@ def analysis(request):
         return HttpResponseRedirect('/dashboard/')
 
     # measurement-Objekt aus den Session-Variablen auslesen und wieder erstellen
-    measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+    measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
                                    request.session['measurementUnits'],request.session['measurementTimeIndex'])
 
     # Anz der Spalten
