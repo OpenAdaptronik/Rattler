@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import reverse
 
 '''crates model Projects with
 userId as ForeignKey from User
@@ -23,6 +24,13 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
+
+    def get_absolute_url(self):
+        kwargs = {
+            'id': self.id,
+            'name': self.name
+        }
+        return reverse('projects:detail', kwargs=kwargs)
 
     def __str__(self):
         return self.name    
@@ -52,18 +60,16 @@ class ProjectImage(models.Model):
     path = models.ImageField(upload_to=project_image_path)
 
 class Experiment(models.Model):
-    experiment = models.IntegerField(primary_key=True),
-    project = models.ForeignKey('Project', on_delete=models.CASCADE,),
-    performed_on = models.DateField,
-    description = models.TextField(max_length=500)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, )
+    created = models.DateTimeField(null=True)
+    description = models.TextField(max_length=500, null=True)
+
 
 class Datarow(models.Model):
-    datarow = models.IntegerField(primary_key=True),
-    experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE,),
-    unit = models.CharField(max_length=10),
-    description = models.TextField(max_length=500)
+    experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
+    unit = models.CharField(max_length=10, null=True)
+    description = models.TextField(max_length=500, null=True)
 
 class Value(models.Model):
-    id = models.IntegerField(primary_key=True),
-    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE,),
-    value = models.IntegerField()
+    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, )
+    value = models.IntegerField( null=True)

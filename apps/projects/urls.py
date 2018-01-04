@@ -3,6 +3,9 @@ from . import views
 
 app_name = 'projects'
 urlpatterns = [
-
-    path('', views.save_project, name='index')
-    ]
+    path('', views.show_projects, name='showProjects'),
+   # path('', views.save_project, name='index'),
+    path('new/', views.NewProject.as_view(), name='new'),
+    path('detail/<slug:name>/<int:id>', views.detail, name='detail'),
+    path('createExperiment/<slug:name>/<int:id>', views.createExperiment, name='createExperiment'),
+]
