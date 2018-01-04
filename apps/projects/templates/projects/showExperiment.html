@@ -12,16 +12,14 @@
                   <p>{{project.manufacturer}}</p>
                     <p>{{project.typ}}</p>
                       <p>{{project.description}}</p>
-              {% for experiment in project %}
-              <p> <a href="{% url 'profile:profile' name=experiment %}">{{ experiment }}</a></p>
+              {% for experiment in my_experiments %}
+              <p> {{ experiment.description }}</p>
               <!--nicht auf Profile sondern auf Experiment verlinken-->
               <p>{{experiment.performed_on}}</p>
               {% endfor %}
             </ul>
-            <div class="card-action">
-              <form action="/create">
-                <button class="btn waves-effect waves-light" type="submit">Neues Experiment anlegen<i class="material-icons left"></i></button>
-              </form>
+            <p class="card-action">
+                <p><a href="{% url 'projects:createExperiment' name=project.name id=project.id %}">Neues Experiment</a></p>
             </div>
 
             </p>
