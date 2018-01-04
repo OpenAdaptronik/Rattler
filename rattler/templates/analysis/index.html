@@ -1,1 +1,124 @@
-Test Analysis
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Analyse{% endblock %}
+{% block moreStylesheets %}
+    <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+{% block container %}
+<form action="{% url 'process:analysis' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
+    {% csrf_token %}
+    <h2>Schwingungsdaten analysieren</h2>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="section" style="padding-top:0">
+                        Wähle nun aus, welche Analyse-Features angewendet werden sollen.
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                        <div id="firstGraph"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                        <h5>Features für das gesamte Experiment:</h5>
+                        <div class="row">
+                            <div class="col s6">
+                                <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
+                                <label for="resampling">Resampling anwenden</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="resamplingScale" name="resamplingScale" type="text">
+                                <label for="resamplingScale">scale</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section" id="dataColsSection">
+                        <h5>Spaltenweise Features:</h5>
+                        Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
+                        <div style="display:none" class="row" id="spaltenColTemplate">
+                            <div class="section col s12">
+                                <p>
+                                    <h6 class="colHeader">Spaltenname</h6>
+                                </p>
+                                <p>
+                                    <div class="row" style="padding:0; margin:0">
+                                        <div class="col s4">
+                                            <input type="checkbox" class="filled-in" id="hochpass" name="hochpass"/>
+                                            <label class="hochpassLabel" for="hochpass">Hochpass-Filter</label>
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="hochpassOrder" name="hochpassOrder" type="text">
+                                                    <label class="hochpassOrderLabel" for="hochpassOrder">order</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="hochpassCofreq" name="hochpassOrder" type="text">
+                                                    <label class="hochpassCofreqLabel" for="hochpassCofreq">cofreq</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s4">
+                                            <input type="checkbox" class="filled-in" id="tiefpass" name="tiefpass"/>
+                                            <label class="tiefpassLabel" for="tiefpass">Tiefpass-Filter</label>
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="tiefpassOrder" name="tiefpassOrder" type="text">
+                                                    <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="tiefpassCofreq" name="tiefpassOrder" type="text">
+                                                    <label class="tiefpassCofreqLabel" for="tiefpassCofreq">cofreq</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s4">
+                                            <input type="checkbox" class="filled-in" id="gauss" name="gauss"/>
+                                            <label class="gaussLabel" for="gauss">Gauss-Filter</label>
+                                            <div class="row" style="padding:0; margin:0">
+                                                <div class="input-field col s6">
+                                                    <input id="gaussStd" name="gaussStd" type="text">
+                                                    <label class="gaussStdLabel" for="gaussStd">std</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input id="gaussM" name="gaussM" type="text">
+                                                    <label class="gaussMLabel" for="gaussM">m</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p>
+                                <div class="divider"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                        <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">analysieren! <i class="material-icons right">send</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+{% block sideNavBlock %}
+    {% include 'includeDefs/sideNav.html' %}
+{% endblock %}
+{% block moreScripts %}
+    {% include 'includeDefs/javascript-forms.html' %}
+    <script>
+        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
+        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
+        var dataArray = JSON.parse('{{ jsonData|safe }}');
+        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var anzSpalten = dataArray[0].length;
+        //var newDataArray = JSON.parse('{{ newData|safe }}');
+    </script>
+    <script type="text/javascript" src="{% static 'process/index.js' %}"></script>
+{% endblock %}
