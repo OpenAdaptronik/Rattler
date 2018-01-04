@@ -9,7 +9,8 @@
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
 {% block container %}
-<form action="{% url 'analysis:index' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
+
+<form method="post" action="{% url 'analysis:refresh' %}" id="analyseAuswahlForm">
     {% csrf_token %}
     <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
     <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
@@ -104,7 +105,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </li>
                         </ul>
                         <div style="display:none" class="row" id="spaltenColTemplate">
@@ -181,5 +181,6 @@
         var anzSpalten = dataArray[0].length;
         //var newDataArray = JSON.parse('{{ newData|safe }}');
     </script>
-    <script type="text/javascript" src="{% static 'analysis/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'analysis/index.js' %}">
+    </script>
 {% endblock %}

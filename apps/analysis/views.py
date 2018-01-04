@@ -1,13 +1,13 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from apps.calc.measurement import measurement_obj
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 import json
 from .json import NumPyArangeEncoder
 
 # Create your views here.
 @login_required
 def index(request):
-
     if request.method != 'POST':
         return HttpResponseRedirect('/dashboard/')
 
@@ -108,4 +108,25 @@ def index(request):
         'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
     }
 
+
     return render(request, "analysis/index.html", dataForRender)
+
+
+def renew_data(request):
+    if request.method != 'POST':
+       return HttpResponseRedirect('/dashboard/')
+
+    # measurement-Objekt aus den Session-Variablen auslesen und wieder erstellen
+    # measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+    #                               request.session['measurementUnits'],request.session['measurementTimeIndex'])
+
+    # Daten aus POST-Request auslesen
+    #jsonHeader = request.POST.get("discount_code", "")
+
+
+    dataForRender = {
+
+    }
+
+
+    return JsonResponse(dataForRender)
