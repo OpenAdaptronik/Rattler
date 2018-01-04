@@ -18,7 +18,7 @@
     <br/>
     {{ error }}
                                     <br/>
-    <button class="btn waves-effect waves-light" type="button" onclick="location.href={% url 'settings:index' %}">Zurück<i class="material-icons left">arrow_back</i></button>
+    <a class="btn waves-effect waves-light" type="button" href="{% url 'profile:edit' %}">Zurück<i class="material-icons left">arrow_back</i></a>
     <button class="btn waves-effect waves-light" type="submit"name="saveUser">änderung bestätigen<i class="material-icons left">save</i></button>
 
                                 </p>

@@ -18,10 +18,12 @@ class Profile(models.Model):
     visibility_mail = models.BooleanField(default=False)
     visibility_company = models.BooleanField(default=False)
     visibility_info = models.BooleanField(default=False)
+    visibility_first_name = models.BooleanField(default=False)
+    visibility_last_name = models.BooleanField(default=False)
     max_projects = models.IntegerField(default=5)
     max_datarows = models.IntegerField(default=1000)
-    created = models.DateTimeField
-    updated = models.DateTimeField
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 def profile_image_path(instance, filename):
     return 'profile/%s%s' % (instance.profile.id, os.path.splitext(filename)[1])

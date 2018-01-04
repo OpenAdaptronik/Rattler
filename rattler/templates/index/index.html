@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block siteTitle %}Start{% endblock %}
 {% block container %}
+    {% load i18n %}
+    {% trans "Test" %}
     <!--<h1>{% if user.is_authenticated %}{{user.username}}{% endif %}</h1>-->
     <h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
     <div class="card">
@@ -50,6 +52,11 @@
         </div>
         {% endif %}
     </div>
+{% endblock %}
+{% block sideNavBlock %}
+    <ul id="nav-mobile" class="side-nav" style="">
+        <li class=""><a href="{% url 'register:index' %}"><i class="material-icons">person_add</i>Registrieren</a></li>
+    </ul>
 {% endblock %}
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}

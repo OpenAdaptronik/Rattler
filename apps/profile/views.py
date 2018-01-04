@@ -1,15 +1,26 @@
-from django.shortcuts import render, reverse
-from django.utils.functional import lazy
-from django.views.generic import UpdateView, DetailView
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.contrib.auth import login
 
+from django.shortcuts import render, reverse, redirect, HttpResponse
+from django.utils.functional import lazy
+from django.views.generic import UpdateView, DetailView
+
+from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 
-# curent user model
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
-
+from apps.register.tokens import account_activation_token
 from . import models
 
 reverse_lazy = lazy(reverse, str)
@@ -52,7 +63,6 @@ class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
 
 
 def change_email(request):
-
     if request.method == 'POST':
         mailer = {'newMail1': request.POST.get('mail'),
                   'newMail2': request.POST.get('newMail2'),}
@@ -69,23 +79,27 @@ def change_email(request):
         except:
             mailc=None
         if mailc is None:
-            try:
-                token = VerificationToken.objects.create_user_token(request.user)
-                mes = render_to_string('userSettings/newMail.html', {
-                    'domain': get_current_site(request),
-                    'mail': mail,
-                    'username': request.user.username,
-                    'token': token
-                })
+            token = account_activation_token.make_token(request.user)
+            uid = urlsafe_base64_encode(force_bytes(request.user.pk)).decode()
+            umail = urlsafe_base64_encode(force_bytes(mail)).decode()
+            current_site = get_current_site(request)
+            domain = current_site.domain
 
-                email = EmailMessage(
-                    subject='Rattler: Email ändern',
-                    body=mes,
-                    to=[mail]
-                )
-                email.send()
-            except (VerificationToken.MultipleObjectsReturned):
-                token = None
+            mes = render_to_string('userSettings/newMail.html', {
+                'use_https': request.is_secure(),
+                'domain':domain,
+                'uid': uid,
+                'token': token,
+                'mail': umail,
+                'user': request.user,
+            })
+
+            email = EmailMessage(
+                subject='Rattler: Email ändern',
+                body=mes,
+                to=[mail]
+            )
+            email.send()
 
             update_session_auth_hash(request, request.user)
             return HttpResponse('''Die E-mail wurde verschickt.  <br/>
@@ -99,26 +113,25 @@ def change_email(request):
     return render(request, 'userSettings/changeEmail.html')
 
 
-def change_email_success (request,email,username,token):
+def change_email_success (request, mail, uidb64, token):
+    # get user from user id
+    from django.contrib.auth import get_user_model
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
 
-        #checkt ob user der Eingeloggt ist auch user der mail ist
-        #und ob die mail noch nicht vergeben wurde werend des Zeitfensteres des vergebens
-        try:
-            if request.user.username == username:
-                user = User.objects.get(username=username)
-                token = VerificationToken.objects.get_token(token)
+    if not user is None:
+        email = force_text(urlsafe_base64_decode(mail))
+        user.email = email
+        user.save()
+        update_session_auth_hash(request, user)
+        login(request=request,user= user)
+        return redirect(reverse('profile:edit'))
+    else:
+        return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
 
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-        if user is not None and token.user_id == user.id:
-            user.mail = email
-            user.save()
-            update_session_auth_hash(request, user)
-            login(request=request,user= user)
-            # return redirect('settings')
-            return redirect('/settings/')
-        else:
-            return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
 
 def change_password(request):
     if request.method == 'POST':
@@ -126,7 +139,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('/settings/')
+            return redirect(reverse('profile:edit'))
         else:
             messages.error(request, 'Neues Passwort stimmt nicht überein')
     else:
