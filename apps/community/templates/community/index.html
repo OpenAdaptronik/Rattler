@@ -42,11 +42,33 @@
                       </div>
                     </td>
                   </tr>
+                    <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="company">Projektname: </label>
+                        <input placeholder='' id="projectname" type="text" class="validate" name="projectname">
+                      </div>
+                    </td>
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="company">Kategorie: </label>
+                        <input placeholder='' id="category" type="text" class="validate" name="category">
+                      </div>
+                    </td>
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="company">Hersteller: </label>
+                        <input placeholder='' id="manufacturer" type="text" class="validate" name="manufacturer">
+                      </div>
+                    </td>
+                  </tr>
                  <!-- <tr>
                     <td>
                       <div class="input-field col s12">
                         <label for="res">Result:</label>
-                        <input placeholder={{ filtered_usernames }} id="res" type="text" class="validate" name="res">
+                        <input placeholder={{ filtered_ids }} id="res" type="text" class="validate" name="res">
                       </div>
                     </td>
                   </tr>-->
@@ -60,6 +82,12 @@
                   </tr>
                     <td> Ergebnisse:
                         <ul>
+                        {% for id in filtered_ids %}
+                            <li> <a href="{% url 'profile:profile' name=id %}">{{ id }}</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    <ul>
                         {% for name in filtered_usernames %}
                             <li> <a href="{% url 'profile:profile' name=name %}">{{ name }}</a>
                             </li>
