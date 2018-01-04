@@ -81,15 +81,10 @@
                     </td>
                   </tr>
                     <td> Ergebnisse:
-                        <ul>
-                        {% for id in filtered_ids %}
-                            <li> <a href="{% url 'profile:profile' name=id %}">{{ id }}</a>
-                            </li>
-                        {% endfor %}
-                        </ul>
+
                     <ul>
-                        {% for name in filtered_usernames %}
-                            <li> <a href="{% url 'profile:profile' name=name %}">{{ name }}</a>
+                        {% for project in filtered_projects %}
+                            <li> <a href="{% url 'profile:profile' name=project.name %}">{{ project.name }} </a> {{ project.category  }}
                             </li>
                         {% endfor %}
                         </ul>

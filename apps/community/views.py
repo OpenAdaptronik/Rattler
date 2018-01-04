@@ -42,10 +42,10 @@ def user_filter(request):
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         #return usernames in filtered_usernames
         i = 0
-        filtered_usernames = list()
+        filtered_projects = list()
         while i < len(filtered_ids):
             currid = filtered_ids[i]
-            filtered_usernames.append(Project.objects.get(id=currid).name)
+            filtered_projects.append(Project.objects.get(id=currid))
             i += 1
 
 
@@ -54,6 +54,6 @@ def user_filter(request):
         if len(filtered_ids) == 0:
             return render(request, 'community/index.html', {'no_match': 'No user matches with your search, try again!'})
 
-        return render(request, 'community/index.html', {'filtered_ids': filtered_ids, 'filtered_usernames': filtered_usernames})
+        return render(request, 'community/index.html', {'filtered_ids': filtered_ids, 'filtered_projects': filtered_projects})
 
     return render(request, 'community/index.html')
