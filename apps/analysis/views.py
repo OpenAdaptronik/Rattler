@@ -211,6 +211,7 @@ def renew_data(request):
 
     # Daten zum Rendern vorbereiten
     dataForRender = {
+        'log': request.POST.get('resampling', '') ,
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
         'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),

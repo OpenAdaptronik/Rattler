@@ -30,7 +30,7 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <h5>Features für das gesamte Experiment:</h5>
+                        <h5>Analysewerkzeuge für das gesamte Experiment:</h5>
                         <div class="row">
                             <div class="col s6">
                                 <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section" id="dataColsSection">
-                        <h5 style="">Spaltenweise Features:</h5>
+                        <h5 style="">Filter für einzelne Datenreihen:</h5>
                         <div class="row">
                             <div class="col s8">
                                 Die Eingabefelder sind für Experten.<br/>
@@ -173,14 +173,16 @@
 {% endblock %}
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}
+    {% include 'includeDefs/jquery-validation.html' %}
     <script>
         var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
         var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
         var dataArray = JSON.parse('{{ jsonData|safe }}');
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
-        //var newDataArray = JSON.parse('{{ newData|safe }}');
     </script>
     <script type="text/javascript" src="{% static 'analysis/index.js' %}">
-    </script>
+            </script>
+    <script type="text/javascript" src="{% static 'analysis/validation.js' %}">
+            </script>
 {% endblock %}

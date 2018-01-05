@@ -147,11 +147,13 @@ $( document ).ready(function() {
         method: 'post',
         //data: $("form").serialize(), //$("form#analyseAuswahlForm")
         data: data  ,
-
+        cache:false,
         dataType: 'json',
         success: function (data) {
+            console.log('neue Berechnung')
             //alert('its some kind of magic!')
 
+            console.log(data.log)
             var dataArray = JSON.parse(data.jsonData);
             var spaltenTitel = JSON.parse(data.jsonHeader);
             var spaltenEinheiten = JSON.parse(data.jsonEinheiten);
@@ -174,25 +176,34 @@ $( document ).ready(function() {
                 autotick: true
             }
         }
+        console.log(dataArray)
+
+
+
+
 
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
-        for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
-            traces[i] = {
+        for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
+            console.log('j')
+            console.log(j)
+            console.log('anzSpalten')
+            console.log(anzSpalten)
+            traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
-                y: arrayColumnAsRow(dataArray, i),
-                name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+                y: arrayColumnAsRow(dataArray, j),
+                name: spaltenTitel[j] + "(" + spaltenEinheiten[j] + ")",
                 type: 'scatter',
                 line: {
                     width: 1.5,
                 }
             }
             var yaxisTitle;
-            if(i==0){
-                traces[i]['yaxis'] = 'y';
+            if(j==0){
+                traces[j]['yaxis'] = 'y';
                 yaxisTitle = 'yaxis';
             } else {
-                traces[i]['yaxis'] = 'y' + (i+1);
-                yaxisTitle = 'yaxis' + (i+1);
+                traces[j]['yaxis'] = 'y' + (j+1);
+                yaxisTitle = 'yaxis' + (j+1);
             }
             layout[yaxisTitle] = {
                 showgrid: false,
@@ -201,7 +212,7 @@ $( document ).ready(function() {
                 autotick: true,
                 showticklabels: false,
             }
-            if(i!=0){
+            if(j!=0){
                 layout[yaxisTitle]['overlaying'] = 'y';
             }
         }
