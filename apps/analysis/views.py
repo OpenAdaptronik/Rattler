@@ -30,6 +30,8 @@ def index(request):
     anzSpalten = len(measurement.data[0])
     
     # Resampling?
+    if request.POST.get('fourier') == 'on':
+        measurement.fourier_transform();
     if request.POST.get('resampling','') == 'on':
         resamplingScale = request.POST.get('resamplingScale','')
         # Resampling aufrufen
