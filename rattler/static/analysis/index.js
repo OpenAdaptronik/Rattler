@@ -119,10 +119,14 @@ $( document ).ready(function() {
 
 
         //Prepare Submission Data
+        /*
+        console.log('neue Daten eingelesen')
+        console.log('resampling neu:')
+        console.log($("#resampling").prop('checked'))*/
         var data = {
-            'resampling':$("#resampling").val(),
+            'resampling':$("#resampling").prop('checked'),
             'resamplingScale':$("#resamplingScale").val(),
-            'fourier':$("#fourier").val()
+            'fourier':$("#fourier").prop('checked'),
         }
         for(i=0; i < anzSpalten; i++){
             if(i!=zeitreihenSpalte){
@@ -131,9 +135,9 @@ $( document ).ready(function() {
                 data['tiefpassOrder'+i] = $("#spaltenCol" + i + " #tiefpassOrder").val();
                 data['tiefpassCofreq'+i] = $("#spaltenCol" + i + " #tiefpassCofreq").val();
 
-                data['hochpass'+i] = $("#spaltenCol" + i + " #hochpass").val();
-                data['tiefpass'+i] = $("#spaltenCol" + i + " #tiefpass").val();
-                data['gauss'+i] = $("#spaltenCol" + i + " #gauss").val();
+                data['hochpass'+i] = $("#spaltenCol" + i + " #hochpass").prop('checked');
+                data['tiefpass'+i] = $("#spaltenCol" + i + " #tiefpass").prop('checked');
+                data['gauss'+i] = $("#spaltenCol" + i + " #gauss").prop('checked');
                 data['gaussStd'+i] = $("#spaltenCol" + i + " #gaussStd").val();
                 data['gaussM'+i] = $("#spaltenCol" + i + " #gaussM").val();
                 }
@@ -145,20 +149,20 @@ $( document ).ready(function() {
         url: '/analysis/refresh',
 
         method: 'post',
-        //data: $("form").serialize(), //$("form#analyseAuswahlForm")
         data: data  ,
         cache:false,
         dataType: 'json',
         success: function (data) {
-            console.log('neue Berechnung')
+            console.log('neue Visualisierung:')
             //alert('its some kind of magic!')
 
-            console.log(data.log)
-            var dataArray = JSON.parse(data.jsonData);
-            var spaltenTitel = JSON.parse(data.jsonHeader);
-            var spaltenEinheiten = JSON.parse(data.jsonEinheiten);
-            var zeitreihenSpalte = data.zeitreihenSpalte;
-            var anzSpalten = dataArray[0].length;
+
+           console.log(data.log)
+           dataArray = JSON.parse(data.jsonData);
+           spaltenTitel = JSON.parse(data.jsonHeader);
+           spaltenEinheiten = JSON.parse(data.jsonEinheiten);
+           zeitreihenSpalte = data.zeitreihenSpalte;
+           anzSpalten = dataArray[0].length;
 
 
         // Funktion, um Spalte in 2. Dimension als Zeile auszugeben

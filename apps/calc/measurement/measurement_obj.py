@@ -54,7 +54,7 @@ class Measurement(object):
 
 
     def fourier_transform(self):
-        '''1.0
+        '''
         This Method Applies a fourier transformation on an data interval in the data
         :param data: the pandas DataFrame of the data
         :param data_index: The index of the data intervall of
@@ -80,7 +80,7 @@ class Measurement(object):
                 new_data.append(np.array(X_new))
 
             else:
-                fft = [x for x in sci.rfft(self.data[:, i])]
+                fft = [x for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
 
         self.data = np.asarray(new_data,dtype="float64").transpose()
