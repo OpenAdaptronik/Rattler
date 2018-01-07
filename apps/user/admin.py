@@ -51,7 +51,7 @@ class UserAdmin(auth_admin.UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
-    list_display = ('username', 'email', 'is_superuser', 'date_joined', 'updated', )
+    list_display = ('username', 'email', 'is_superuser','is_active', 'date_joined', 'updated', )
     list_filter = ('is_superuser', 'is_active')
     add_fieldsets = (
         (None, {

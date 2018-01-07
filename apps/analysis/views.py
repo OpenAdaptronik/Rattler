@@ -4,68 +4,29 @@ from django.contrib.auth.decorators import login_required
 import json
 from .json import NumPyArangeEncoder
 
-
 # Create your views here.
 @login_required
-def from_dashboard(request):
-    if not request.method == 'POST':
-        return HttpResponseRedirect('/dashboard/')
-
-
-    # Variablen aus dem Post-Request auslesen
-    jsonHeader = request.POST.get("jsonHeader", "")
-    jsonEinheiten = request.POST.get("jsonEinheiten", "")
-    zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
-    jsonData = request.POST.get("jsonData", "")
-    saveExperiment = request.POST.get("saveExperiment", "")
-    datensatzName = request.POST.get("datensatzName", "")
-    erfassungsDatum = request.POST.get("erfassungsDatum", "")
-
-    # Das Experiment in das Objekt "measurement" einlesen
-    measurement = measurement_obj.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
-
-    #measurement in Session-Variable speichern
-    request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
-    request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
-    request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
-    request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
-
-    #measurement.resample_data()
-    #measurement.gaussian_filter(1)
-    #measurement.butterworth_filter(1)
-    #measurement.fourier_transform(1)
-
-    # Daten zur Übergabe vorbereiten
-    dataForRender = {
-        'jsonHeader': jsonHeader,
-        'jsonEinheiten': jsonEinheiten,
-        'zeitreihenSpalte': zeitreihenSpalte,
-        'jsonData': jsonData,
-        #'newData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
-        #'measurementObject': measurement,
-        #'saveExperiment': saveExperiment,
-        'datensatzName': datensatzName,
-        'erfassungsDatum': erfassungsDatum
-        }
-    return render(request, "process/index.html", dataForRender)
-
-
-
-
-
-@login_required
-def analysis(request):
+def index(request):
 
     if request.method != 'POST':
         return HttpResponseRedirect('/dashboard/')
 
     # measurement-Objekt aus den Session-Variablen auslesen und wieder erstellen
-    measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
-                                   request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    #measurement = read.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+    #                               request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    
+    # Daten aus POST-Request auslesen
+    jsonHeader = request.POST.get("jsonHeader", "")
+    jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    jsonData = request.POST.get("jsonData", "")
 
+    # measurement-Objekt anlegen
+    measurement = measurement_obj.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
+    
     # Anz der Spalten
     anzSpalten = len(measurement.data[0])
-
+    
     # Resampling?
     if request.POST.get('resampling','') == 'on':
         resamplingScale = request.POST.get('resamplingScale','')
@@ -147,4 +108,4 @@ def analysis(request):
         'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
     }
 
-    return render(request, "process/analysis.html", dataForRender)
+    return render(request, "analysis/index.html", dataForRender)
