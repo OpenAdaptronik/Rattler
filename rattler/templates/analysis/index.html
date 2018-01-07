@@ -24,20 +24,30 @@
                     <div class="divider"></div>
                     <div class="section">
                         <div id="firstGraph"></div>
+                        <div class="row">
+                            <div class="col s4"></div>
+                            <div class="col s4">
+                                    <button class="btn waves-effect waves-light right" type="submit" style="position: absolute; z-index: auto"><i class="material-icons left">autorenew</i>Berechnen</button>
+                            </div>
+                            <div class="col s4"></div>
+                        </div>
                     </div>
-                    <div class="divider"></div>
+                    <div class="divider" style="margin-top: 10px"></div>
                     <div class="section">
                         <h5>Analysewerkzeuge für das gesamte Experiment:</h5>
-                        <div class="row">
-                            <div class="col s6">
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col s2" style="margin-top: 25px">
                                 <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
                                 <label for="resampling">Resampling anwenden</label>
+                            </div>
+                            <div class="col s2">
                                 <div class="input-field">
                                     <input id="resamplingScale" name="resamplingScale" type="text">
                                     <label for="resamplingScale">Skalierung</label>
                                 </div>
                             </div>
-                            <div class="col s6">
+                            <div class="col s2"></div>
+                            <div class="col s6" style="margin-top: 20px">
                                 <input type="checkbox" class="filled-in" id="fourier" name="fourier"/>
                                 <label for="fourier">Fourier-Transformation anwenden</label>
                             </div>
@@ -50,9 +60,6 @@
                             <div class="col s8">
                                 Die Eingabefelder sind für Experten.<br/>
                                 Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
-                            </div>
-                            <div class="col s4">
-                                <button class="btn waves-effect waves-light right" type="submit" style="position: relative; z-index: auto;"><i class="material-icons left">autorenew</i>Berechnen</button>
                             </div>
                         </div>
                         <ul id="spaltenCollapsible" class="collapsible popout" data-collapsible="expandable">
