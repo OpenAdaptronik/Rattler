@@ -1,52 +1,36 @@
 $( document ).ready(function() {
 
-    // Die Variablen müssen wegen Jinja in der html-Datei vorbereitet werden!
+        // Die Variablen müssen wegen Jinja in der html-Datei vorbereitet werden!
 
-    // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
-    // https://stackoverflow.com/a/34979219
-    const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
+        // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
+        // https://stackoverflow.com/a/34979219
+        const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
 
-    // Plotly: Graph von vorheriger Seite wieder plotten
-        var traces = [];
-        // s. Variablenname
-        zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
+        // Plotly: Graph von vorheriger Seite wieder plotten
+            var traces = [];
+            // s. Variablenname
+            zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
 
         var layout = {
-            title: 'Graph zur Orientierung:',
-            'xaxis': {
-                autotick: true
+            title: 'Dein Experiment:',
+            xaxis: {
+                title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
             }
         }
 
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
-        for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
-            traces[i] = {
+
+        for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
+            traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
-                y: arrayColumnAsRow(dataArray, i),
-                name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+                y: arrayColumnAsRow(dataArray, j),
+                name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
                     width: 1.5,
                 }
             }
-            var yaxisTitle;
-            if(i==0){
-                traces[i]['yaxis'] = 'y';
-                yaxisTitle = 'yaxis';
-            } else {
-                traces[i]['yaxis'] = 'y' + (i+1);
-                yaxisTitle = 'yaxis' + (i+1);
-            }
-            layout[yaxisTitle] = {
-                showgrid: false,
-                zeroline: false,
-                showline: false,
-                autotick: true,
-                showticklabels: false,
-            }
-            if(i!=0){
-                layout[yaxisTitle]['overlaying'] = 'y';
-            }
+
         }
         traces[zeitreihenSpalte] = [];
         traces[zeitreihenSpalte].shift();
@@ -62,7 +46,7 @@ $( document ).ready(function() {
                 $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#spaltenCollapsible").show();
 
                 // Spaltentitel einfügen
-                $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + ": <b>" + spaltenTitel[i] + "</b>");
+                $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + " :  <b>" + spaltenTitel[i] + "</b>");
 
                 // IDs, names, fors
                     $("#spaltenCol" + i + " #hochpass").attr("name", "hochpass" + i).attr("id", "hochpass" + i);
@@ -98,6 +82,9 @@ $( document ).ready(function() {
 
     $('form').submit(function(event){
         event.preventDefault();
+        if($('form').valid()){
+
+
 
 
         //Token Configuration
@@ -130,16 +117,16 @@ $( document ).ready(function() {
         }
         for(i=0; i < anzSpalten; i++){
             if(i!=zeitreihenSpalte){
-                data['hochpassOrder'+i] = $("#spaltenCol" + i + " #hochpassOrder").val();
-                data['hochpassCofreq'+i] = $("#spaltenCol" + i + " #hochpassCofreq").val();
-                data['tiefpassOrder'+i] = $("#spaltenCol" + i + " #tiefpassOrder").val();
-                data['tiefpassCofreq'+i] = $("#spaltenCol" + i + " #tiefpassCofreq").val();
+                data['hochpassOrder'+i] = $('#spaltenCol'+i).children().find('#hochpassOrder'+i).val()
+                data['hochpassCofreq'+i] = $('#spaltenCol'+i).children().find('#hochpassCofreq'+i).val()
+                data['tiefpassOrder'+i] = $('#spaltenCol'+i).children().find('#tiefpassOrder'+i).val()
+                data['tiefpassCofreq'+i] = $('#spaltenCol'+i).children().find('#tiefpassCofreq'+i).val()
 
-                data['hochpass'+i] = $("#spaltenCol" + i + " #hochpass").prop('checked');
-                data['tiefpass'+i] = $("#spaltenCol" + i + " #tiefpass").prop('checked');
-                data['gauss'+i] = $("#spaltenCol" + i + " #gauss").prop('checked');
-                data['gaussStd'+i] = $("#spaltenCol" + i + " #gaussStd").val();
-                data['gaussM'+i] = $("#spaltenCol" + i + " #gaussM").val();
+                data['hochpass'+i] = $('#spaltenCol'+i).children().find('#hochpass'+i).prop('checked');
+                data['tiefpass'+i] = $('#spaltenCol'+i).children().find('#tiefpass'+i).prop('checked');
+                data['gauss'+i] = $('#spaltenCol'+i).children().find('#gauss'+i).prop('checked');
+                data['gaussStd'+i] = $('#spaltenCol'+i).children().find('#gaussStd'+i).val();
+                data['gaussM'+i] = $('#spaltenCol'+i).children().find('#gaussM'+i).val();
                 }
             }
 
@@ -158,11 +145,13 @@ $( document ).ready(function() {
 
 
            console.log(data.log)
+
            dataArray = JSON.parse(data.jsonData);
            spaltenTitel = JSON.parse(data.jsonHeader);
            spaltenEinheiten = JSON.parse(data.jsonEinheiten);
            zeitreihenSpalte = data.zeitreihenSpalte;
            anzSpalten = dataArray[0].length;
+
 
 
         // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
@@ -175,50 +164,25 @@ $( document ).ready(function() {
             zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
 
         var layout = {
-            title: 'Graph zur Orientierung:',
-            'xaxis': {
-                autotick: true
+            title: 'Dein Experiment:',
+            xaxis: {
+                title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
             }
         }
-        console.log(dataArray)
-
-
-
-
 
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+
         for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
-            console.log('j')
-            console.log(j)
-            console.log('anzSpalten')
-            console.log(anzSpalten)
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
                 y: arrayColumnAsRow(dataArray, j),
-                name: spaltenTitel[j] + "(" + spaltenEinheiten[j] + ")",
+                name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
                     width: 1.5,
                 }
             }
-            var yaxisTitle;
-            if(j==0){
-                traces[j]['yaxis'] = 'y';
-                yaxisTitle = 'yaxis';
-            } else {
-                traces[j]['yaxis'] = 'y' + (j+1);
-                yaxisTitle = 'yaxis' + (j+1);
-            }
-            layout[yaxisTitle] = {
-                showgrid: false,
-                zeroline: false,
-                showline: false,
-                autotick: true,
-                showticklabels: false,
-            }
-            if(j!=0){
-                layout[yaxisTitle]['overlaying'] = 'y';
-            }
+
         }
         traces[zeitreihenSpalte] = [];
         traces[zeitreihenSpalte].shift();
@@ -227,7 +191,7 @@ $( document ).ready(function() {
 
 
 
-        }});
+        }});}
     })
 
 
