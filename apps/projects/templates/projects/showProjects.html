@@ -10,6 +10,8 @@
               <p> <a href="{% url 'projects:detail' name=project.name id=project.id %}">{{ project.name }}</a></p>
                   <p>erstellt am {{project.created}}</p>
               {% endfor %}
+
+
             <div class="card-action">
                 <a href="{% url 'projects:new' %}">Neues Projekt anlegen</a>
             </div>

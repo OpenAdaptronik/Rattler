@@ -83,10 +83,13 @@
                     <td> Ergebnisse:
 
                     <ul>
-                        {% for project in filtered_projects %}
-                            <li> <a href="{% url 'profile:profile' name=project.name %}">{{ project.name }} </a> {{ project.category  }}
-                            </li>
-                        {% endfor %}
+
+                    {% for user, project in filtered %}
+                        <p> <a href="{% url 'projects:detail' name=project.name id=project.id %}">Projektname: {{ project.name }}</a></p>
+                        <p>erstellt am {{project.created}}</p>
+                        <p><a href="{% url 'profile:profile' name=user.username %}">Username: {{ user.username }}</p>
+                        <hr>
+                    {% endfor %}
                         </ul>
                       </td>
                 </table>
