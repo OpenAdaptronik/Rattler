@@ -40,7 +40,7 @@ def user_filter(request):
         if not(manufacturer == ''):
             matching_ids = list(Project.objects.filter(manufacturer__icontains=manufacturer).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
-        #return usernames in filtered_usernames
+        #return users and projects in filtered
         i = 0
         filtered_projects = list()
         while i < len(filtered_ids):

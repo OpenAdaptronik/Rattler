@@ -7,13 +7,13 @@
         <div class="col s12 m12 13" style="min-width: 300px">
           <div class="card">
             <ul>
-              <p>{{project.category}}</p>
-                <p>{{project.subcategory}}</p>
-                  <p>{{project.manufacturer}}</p>
-                    <p>{{project.typ}}</p>
-                      <p>{{project.description}}</p>
+              <p>Kategorie: {{project.category}}</p>
+              <p>Subkategorie: {{project.subcategory}}</p>
+              <p>Hersteller: {{project.manufacturer}}</p>
+              <p>Typ: {{project.typ}}</p>
+              <p>Beschreibung: {{project.description}}</p>
               {% for experiment in my_experiments %}
-              <p> {{ experiment.description }}</p>
+              <p> Experimentbeschreibung: {{ experiment.description }}</p>
               <!--nicht auf Profile sondern auf Experiment verlinken-->
               <p>{{experiment.performed_on}}</p>
               {% endfor %}
@@ -21,7 +21,6 @@
             <p class="card-action">
                 <p><a href="{% url 'projects:createExperiment' name=project.name id=project.id %}">Neues Experiment</a></p>
             </div>
-
             </p>
           </div>
         </div>

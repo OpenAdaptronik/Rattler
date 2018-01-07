@@ -10,14 +10,6 @@
               <span class="card-title">Filter</span>
               <p>
                 <table>
-                  <!--<tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="search">Suchbegriff:</label>
-                        <input placeholder='' id="search" type="text" class="validate" name="search">
-                      </div>
-                    </td>
-                  </tr>-->
                   <tr>
                     <td>
                       <div class="input-field col s12">
@@ -64,14 +56,6 @@
                       </div>
                     </td>
                   </tr>
-                 <!-- <tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="res">Result:</label>
-                        <input placeholder={{ filtered_ids }} id="res" type="text" class="validate" name="res">
-                      </div>
-                    </td>
-                  </tr>-->
                   <tr>
                     <td>
                       <div class="card-action">
@@ -81,9 +65,7 @@
                     </td>
                   </tr>
                     <td> Ergebnisse:
-
                     <ul>
-
                     {% for user, project in filtered %}
                         <p> <a href="{% url 'projects:detail' name=project.name id=project.id %}">Projektname: {{ project.name }}</a></p>
                         <p>erstellt am {{project.created}}</p>
