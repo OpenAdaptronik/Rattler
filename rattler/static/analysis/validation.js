@@ -3,7 +3,8 @@ $(function () {
     $('#analyseAuswahlForm').validate({
         rules:{
             resamplingScale:{
-                maxlength:1,
+                min:0.0001,
+                max:10,
                 number:true,
             },
             hochpassCofreq:{
@@ -11,11 +12,13 @@ $(function () {
             },
             hochpassOrder:{
                 number:true,
-                maxlength:2,
+                min:1,
+                max:8,
             },
             tiefpassOrder:{
                 number:true,
-                maxlength:5,
+                min:1,
+                max:8,
             },
             tiefpassCofreq:{
                 number:true,
@@ -34,7 +37,8 @@ $(function () {
 
         messages: {
             resamplingScale: {
-                maxlength:'Die Skalierung ist prozentual anzugeben: <br> 1 ~ 100% -> Deine Angabe ist zu groß.',
+                min:'Die Skalierung ist prozentual anzugeben: <br> 1 ~ 100% -> Deine Angabe ist zu klein.',
+                max:'Die Skalierung ist prozentual anzugeben: <br> 1 ~ 100% -> Deine Angabe ist zu groß.',
                 number:'Bitte nur Zahlen eingeben.',
             },
             hochpassCofreq: {
@@ -42,11 +46,14 @@ $(function () {
             },
             hochpassOrder: {
                 number:'Bitte nur Zahlen eingeben.',
-                maxlength:'Diese Ordnung ist zu groß.',
+                min:'Rang 1-8 ist möglich',
+                max:'Rang 1-8 ist möglich',
             },
             tiefpassOrder: {
                 number:'Bitte nur Zahlen eingeben.',
-                maxlength:'Diese Ordnung ist zu groß.',
+                min:'nur Rang 1-8 ist möglich',
+                max:'nur Rang 1-8 ist möglich',
+
             },
             tiefpassCofreq: {
                 number:'Bitte nur Zahlen eingeben.',

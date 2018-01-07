@@ -13,6 +13,7 @@ class Measurement(object):
         self.data = np.array(json.loads(raw), dtype=np.float64)
         self.colUnits = np.array(json.loads(Unit_Names))
         self.colNames = np.array(json.loads(Column_Names))
+        self.log = '-'
 
 
 
@@ -34,21 +35,22 @@ class Measurement(object):
         /process/
         :param scale: The scale, the Data should be resampled
         '''
+        self.log = 'resample'
         begin = np.float64(self.data[0,self.timeIndex])
         end = np.float64(self.data[-1,self.timeIndex])
         cnt=Counter(get_delta(self.data,self.timeIndex,3))
-        X_new = np.linspace(0.0, end , int(
+        X_new = np.linspace(begin, end , int(
             (round((end-begin) / cnt.most_common(1)[0][0])) * scale))
 
         new_data = []
 
-        for i in range(0,self.data.ndim):
+        for i in range(0,len(self.data[0])):
             if i == self.timeIndex:
                 new_data.append(np.array(X_new))
-
             else:
                 s = interpolate.splrep(self.data[:,self.timeIndex],self.data[:,i])
                 new_data.append(np.array(interpolate.splev(X_new,s)))
+
 
         self.data = np.asarray(new_data,dtype="float64").transpose()
 
@@ -71,24 +73,26 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
-        #@TODO: für alles Spalten anwenden
+        self.log = 'fourrier'
         new_data = []
         cut = int(len(self.data[:, 0]) / 2)
-        for i in range(0,self.data.ndim):
+        for i in range(0,len(self.data[0])):
             if i == self.timeIndex:
-                X_new = np.fft.fftfreq(len(self.data[:cut,i]), d=get_average_delta(self.data,i))
+                X_new = np.fft.fftfreq(len(self.data[:,i]), d=get_average_delta(self.data,i))[:cut]
                 new_data.append(np.array(X_new))
 
             else:
-                fft = [x for x in sci.fft(self.data[:, i])]
+                fft = [np.real(x) for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
 
+        self.colUnits[self.timeIndex] = 'Hz'
+        self.colNames[self.timeIndex] = 'Frequenz'
         self.data = np.asarray(new_data,dtype="float64").transpose()
 
 
 
 
-    def gaussian_filter(self, index, gauss_std=2 , gauss_M=5):
+    def gaussian_filter(self, index, gauss_std=2 , gauss_M=None):
         '''
         The gaussian filter with the default number of points in the output window (Equal the points of the input)
         :param index: The index of interest for the data
@@ -105,6 +109,7 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
+        self.log ='gauss'
         daten = np.asarray(self.data[:,index], dtype=np.float64)
         if gauss_M == None:
             b = signal.gaussian(len(self.data[:,0]), gauss_std)
@@ -135,14 +140,15 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
+        self.log= 'hoch und tief'
         fs = 1 / get_average_delta(self.data, self.timeIndex)
         nyq = 0.5 * fs
 
         # Default Values
         if lowcut == None:
-            lowcut = 0.9 * nyq
+            lowcut = 0.1 * nyq
         if highcut == None:
-            highcut = 0.1 * nyq
+            highcut = 0.9 * nyq
 
         low = lowcut / nyq
         high = highcut / nyq
@@ -170,6 +176,7 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
+        self.log ='hoch oder tief'
         fs = 1 / get_average_delta(self.data, self.timeIndex)
         nyq = 0.5 * fs
 
@@ -181,8 +188,6 @@ class Measurement(object):
                 cofreq = nyq * 0.1
             else:
                 print('Wrong Input format: butterworth_filter : ', mode, cofreq)
-            print('cofreq: ', cofreq)
-        # @TODO: Nochmal korrektheit überprüfen
 
         cut = cofreq / nyq
         b, a = signal.butter(order, cut, btype=mode, analog=False)

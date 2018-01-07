@@ -21,9 +21,6 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <div class="section" style="padding-top:0">
-                        Wähle nun aus, welche Analyse-Features angewendet werden sollen.
-                    </div>
                     <div class="divider"></div>
                     <div class="section">
                         <div id="firstGraph"></div>
@@ -55,7 +52,7 @@
                                 Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
                             </div>
                             <div class="col s4">
-                                <button class="btn waves-effect waves-light right" type="submit" style="position: relative; z-index: auto;"><i class="material-icons left">autorenew</i>anwenden</button>
+                                <button class="btn waves-effect waves-light right" type="submit" style="position: relative; z-index: auto;"><i class="material-icons left">autorenew</i>Berechnen</button>
                             </div>
                         </div>
                         <ul id="spaltenCollapsible" class="collapsible popout" data-collapsible="expandable">
@@ -72,7 +69,7 @@
                                             </div>
                                             <div class="input-field col s6">
                                                 <input id="hochpassCofreq" name="hochpassOrder" type="text">
-                                                <label class="hochpassCofreqLabel" for="hochpassCofreq">Schnittfrequenz</label>
+                                                <label class="hochpassCofreqLabel" for="hochpassCofreq">Filterfreq. (Hz)</label>
                                             </div>
                                         </div>
                                     </div>
@@ -82,11 +79,11 @@
                                         <div class="row" style="padding:0; margin:0">
                                             <div class="input-field col s6">
                                                 <input id="tiefpassOrder" name="tiefpassOrder" type="text">
-                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
+                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">Rang</label>
                                             </div>
                                             <div class="input-field col s6">
                                                 <input id="tiefpassCofreq" name="tiefpassOrder" type="text">
-                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">Schnittfrequenz</label>
+                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">Filterfreq. (Hz)</label>
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +93,7 @@
                                         <div class="row" style="padding:0; margin:0">
                                             <div class="input-field col s6">
                                                 <input id="gaussStd" name="gaussStd" type="text">
-                                                <label class="gaussStdLabel" for="gaussStd">Standardabweichung</label>
+                                                <label class="gaussStdLabel" for="gaussStd">Std.</label>
                                             </div>
                                             <div class="input-field col s6">
                                                 <input id="gaussM" name="gaussM" type="text">
