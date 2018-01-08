@@ -1,18 +1,18 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Project, Category
 
 def category_options():
     categories = [(None, '---------')]
-    categories += [(0, 'new category')]
+    categories += [(0, _('new category'))]
     categories += [(c.id, c.name) for c in Category.objects.order_by('id')]
     return categories
 
 class ProjectForm(forms.ModelForm):
-
-    subcategory = forms.ChoiceField()
-    category = forms.ModelChoiceField(Category.objects.filter(parent=None))
-    new_subcategory = forms.CharField(required=False)
+    category = forms.ModelChoiceField(Category.objects.filter(parent=None), label=_('category'))
+    subcategory = forms.ChoiceField(label=_('subcategory'))
+    new_subcategory = forms.CharField(required=False, label=_('new category'))
 
     field_order = (
         'name',

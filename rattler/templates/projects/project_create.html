@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load materialize %}
+{% load materialize i18n %}
 
 {% block container %}
 <form method="POST">
@@ -11,7 +11,7 @@
     {% endfor %}
     <div class="card">
         <div class="card-content">
-            <span calss="card-title">Neues Projekt anlegen</span>
+            <span calss="card-title">Neues Projekt anlegen {% trans 'new category'%}</span>
             {{form|materilize}}
         </div>                    
         <div class="card-action">
