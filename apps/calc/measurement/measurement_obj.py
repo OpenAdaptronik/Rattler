@@ -13,7 +13,6 @@ class Measurement(object):
         self.data = np.array(json.loads(raw), dtype=np.float64)
         self.colUnits = np.array(json.loads(Unit_Names))
         self.colNames = np.array(json.loads(Column_Names))
-        self.log = '-'
 
 
 
@@ -35,7 +34,6 @@ class Measurement(object):
         /process/
         :param scale: The scale, the Data should be resampled
         '''
-        self.log = 'resample'
         begin = np.float64(self.data[0,self.timeIndex])
         end = np.float64(self.data[-1,self.timeIndex])
         cnt=Counter(get_delta(self.data,self.timeIndex,3))
@@ -73,7 +71,6 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
-        self.log = 'fourrier'
         new_data = []
         cut = int(len(self.data[:, 0]) / 2)
         for i in range(0,len(self.data[0])):
@@ -109,7 +106,6 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
-        self.log ='gauss'
         daten = np.asarray(self.data[:,index], dtype=np.float64)
         if gauss_M == None:
             b = signal.gaussian(len(self.data[:,0]), gauss_std)
@@ -140,7 +136,6 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
-        self.log= 'hoch und tief'
         fs = 1 / get_average_delta(self.data, self.timeIndex)
         nyq = 0.5 * fs
 
@@ -176,7 +171,6 @@ class Measurement(object):
             plt.grid(True)
             plt.show()
         '''
-        self.log ='hoch oder tief'
         fs = 1 / get_average_delta(self.data, self.timeIndex)
         nyq = 0.5 * fs
 

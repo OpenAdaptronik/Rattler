@@ -89,7 +89,7 @@ $( document ).ready(function() {
 
         //Token Configuration
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-        //console.log($("form").serialize())
+
 
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
@@ -106,10 +106,6 @@ $( document ).ready(function() {
 
 
         //Prepare Submission Data
-        /*
-        console.log('neue Daten eingelesen')
-        console.log('resampling neu:')
-        console.log($("#resampling").prop('checked'))*/
         var data = {
             'resampling':$("#resampling").prop('checked'),
             'resamplingScale':$("#resamplingScale").val(),
@@ -140,11 +136,6 @@ $( document ).ready(function() {
         cache:false,
         dataType: 'json',
         success: function (data) {
-            console.log('neue Visualisierung:')
-            //alert('its some kind of magic!')
-
-
-           console.log(data.log)
 
            dataArray = JSON.parse(data.jsonData);
            spaltenTitel = JSON.parse(data.jsonHeader);
