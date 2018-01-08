@@ -120,6 +120,7 @@ INSTALLED_APPS = [
     'apps.process.apps.ProcessConfig',
     'apps.community.apps.CommunityConfig',
     'apps.dashboard.apps.DashboardConfig',
+    'apps.materialize.apps.MaterializeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,6 +128,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.forms',
+    
 ]
 
 # Middlewares

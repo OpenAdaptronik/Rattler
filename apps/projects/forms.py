@@ -36,8 +36,6 @@ class ProjectForm(forms.ModelForm):
             subcategories = Category.objects.filter(parent=self.data.get('category', False))
             subcategories = subcategories.order_by('id')
             choices += [(c.id, c.name) for c in subcategories]
-
-        print(choices)
         return choices
 
     def clan_new_subcategory(self):

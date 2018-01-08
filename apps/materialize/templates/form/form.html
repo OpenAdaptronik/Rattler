@@ -1,0 +1,7 @@
+{% load materialize %}
+
+{% for field in form.visible_fields %}
+    <div class="row">
+        {% form_field_render field %}
+    </div>
+{% endfor %}
