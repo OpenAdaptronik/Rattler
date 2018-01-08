@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-content">
+            <span calss="card-title">Neues Projekt anlegen</span>
+            {{ form.as_p }}
+        </div>                    
+        <div class="card-action">
+            <button type="submit">Speichern</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

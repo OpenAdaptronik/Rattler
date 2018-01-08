@@ -1,0 +1,6 @@
+{% load i18n %}
+<option value="" selected>---------</option>
+<option value="0">{% trans 'new category' %}</option>
+{% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+{% endfor %}
