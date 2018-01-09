@@ -1,0 +1,35 @@
+<div class="section">
+  <div class="container">
+    <h2> Neues Projekt erstellen</h2>
+    <div class="row">
+      <form method="post">
+        {% csrf_token %}
+        <div class="col s12 m12 13" style="min-width: 300px">
+          <div class="card">
+            <p class="card-content">
+              <span class="card-title"></span>
+              <p>
+                <table>
+                  <tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="projectname">Beschreibung: </label>
+                        <input placeholder='' id="description" type="text" class="validate" name="description">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="card-action">
+                        <button class="btn waves-effect waves-light" type="submit">Anlegen<i class="material-icons left"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

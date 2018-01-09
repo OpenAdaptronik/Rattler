@@ -120,6 +120,7 @@ INSTALLED_APPS = [
     'apps.process.apps.ProcessConfig',
     'apps.community.apps.CommunityConfig',
     'apps.dashboard.apps.DashboardConfig',
+    'apps.analysis.apps.AnalysisConfig',
     'apps.materialize.apps.MaterializeConfig',
     'apps.utils.apps.UtilsConfig',
     'django.contrib.admin',

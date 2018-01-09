@@ -1,0 +1,22 @@
+<div class="section">
+  <div class="container">
+    <h2> Meine Projekte</h2>
+    <div class="row">
+      <form method="post">
+        {% csrf_token %}
+        <div class="col s12 m12 13" style="min-width: 300px">
+          <div class="card">
+              {% for project in my_projects %}
+              <p> <a href="{% url 'projects:detail' name=project.name id=project.id %}">{{ project.name }}</a></p>
+                  <p>erstellt am {{project.created}}</p>
+              {% endfor %}
+            <div class="card-action">
+                <a href="{% url 'projects:new' %}">Neues Projekt anlegen</a>
+            </div>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
