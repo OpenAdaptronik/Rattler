@@ -125,3 +125,38 @@ def materialize_form_submit_btn(text=None):
             'text': text
         }
     )
+
+@register.simple_tag(takes_context=False)
+def materialize_paginator(paginator, url_name, buffer=3):
+    current = paginator.number
+    last = paginator.paginator.num_pages
+
+    mb = 2 * buffer
+    before_range = min(
+        current - 1,
+        max(
+            mb - min(buffer, last - current), 
+            buffer
+        )
+    )
+    after_range = min(
+        last-current,
+        max(
+            mb - min(buffer, current-1),
+            buffer
+        )
+    )
+
+    return template.loader.render_to_string(
+        'materialize/paginator.html',
+        {
+            'url_name': url_name,
+            'has_previous': paginator.has_previous,
+            'previous': paginator.previous_page_number,
+            'pages_before': [n + current - before_range for n in range(before_range)],
+            'current': paginator.number,
+            'pages_after': [n + current + 1 for n in range(after_range)],
+            'has_next': paginator.has_next,
+            'next': paginator.next_page_number,
+        }
+    )
