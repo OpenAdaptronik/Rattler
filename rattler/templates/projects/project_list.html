@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load materialize i18n defer %}
+{% block container %}
+<div class="card">
+    <div class="card-content">
+        <h2 class="card-title">Meine Projekte</h2>
+        <table class="striped highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{% trans 'name' %}</th>
+                    <th>{% trans 'category' %}</th>
+                    <th>{% trans 'subcategory' %}</th>
+                    <th>{% trans 'manufacturer' %}</th>
+                    <th>{% trans 'typ' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in object_list %}
+                    <tr>
+                        <td>{{project.id}}</td>
+                        <td>{{project.name}}</td>
+                        <td>{{project.category}}</td>
+                        <td>{{project.subcategory}}</td>
+                        <td>{{project.manufacturer}}</td>
+                        <td>{{project.typ}}</td>
+                        <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                    </tr>                   
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+            <div class="center-align">
+                {% materialize_paginator page_obj 'projects:index_paginated' buffer=4 %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-action">
+            <a href="{% url 'projects:new' %}" class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></a>
+    </div>
+
+</div>
+{% endblock %}
