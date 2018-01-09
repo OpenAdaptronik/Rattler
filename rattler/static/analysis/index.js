@@ -89,7 +89,9 @@ $( document ).ready(function() {
     });
     $('form').submit(function(event){
         event.preventDefault();
-        if($('form').valid()){
+        if(!$('form').valid()) {
+        return;
+        }
 
 
 
@@ -189,7 +191,7 @@ $( document ).ready(function() {
 
 
 
-        }});}
+        }});
     })
 
 
