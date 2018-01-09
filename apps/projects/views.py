@@ -1,5 +1,11 @@
 from apps.projects.models import Category, Project
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
+
+from django.views.generic import FormView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import ProjectForm
+from django.core import serializers
+
 
 def save_project(request):
     # Submit project attributes
@@ -41,3 +47,27 @@ def save_project(request):
         return render(request, 'projects/create.html')
 
     return render(request, 'projects/create.html')
+
+class NewProject(LoginRequiredMixin, CreateView):
+    form_class=ProjectForm
+    template_name = 'projects/project_create.html'
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        form.save()
+        return super(NewProject, self).form_valid(form)
+
+def categories(request, id=None):
+    return render(
+        request,
+        'projects/categories.html',
+        {
+            'categories': Category.objects.filter(parent=id)
+        }
+    )
+
+
+def detail(request, name, id):
+    from django.shortcuts import HttpResponse
+    return HttpResponse('%s %s' % (name, id))
