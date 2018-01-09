@@ -1,4 +1,4 @@
-{% load static %}
+{% load static materialize %}
 <!--
 Parameter mit GET übergeben:
     navi==1 => damit responsive Navigation auf Seiten funktioniert
@@ -7,7 +7,6 @@ Parameter mit GET übergeben:
 
 <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
 <script src="{% static 'materialize/js/materialize.min.js' %}"></script>
-
 <script>
 $(document).ready(function($){
     $(function(){
@@ -16,3 +15,4 @@ $(document).ready(function($){
     }); // end of document ready
 }); // end of jQuery name space
 </script>
+{% form_add_javascript %}
