@@ -10,6 +10,7 @@
                     <th>#</th>
                     <th>{% trans 'name' %}</th>
                     <th>{% trans 'category' %}</th>
+                    <th>{% trans 'subcategory' %}</th>
                     <th>{% trans 'manufacturer' %}</th>
                     <th>{% trans 'typ' %}</th>
                     <th></th>
@@ -21,6 +22,7 @@
                         <td>{{project.id}}</td>
                         <td>{{project.name}}</td>
                         <td>{{project.category}}</td>
+                        <td>{{project.subcategory}}</td>
                         <td>{{project.manufacturer}}</td>
                         <td>{{project.typ}}</td>
                         <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
@@ -30,7 +32,7 @@
         </table>
         {% if is_paginated %}
             <div class="center-align">
-                {% materialize_paginator page_obj 'projects:index_paginated' buffer=1 %}
+                {% materialize_paginator page_obj 'projects:index_paginated' buffer=4 %}
             </div>
         {% endif %}
     </div>
