@@ -12,6 +12,7 @@
                     <th>{% trans 'category' %}</th>
                     <th>{% trans 'manufacturer' %}</th>
                     <th>{% trans 'typ' %}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +23,8 @@
                         <td>{{project.category}}</td>
                         <td>{{project.manufacturer}}</td>
                         <td>{{project.typ}}</td>
-                    </tr>
+                        <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                    </tr>                   
                 {% endfor %}
             </tbody>
         </table>
