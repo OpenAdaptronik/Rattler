@@ -79,7 +79,14 @@ $( document ).ready(function() {
         }
 
 
-
+    $('#analyseAuswahlForm').on('keyup blur', function () {
+        if ($('#analyseAuswahlForm').valid()) {
+            $('#submitButton').prop('disabled', false);
+        }
+        else {
+            $('#submitButton').prop('disabled', 'disabled');
+        }
+    });
     $('form').submit(function(event){
         event.preventDefault();
         if($('form').valid()){
