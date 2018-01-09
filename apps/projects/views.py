@@ -75,7 +75,16 @@ def categories(request, id=None):
         }
     )
 
-
 def detail(request, name, id):
     from django.shortcuts import HttpResponse
     return HttpResponse('%s %s' % (name, id))
+
+def createExperiment(request, name, id):
+    if request.method == 'POST':
+        post_data = request.POST.copy()
+        description = post_data['description']
+ 
+        new_experiment = Experiment(project_id=id, description=description)
+        new_experiment.save()
+
+    return render(request, 'projects/createExperiment.html')

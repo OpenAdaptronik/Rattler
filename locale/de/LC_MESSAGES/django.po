@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-08 20:07+0000\n"
+"POT-Creation-Date: 2018-01-09 15:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: apps/materialize/templatetags/materialize.py:121
 msgid "save"
-msgstr "Speichern2"
+msgstr "Speichern"
 
 #: apps/projects/admin.py:13
 msgid "attributes"
