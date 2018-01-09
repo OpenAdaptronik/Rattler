@@ -124,16 +124,16 @@ $( document ).ready(function() {
         }
         for(i=0; i < anzSpalten; i++){
             if(i!=zeitreihenSpalte){
-                data['hochpassOrder'+i] = $('#spaltenCol'+i).children().find('#hochpassOrder'+i).val()
-                data['hochpassCofreq'+i] = $('#spaltenCol'+i).children().find('#hochpassCofreq'+i).val()
-                data['tiefpassOrder'+i] = $('#spaltenCol'+i).children().find('#tiefpassOrder'+i).val()
-                data['tiefpassCofreq'+i] = $('#spaltenCol'+i).children().find('#tiefpassCofreq'+i).val()
+                data['hochpassOrder'+i] = $('#spaltenCol'+i).find('#hochpassOrder'+i).val()
+                data['hochpassCofreq'+i] = $('#spaltenCol'+i).find('#hochpassCofreq'+i).val()
+                data['tiefpassOrder'+i] = $('#spaltenCol'+i).find('#tiefpassOrder'+i).val()
+                data['tiefpassCofreq'+i] = $('#spaltenCol'+i).find('#tiefpassCofreq'+i).val()
 
-                data['hochpass'+i] = $('#spaltenCol'+i).children().find('#hochpass'+i).prop('checked');
-                data['tiefpass'+i] = $('#spaltenCol'+i).children().find('#tiefpass'+i).prop('checked');
-                data['gauss'+i] = $('#spaltenCol'+i).children().find('#gauss'+i).prop('checked');
-                data['gaussStd'+i] = $('#spaltenCol'+i).children().find('#gaussStd'+i).val();
-                data['gaussM'+i] = $('#spaltenCol'+i).children().find('#gaussM'+i).val();
+                data['hochpass'+i] = $('#spaltenCol'+i).find('#hochpass'+i).prop('checked');
+                data['tiefpass'+i] = $('#spaltenCol'+i).find('#tiefpass'+i).prop('checked');
+                data['gauss'+i] = $('#spaltenCol'+i).find('#gauss'+i).prop('checked');
+                data['gaussStd'+i] = $('#spaltenCol'+i).find('#gaussStd'+i).val();
+                data['gaussM'+i] = $('#spaltenCol'+i).find('#gaussM'+i).val();
                 }
             }
 
