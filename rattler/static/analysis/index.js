@@ -4,7 +4,9 @@ $( document ).ready(function() {
 
         // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
         // https://stackoverflow.com/a/34979219
-        const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
+        function arrayColumnAsRow(arr, n) {
+            return arr.map(function(x) { return x[n]})
+        }
 
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
