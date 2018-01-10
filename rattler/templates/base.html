@@ -1,7 +1,7 @@
 ﻿<!doctype html>
 <html lang="de">
 	<head>
-		{% load static %}
+		{% load static defer %}
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="description" content="">
@@ -38,32 +38,8 @@
 
 		<!-- SKRIPTE einbinden -->
 		{% include 'includeDefs/javascripts.html' %}
+		{% block append_script %}{% endblock %}
 		{% block moreScripts %}{% endblock %}
+		{% render_defer_html %}
 	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load materialize i18n defer %}
+
+{% block container %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field.errors }}
+        {{ hidden_field }}
+    {% endfor %}
+    <div class="card">
+        <div class="card-content">
+            <span calss="card-title">Neues Projekt anlegen</span>
+            {{form|materilize}}
+        </div>                    
+        <div class="card-action">
+            {% materialize_form_submit_btn %}
+        </div>
+    </div>
+</form>
+
+{% defer_html %}
+    <script>
+        $(document).ready(function() {
+            var $category = $('#id_category');
+            var $subCategory = $('#id_subcategory');
+            var $newSubCategory = $('#id_new_subcategory');
+            $container = $newSubCategory.parents('.row');
+            var init = true;
+
+            function loadSubCategories() {
+                var path = '/projects/categories/';
+                path += $category.val();
+                $.ajax(path).done(function(data) {
+                    $subCategory.html(data);
+                    $subCategory.material_select();
+                });
+            }
+
+            function toggleSubCategory() {
+                if ($subCategory.val() == '0') {
+                    $container.css('display', '');
+                } else {
+                    $container.css('display', 'none');
+                }
+            }
+
+            function toggleCategory() {
+                if ($category.val() == '') {
+                    $subCategory.val('');
+                    toggleSubCategory();
+                    $subCategory.attr('disabled', true);
+                } else {
+                    loadSubCategories();
+                    $subCategory.removeAttr('disabled');
+                }
+                $subCategory.material_select();
+                init = false;
+            }
+
+            toggleCategory();
+            $category.on('change', toggleCategory);
+            toggleSubCategory();
+            $subCategory.on('change', toggleSubCategory);
+
+        });
+    </script>
+{% end_defer_html %}
+{% endblock %}
+

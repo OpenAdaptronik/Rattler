@@ -9,7 +9,8 @@
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
 {% block container %}
-<form action="{% url 'analysis:index' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
+
+<form method="post" action="{% url 'analysis:refresh' %}" id="analyseAuswahlForm">
     {% csrf_token %}
     <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
     <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
@@ -20,26 +21,33 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <div class="section" style="padding-top:0">
-                        Wähle nun aus, welche Analyse-Features angewendet werden sollen.
-                    </div>
                     <div class="divider"></div>
                     <div class="section">
                         <div id="firstGraph"></div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <h5>Features für das gesamte Experiment:</h5>
                         <div class="row">
-                            <div class="col s6">
+                            <div class="col s5"></div>
+                            <div class="col s2">
+                                    <button id="submitButton" class="btn waves-effect waves-light right" type="submit" style="position: absolute; z-index: auto"><i class="material-icons left">autorenew</i>Berechnen</button>
+                            </div>
+                            <div class="col s5"></div>
+                        </div>
+                    </div>
+                    <div class="divider" style="margin-top: 10px"></div>
+                    <div class="section">
+                        <h5>Analysewerkzeuge für das gesamte Experiment:</h5>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col s2" style="margin-top: 25px">
                                 <input type="checkbox" class="filled-in" id="resampling" name="resampling"/>
                                 <label for="resampling">Resampling anwenden</label>
+                            </div>
+                            <div class="col s2">
                                 <div class="input-field">
                                     <input id="resamplingScale" name="resamplingScale" type="text">
-                                    <label for="resamplingScale">scale</label>
+                                    <label for="resamplingScale">Skalierung</label>
                                 </div>
                             </div>
-                            <div class="col s6">
+                            <div class="col s2"></div>
+                            <div class="col s6" style="margin-top: 20px">
                                 <input type="checkbox" class="filled-in" id="fourier" name="fourier"/>
                                 <label for="fourier">Fourier-Transformation anwenden</label>
                             </div>
@@ -47,14 +55,10 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section" id="dataColsSection">
-                        <h5 style="">Spaltenweise Features:</h5>
+                        <h5 style="">Filter für einzelne Datenreihen:</h5>
                         <div class="row">
-                            <div class="col s8">
-                                Die Eingabefelder sind für Experten.<br/>
-                                Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
-                            </div>
-                            <div class="col s4">
-                                <button class="btn waves-effect waves-light right" type="submit" style="position: relative; z-index: auto;"><i class="material-icons left">autorenew</i>anwenden</button>
+                            <div class="col s12" style="margin-left: 20px">
+                                Die Eingabefelder sind für Experten. Wenn du die Eingabefelder leer lässt, benutzen wir Standardwerte für die Filter.
                             </div>
                         </div>
                         <ul id="spaltenCollapsible" class="collapsible popout" data-collapsible="expandable">
@@ -67,11 +71,11 @@
                                         <div class="row" style="padding:0; margin:0">
                                             <div class="input-field col s6">
                                                 <input id="hochpassOrder" name="hochpassOrder" type="text">
-                                                <label class="hochpassOrderLabel" for="hochpassOrder">order</label>
+                                                <label class="hochpassOrderLabel" for="hochpassOrder">Rang</label>
                                             </div>
                                             <div class="input-field col s6">
                                                 <input id="hochpassCofreq" name="hochpassOrder" type="text">
-                                                <label class="hochpassCofreqLabel" for="hochpassCofreq">cofreq</label>
+                                                <label class="hochpassCofreqLabel" for="hochpassCofreq">Filterfreq. (Hz)</label>
                                             </div>
                                         </div>
                                     </div>
@@ -81,11 +85,11 @@
                                         <div class="row" style="padding:0; margin:0">
                                             <div class="input-field col s6">
                                                 <input id="tiefpassOrder" name="tiefpassOrder" type="text">
-                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">order</label>
+                                                <label class="tiefpassOrderLabel" for="tiefpassOrder">Rang</label>
                                             </div>
                                             <div class="input-field col s6">
                                                 <input id="tiefpassCofreq" name="tiefpassOrder" type="text">
-                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">cofreq</label>
+                                                <label class="tiefpassCofreqLabel" for="tiefpassCofreq">Filterfreq. (Hz)</label>
                                             </div>
                                         </div>
                                     </div>
@@ -95,16 +99,15 @@
                                         <div class="row" style="padding:0; margin:0">
                                             <div class="input-field col s6">
                                                 <input id="gaussStd" name="gaussStd" type="text">
-                                                <label class="gaussStdLabel" for="gaussStd">std</label>
+                                                <label class="gaussStdLabel" for="gaussStd">Std.</label>
                                             </div>
                                             <div class="input-field col s6">
                                                 <input id="gaussM" name="gaussM" type="text">
-                                                <label class="gaussMLabel" for="gaussM">m</label>
+                                                <label class="gaussMLabel" for="gaussM">Punktanzahl</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </li>
                         </ul>
                         <div style="display:none" class="row" id="spaltenColTemplate">
@@ -173,13 +176,16 @@
 {% endblock %}
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}
+    {% include 'includeDefs/jquery-validation.html' %}
     <script>
         var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
         var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
         var dataArray = JSON.parse('{{ jsonData|safe }}');
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
-        //var newDataArray = JSON.parse('{{ newData|safe }}');
     </script>
-    <script type="text/javascript" src="{% static 'analysis/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'analysis/index.js' %}">
+            </script>
+    <script type="text/javascript" src="{% static 'analysis/validation.js' %}">
+            </script>
 {% endblock %}

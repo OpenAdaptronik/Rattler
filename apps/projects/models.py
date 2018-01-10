@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import reverse
+from django.utils.encoding import iri_to_uri
 
 '''crates model Projects with
 userId as ForeignKey from User
@@ -28,7 +29,7 @@ class Project(models.Model):
     def get_absolute_url(self):
         kwargs = {
             'id': self.id,
-            'name': self.name
+            'name': iri_to_uri(self.name)
         }
         return reverse('projects:detail', kwargs=kwargs)
 
