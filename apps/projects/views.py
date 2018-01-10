@@ -1,7 +1,7 @@
 from apps.projects.models import Category, Project
 from django.shortcuts import render, HttpResponse
 
-from django.views.generic import FormView, CreateView
+from django.views.generic import FormView, CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ProjectForm
 from django.core import serializers
@@ -66,6 +66,18 @@ class NewProject(LoginRequiredMixin, CreateView):
         form.save()
         return super(NewProject, self).form_valid(form)
 
+class MyProjects(LoginRequiredMixin, ListView):
+    model = Project
+    allow_empty = True
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        return Project.objects.filter(user=user).order_by('created')
+
+
+
+
 def categories(request, id=None):
     return render(
         request,
@@ -75,7 +87,16 @@ def categories(request, id=None):
         }
     )
 
-
 def detail(request, name, id):
     from django.shortcuts import HttpResponse
     return HttpResponse('%s %s' % (name, id))
+
+def createExperiment(request, name, id):
+    if request.method == 'POST':
+        post_data = request.POST.copy()
+        description = post_data['description']
+ 
+        new_experiment = Experiment(project_id=id, description=description)
+        new_experiment.save()
+
+    return render(request, 'projects/createExperiment.html')

@@ -1,5 +1,5 @@
 ﻿{% extends "base.html" %}
-{% load static js %}
+{% load static %}
 {% block siteTitle %}Dashboard{% endblock %}
 {% block moreStylesheets %}
     <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
@@ -89,9 +89,7 @@
         </div>
 
                 <div class="card-action">
-                    <form action="/projects">
-                        <button class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></button>
-                    </form>
+                    <a href="{% url 'projects:new' %}" class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></a>
                 </div>
 
 

@@ -1,0 +1,40 @@
+{% load i18n %}
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>{% trans 'name' %}</th>
+            <th>{% trans 'category' %}</th>
+            <th>{% trans 'manufacturer' %}</th>
+            <th>{% trans 'typ' %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in object_list %}
+            <tr>
+                <td>{{project.id}}</td>
+                <td>{{project.name}}</td>
+                <td>{{project.category}}</td>
+                <td>{{project.manufacturer}}</td>
+                <td>{{project.typ}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if is_paginated %}
+    {{page_object}}
+    <div>
+        <span>
+            {% if page_obj.has_previous %}
+                <a href="{% url 'projects:index_paginated' page_obj.previous_page_number%}">previous</a>
+            {% endif %}
+            <span>
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="{% url 'projects:index_paginated' page_obj.next_page_number%}">next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endif %}
