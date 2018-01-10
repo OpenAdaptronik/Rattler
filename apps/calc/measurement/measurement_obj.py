@@ -4,6 +4,7 @@ import json
 import numpy as np
 from collections import Counter
 from apps.calc.measurement.calculus import get_average_delta,get_delta
+from apps.calc.tess_module.tess import tess
 
 
 
@@ -87,7 +88,16 @@ class Measurement(object):
         self.data = np.asarray(new_data,dtype="float64").transpose()
 
 
+    def call_tess(self,data_index_1,data_index_2):
+        '''
+        TESS is a software project that is part of the OpenAdaptronics program, conducted at the Fraunhofer LBF.
+        Its preliminary title is an acronym for “Tool zur Empfehlung von Strategien zur Schwingungsberuhigung”
 
+        :param time: time data
+        :param data_index_1: acceleration of the instrument
+        :param data_index_2: exciting acceleration'''
+
+        return tess.tess(self.data[:,self.timeIndex],self.data[:,data_index_1],self.data[:,data_index_2])
 
     def gaussian_filter(self, index, gauss_std=2 , gauss_M=None):
         '''

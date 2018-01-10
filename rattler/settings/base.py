@@ -121,6 +121,7 @@ INSTALLED_APPS = [
     'apps.community.apps.CommunityConfig',
     'apps.dashboard.apps.DashboardConfig',
     'apps.analysis.apps.AnalysisConfig',
+    'apps.tess.apps.TessConfig',
     'apps.materialize.apps.MaterializeConfig',
     'apps.utils.apps.UtilsConfig',
     'django.contrib.admin',
@@ -130,7 +131,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.forms',
-    
+
 ]
 
 # Middlewares

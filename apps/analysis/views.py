@@ -40,10 +40,10 @@ def index(request):
     return render(request, "analysis/index.html", dataForRender)
 
 
+@login_required
 def renew_data(request):
     if request.method != 'POST':
        return HttpResponseRedirect('/dashboard/')
-
 
     #Recreate measurement object from the session storage
     measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
@@ -152,7 +152,5 @@ def renew_data(request):
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
         'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
     }
-
-
 
     return JsonResponse(dataForRender)

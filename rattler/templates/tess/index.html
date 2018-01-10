@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Tool zur Empfehlung von Strategien zur Schwingungsberuhigung{% endblock %}
+{% block moreStylesheets %}
+    <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+{% block container %}
+
+<form method="post" action="{% url 'tess:refresh' %}" id="tessForm">
+    {% csrf_token %}
+    <h4>Tool zur Empfehlung von Strategien zur Schwingungsberuhigung</h4>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                        <div class="section">
+                            <div id="firstGraph"></div>
+                        </div>
+                        <div class="section" id="result">
+                            <div class="col s9">
+                                <table id="tessResult" style="display: none">
+                                    <thead>
+                                      <tr>
+                                          <th>Ergebnis</th>
+                                          <th>Beschreibung</th>
+                                          <th>Parameter</th>
+                                      </tr>
+                                    </thead>
+
+                                    <tbody>
+                                      <tr>
+                                        <td>Beste Strategie:</td>
+                                        <td id="strat1"></td>
+                                        <td id="param1"></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Zweitbeste Strategie:</td>
+                                        <td id="strat2"></td>
+                                        <td id="param2"></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Drittbeste Strategie:</td>
+                                        <td id="strat3"></td>
+                                        <td id="param3"></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Viertbeste Strategie:</td>
+                                        <td id="strat4"></td>
+                                        <td id="param4"></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Fünftbeste Strategie:</td>
+                                        <td id="strat5"></td>
+                                        <td id="param5"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="col s3" style="margin-bottom: 1%">
+                                <button class="btn waves-effect waves-light" type="submit" id="refreshButton" disabled="true">Berechnen <i class="material-icons right"></i></button>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="divider" ></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s3" style="margin-top: 20px">
+                                <b>Beschleunigung des Instruments:</b>
+                            </div>
+                            <div class="input-field col s2" >
+                                <select id="data1">
+                                    <option value="" disabled selected>Wähle deine Spalte</option>
+                                </select>
+                            </div>
+                            <div class="col s1"></div>
+                            <div class="col s3" style="margin-top: 20px">
+                                <b>Existierende Beschleunigung:</b>
+                            </div>
+                            <div class="input-field col s2" >
+                                <select id="data2">
+                                    <option value="" disabled selected>Wähle deine Spalte</option>
+                                </select>
+                            </div>
+                            <div class="col s1"></div>
+                            <div class="col s12" id="validationMessage">
+                                 <h8 style="color:red;">Bitte unterschiedliche Spalten auswählen</h8>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+
+{% endblock %}
+{% block sideNavBlock %}
+    {% include 'includeDefs/sideNav.html' %}
+{% endblock %}
+{% block moreScripts %}
+    {% include 'includeDefs/javascript-forms.html' %}
+    {% include 'includeDefs/jquery-validation.html' %}
+    <script>
+        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
+        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
+        var dataArray = JSON.parse('{{ jsonData|safe }}');
+        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var anzSpalten = dataArray[0].length;
+        //var strategie1 = 0
+
+    </script>
+    <script type="text/javascript" src="{% static 'tess/index.js' %}">
+            </script>
+    {% endblock %}
