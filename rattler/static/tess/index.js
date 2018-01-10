@@ -8,7 +8,7 @@ $( document ).ready(function() {
     // Plotly: Graph von vorheriger Seite wieder plotten
         var traces = [];
         // s. Variablenname
-        zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
+        zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
 
     var layout = {
         title: 'Dein Experiment:',
@@ -18,11 +18,10 @@ $( document ).ready(function() {
     }
 
     // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
-
     for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
         traces[j] = {
             x: zeitreihenSpalteAlsZeile,
-            y: arrayColumnAsRow(dataArray, j),
+            y: arrayColnAsRow(dataArray, j),
             name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
             type: 'scatter',
             line: {

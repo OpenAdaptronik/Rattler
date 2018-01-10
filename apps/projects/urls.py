@@ -9,5 +9,5 @@ urlpatterns = [
     path('detail/<str:name>/<int:id>', views.detail, name='detail'),
     path('categories/', views.categories, name='categories'),
     path('categories/<int:id>/', views.categories, name='sub_categories'),
-    #path('createExperiment/<slug:name>/<int:id>', views.createExperiment, name='createExperiment'),
+    path('createExperiment/<slug:name>/<int:id>', views.createExperiment, name='createExperiment'),
 ]
