@@ -2,15 +2,60 @@ from django.shortcuts import render
 from apps.user.models import User
 from apps.profile.models import Profile
 from apps.projects.models import Project
-
+from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 '''Community'''
+
+
+
+class FilterListView(ListView):
+    model = Project
+    template_name = 'community/index.html'
+    context_object_name = "filtered"
+    #queryset = user_filter()
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        data = super(FilterListView, self).get_context_data(**kwargs)
+        data['filter'] = {
+            'username': self.request.GET.get('username', None),
+            'company': self.request.GET.get('company', None),
+            'email': self.request.GET.get('mail', None),
+            'projectname': self.request.GET.get('projectname', None),
+            'category': self.request.GET.get('category', None),
+            'manufacturer': self.request.GET.get('manufacturer', None),
+        }
+        return data
+
+
+    def get_queryset(self):
+        queryset = Project.objects.filter(visibility=True)
+        username = self.request.GET.get('username', False)
+        company = self.request.GET.get('company', False)
+        email = self.request.GET.get('mail', False)
+        projectname = self.request.GET.get('projectname', False)
+        category = self.request.GET.get('category', False)
+        manufacturer = self.request.GET.get('manufacturer', False)
+        if username:
+            queryset = queryset.filter(user__username__icontains=username)
+        if email:
+            queryset = queryset.filter(user__email__icontains=email)
+        if company:
+            queryset = queryset.filter(user__profile__company__icontains=company)
+        if projectname:
+            queryset = queryset.filter(name__icontains=projectname)
+        if category:
+            queryset = queryset.filter(category__name__icontains=category)
+        if manufacturer:
+            queryset = queryset.filter(manufacturer__icontains=manufacturer)
+        return queryset
+
 
 
 def user_filter(request):
     filtered_ids = list(Project.objects.values_list('id', flat=True))
     filtered_ids = list(Project.objects.all().values_list('id', flat=True))
-
     # Submit User Search
     if request.method == 'POST':
         post_data = request.POST.copy()
