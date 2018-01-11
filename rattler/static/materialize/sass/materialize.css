@@ -6,14 +6,14 @@ Error: Undefined variable: "$link-color".
 27: @import "components/waves";
 28: @import "components/modal";
 29: @import "components/collapsible";
-30: //@import "components/chips";
-31: //@import "components/materialbox";
+30: @import "components/chips";
+31: @import "components/materialbox";
 32: @import "components/forms/forms";
-33: //@import "components/table_of_contents";
+33: @import "components/table_of_contents";
 34: @import "components/sideNav";
-35: //@import "components/preloader";
-36: //@import "components/slider";
-37: //@import "components/carousel";
+35: @import "components/preloader";
+36: @import "components/slider";
+37: @import "components/carousel";
 
 Backtrace:
 Webapp/rattler/static/materialize/sass/components/_global.scss:32
@@ -84,4 +84,4 @@ C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-listen-4.0.0/lib/sass-listen/interna
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$link-color\".\A         on line 32 of Webapp/rattler/static/materialize/sass/components/_global.scss\A         from line 13 of Webapp/rattler/static/materialize/sass/materialize.scss\A \A 27: @import \"components/waves\";\A 28: @import \"components/modal\";\A 29: @import \"components/collapsible\";\A 30: //@import \"components/chips\";\A 31: //@import \"components/materialbox\";\A 32: @import \"components/forms/forms\";\A 33: //@import \"components/table_of_contents\";\A 34: @import \"components/sideNav\";\A 35: //@import \"components/preloader\";\A 36: //@import \"components/slider\";\A 37: //@import \"components/carousel\";"; }
+  content: "Error: Undefined variable: \"$link-color\".\A         on line 32 of Webapp/rattler/static/materialize/sass/components/_global.scss\A         from line 13 of Webapp/rattler/static/materialize/sass/materialize.scss\A \A 27: @import \"components/waves\";\A 28: @import \"components/modal\";\A 29: @import \"components/collapsible\";\A 30: @import \"components/chips\";\A 31: @import \"components/materialbox\";\A 32: @import \"components/forms/forms\";\A 33: @import \"components/table_of_contents\";\A 34: @import \"components/sideNav\";\A 35: @import \"components/preloader\";\A 36: @import \"components/slider\";\A 37: @import \"components/carousel\";"; }
