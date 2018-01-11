@@ -32,10 +32,16 @@ class ProjectForm(forms.ModelForm):
     def get_subcategory_choices(self):
         choices = [(None, '---------')]
         choices += [(0, 'new category')]
-        if self.data.get('category', False):
-            subcategories = Category.objects.filter(parent=self.data.get('category', False))
+        category = self.data.get('category', False)
+
+        if not category and self.instance and hasattr(self.instance, 'category'):
+            category = self.instance.category
+
+        if category:
+            subcategories = Category.objects.filter(parent=category)
             subcategories = subcategories.order_by('id')
             choices += [(c.id, c.name) for c in subcategories]
+
         return choices
 
     def clan_new_subcategory(self):
