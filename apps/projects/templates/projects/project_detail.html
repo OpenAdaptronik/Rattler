@@ -1,0 +1,33 @@
+{% load i18n %}
+<h2>{%trans 'project' %}</h2>
+<dl>
+    <dt><b>{% trans 'user' %}</b></dt>
+    <dd>
+        <a href="{% url 'profile:detail' name=object.user.username %}">{{ object.user.username }}</a>
+    </dd>
+    <dt><b>{% trans 'name' %}</b></dt>
+    <dd>{{ object.name }}</dd>
+    <dt><b>{% trans 'category' %}</b></dt>
+    <dd>{{ object.category }}</dd>
+    <dt><b>{% trans 'subcategory' %}</b></dt>
+    <dd>{{ object.subcategory }}</dd>
+    <dt><b>{% trans 'manufacturer' %}</b></dt>
+    <dd>{{ object.manufacturer }}</dd>
+    <dt><b>{% trans 'typ' %}</b></dt>
+    <dd>{{ object.typ }}</dd>
+    <dt><b>{% trans 'description' %}</b></dt>
+    <dd>{{ object.description }}</dd>
+    <dt><b>{% trans 'created' %}</b></dt>
+    <dd>{{ object.created }}</dd>
+</dl>
+<h2>{%trans 'experiments' %}</h2>
+{% for experiment in object.experiment_set.all %}
+    <dt><b>{% trans 'id' %}</b></dt>
+    <dd>{{ experiment.id }}</dd>
+    <dt><b>{% trans 'description' %}</b></dt>
+    <dd>{{ experiment.description }}</dd>
+{% endfor %}
+{% if object.user == user %}
+    <a href="{% url 'projects:edit' object.id %}">{% trans 'edit' %}</a>
+{% endif %}
+    

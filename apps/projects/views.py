@@ -1,63 +1,18 @@
 from apps.projects.models import Category, Project
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
+from django.core.exceptions import PermissionDenied
 
-from django.views.generic import FormView, CreateView, ListView
+from django.views.generic import FormView, CreateView, ListView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ProjectForm
 from django.core import serializers
-
+from django.utils.encoding import uri_to_iri
 
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-def show_projects(request):
-    user_id = request.user.id
-    my_projects = Project.objects.filter(user_id=user_id)
-    return render(request, 'projects/showProjects.html', {'my_projects': my_projects})
-
-def save_project(request):
-    # Submit project attributes
-    if request.method == 'POST':
-        post_data = request.POST.copy()
-        category_name = post_data['category']
-        subcategory_name = post_data['subcategory']
-        projectname = post_data['projectname']
-        manufacturer = post_data['manufacturer']
-        typ = post_data['typ']
-        description = post_data['description']
-        visibility = post_data['visibility']
-
-        try:
-            category = Category.objects.get(name=category_name, parent=None)
-        except Category.DoesNotExist:
-            category = Category(name=category_name)
-            category.save()
-
-        try:
-            subcategory = Category.objects.get(name=subcategory_name, parent=category)
-        except Category.DoesNotExist:
-            subcategory = Category(name=subcategory_name, parent=category)
-            subcategory.save()
-
-        project = Project(
-            user=request.user,
-            name=projectname,
-            category=category,
-            subcategory=subcategory,
-            manufacturer=manufacturer,
-            typ=type,
-            description=description,
-            visibility=visibility
-        )
-
-        project.save()
-
-        return render(request, 'projects/create.html')
-
-    return render(request, 'projects/create.html')
-
 class NewProject(LoginRequiredMixin, CreateView):
-    form_class=ProjectForm
+    form_class = ProjectForm
     template_name = 'projects/project_create.html'
 
     def form_valid(self, form):
@@ -65,6 +20,17 @@ class NewProject(LoginRequiredMixin, CreateView):
         form.instance.user = user
         form.save()
         return super(NewProject, self).form_valid(form)
+
+class UpdateProject(LoginRequiredMixin, UpdateView):
+    model = Project
+    form_class = ProjectForm
+    pk_url_kwarg = 'id'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.user == self.request.user and not self.object.visibility:
+            raise PermissionDenied()
+        return super(UpdateProject, self).get(request, *args, **kwargs)
 
 class MyProjects(LoginRequiredMixin, ListView):
     model = Project
@@ -75,7 +41,15 @@ class MyProjects(LoginRequiredMixin, ListView):
         user = self.request.user
         return Project.objects.filter(user=user).order_by('created')
 
+class ProjectDetail(DetailView):
+    model = Project
+    pk_url_kwarg = 'id'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.user == self.request.user and not self.object.visibility:
+            raise PermissionDenied()
+        return super(ProjectDetail, self).get(request, *args, **kwargs)
 
 
 def categories(request, id=None):
@@ -86,10 +60,6 @@ def categories(request, id=None):
             'categories': Category.objects.filter(parent=id)
         }
     )
-
-def detail(request, name, id):
-    from django.shortcuts import HttpResponse
-    return HttpResponse('%s %s' % (name, id))
 
 def createExperiment(request, name, id):
     if request.method == 'POST':

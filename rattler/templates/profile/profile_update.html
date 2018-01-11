@@ -8,19 +8,24 @@
 <div class="section">
     <div class="container">
         <div class="row">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="col s12 m10 offset-m1" style="min-width: 300px;">
                     <h2>{{user.username}} &bull; Einstellungen</h2>
                     <div class="card">
                         <div class="card-image">
+
                             {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
-                                <img src="/{{ user.profile.profileimage.path.url }}">
+                                <img src="/{{ user.profile.profileimage.path.url }}" id="profile_image">
                             {% else %}
-                                <div style="height: 100px; background: url('{% static 'img/dark_stripes.png' %}')"></div>
+                                <div style="height: 100px; background: url('{% static 'img/dark_stripes.png' %}')" id="profile_image_placeholder"></div>
+                                <img id="profile_image">
                             {% endif %}
+
                             <span class="card-title">{{user.username}}</span>
-                            <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'profile:edit_image' %}"><i class="material-icons">edit</i></a>
+                            <label for="id_profileimage-0-path">
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">edit</i></a>
+                            </label>
                         </div>       
                        
                         <div class="card-content">
@@ -88,8 +93,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>    
+                            <span style="display:none">
+                                    {{ profile_image.management_form }}
+                                    {% for form in profile_image.forms %}
+                                        {{form}}
+                                    {% endfor %}
+                            </span>
+                            
 
+                        </div>    
                         <div class="card-action">
                             <button class="btn waves-effect waves-light" type="submit"name="saveUser">Speichern<i class="material-icons left">save</i></button>
                             {{ change }}
@@ -101,4 +113,28 @@
         </div>
     </div>
 </div>
-{% endblock %}
+
+{% load defer %}
+{% defer_html %}
+<script>
+    $(document).ready(function() {
+        var VALID_FILETYPE = new RegExp('^image/.*');
+        $('#id_profileimage-0-path').change(function(e) {
+            if (this.files.length != 1) {
+                return;
+            }
+            var file = this.files[0];
+            if (!VALID_FILETYPE.test(file.type)) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#profile_image_placeholder').remove();
+                $('#profile_image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
+{% end_defer_html %}
+{%endblock %}
