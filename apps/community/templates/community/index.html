@@ -61,7 +61,7 @@
                     <td> Ergebnisse:
                         <ul>
                         {% for name in filtered_usernames %}
-                            <li> <a href="{% url 'profile:profile' name=name %}">{{ name }}</a>
+                            <li> <a href="{% url 'profile:detail' name=name %}">{{ name }}</a>
                             </li>
                         {% endfor %}
                         </ul>

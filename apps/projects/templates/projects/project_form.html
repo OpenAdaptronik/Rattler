@@ -1,0 +1,61 @@
+<form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    
+    <script>
+        (function() {
+            var category = window.document.querySelector('#id_category');
+            var subCategory = window.document.querySelector('#id_subcategory');
+            var newSubCategory = window.document.querySelector('#id_new_subcategory');
+            var init = true;
+            if (!category || !subCategory || !newSubCategory) {
+                return;
+            }
+    
+            function subCategoriesLoaded() {
+                subCategory.innerHTML = this.responseText
+            }
+    
+            function loadSubCategories() {
+                if (init) {
+                    init = false;
+                    return;
+                }
+                var req = new XMLHttpRequest();
+                req.addEventListener('load', subCategoriesLoaded);
+                var path = '/projects/categories/';
+                path += category.value;
+    
+                req.open('GET', path);
+                req.send();
+            }
+    
+            function toggleCategory() {
+                if (category.value == '') {
+                    subCategory.value = '';
+                    toggleSubCategory();
+                    subCategory.setAttribute('disabled', true);
+                } else {
+                    loadSubCategories();
+                    subCategory.removeAttribute('disabled');
+                }
+                init = false;
+            }
+    
+            function toggleSubCategory() {
+                if (subCategory.value == '0') {
+                    newSubCategory.parentElement.style.display = '';
+                } else {
+                    newSubCategory.parentElement.style.display = 'none';
+                }
+            }
+    
+            category.addEventListener('change', toggleCategory);
+            subCategory.addEventListener('change', toggleSubCategory);
+            toggleCategory();
+            toggleSubCategory();
+        })();
+    </script>
+    

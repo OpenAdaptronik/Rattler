@@ -107,7 +107,7 @@ def form_add_javascript(context):
     )
 
 @register.filter(is_safe=True)
-def materilize(form):
+def materialize(form):
     return template.loader.render_to_string(
         'form/form.html',
         {
