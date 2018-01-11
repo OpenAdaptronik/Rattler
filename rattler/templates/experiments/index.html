@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Experiment und Appübersicht{% endblock %}
+{% block moreStylesheets %}
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+{% block container %}
+
+<form method="post" id="tessForm">
+    {% csrf_token %}
+    <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
+    <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
+    <textarea style="display: none;" id="zeitreihenSpalte" name="zeitreihenSpalte"></textarea>
+    <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
+    <h4>Experiment und Appübersicht</h4>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="section">
+                        <div id="firstGraph"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                        <div class="col s9" id="experimentName">
+                             <h5 >Beispielname</h5>
+                        </div>
+                        <div class="col s3" id="experimentDate">
+                             <h5 >01.01.2018</h5>
+                        </div>
+                        <div class="col s12" id="experimentDescription">
+                             <h6>Wlan Zurücksetzen: sudo service network-manager restart sudo modprobe
+                                 iwlwifi #Anzeigen: sudo lshw -class network </h6>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h6>Applikationen:</h6>
+                    <div class="row" style="margin-top: 2%">
+                        <button class="btn waves-effect waves-light" type="submit" id="tessButton"
+                        style="height: 200px;width:200px;">Tess <i class="material-icons right"></i></button>
+                        <button class="btn waves-effect waves-light" type="submit" id="analysisButton"
+                        style="height: 200px;width:200px;">Analysieren <i class="material-icons right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+{% block sideNavBlock %}
+    {% include 'includeDefs/sideNav.html' %}
+{% endblock %}
+{% block moreScripts %}
+    {% include 'includeDefs/javascript-forms.html' %}
+    {% include 'includeDefs/jquery-validation.html' %}
+    <script>
+        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
+        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
+        var dataArray = JSON.parse('{{ jsonData|safe }}');
+        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var anzSpalten = dataArray[0].length;
+
+         //Give form two different targeds
+        $("#analysisButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'analysis:index' %}");
+            });
+        $("#tessButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'tess:index' %}");
+        });
+
+    </script>
+    <script type="text/javascript" src="{% static 'experiments/index.js' %}">
+            </script>
+    {% endblock %}

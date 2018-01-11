@@ -7,11 +7,10 @@ $( document ).ready(function() {
         function arrayColnAsRow(arr, n) {
             return arr.map(function(x) { return x[n]})
         }
-um
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
             // s. Variablenname
-            zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
+            zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
 
         var layout = {
             title: 'Dein Experiment:',
@@ -25,7 +24,7 @@ um
         for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
-                y: arrayColumnAsRow(dataArray, j),
+                y: arrayColnAsRow(dataArray, j),
                 name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
@@ -166,7 +165,7 @@ um
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
             // s. Variablenname
-            zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
+            zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
 
         var layout = {
             title: 'Dein Experiment:',
@@ -180,7 +179,7 @@ um
         for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
-                y: arrayColumnAsRow(dataArray, j),
+                y: arrayColnAsRow(dataArray, j),
                 name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
