@@ -8,6 +8,9 @@ from apps.projects.models import Project
 
 
 def user_filter(request):
+    filtered_ids = list(Project.objects.values_list('id', flat=True))
+    filtered_ids = list(Project.objects.all().values_list('id', flat=True))
+
     # Submit User Search
     if request.method == 'POST':
         post_data = request.POST.copy()
@@ -18,10 +21,11 @@ def user_filter(request):
         category = post_data['category']
         manufacturer = post_data['manufacturer']
         # empty search
+
         if (username == '') and (email == '') and (company == '') and (project_name == '') and (category == '') and (manufacturer == ''):
             return render(request, 'community/index.html', {'empty_search': 'Bitte gib einen Suchbegriff ein!'})
         # legitimate search
-        filtered_ids = list(Project.objects.values_list('id', flat=True))
+
         if not(username == ''):
             matching_ids = list(Project.objects.filter(user__username__icontains=username).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
@@ -40,30 +44,37 @@ def user_filter(request):
         if not(manufacturer == ''):
             matching_ids = list(Project.objects.filter(manufacturer__icontains=manufacturer).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
-        #return users and projects in filtered
-        i = 0
-        filtered_projects = list()
-        while i < len(filtered_ids):
-            currid = filtered_ids[i]
-            filtered_projects.append(Project.objects.get(id=currid))
-            i += 1
-
-        j = 0
-        filtered_users = list()
-        while j < len(filtered_ids):
-            currprojectid = filtered_ids[j]
-            curruserid = Project.objects.get(id = currprojectid).user_id
-            filtered_users.append(User.objects.get(id=curruserid))
-            j += 1
-
-        filtered = zip(filtered_users, filtered_projects)
 
 
 
-        # no id matches
+    # no id matches
         if len(filtered_ids) == 0:
             return render(request, 'community/index.html', {'no_match': 'No user matches with your search, try again!'})
 
-        return render(request, 'community/index.html', {'filtered_ids': filtered_ids, 'filtered_projects': filtered_projects, 'filtered': filtered})
+    filtered = filter(filtered_ids)
+    return render(request, 'community/index.html', {'filtered': filtered})
 
-    return render(request, 'community/index.html')
+
+
+
+
+def filter(filtered_ids):
+    # return users and projects in filtered
+    i = 0
+    filtered_projects = list()
+    while i < len(filtered_ids):
+        currid = filtered_ids[i]
+        filtered_projects.append(Project.objects.get(id=currid))
+        i += 1
+
+    j = 0
+    filtered_users = list()
+    while j < len(filtered_ids):
+        currprojectid = filtered_ids[j]
+        curruserid = Project.objects.get(id=currprojectid).user_id
+        filtered_users.append(User.objects.get(id=curruserid))
+        j += 1
+
+    filtered = zip(filtered_users, filtered_projects)
+
+    return filtered
