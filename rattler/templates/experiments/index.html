@@ -8,7 +8,6 @@
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
 {% block container %}
-
 <form method="post" id="tessForm">
     {% csrf_token %}
     <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
