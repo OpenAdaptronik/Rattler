@@ -22,8 +22,10 @@ def tess(time,data,data2):
     :param data2: exciting acceleration
     :return:
     '''
-    analysisweightsFILENAME = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'tess_input'),'analysis_weights.csv')
-    #analysisweightsFILENAME = '/apps/calc/tess_module/tess_input/analysis_weights.csv'
+    analysisweightsFILENAME = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'tess_input','analysis_weights.csv')
+
+
     DesiredAmpLevel = 8
     MinFrequency = 3;               # general minimum frequency taken into account in Hz
     TFMode = 0
