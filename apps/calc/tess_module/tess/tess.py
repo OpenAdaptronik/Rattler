@@ -5,10 +5,11 @@ Created on 10.11.2017
 '''
 
 import csv
+import os
 from numpy import argwhere, transpose
 import numpy
-import helpers
-import waterfalls
+from apps.calc.tess_module.tess import helpers
+from apps.calc.tess_module.tess import waterfalls
 
 
 def tess(time,data,data2):
@@ -21,8 +22,10 @@ def tess(time,data,data2):
     :param data2: exciting acceleration
     :return:
     '''
+    analysisweightsFILENAME = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'tess_input','analysis_weights.csv')
 
-    analysisweightsFILENAME = '/home/erik/PycharmProjects/Webapp/apps/calc/tess_module/tess_input/analysis_weights.csv'
+
     DesiredAmpLevel = 8
     MinFrequency = 3;               # general minimum frequency taken into account in Hz
     TFMode = 0
@@ -178,9 +181,14 @@ def tess(time,data,data2):
     
     srt = numpy.argsort(SV)
     lst = numpy.sort(SV)
-    
-    return   ''.join(['            beste Strategie: ', SID[srt[-1]], ', ', str(SV[srt[-1]]) ]) +'\b' \
-            +''.join(['       zweitbeste Strategie: ', SID[srt[-2]], ', ', str(SV[srt[-2]]) ]) +'\b' \
-            +''.join(['       drittbeste Strategie: ', SID[srt[-3]], ', ', str(SV[srt[-3]]) ]) +'\b' \
-            +''.join(['       viertbeste Strategie: ', SID[srt[-4]], ', ', str(SV[srt[-4]]) ]) +'\b' \
-            +''.join(['      fuenftbeste Strategie: ', SID[srt[-5]], ', ', str(SV[srt[-5]]) ])
+
+    return  {'strategie1': SID[srt[-1]],
+            'param1': str(SV[srt[-1]]),
+            'strategie2': SID[srt[-2]],
+            'param2': str(SV[srt[-2]]),
+            'strategie3': SID[srt[-3]],
+            'param3': str(SV[srt[-3]]),
+            'strategie4': SID[srt[-4]],
+            'param4': str(SV[srt[-4]]),
+            'strategie5': SID[srt[-5]],
+            'param5': str(SV[srt[-5]])}

@@ -10,7 +10,7 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
 // Plotly: Graph von vorheriger Seite wieder plotten
     var traces = [];
     // s. Variablenname
-    zeitreihenSpalteAlsZeile = arrayColumnAsRow(dataArray, zeitreihenSpalte);
+    timeColumn = arrayColumnAsRow(dataArray, zeitreihenSpalte);
 
     var layout = {
         title: 'Graph zur Orientierung:',
@@ -22,7 +22,7 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
     // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
     for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
         traces[i] = {
-            x: zeitreihenSpalteAlsZeile,
+            x: timeColumn,
             y: arrayColumnAsRow(dataArray, i),
             name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
             type: 'scatter',
