@@ -238,7 +238,7 @@ $( document ).ready(function() {
                 */
                 var traces = [];
                 // s. Variablenname
-                zeitreihenSpalteAlsZeile = arrayColumnAsRow(results.data, zeitreihenSpalte);
+                timeColumn = arrayColumnAsRow(results.data, zeitreihenSpalte);
                 /*
                 console.log("traces:");
                 console.log(traces);
@@ -263,7 +263,7 @@ $( document ).ready(function() {
                     for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
                         //if(i!=zeitreihenSpalte){
                             traces[i] = {
-                                x: zeitreihenSpalteAlsZeile,
+                                x: timeColumn,
                                 y: arrayColumnAsRow(results.data, i),
                                 name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
                                 type: 'scatter',
