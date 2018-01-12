@@ -2,22 +2,13 @@
   <div class="container">
     <h2> Community</h2>
     <div class="row">
-      <form method="post">
-        {% csrf_token %}
+      <form method="get">
         <div class="col s12 m12 13" style="min-width: 300px">
           <div class="card">
             <p class="card-content">
               <span class="card-title">Filter</span>
               <p>
                 <table>
-                  <!--<tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="search">Suchbegriff:</label>
-                        <input placeholder='' id="search" type="text" class="validate" name="search">
-                      </div>
-                    </td>
-                  </tr>-->
                   <tr>
                     <td>
                       <div class="input-field col s12">
@@ -42,29 +33,72 @@
                       </div>
                     </td>
                   </tr>
-                 <!-- <tr>
+                    <tr>
                     <td>
                       <div class="input-field col s12">
-                        <label for="res">Result:</label>
-                        <input placeholder={{ filtered_usernames }} id="res" type="text" class="validate" name="res">
+                        <label for="projectname">Projektname: </label>
+                        <input placeholder='' id="projectname" type="text" class="validate" name="projectname">
                       </div>
                     </td>
-                  </tr>-->
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="category">Kategorie: </label>
+                        <input placeholder='' id="category" type="text" class="validate" name="category">
+                      </div>
+                    </td>
+                  </tr>
+                    <td>
+                      <div class="input-field col s12">
+                        <label for="manufacturer">Hersteller: </label>
+                        <input placeholder='' id="manufacturer" type="text" class="validate" name="manufacturer">
+                      </div>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       <div class="card-action">
                         <button class="btn waves-effect waves-light" type="submit">Filtern<i class="material-icons left"></i></button>
-                          {{ empty_search }} {{ no_match }}
+
                       </div>
                     </td>
                   </tr>
                     <td> Ergebnisse:
-                        <ul>
-                        {% for name in filtered_usernames %}
-                            <li> <a href="{% url 'profile:detail' name=name %}">{{ name }}</a>
-                            </li>
-                        {% endfor %}
-                        </ul>
+                    {% if filtered %}
+    <table id="filtered">
+        {% for project in filtered %}
+            <tr>
+                <td> <a href="{% url 'projects:detail' name=project.name id=project.id %}">Projektname: {{ project.name }}</a></td>
+                <td>erstellt am {{project.created}}</td>
+                <td> <a href="{% url 'profile:profile' name=project.user.username %}">Username: {{ project.user.username }}</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+    as
+
+
+    {# .... **Now the pagination section** .... #}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{% url 'community:index_paginated' page=page_obj.previous_page_number%}?username={{ filter.username }}&company={{ filter.company }}&email={{ filter.email }}&projectname={{ filter.projectname }}&category={{ filter.category }}&manufacturer={{ filter.manufacturer }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{% url 'community:index_paginated' page=page_obj.next_page_number %}?username={{ filter.username }}&company={{ filter.company }}&email={{ filter.email }}&projectname={{ filter.projectname }}&category={{ filter.category }}&manufacturer={{ filter.manufacturer }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% else %}
+    <h3>Results:</h3>
+    <p>No result matches your search!!! :(</p>
+{% endif %}
+
                       </td>
                 </table>
               </p>
