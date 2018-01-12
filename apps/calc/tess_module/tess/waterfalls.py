@@ -1,5 +1,5 @@
 import numpy
-import matplotlib.pyplot as plt
+
 def waterfall(t,signal,nfft,overlap = .75):
     t0 = t[0]
     ts = t[1]-t0
@@ -34,9 +34,12 @@ def waterfall(t,signal,nfft,overlap = .75):
         n1 = n0+nfft
     return wf, frq, tout
 
-    
+
+'''
+#Not useful for the server
 def plotwaterfall(t,signal,nfft):
     wf, frq, tout = waterfall(t, signal, nfft)
     plt.pcolor(wf)
     plt.show()
     return wf, frq, tout
+'''

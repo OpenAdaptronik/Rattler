@@ -9,7 +9,7 @@
     {% include 'includeDefs/normalNavi.html' %}
 {% endblock %}
 {% block container %}
-<form action="{% url 'process:analysis' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
+<form action="{% url 'experiments:index' %}" method="post" enctype="multipart/form-data" id="analyseAuswahlForm">
     {% csrf_token %}
     <h2>Schwingungsdaten analysieren</h2>
     <div class="row">
