@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Neues Experiment anlegen{% endblock %}
+{% block moreStylesheets %}
+    <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% block container %}
+<h2>Neues Experiment anlegen</h2>
+<!-- hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
+<input type="hidden" id="maxDatarows" name="" value="500"/>
+<div class="row">
+    <div class="col s12 m12 l12" style="min-width: 300px" id="neueSchwingungsdatenCol">
+        <div class="card">
+            <!-- action muss eig process:index sein, klappt aber iwie nicht -->
+            <form action="{% url 'experiments:index' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
+                <!-- Dinge, die wir python übergeben -->
+                {% csrf_token %}
+                <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
+                <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
+                <input type="hidden" id="zeitreihenSpalte" name="zeitreihenSpalte"/>
+                <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
+                <div class="card-content" id="schritt1-card">
+                    <!--<span class="card-title">Neue Schwingungsdaten analysieren</span>-->
+                    <p>
+                        <div class="processSteps">
+                            <ul>
+                                <li class="active">1</li>
+                                <li>2</li>
+                                <li>3</li>
+                            </ul>
+                        </div><span style="display: inline-block">Schritt 1: 
+                            <b>Hochladen & Visualisieren</b></span>&emsp;<span style="display: inline-block">
+                                <a href="{% url 'dashboard:index' %}">Von vorne beginnen</a>
+                            </span>
+                    </p>
+                    <div class="divider"></div>
+                    <div class="section" id="dataUploadSection" style="padding-bottom:0">
+                        <p>
+                            <b>Datei hochladen</b>
+                        </p>
+                        <p>
+                            <div class="row" style="margin:0"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
+                                <div class="col s8 dropzone dz-clickable" id="dropzoneDiv" style="">
+                                        <div class="dz-message">
+                                            <i class="material-icons">file_upload</i><br/>
+                                            Daten hier hinziehen oder klicken um hochzuladen.
+                                        </div>
+                                </div>
+                                <div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="divider datensatzInformationenFelder" style="display:none;"></div>
+                    <div class="section datensatzInformationenFelder" style="display:none;">
+                        <div class="input-field">
+                            <input id="datensatzName" name="datensatzName" type="text" data-length="40"/>
+                            <label for="datensatzName">Name des Datensatzes</label>
+                        </div>
+                        <div class="input-field">
+                            <input style="z-index: 500; position: relative;" id="erfassungsDatum" name="erfassungsDatum" type="text" class="datepicker">
+                            <label for="erfassungsDatum">Datum der Erfassung</label>
+                        </div>
+                        <div class="switch">
+                            <label>
+                                Experiment nach Analyse löschen
+                                <input type="checkbox" checked="" name="saveExperiment">
+                                <span class="lever"></span>
+                                Experiment speichern
+                            </label>
+                        </div>
+                        <!-- @TODO falls switch oben true ist, muss hier noch ein Switch für öffentlich/privat erscheinen -->
+                    </div>
+                </div>
+                <div class="card-action" id="neueSchwingungsdatenCardAction" style="display: none;">
+                    <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">nächster Schritt <i class="material-icons right">send</i></button>
+                    <button class="btn-flat waves-effect" type="reset" style="position: relative; z-index: auto;">alle Felder löschen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block sideNavBlock %}
+    {% include 'includeDefs/sideNav.html' %}
+    <!--<div class="fixed-action-btn">
+        <a class="btn-floating btn-large red">
+          <i class="large material-icons">add</i>
+        </a>
+      </div>-->
+{% endblock %}
+{% block moreScripts %}
+    <script type="text/javascript" src="{% static 'papaparse/papaparse.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dropzone/dropzone.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jsOnSites/newExperiment.js' %}"></script>
+    {% include 'includeDefs/javascript-forms.html' %}
+{% endblock %}

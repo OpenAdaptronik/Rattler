@@ -1,3 +1,4 @@
+// It is important to embed the dropzone.js-file _BEFORE_ this file in your html!
 Dropzone.autoDiscover = false;
 $( document ).ready(function() {
 
@@ -76,7 +77,7 @@ $( document ).ready(function() {
             "                                            <li>Die eingestellten <u>Einheiten</u> wird auch unser Programm" +
             "                                                im weiteren Verlauf verwenden, lass dabei also bitte" +
             "                                                Sorgfalt walten, damit du die richtigen Ergebnisse erhälst.</li>" +
-            "                                            <li>Kreuze bitte auch an, welche Spalte die Zeitreihe enthält." +
+            "                                            <li>Kreuze bitte auch an, welche Spalte die Zeitreihe enthält.<br/>" +
                                                             "Diese dient gleich als x-Achse der ersten Visualisierung.</li>" +
             "                                            <li>Bei der Einordnung der Spalten helfen dir Auszüge aus den" +
             "                                                Daten der jeweiligen Spalte.</li>" +
@@ -124,11 +125,11 @@ $( document ).ready(function() {
                     "           <div class='col s12'>" +
                     "               <b>Spalte " + (Number(i)+1) + "</b>&emsp;" +
                     "               <input name='ZeitreihenSpalte' type='radio' id='ZeitreiheChoiceSpalte" + i + "' value='" + i + "'  " + checked +"/>" +
-                    "               <label for='ZeitreiheChoiceSpalte" + i + "'>Zeitreihe</label><br/>" +
-                    bisherigerName +
+                    "               <label for='ZeitreiheChoiceSpalte" + i + "'>Zeitreihe</label>" +
+                    //"               <br/>" + bisherigerName +
                     "           </div>" +
                     "           <div class='input-field col s12'>" +
-                    "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value=''>" +
+                    "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
                     "               <label for='spaltenname" + i + "'>Titel</label>" +
                     "           </div>" +
                     "           <div class='input-field col s12' style='z-index: 5000'>" +
@@ -171,6 +172,9 @@ $( document ).ready(function() {
                 checked = "";
                 bspDaten = "";
             }
+
+            // Update Materialize Text Fields to make them look fine
+            Materialize.updateTextFields();
             
             // Button zum Überprüfen des Forms einfügen
             $("#allDataColsRow").append(""+
