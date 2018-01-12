@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block siteTitle %}Experiment und Appübersicht{% endblock %}
+{% block siteTitle %}Meine Experimente{% endblock %}
 {% block moreStylesheets %}
     {% include 'includeDefs/javascript-plotly.html' %}
 {% endblock %}
@@ -14,7 +14,7 @@
     <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
     <textarea style="display: none;" id="zeitreihenSpalte" name="zeitreihenSpalte"></textarea>
     <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
-    <h4>Experiment und Appübersicht</h4>
+    <h4>Meine Experimente</h4>
     <div class="row">
         <div class="col s12">
             <div class="card">
@@ -76,6 +76,5 @@
         });
 
     </script>
-    <script type="text/javascript" src="{% static 'experiments/index.js' %}">
-            </script>
-    {% endblock %}
+    <script type="text/javascript" src="{% static 'jsOnSites/experiments.js' %}"></script>
+{% endblock %}

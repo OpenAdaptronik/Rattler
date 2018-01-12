@@ -1,5 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 {% block siteTitle %}Login{% endblock %}
+{% block moreStylesheets %}
+{% endblock %}
 <!-- @TODO: Farben für Errormeldungen muss noch gesetzt werden -->
 {% block container %}
     {% include 'registration/forms/login.html' %}
