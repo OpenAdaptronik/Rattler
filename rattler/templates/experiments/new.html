@@ -7,12 +7,21 @@
 {% endblock %}
 {% block container %}
 <h2>Neues Experiment anlegen</h2>
-<!-- hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
+<!-- @TODO hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
 <input type="hidden" id="maxDatarows" name="" value="500"/>
 <div class="row">
     <div class="col s12 m12 l12" style="min-width: 300px" id="neueSchwingungsdatenCol">
         <div class="card">
-            <!-- action muss eig process:index sein, klappt aber iwie nicht -->
+            <!-- MAREN, HUY: experiments:index durch EurenAppNamen:Unterseite ersetzen (je nachdem, an welche Unterseite die Daten gesendet werden sollen, um ein neues Experiment anzulegen) -->
+            <!-- MAREN, HUY:
+                    Daten auslesen:
+                        jsonHeader = request.POST.get("jsonHeader", "")
+                        jsonEinheiten = request.POST.get("jsonEinheiten", "")
+                        zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+                        jsonData = request.POST.get("jsonData", "")
+                    jsonData sind dann z.B. die Schwingungsdaten als JSON.
+                    Den Umgang damit könnt ihr euch in analysis/views.py abschauen.
+            -->
             <form action="{% url 'experiments:index' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
                 <!-- Dinge, die wir python übergeben -->
                 {% csrf_token %}
@@ -62,14 +71,14 @@
                             <input style="z-index: 500; position: relative;" id="erfassungsDatum" name="erfassungsDatum" type="text" class="datepicker">
                             <label for="erfassungsDatum">Datum der Erfassung</label>
                         </div>
-                        <div class="switch">
+                        <!--<div class="switch">
                             <label>
                                 Experiment nach Analyse löschen
                                 <input type="checkbox" checked="" name="saveExperiment">
                                 <span class="lever"></span>
                                 Experiment speichern
                             </label>
-                        </div>
+                        </div>-->
                         <!-- @TODO falls switch oben true ist, muss hier noch ein Switch für öffentlich/privat erscheinen -->
                     </div>
                 </div>

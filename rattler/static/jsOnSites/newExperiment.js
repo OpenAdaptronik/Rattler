@@ -27,7 +27,6 @@ $( document ).ready(function() {
             for(i = results.data.length - 1; i >= 0 && results.data[i][0] == ""; i--){
                 results.data.splice(i, 1); // entfernt die Zeile i ("ab Zeile i wird 1 Zeile entfernt") 
             };
-            //console.log(results.data);
             // Anz. der Spalten abspeichern
             anzSpalten = results.data[0].length;
             // Leeren Header erstellen
@@ -50,14 +49,6 @@ $( document ).ready(function() {
                 }
             }
             // Jetzt fangen die Daten in jedem Fall bei Zeile 0 an.
-
-            // Einige Ausgaben zur Überprüfung:
-            /*
-            console.log("Der Header:");
-            console.log(header);
-            console.log("restliches Array:");
-            console.log(results.data);
-            */
             
             // @ TODO Hier evtl. falls für plotly erforderlich alle Array-Inhalte in floats casten
             
@@ -135,30 +126,30 @@ $( document ).ready(function() {
                     "           <div class='input-field col s12' style='z-index: 5000'>" +
                     "               <select style='width: 100%' id='einheitSpalte"+i+"'>" +
                     "                   <optgroup label='Zeit'>" +
-                    "                       <option value='ze-ms' selected>ms</option>" +
-                    "                       <option value='ze-sec'>sek</option>" +
-                    "                       <option value='ze-min'>min</option>" +
-                    "                       <option value='ze-h'>h</option>" +
+                    "                       <option value='ms' selected>ms</option>" +
+                    "                       <option value='sec'>sek</option>" +
+                    "                       <option value='min'>min</option>" +
+                    "                       <option value='h'>h</option>" +
                     "                   </optgroup>" +
                     "                   <optgroup label='Kraft'>" +
-                    "                       <option value='kr-n'>N</option>" +
-                    "                       <option value='kr-kn'>kN</option>" +
+                    "                       <option value='N'>N</option>" +
+                    "                       <option value='kN'>kN</option>" +
                     "                   </optgroup>" +
                     "                   <optgroup label='Weg'>" +
-                    "                       <option value='we-m'>m</option>" +
-                    "                       <option value='we-mm'>mm</option>" +
-                    "                       <option value='we-cm'>cm</option>" +
-                    "                       <option value='we-microm'>µm</option>" +
+                    "                       <option value='m'>m</option>" +
+                    "                       <option value='mm'>mm</option>" +
+                    "                       <option value='cm'>cm</option>" +
+                    "                       <option value='µm'>µm</option>" +
                     "                   </optgroup>" +
                     "                   <optgroup label='Geschwindigkeit'>" +
-                    "                       <option value='ge-m-s'>m/s</option>" +
-                    "                       <option value='ge-km-h'>km/h</option>" +
-                    "                       <option value='ge-mm-s'>mm/s</option>" +
+                    "                       <option value='m/s'>m/s</option>" +
+                    "                       <option value='km/h'>km/h</option>" +
+                    "                       <option value='mm/s'>mm/s</option>" +
                     "                   </optgroup>" +
                     "                   <optgroup label='Beschleunigung'>" +
-                    "                       <option value='be-m-s2'>m/s²</option>" +
-                    "                       <option value='be-g'>g</option>" +
-                    "                       <option value='be-mm-s2'>mm/s²</option>" +
+                    "                       <option value='m/s^2'>m/s²</option>" +
+                    "                       <option value='g'>g</option>" +
+                    "                       <option value='mm/s^2'>mm/s²</option>" +
                     "                   </optgroup>" +
                     "               </select>" +
                     "               <label>Einheit</label>" +
@@ -191,7 +182,6 @@ $( document ).ready(function() {
             $("#validateDataColumnForm").click(function() {
                 // In welcher Zeile steht die Zeitreihe?
                 zeitreihenSpalte = $("input[name='ZeitreihenSpalte']:checked").val();
-                //console.log("Die Zeitreihe steht in Spalte: " + zeitreihenSpalte);
                 var spaltenTitel = [];
                 var spaltenEinheiten = [];
                 // Die Titel und Einheiten der Spalten holen
@@ -199,12 +189,6 @@ $( document ).ready(function() {
                     spaltenTitel[i] = $("#spaltenname" + i).val();
                     spaltenEinheiten[i] = $('#einheitSpalte' + i).val();
                 }
-                /*
-                console.log("Die Spaltentitel:");
-                console.log(spaltenTitel);
-                console.log("Die Spalteneinheiten:");
-                console.log(spaltenEinheiten);
-                */
 
                 // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
                 $("#jsonHeader").html(JSON.stringify(spaltenTitel));
@@ -236,17 +220,9 @@ $( document ).ready(function() {
                 // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
                 // https://stackoverflow.com/a/34979219
                 const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
-                /*
-                console.log("Zeitreihe: ");
-                console.log(arrayColumnAsRow(results.data, zeitreihenSpalte));
-                */
                 var traces = [];
                 // s. Variablenname
                 timeColumn = arrayColumnAsRow(results.data, zeitreihenSpalte);
-                /*
-                console.log("traces:");
-                console.log(traces);
-                */
 
                 //var selectorOptions = 
                 
@@ -295,10 +271,6 @@ $( document ).ready(function() {
                             layout[yaxisTitle]['overlaying'] = 'y';
                         }
                     }
-                    /*
-                    console.log(traces);
-                    console.log(layout);
-                    */
                     traces[zeitreihenSpalte] = [];
                     traces[zeitreihenSpalte].shift();
                     
@@ -307,60 +279,50 @@ $( document ).ready(function() {
                 // Variablen, in denen die Auswahl des Users gespeichert wird.
                 // Werden so definiert, dass zu Anfang der ganze Datenbereich ausgewählt ist
                 var rangeStart = results.data[0][zeitreihenSpalte];
-                /*
-                console.log(results.data.length);
-                console.log(results.data);
-                console.log(results.data[(results.data.length) - 1]);
-                console.log(results.data[results.data.length-1][zeitreihenSpalte]);
-                */
                 var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
-                //console.log("rangeStart: " + rangeStart + " | rangeEnd: " + rangeEnd);
-                
-
                 
                 var rangeStartIndex = 0;
                 var rangeEndIndex = results.data.length - 1;
 
                 // Funktion, die aufgerufen wird, wenn der 
-                document.getElementById("graph").on('plotly_relayout',
-                    function(eventdata){
-                        // get the rangeStart and rangeEnd
-                            if(eventdata['xaxis.range[0]']){
-                                rangeStart = eventdata['xaxis.range[0]'];
-                                rangeEnd = eventdata['xaxis.range[1]'];
-                            } else if (typeof eventdata['xaxis.range'] == 'undefined'){ // when you double click on the graph
-                                var rangeStart = results.data[0][zeitreihenSpalte];
-                                var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
-                            } else {
-                                rangeStart = eventdata['xaxis.range'][0];
-                                rangeEnd = eventdata['xaxis.range'][1];
-                            }
-                            
-                        // get the indices for the rangeStart and rangeEnd
-                            for(i = 0; i < results.data.length - 1; i++){
-                                if(parseFloat(results.data[i+1][zeitreihenSpalte]) > parseFloat(rangeStart)){
-                                    rangeStartIndex = i;
-                                    break;
-                                }
-                            }
-                            // Ende bestimmen
-                            for(i = results.data.length - 1; i > 0; i--){
-                                if(parseFloat(results.data[i-1][zeitreihenSpalte]) < parseFloat(rangeEnd)){
-                                    rangeEndIndex = i;
-                                    break;
-                                }
-                            }
-                            
-                        if(rangeEndIndex-rangeStartIndex > maxDatarows){
-                            $("#validateGraphSelection").addClass("disabled");
-                            $("#validateGraphSelectionContainer").addClass("tooltipped").attr("data-position","bottom").attr("data-tooltip","ausgewählter Bereich ist zu groß!");
+                document.getElementById("graph").on('plotly_relayout', function(eventdata){
+                    // get the rangeStart and rangeEnd
+                        if(eventdata['xaxis.range[0]']){
+                            rangeStart = eventdata['xaxis.range[0]'];
+                            rangeEnd = eventdata['xaxis.range[1]'];
+                        } else if(typeof eventdata['xaxis.range'] == 'undefined'){ // when you double click on the graph
+                            var rangeStart = results.data[0][zeitreihenSpalte];
+                            var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
                         } else {
-                            $("#validateGraphSelection").removeClass("disabled");
-                            $("#validateGraphSelectionContainer").tooltip('remove').DearMrHackerWhyAreYouReadingTheConsoleStopThisThisIsNoneOfYourBusinessDoNotHackUsPlease();
+                            rangeStart = eventdata['xaxis.range'][0];
+                            rangeEnd = eventdata['xaxis.range'][1];
                         }
-                        $('.tooltipped').tooltip({delay: 50});
-
-                    });
+                        
+                    // get the indices for the rangeStart and rangeEnd
+                        for(i = 0; i < results.data.length - 1; i++){
+                            if(parseFloat(results.data[i+1][zeitreihenSpalte]) > parseFloat(rangeStart)){
+                                rangeStartIndex = i;
+                                break;
+                            }
+                        }
+                        // Ende bestimmen
+                        for(i = results.data.length - 1; i > 0; i--){
+                            if(parseFloat(results.data[i-1][zeitreihenSpalte]) < parseFloat(rangeEnd)){
+                                rangeEndIndex = i;
+                                break;
+                            }
+                        }
+                        
+                    if(rangeEndIndex-rangeStartIndex > maxDatarows){
+                        $("#validateGraphSelection").addClass("disabled");
+                        $("#validateGraphSelectionContainer").addClass("tooltipped").attr("data-position","bottom").attr("data-tooltip","ausgewählter Bereich ist zu groß!");
+                    } else {
+                        $("#validateGraphSelection").removeClass("disabled");
+                        $('.tooltipped').tooltip('remove');
+                        $("#validateGraphSelectionContainer").removeClass('tooltipped');
+                    }
+                    $('.tooltipped').tooltip({delay: 50});
+                });
                 
                 // sobald der User seinen Bereich im Graphen ausgesucht hat
                 $("#validateGraphSelection").click(function() {
@@ -368,27 +330,9 @@ $( document ).ready(function() {
                     $("#neueSchwingungsdatenCardAction").show(); // 
                     $(".datensatzInformationenFelder").show();
                     $("#neueSchwingungsdatenCol").addClass("l6");
-                    //console.log("rangeStart: " + rangeStart + " | rangeEnd: " + rangeEnd);
-                    // Der ausgewählte Teil des Graphen wird ausgeschnitten
-                        // Schritt 1: Wir suchen die Indizes in results.data raus, die den Begrenzungen des ausgewählten Bereichs entsprechen
-                            // Beginn bestimmen
-                            var rangeStartIndex = 0;
-                            for(i = 0; i < results.data.length - 1; i++){
-                                if(parseFloat(results.data[i+1][zeitreihenSpalte]) > parseFloat(rangeStart)){
-                                    rangeStartIndex = i;
-                                    break;
-                                }
-                            }
-                            // Ende bestimmen
-                            var rangeEndIndex = results.data.length - 1;
-                            for(i = results.data.length - 1; i > 0; i--){
-                                if(parseFloat(results.data[i-1][zeitreihenSpalte]) < parseFloat(rangeEnd)){
-                                    rangeEndIndex = i;
-                                    break;
-                                }
-                            }
-                        // Schritt 2: tatsächlich ausschneiden, in JSON konvertieren & in Textarea schreiben
-                        $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
+                    // cut the data to the range the user selected, convert it in JSON and write it in the textarea w/ id=jsonData & name=jsonData
+                    // rangeStartIndex and rangeEndIndex are variables whose scope is one level higher. They might be altered by the event function which is called when the user changes the range.
+                    $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
                 }) 
                 
                 // Nachricht wegen Beta

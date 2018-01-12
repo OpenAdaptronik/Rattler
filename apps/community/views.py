@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from apps.user.models import User
 from apps.profile.models import Profile
-
+from django.contrib.auth.decorators import login_required
 
 '''Community'''
 
 
+@login_required
 def user_filter(request):
     # Submit User Search
     if request.method == 'POST':
