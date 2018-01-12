@@ -6,7 +6,7 @@
         <li class="{% if request.resolver_match.url_name == 'help' %}active{% endif %}"><a href="{% url 'help' %}"><i class="material-icons">help</i>Hilfe</a></li>
     </ul>
 {% else %}
-<ul id="nav-mobile" class="side-nav" style="">
-    <li class="{% if request.resolver_match.namespaces.0 == 'register' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'register:index' %}"><i class="material-icons">person_add</i>Registrieren</a></li>
+    <ul id="nav-mobile" class="side-nav" style="">
+        <li class="{% if request.resolver_match.namespaces.0 == 'register' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'register:index' %}"><i class="material-icons">person_add</i>Registrieren</a></li>
     </ul>
 {% endif %}
