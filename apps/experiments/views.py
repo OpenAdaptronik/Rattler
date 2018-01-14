@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
 from apps.analysis.json import NumPyArangeEncoder
+from apps.projects.models import Experiment
 
 # Create your views here.
 @login_required
@@ -39,5 +40,13 @@ def index(request):
     return render(request, "experiments/index.html", dataForRender)
 
 @login_required
-def newE(request):
+def newE(request, id):
+    jsonHeader = request.POST.get("jsonHeader", "")
+    jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    jsonData = request.POST.get("jsonData", "")
+
+
+    new_experiment = Experiment(project_id=id, name= jsonHeader)
+    new_experiment.save()
     return render(request, "experiments/new.html")
