@@ -47,6 +47,6 @@ def newE(request, id):
     jsonData = request.POST.get("jsonData", "")
 
 
-    new_experiment = Experiment(project_id=id, name= jsonHeader)
+    new_experiment = Experiment(project_id=id)
     new_experiment.save()
     return render(request, "experiments/new.html")
