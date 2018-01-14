@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-09 15:10+0000\n"
+"POT-Creation-Date: 2018-01-11 13:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,10 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/materialize/templatetags/materialize.py:121
-msgid "save"
-msgstr "Speichern"
-
 #: apps/projects/admin.py:13
 msgid "attributes"
 msgstr "Attribute"
@@ -30,48 +26,43 @@ msgstr "Attribute"
 msgid "Important dates"
 msgstr "Wichtige Daten"
 
-#: apps/projects/forms.py:8 apps/projects/forms.py:15
-#: apps/projects/templates/projects/categories.html:3
-msgid "new category"
-msgstr "Neue Kategorie"
-
-#: apps/projects/forms.py:13 apps/projects/models.py:20
-msgid "category"
-msgstr "Kategorie"
-
-#: apps/projects/forms.py:14 apps/projects/models.py:21
-msgid "subcategory"
-msgstr "Unterkategorie"
-
-#: apps/projects/models.py:18
+#: apps/projects/models.py:16
 msgid "user"
 msgstr "Benutzer"
 
-#: apps/projects/models.py:19
+#: apps/projects/models.py:17
 msgid "name"
 msgstr "Name"
 
-#: apps/projects/models.py:22
+#: apps/projects/models.py:18
+msgid "category"
+msgstr "Kategorie"
+
+#: apps/projects/models.py:19
+msgid "subcategory"
+msgstr "Unterkategorie"
+
+#: apps/projects/models.py:20
 msgid "manufacturer"
 msgstr "Hersteller"
 
-#: apps/projects/models.py:23
+#: apps/projects/models.py:21
 msgid "type"
 msgstr "Typ"
 
-#: apps/projects/models.py:24
+#: apps/projects/models.py:22
 msgid "description"
 msgstr "Beschreibung"
 
-#: apps/projects/models.py:25
+#: apps/projects/models.py:23
 msgid "visibility"
 msgstr "Sichtbarkeit"
 
-#: apps/projects/models.py:26 apps/user/models.py:69
+#: apps/projects/models.py:24 apps/user/models.py:69
 msgid "created"
 msgstr "Erstellt"
 
-#: apps/projects/models.py:27
+#: apps/projects/models.py:25
 msgid "updated"
 msgstr "Aktualisiert"
 

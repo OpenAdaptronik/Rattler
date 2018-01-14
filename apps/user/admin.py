@@ -49,6 +49,7 @@ class UserAdmin(auth_admin.UserAdmin):
         (None, {'fields': ('username', 'email', 'password')}),
         (_('Permissions'), {'fields': ('is_active', 'is_superuser')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('name'), {'fields': ('last_name', 'first_name')}),
     )
 
     list_display = ('username', 'email', 'is_superuser','is_active', 'date_joined', 'updated', )
@@ -60,5 +61,5 @@ class UserAdmin(auth_admin.UserAdmin):
         }),
     )
 
-        
+
 
