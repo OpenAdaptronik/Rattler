@@ -126,7 +126,7 @@ def change_email(request):
                                 Solange diese nicht bestätigt wurde beleibt die alte E-mail zum Login aktuell.
                                 <br/>
                                 <br/>
-                                Sie müssen beim bestätigen der E-mail weiterhin eingelogt bleiben!!''')
+                                Man muss beim bestätigen der E-mail weiterhin eingelogt bleiben!!''')
 
 
     return render(request, 'userSettings/changeEmail.html')
