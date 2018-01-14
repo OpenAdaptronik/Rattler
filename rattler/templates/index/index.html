@@ -54,9 +54,7 @@
     </div>
 {% endblock %}
 {% block sideNavBlock %}
-    <ul id="nav-mobile" class="side-nav" style="">
-        <li class=""><a href="{% url 'register:index' %}"><i class="material-icons">person_add</i>Registrieren</a></li>
-    </ul>
+    {% include 'includeDefs/sideNav.html' %}
 {% endblock %}
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}

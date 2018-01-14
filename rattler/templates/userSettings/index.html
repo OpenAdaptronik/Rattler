@@ -1,4 +1,6 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Einstellungen für {{user.username}}{% endblock %}
 
 {% block container %}
  <div class="section">

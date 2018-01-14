@@ -21,7 +21,7 @@
 				<!-- Rattler-Logo -->
 				{% include 'includeDefs/logo.html' %}
 				<!-- Navigation(en) -->
-				{% include 'navigation.html' %}
+				{% include 'includeDefs/normalNavi.html' %}
 			</div>
 		</nav></div>
 
@@ -34,7 +34,9 @@
 		{% include 'includeDefs/footer.html' %}
 
 		<!-- SideNav -->
-		{% block sideNavBlock %}{% endblock %}
+		<!-- removed the block, because the sideNav is now the same inclusion for every site - even when you're not logged in -->
+		<!--{% block sideNavBlock %}{% endblock %}-->
+		{% include 'includeDefs/sideNav.html' %}
 
 		<!-- SKRIPTE einbinden -->
 		{% include 'includeDefs/javascripts.html' %}

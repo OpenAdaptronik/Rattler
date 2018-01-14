@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from apps.user.models import User
 from apps.profile.models import Profile
+from django.contrib.auth.decorators import login_required
 from apps.projects.models import Project
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

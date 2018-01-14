@@ -37,3 +37,7 @@ def index(request):
 
 
     return render(request, "experiments/index.html", dataForRender)
+
+@login_required
+def newE(request):
+    return render(request, "experiments/new.html")
