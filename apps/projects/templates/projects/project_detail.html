@@ -21,12 +21,14 @@
     <dd>{{ object.created }}</dd>
 </dl>
 <h2>{%trans 'experiments' %}</h2>
+{% if not experiment is None %}
 {% for experiment in object.experiment_set.all %}
     <dt><b>{% trans 'id' %}</b></dt>
     <dd>{{ experiment.id }}</dd>
     <dt><b>{% trans 'description' %}</b></dt>
     <dd>{{ experiment.description }}</dd>
 {% endfor %}
+{% endif %}
 {% if object.user == user %}
     <a href="{% url 'projects:edit' object.id %}">{% trans 'edit' %}</a>
 {% endif %}
