@@ -61,9 +61,11 @@ class ProjectImage(models.Model):
     path = models.ImageField(upload_to=project_image_path)
 
 class Experiment(models.Model):
+    name = models.CharField(max_length=100, null=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE, )
-    created = models.DateTimeField(null=True)
+    created = models.DateTimeField(null=True, auto_now_add=True)
     description = models.TextField(max_length=500, null=True)
+    timerow = models.IntegerField(null=True)
 
 
 class Datarow(models.Model):
