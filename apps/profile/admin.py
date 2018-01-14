@@ -63,5 +63,3 @@ class ProfileImageAdmin(admin.ModelAdmin):
     save_on_top = True
     fields = ('path','created','updated', get_profile_image)
     readonly_fields = ('created', 'updated', get_profile_image)
-
-
