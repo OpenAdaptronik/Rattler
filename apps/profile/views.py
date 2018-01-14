@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.contrib.auth import login
+from django.db import transaction
 
 from django.shortcuts import render, reverse, redirect, HttpResponse
 from django.utils.functional import lazy
@@ -22,6 +23,7 @@ from django.utils.http import urlsafe_base64_decode
 
 from apps.register.tokens import account_activation_token
 from . import models
+from . import forms
 
 reverse_lazy = lazy(reverse, str)
 
@@ -47,6 +49,23 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
             return self.request.user.profile
         except ObjectDoesNotExist:
             return models.Profile(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        data = super(ProfileUpdate, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            data['profile_image'] = forms.ProfileImageFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['profile_image'] = forms.ProfileImageFormSet(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        profile_image = context['profile_image']
+        
+        self.object = form.save()
+        if profile_image.is_valid():
+            profile_image.save()
+        return super(ProfileUpdate, self).form_valid(form)
 
 class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
