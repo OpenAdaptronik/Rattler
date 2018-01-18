@@ -9,9 +9,15 @@ from apps.projects.models import Experiment
 # Create your views here.
 @login_required
 def index(request):
+    
     if request.method != 'POST':
         return HttpResponseRedirect('/dashboard/')
 
+    # The experiment id is passed in the variable experimentId (see urls.py)
+    
+    # @TODO: Überprüfen, ob der angemeldete User überhaupt Zugriff auf das Projekt hat, dem das Experiment angehört!
+    
+    # @TODO: stattdessen Daten aus der Datenbank rauslesen
     # Read Data from POST request
     jsonHeader = request.POST.get("jsonHeader", "")
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
@@ -41,12 +47,25 @@ def index(request):
 
 @login_required
 def newE(request, id):
+    # @TODO Huy & Maren: Hier bitte überprüfen, ob die id (=das Projekt) auch dem angemeldeten User gehört, wenn nicht: Redirect auf die Projektübersicht oder das Dashboard etc. (damit man keine Experimente in fremde Projekte einfügen kann!). Ansonsten die return-Zeile hier drunter ausführen
+    return render(request, "experiments/new.html", { 'projectId': id })
+
+@login_required
+def newESave(request):
+    # those are the titles of the columns in an array
     jsonHeader = request.POST.get("jsonHeader", "")
+    # those are the units of the columns in an array
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    # this is the column which contains the x axis (= time; also called "timeindex"), MUSS AUCH IN DIE DB!
     zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    # Array of the Schwingungs data
     jsonData = request.POST.get("jsonData", "")
+    # ID of the project the new, received from the new.html file and casted to int (just in case :))
+    projectId = int(request.POST.get("projectId", ""))
 
-
-    new_experiment = Experiment(project_id=id)
+    # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
+    new_experiment = Experiment(project_id=projectId)
     new_experiment.save()
-    return render(request, "experiments/new.html")
+    # @TODO Diesem Redirect muss noch die ID des neuen Experimentes angegeben werden. Die Seite die da aufgerufen wird, ist die Experiment-Detail-Seite!
+    # Zudem müssen wir dann noch die experiments/index.html-Seite und die Funktion index(request) (in diesem File) anpassen, damit sie das Experiment aus der DB liest!
+    return HttpResponseRedirect('/experiments/HIER_ID_DES_NEUEN_EXPERIMENTES_EINGEBEN')
