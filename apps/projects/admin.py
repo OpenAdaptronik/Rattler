@@ -7,6 +7,8 @@ from django.urls import reverse
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
+
+
     def get_project_image(instance):
         if not instance.projectimage.path:
             return
@@ -15,10 +17,38 @@ class ProjectAdmin(admin.ModelAdmin):
                                 title=instance.name,
                                 )
 
-    list_display = ('name', 'category', 'subcategory', 'manufacturer', 'visibility')
-    list_filter = ('category', 'subcategory')
-    readonly_fields = ('created', 'updated',
-                        get_project_image)
+    """ The Profile admin model.
+    Attributes:
+        See django.contrib.auth.models.AbstractUser.
+        fieldsets: The fieldset to show in the admin.
+        list_display: The data to show in the list.
+        search_fields: To filter
+    """
+    list_display = ('name',
+                    'category',
+                    'subcategory',
+                    'manufacturer',
+                    'visibility')
+
+    readonly_fields = ('created',
+                       'updated',
+                       get_project_image)
+
+    """ search_fields: Filter Searchfield.
+        list_filter: Filter Checkbox visibility 
+    """
+    search_fields = ['category__name',
+                     'subcategory__name',
+                     'manufacturer',
+                     'name',
+                     'user__username',
+                     'description',
+                     'typ',
+                     'experiment__name',
+                     'experiment__description',
+                     ]
+
+    list_filter = ('visibility',)
 
     fieldsets = (
         (None, {'fields': ('name', 'user', 'visibility')}),
@@ -28,10 +58,9 @@ class ProjectAdmin(admin.ModelAdmin):
     )
 
 
-
-
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent')
-    list_filter = ('parent',)
+    search_fields = ['name',
+                     'parent'
+                     ]
