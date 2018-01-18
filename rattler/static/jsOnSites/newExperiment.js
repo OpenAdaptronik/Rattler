@@ -16,7 +16,7 @@ $( document ).ready(function() {
         // FileReader instanzieren
         const reader = new FileReader();
         // sobald der Reader das File gelesen hat (das passiert bei reader.readAsText(file); unten)
-        reader.onload = () => {
+        reader.onload = function() {
             // Dropzone disablen
             myDropzone.disable();
             // Bereich mit Dropzone löschen
@@ -347,8 +347,8 @@ $( document ).ready(function() {
         };
 
         // Hier liest der reader die hochgeladene Datei ein.
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+        reader.onabort = function() { console.log('file reading was aborted')};
+        reader.onerror = function() { console.log('file reading has failed')};
         reader.readAsText(file);
     });
 });
