@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
@@ -54,7 +55,7 @@ class Category(models.Model):
         unique_together = ('name', 'parent',)
 
 def project_image_path(instance, filename):
-    return 'project/%s%s' % (instance.project.id, os.path.splitext(filename)[1])
+    return 'project/%s/%s%s' % (instance.project.id, instance.project.name, os.path.splitext(filename)[1])
 
 class ProjectImage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE,)

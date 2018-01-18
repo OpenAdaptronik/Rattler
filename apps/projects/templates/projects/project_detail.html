@@ -1,5 +1,12 @@
 {% load i18n %}
 <h2>{%trans 'project' %}</h2>
+<h2>{%trans 'project images' %}</h2>
+<ul>
+    {% for image in object.projectimage_set.all %}
+        <li><img src='/{{image.path.url}}'></li>
+    {% endfor %}
+</ul>
+
 <dl>
     <dt><b>{% trans 'user' %}</b></dt>
     <dd>

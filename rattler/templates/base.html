@@ -10,9 +10,8 @@
 		<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="shortcut icon" href="images/favicon.png">
 		<link rel="stylesheet" href="{% static 'style.css' %}">
-        {% block moreStylesheets %}{% endblock %}
-		<style>
-		</style>
+		{% block moreStylesheets %}{% endblock %}
+		{% render_defer_head %}
 	</head>
 	<body>
 		<!-- NAVBAR -->
