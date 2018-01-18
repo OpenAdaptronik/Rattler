@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Project, Category
+from .models import Project, Category, ProjectImage
 
 def category_options():
     categories = [(None, '---------')]
@@ -96,3 +96,28 @@ class ProjectForm(forms.ModelForm):
             'description',
             'visibility',
         )
+
+class ProjectImageForm(forms.ModelForm):
+    class Meta:
+        model = ProjectImage
+        fields = ['path']
+
+
+ProjectImageCreateFormSet = forms.inlineformset_factory(
+    Project,
+    ProjectImage,
+    fk_name='project',
+    form=ProjectImageForm,
+    extra=3,
+    fields=('path',),
+    can_delete=False,
+)
+
+ProjectImageFormSet = forms.inlineformset_factory(
+    Project,
+    ProjectImage,
+    fk_name='project',
+    form=ProjectImageForm,
+    extra=3,
+    fields=('path',)
+)

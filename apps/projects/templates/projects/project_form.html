@@ -1,6 +1,10 @@
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {{ project_image.management_form }}
+        {% for form in project_image.forms %}
+            {{ form.as_p }}
+        {% endfor %}
         <button type="submit">Save</button>
     </form>
     
