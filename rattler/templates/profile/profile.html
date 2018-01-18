@@ -1,7 +1,86 @@
 {% extends 'base.html' %}
-{% block siteTitle %}Profil &bull; {{ user.username }}{% endblock %}
+{% load static %}
+{% block siteTitle %}
+    Profil &bull; {{ user.username }}
+{% endblock %}
 {% block container %}
+<h2 style="">{{user.username}}'s Profil</h2>
+<div class="row">
+    <div class="col s12 card">
+        <div class="card-content row">
+            <!--<span class="card-title">Meine Projekte</span>-->
+            <div class="col l2 m4 s12">
+                {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
+                <img style="max-width: 100%; max-height: 100%" src="/{{ user.profile.profileimage.path.url }}">
+                {% else %}
+                <img style="max-width: 100%; max-height: 100%" src="{% static 'img/user.jpg' %}">
+                {% endif %}
+            </div>
+            <div class="col l10 m8 s12">
+                <ul class="collection with-header" style="margin-bottom:0">
+                    {% if user.profile.visibility_mail %}
+                    <li class="collection-item avatar">
+                        <i class="material-icons circle">email</i>
+                        <span class="title">E-Mail-Adresse</span>
+                        <p><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+                    </li>
+                    {% endif %} {% if user.profile.visibility_company and user.profile.company %}
+                    <li class="collection-item avatar">
+                        <i class="material-icons circle">work</i>
+                        <span class="title">Institution / Firma</span>
+                        <p>{{user.profile.company}}</p>
+                    </li>
+                    {% endif %} {% if user.profile.visibility_info and user.profile.info %}
+                    <li class="collection-item avatar">
+                        <i class="material-icons circle">info</i>
+                        <span class="title">Beschreibung</span>
+                        <p>{{user.profile.info}}</p>
+                    </li>
+                    {% endif %}
+                </ul>
+                <!--
+                    <table>
+                        <tbody>
+                            {% if user.profile.visibility_mail %}
+                            <tr>
+                                <td><i class="material-icons">email</i></td>
+                                <td><strong>E-Mail-Adresse</strong></td>
+                                <td>{{user.email}}</td>
+                            </tr>
+                            {% endif %} {% if user.profile.visibility_company and user.profile.company %}
+                            <tr>
+                                <td><i class="material-icons">work</i></td>
+                                <td><strong>Institution / Firma</strong></td>
+                                <td>{{user.profile.company}}</td>
+                            </tr>
+                            {% endif %} {% if user.profile.visibility_info and user.profile.info %}
+                            <tr>
+                                <td><i class="material-icons">info</i></td>
+                                <td><strong>Beschreibung</strong></td>
+                                <td>{{user.profile.info}}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    -->
+            </div>
+        </div>
+    </div>
+    <div class="col s12 card">
+        <div class="card-content">
+            <span class="card-title">Projekte von {{user.username}}</span>
+            <div class="">
+                HIER PROJEKTE GEFILTERT AUF 5 AN DER ZAHL & VON DIESEM USER ANZEIGEN
+            </div>
+        </div>
+        <div class="card-action">
+            <a href="#">Alle Projekte anzeigen &rarr;</a>
+        </div>
+    </div>
+</div>
 
+
+<!--
 <div class="section">
     <div class="container">
         <div class="row">
@@ -47,4 +126,5 @@
         </div>
     </div>
 </div>
+-->
 {% endblock %}
