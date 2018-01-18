@@ -16,8 +16,8 @@ def index(request):
     # The experiment id is passed in the variable experimentId (see urls.py)
     
     # @TODO: Überprüfen, ob der angemeldete User überhaupt Zugriff auf das Projekt hat, dem das Experiment angehört!
-    
-    # @TODO: stattdessen Daten aus der Datenbank rauslesen
+
+    # @TODO: stattdessen Daten aus der Datenbank rauslesen. Vllt sollte man das nicht hier machen, sondern direkt in der HTML --> geht das? macht das Sinn?
     # Read Data from POST request
     jsonHeader = request.POST.get("jsonHeader", "")
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
