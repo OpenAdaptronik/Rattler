@@ -1,0 +1,60 @@
+
+{% load static %}
+{% block siteTitle %}Integration/derivation{% endblock %}
+<script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'experiments/start.js' %}"></script>
+<script>
+        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
+        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
+        var dataArray = JSON.parse('{{ jsonData|safe }}');
+        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var anzSpalten = dataArray[0].length;
+
+</script>
+
+
+
+<form method="post" action="{% url 'experiments:intderivate' %}">
+    {% csrf_token %}
+    <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
+    <textarea style="display: none;" id="intderivresult" name="intderivresult"></textarea>
+    <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
+    <input type="hidden" id="zeitreihenSpalte" name="zeitreihenSpalte"/>
+    <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
+
+    <textarea name="function"> </textarea>
+    <textarea name="first"> </textarea>
+    <textarea  name="second"></textarea>
+
+	<textarea name="dataTEST">
+
+	</textarea>
+	<!-- Das sind deine Aufträge!-->
+	<textarea name="tasksTEST">
+		[
+		 [
+		   0,
+		   3,
+		   4
+		],
+		 [
+		   0,
+		   1,
+		   4
+		],
+		 [
+		   1,
+		   2,
+		   4
+		]
+		]
+	</textarea>
+
+
+	<input type="submit"/>
+
+
+
+
+
+</form>
