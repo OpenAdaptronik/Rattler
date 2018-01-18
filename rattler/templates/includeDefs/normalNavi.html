@@ -12,7 +12,7 @@
             {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
                 <img src="/{{ user.profile.profileimage.path.url }}">
             {% else %}
-                <img src="{% static 'img/user.jpg' %}">
+                <img src="{% static 'img/user.png' %}">
             {% endif %}
         </a>
         <ul id='dropdown-profile' class='dropdown-content'>
