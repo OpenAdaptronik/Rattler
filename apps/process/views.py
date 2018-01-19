@@ -30,10 +30,7 @@ def from_dashboard(request):
     request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
     request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
 
-    #measurement.resample_data()
-    #measurement.gaussian_filter(1)
-    #measurement.butterworth_filter(1)
-    #measurement.fourier_transform(1)
+
 
     # Daten zur Übergabe vorbereiten
     dataForRender = {
@@ -41,9 +38,6 @@ def from_dashboard(request):
         'jsonEinheiten': jsonEinheiten,
         'zeitreihenSpalte': zeitreihenSpalte,
         'jsonData': jsonData,
-        #'newData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
-        #'measurementObject': measurement,
-        #'saveExperiment': saveExperiment,
         'datensatzName': datensatzName,
         'erfassungsDatum': erfassungsDatum
         }

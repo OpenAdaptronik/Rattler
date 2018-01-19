@@ -54,7 +54,7 @@ class Measurement(object):
         self.data = np.asarray(new_data,dtype="float64").transpose()
 
 
-    def fourier_transform(self,fourierval = 0):
+    def fourier_transform(self,fourierval = 'imaginary'):
         '''
         This Method Applies a fourier transformation on an data interval in the data
         :param data: the pandas DataFrame of the data
@@ -78,14 +78,13 @@ class Measurement(object):
             if i == self.timeIndex:
                 X_new = np.fft.fftfreq(len(self.data[:,i]), d=get_average_delta(self.data,i))[:cut]
                 new_data.append(np.array(X_new))
-
-            elif int(fourierval) == 0:
+            if(fourierval == 'abs'):
                 fft = [np.abs(x) for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
-            elif int(fourierval) == 1:
+            elif fourierval == 'real':
                 fft = [np.real(x) for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
-            elif int(fourierval) == 2:
+            elif fourierval == 'imaginary':
                 fft = [np.imag(x) for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
 

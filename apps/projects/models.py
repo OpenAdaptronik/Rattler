@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import reverse
 from django.utils.encoding import iri_to_uri
 
-'''crates model Projects with
+'''creates model Projects with
 userId as ForeignKey from User
 name as CharField
 category as ForeignKey from Category

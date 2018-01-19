@@ -147,7 +147,7 @@ def renew_data(request):
         if fourierval == '':
             measurement.fourier_transform()
         else:
-            measurement.fourier_transform(int(fourierval))
+            measurement.fourier_transform(fourierval=fourierval)
 
     # Daten zum Rendern vorbereiten
     dataForRender = {
