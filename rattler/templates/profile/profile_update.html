@@ -23,11 +23,14 @@
                             {% endif %}
 
                             <span class="card-title">{{user.username}}</span>
+                                {% if user.profile.profileimage and user.profile.profileimage.path %}
+                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red right" href={% url 'profile:delete_image' %}><i class="material-icons">delete</i></a>
+                                {% endif %}
                             <label for="id_profileimage-0-path">
-                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red"><i class="material-icons">edit</i></a>
+                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red left "><i class="material-icons">edit</i></a>
                             </label>
                         </div>       
-                       
+                       <br>
                         <div class="card-content">
                             <div class="row">
                                 <div class="input-field col s6">
@@ -51,7 +54,7 @@
 
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <input type="text" {% if user.first_name %}value="{{user.fist_name}}"{% endif %} id="first_name" class="validate"  name="first_name">
+                                    <input type="text" {% if user.first_name %}value="{{user.first_name}}"{% endif %} id="first_name" class="validate"  name="first_name">
                                     <label for="first_name">Vorname:</label>
                                 </div>
                                 <div class="col s6">
