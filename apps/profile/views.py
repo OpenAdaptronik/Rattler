@@ -103,7 +103,7 @@ def change_email(request):
             elif mail == '':
                 return render(request, 'profile/changeEmail.html', {'error': 'Bitte geben sie eine Email Adresse an'})
             else:
-                mailc = get_user_model().objects.get(mail=mail)
+                mailc = get_user_model().objects.get(email=mail)
                 return render(request, 'profile/changeEmail.html', {'error': 'E-mail bereits vergeben'})
         except:
             mailc=None
