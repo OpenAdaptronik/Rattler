@@ -17,6 +17,6 @@ ProfileImageFormSet = forms.inlineformset_factory(
     models.ProfileImage,
     fk_name='profile',
     form=ProfileImageForm,
-    extra=3,
+    extra=1,
     fields=('path',)
 )
