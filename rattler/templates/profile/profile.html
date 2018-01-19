@@ -25,6 +25,22 @@
                                     </li>
                                 {% endif %}
 
+                                {% if user.profile.visibility_first_name and  user.first_name %}
+                                    <li class="collection-item avatar">
+                                        <i class="material-icons circle">face</i>
+                                        <span class="title">Vorname</span>
+                                        <p>{{user.first_name}}</p>
+                                    </li>
+                                {% endif %}
+
+                                {% if user.profile.visibility_last_name and  user.last_name %}
+                                    <li class="collection-item avatar">
+                                        <i class="material-icons circle">face</i>
+                                        <span class="title">Nachname</span>
+                                        <p>{{user.last_name}}</p>
+                                    </li>
+                                {% endif %}
+
                                 {% if user.profile.visibility_company and  user.profile.company %}
                                     <li class="collection-item avatar">
                                         <i class="material-icons circle">work</i>

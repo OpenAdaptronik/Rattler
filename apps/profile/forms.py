@@ -4,7 +4,9 @@ from . import models
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ['company', 'info', 'expert', 'visibility_mail', 'visibility_company', 'visibility_info']
+        fields = ['company', 'info', 'expert', 'visibility_mail',
+                  'visibility_company', 'visibility_info',
+                  'visibility_first_name','visibility_last_name']
 
 class ProfileImageForm(forms.ModelForm):
     class Meta:

@@ -24,6 +24,8 @@ from django.utils.http import urlsafe_base64_decode
 from apps.register.tokens import account_activation_token
 from . import models
 from . import forms
+from . models import ProfileImage
+
 
 reverse_lazy = lazy(reverse, str)
 
@@ -42,7 +44,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
     model = models.Profile
     template_name_suffix = '_update'
-    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info']
+    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name']
 
     def get_object(self):
         try:
@@ -80,6 +82,14 @@ class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
         except ObjectDoesNotExist:
             return models.ProfileImage(profile=profile)
 
+def deleteProfileImage(request):
+    try:
+        profileImage = request.user.profile.profileimage.path
+        ProfileImage.objects.filter(path=profileImage).delete()
+        return show_me(request)
+    except ObjectDoesNotExist:
+        return show_me(request)
+
 
 def change_email(request):
     if request.method == 'POST':
@@ -89,12 +99,12 @@ def change_email(request):
         try:
             # prueft auf verschiedene fehler (dopplung in DB und beide felder gleich)
             if not mailer.get('newMail2') == mail:
-                return render(request, 'userSettings/changeEmail.html',{'error': 'E-mail Adresse stimmt nicht überein!'})
+                return render(request, 'profile/changeEmail.html',{'error': 'E-mail Adresse stimmt nicht überein!'})
             elif mail == '':
-                return render(request, 'userSettings/changeEmail.html', {'error': 'Bitte geben sie eine Email Adresse an'})
+                return render(request, 'profile/changeEmail.html', {'error': 'Bitte geben sie eine Email Adresse an'})
             else:
-                mailc = User.objects.get(mail=mail)
-                return render(request, 'userSettings/changeEmail.html', {'error': 'E-mail bereits vergeben'})
+                mailc = get_user_model().objects.get(email=mail)
+                return render(request, 'profile/changeEmail.html', {'error': 'E-mail bereits vergeben'})
         except:
             mailc=None
         if mailc is None:
@@ -104,7 +114,7 @@ def change_email(request):
             current_site = get_current_site(request)
             domain = current_site.domain
 
-            mes = render_to_string('userSettings/newMail.html', {
+            mes = render_to_string('profile/newMail.html', {
                 'use_https': request.is_secure(),
                 'domain':domain,
                 'uid': uid,
@@ -129,7 +139,7 @@ def change_email(request):
                                 Man muss beim bestätigen der E-mail weiterhin eingelogt bleiben!!''')
 
 
-    return render(request, 'userSettings/changeEmail.html')
+    return render(request, 'profile/changeEmail.html')
 
 
 def change_email_success (request, mail, uidb64, token):
@@ -163,6 +173,6 @@ def change_password(request):
             messages.error(request, 'Neues Passwort stimmt nicht überein')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'userSettings/changePassword.html', {
+    return render(request, 'profile/changePassword.html', {
         'form': form
     })
