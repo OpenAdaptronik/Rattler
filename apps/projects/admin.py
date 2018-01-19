@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Category,ProjectImage
+from .models import Project, Category,ProjectImage,Experiment,Datarow
 from django.utils import html
 from django.utils.translation import gettext_lazy as _
 from django.utils.encoding import force_text
@@ -45,7 +45,6 @@ class ProjectAdmin(admin.ModelAdmin):
                      'description',
                      'typ',
                      'experiment__name',
-                     'experiment__description',
                      ]
 
     list_filter = ('visibility',)
@@ -60,7 +59,10 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parent')
+    list_display = ('name',
+                    'parent')
+
     search_fields = ['name',
                      'parent'
                      ]
+
