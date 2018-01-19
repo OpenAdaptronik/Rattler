@@ -51,6 +51,38 @@
 
                             <div class="row">
                                 <div class="input-field col s6">
+                                    <input type="text" {% if user.first_name %}value="{{user.fist_name}}"{% endif %} id="first_name" class="validate"  name="first_name">
+                                    <label for="first_name">Vorname:</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_first_name" {% if user.profile.visibility_first_name %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" {% if user.last_name %}value="{{user.last_name}}"{% endif %} id="last_name" class="validate"  name="last_name">
+                                    <label for="last_name">Nachname:</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_last_name" {% if user.profile.visibility_last_name %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
                                     <input type="text" {% if user.profile.company %}value="{{user.profile.company}}"{% endif %} id="company" class="validate"  name="company">
                                     <label for="firma">Firma/Institution:</label>
                                 </div>

@@ -22,8 +22,10 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 
 from apps.register.tokens import account_activation_token
+from apps.user.models import User
 from . import models
 from . import forms
+
 
 reverse_lazy = lazy(reverse, str)
 
@@ -42,7 +44,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
     model = models.Profile
     template_name_suffix = '_update'
-    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info']
+    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name']
 
     def get_object(self):
         try:
