@@ -132,7 +132,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.forms',
-    #'captcha',
+    'captcha',
 ]
 
 # Middlewares
@@ -196,10 +196,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # login: rattler.team@gmail.com
 # password: rattler112233!
 # entferne in zukunft localhost und 192.168.99.100
-#RECAPTCHA_PUBLIC_KEY = '6Le-p0AUAAAAADQrmNI8onAaUJ2r8e0H9N2HcIWN'
-#RECAPTCHA_PRIVATE_KEY = '6Le-p0AUAAAAAGwat3iFt_G1FyN7KH-uyN6-RiAl'
+RECAPTCHA_PUBLIC_KEY = '6Le-p0AUAAAAADQrmNI8onAaUJ2r8e0H9N2HcIWN'
+RECAPTCHA_PRIVATE_KEY = '6Le-p0AUAAAAAGwat3iFt_G1FyN7KH-uyN6-RiAl'
 
-#NOCAPTCHA = True
+NOCAPTCHA = True
 
 # Sessions
 SESSION_COOKIE_AGE = 60 * 15 # 15 minutes = 60*15 = 900 secs timout for user sessions

@@ -26,14 +26,14 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
 from rattler.forms import BaseForm
-#from captcha.fields import ReCaptchaField
+from captcha.fields import ReCaptchaField
 
 class RegisterForm(UserCreationForm, BaseForm):
     """ User registration form.
     Extends the django.contrib.auth.forms.UserCreationForm and rattler.forms.BaseForm.
     """
 
-    #captcha = ReCaptchaField()
+    captcha = ReCaptchaField()
 
     class Meta:
         """ Meta informations.
