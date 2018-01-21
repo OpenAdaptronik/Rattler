@@ -8,6 +8,7 @@ import apps.calc.measurement.calculus as calc
 from apps.analysis.json import NumPyArangeEncoder
 from apps.projects.models import Experiment, Project, Datarow, Value
 import numpy as np
+from django.conf import settings
 
 # Create your views here.
 @login_required
@@ -138,7 +139,7 @@ def newE(request, id):
 
     dataForRender = {
         'projectId': id,
-        'dateFormat': DATE_FORMAT
+        'dateFormat': settings.DATE_FORMAT
     }
 
     return render(request, "experiments/new.html", dataForRender)

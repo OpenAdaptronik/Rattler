@@ -20,6 +20,7 @@
                 <input type="hidden" id="zeitreihenSpalte" name="zeitreihenSpalte"/>
                 <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
                 <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
+                <input type="hidden" id="dateFormat" name="dateFormat" value="{{ dateFormat }}"/>
                 <div class="card-content" id="schritt1-card">
                     <!--<span class="card-title">Neue Schwingungsdaten analysieren</span>-->
                     <p>
@@ -59,10 +60,10 @@
                             <label for="datensatzName">Name des Experimentes</label>
                         </div>
                         <div class="input-field" style="z-index: 500; position: relative;">
-                            <input class="validate" style="z-index: 500; position: relative;" id="erfassungsDatum" name="erfassungsDatum" type="text" class="datepicker">
+                            <input class="datepicker" style="z-index: 500; position: relative;" id="erfassungsDatum" name="erfassungsDatum" type="text">
                             <label for="erfassungsDatum">Datum der Erfassung</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field">
                             <input type="text" id="experimentDescr" name="experimentDescr">
                             <label for="experimentDescr">Weitere Informationen:</label>
                         </div>
