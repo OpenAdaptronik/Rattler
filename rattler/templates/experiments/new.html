@@ -55,12 +55,16 @@
                     <div class="divider datensatzInformationenFelder" style="display:none;"></div>
                     <div class="section datensatzInformationenFelder" style="display:none;">
                         <div class="input-field">
-                            <input id="datensatzName" name="datensatzName" type="text" data-length="40"/>
-                            <label for="datensatzName">Name des Datensatzes</label>
+                            <input id="datensatzName" class="validate" name="datensatzName" type="text" data-length="40"/>
+                            <label for="datensatzName">Name des Experimentes</label>
                         </div>
-                        <div class="input-field">
-                            <input style="z-index: 500; position: relative;" id="erfassungsDatum" name="erfassungsDatum" type="text" class="datepicker">
+                        <div class="input-field" style="z-index: 500; position: relative;">
+                            <input class="validate" style="z-index: 500; position: relative;" id="erfassungsDatum" name="erfassungsDatum" type="text" class="datepicker">
                             <label for="erfassungsDatum">Datum der Erfassung</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input type="text" id="experimentDescr" name="experimentDescr">
+                            <label for="experimentDescr">Weitere Informationen:</label>
                         </div>
                         <!--<div class="switch">
                             <label>

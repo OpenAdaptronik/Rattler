@@ -150,6 +150,12 @@ def newESave(request):
     jsonData = request.POST.get("jsonData", "")
     # ID of the project the new, received from the new.html file and casted to int (just in case :))
     projectId = request.POST.get("projectId", "")
+    # Title of the experiment
+    experimentTitle = request.POST.get("datensatzName", "")
+    # Date the experiment took place
+    experimentDate = request.POST.get("erfassungsDatum", "")
+    # Description of the experiment
+    experimentDescr = request.POST.get("experimentDescr", "")
 
     experiment_name = 'Testname'
     header = json.loads(jsonHeader)
