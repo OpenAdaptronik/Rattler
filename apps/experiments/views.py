@@ -136,7 +136,12 @@ def newE(request, id):
     if ownerbool is not True:
         return HttpResponseRedirect('/dashboard')
 
-    return render(request, "experiments/new.html", {'projectId': id})
+    dataForRender = {
+        'projectId': id,
+        'dateFormat': DATE_FORMAT
+    }
+
+    return render(request, "experiments/new.html", dataForRender)
 
 @login_required
 def newESave(request):
