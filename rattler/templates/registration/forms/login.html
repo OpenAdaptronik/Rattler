@@ -1,12 +1,10 @@
 <div class="card">
     {% if form.errors %}
-        <div class="card-content deep-orange orange darken-1">
+        <div class="card-content deep-orange orange darken-1" style="background-color: #d70022">
             Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuche es erneut.
         </div>
-    {% endif %}
-
-    {% if next %}
-        <div class="card-content deep-orange orange darken-1">
+    {% elif next %}
+        <div class="card-content deep-orange orange darken-1" style="background-color: #d70022">
         {% if user.is_authenticated %}
             Ihr Konto hat keinen Zugriff auf diese Seite. Um fortzufahren, loggen Sie sich bitte mit einem Konto ein, das Zugriff hat.
         {% else %}
