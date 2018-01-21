@@ -1,10 +1,6 @@
 {% load static %}
     <!-- Menu-Symbol fuer SideNav -->
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-    <!-- Hilfe-Button -->
-        <ul id="nav" class="right hide-on-med-and-down">
-            <li><a href="{% url 'help' %}"><i class="material-icons">help</i></a></li>
-        </ul>
 {% if user.is_authenticated %}
     <!-- Haupt-Navigation auf grossem Bildschirm -->
         <ul id="nav" class="left hide-on-med-and-down">
@@ -12,7 +8,13 @@
             <li class="{% if request.resolver_match.namespaces.0 == 'community' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'community:index' %}">Community</a></li>
         </ul>
     <!-- Profil-Menue -->
-        <a class='dropdown-button right dropdown-profile-avatar' href='javascript:void(0);' data-activates='dropdown-profile' data-alignment="right" data-belowOrigin="true" data-hover="true" data-constrainWidth="false"><img src="{% static 'img/user.jpg' %}"></a>
+        <a class='dropdown-button right dropdown-profile-avatar' href='javascript:void(0);' data-activates='dropdown-profile' data-alignment="right" data-belowOrigin="true" data-hover="true" data-constrainWidth="false">
+            {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
+                <img src="/{{ user.profile.profileimage.path.url }}">
+            {% else %}
+                <img src="{% static 'img/user.png' %}">
+            {% endif %}
+        </a>
         <ul id='dropdown-profile' class='dropdown-content'>
             <li><a href="{% url 'profile:index' %}">
                 <i class="material-icons">person</i>
@@ -38,3 +40,7 @@
         <li class=""><a href="{% url 'register:index' %}">Registrieren</a></li>
     </ul>
 {% endif %}
+<!-- Hilfe-Button -->
+    <ul id="nav" class="right hide-on-med-and-down">
+        <li><a href="{% url 'help' %}"><i class="material-icons">help</i></a></li>
+    </ul>
