@@ -14,7 +14,6 @@ class FilterListView(ListView):
     model = Project
     template_name = 'community/index.html'
     context_object_name = "filtered"
-    #queryset = user_filter()
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
