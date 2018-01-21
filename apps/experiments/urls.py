@@ -8,6 +8,5 @@ urlpatterns = [
     path("newexperiments/intderivate" , views.intderivate ,name='intderivate'),
     path('newexperiments/refresh', views.refreshData ,name='refresh'),
     path('<int:experimentId>', views.index, name='index'),
-    path('<int:id>', views.index, name='index'),
     path('', views.index, name='index'),
 ]
