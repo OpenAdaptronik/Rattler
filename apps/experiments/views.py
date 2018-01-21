@@ -41,12 +41,32 @@ def index(request):
 
 @login_required
 def newE(request, id):
+    return render(request, "experiments/new.html")
+
+
+def saveExperiment(request):
     jsonHeader = request.POST.get("jsonHeader", "")
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
     zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
     jsonData = request.POST.get("jsonData", "")
+    saveExperiment = request.POST.get("saveExperiment", "")
+    datensatzName = request.POST.get("datensatzName", "")
+    erfassungsDatum = request.POST.get("erfassungsDatum", "")
 
+    if saveExperiment == 1:
+        newExperiment = Experiment(name=datensatzName, timerow=zeitreihenSpalte)
+        newExperiment.save()
 
-    new_experiment = Experiment(project_id=id)
-    new_experiment.save()
-    return render(request, "experiments/new.html")
+    dataForRender = {
+        'jsonHeader': jsonHeader,
+        'jsonEinheiten': jsonEinheiten,
+        'zeitreihenSpalte': zeitreihenSpalte,
+        'jsonData': jsonData,
+        # 'newData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
+        # 'measurementObject': measurement,
+        # 'saveExperiment': saveExperiment,
+        'datensatzName': datensatzName,
+        'erfassungsDatum': erfassungsDatum
+    }
+
+    return render(request, "process/index.html", dataForRender)
