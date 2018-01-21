@@ -72,8 +72,9 @@ class Experiment(models.Model):
 class Datarow(models.Model):
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
     unit = models.CharField(max_length=10, null=True)
+    name = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=500, null=True)
 
 class Value(models.Model):
     datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, )
-    value = models.IntegerField( null=True)
+    value = models.DecimalField(max_digits=20, decimal_places=15, null=True)

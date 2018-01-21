@@ -12,23 +12,14 @@
 <div class="row">
     <div class="col s12 m12 l12" style="min-width: 300px" id="neueSchwingungsdatenCol">
         <div class="card">
-            <!-- MAREN, HUY: experiments:index durch EurenAppNamen:Unterseite ersetzen (je nachdem, an welche Unterseite die Daten gesendet werden sollen, um ein neues Experiment anzulegen) -->
-            <!-- MAREN, HUY:
-                    Daten auslesen:
-                        jsonHeader = request.POST.get("jsonHeader", "")
-                        jsonEinheiten = request.POST.get("jsonEinheiten", "")
-                        zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
-                        jsonData = request.POST.get("jsonData", "")
-                    jsonData sind dann z.B. die Schwingungsdaten als JSON.
-                    Den Umgang damit könnt ihr euch in analysis/views.py abschauen.
-            -->
-            <form action="{% url 'experiments:index' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
+            <form action="{% url 'experiments:newESave' %}" method="post" enctype="multipart/form-data" id="neueSchwingungsdatenForm">
                 <!-- Dinge, die wir python übergeben -->
                 {% csrf_token %}
                 <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
                 <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
                 <input type="hidden" id="zeitreihenSpalte" name="zeitreihenSpalte"/>
                 <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
+                <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
                 <div class="card-content" id="schritt1-card">
                     <!--<span class="card-title">Neue Schwingungsdaten analysieren</span>-->
                     <p>
@@ -79,7 +70,6 @@
                                 Experiment speichern
                             </label>
                         </div>-->
-                        <!-- @TODO falls switch oben true ist, muss hier noch ein Switch für öffentlich/privat erscheinen -->
                     </div>
                 </div>
                 <div class="card-action" id="neueSchwingungsdatenCardAction" style="display: none;">
