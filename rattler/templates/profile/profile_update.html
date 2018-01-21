@@ -23,11 +23,14 @@
                             {% endif %}
 
                             <span class="card-title">{{user.username}}</span>
+                                {% if user.profile.profileimage and user.profile.profileimage.path %}
+                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red right" href={% url 'profile:delete_image' %}><i class="material-icons">delete</i></a>
+                                {% endif %}
                             <label for="id_profileimage-0-path">
-                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red"><i class="material-icons">edit</i></a>
+                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red left "><i class="material-icons">edit</i></a>
                             </label>
                         </div>       
-                       
+                       <br>
                         <div class="card-content">
                             <div class="row">
                                 <div class="input-field col s6">
@@ -47,6 +50,38 @@
 
                             <div class="row">
                                 <a class="btn waves-effect waves-light" type="button" href="{% url 'profile:change_email' %}">E-mail ändern<i class="material-icons left">email</i></a>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" {% if user.first_name %}value="{{user.first_name}}"{% endif %} id="first_name" class="validate"  name="first_name">
+                                    <label for="first_name">Vorname:</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_first_name" {% if user.profile.visibility_first_name %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" {% if user.last_name %}value="{{user.last_name}}"{% endif %} id="last_name" class="validate"  name="last_name">
+                                    <label for="last_name">Nachname:</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" name="visibility_last_name" {% if user.profile.visibility_last_name %} checked {% endif %} value="1">
+                                            <span class="lever"></span>
+                                            Sichtbarkeit
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">
