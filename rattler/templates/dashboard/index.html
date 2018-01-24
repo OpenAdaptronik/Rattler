@@ -8,7 +8,7 @@
 {% block container %}
 <h2>Willkommen!</h2>
 <!-- hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
-<input type="hidden" id="maxDatarows" name="" value="500"/>
+<input type="hidden" id="maxDatarows" name="" value="{{ max_datarows|floatformat:"0" }}"/>
 <div class="row">
     <div class="col s12 m12 l12" style="min-width: 300px">
         <div class="card">
