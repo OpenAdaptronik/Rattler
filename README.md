@@ -1,4 +1,5 @@
 # Rattler
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/IT-PM-OpenAdaptronik/Webapp.svg?columns=all)](https://waffle.io/IT-PM-OpenAdaptronik/Webapp)
 
 ## Modeling
 - Jedes Model ist eine Klasse, das von `django.db.models.Model` erbt

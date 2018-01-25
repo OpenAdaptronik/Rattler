@@ -43,12 +43,15 @@ urlpatterns = [
     path('register/', include('apps.register.urls'), name='register'),
     # Django Admin
     path('admin/', admin.site.urls, name='admin'),
-    # Global Routes
+    # Page
+    path('help/', views.help, name='help'),
+    path('about/', views.about, name='about'),
+    path('license/', views.license, name='license'),
+    # Global Routes (Apps)
     path('dashboard/', include('apps.dashboard.urls'), name='dashboard'),
     path('community/', include('apps.community.urls'), name='community'),
     path('profile/', include('apps.profile.urls'), name='profile'),
     path('projects/', include('apps.projects.urls'), name='projects'),
-    path('help/', views.help, name='help'),
     path('process/', include('apps.process.urls'), name='process'),
     path('analysis/', include('apps.analysis.urls'), name='analysis'),
     path('tess/',include('apps.tess.urls'),name='tess'),

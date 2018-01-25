@@ -16,7 +16,7 @@ $( document ).ready(function() {
         // FileReader instanzieren
         const reader = new FileReader();
         // sobald der Reader das File gelesen hat (das passiert bei reader.readAsText(file); unten)
-        reader.onload = () => {
+        reader.onload = function() {
             // Dropzone disablen
             myDropzone.disable();
             // Bereich mit Dropzone löschen
@@ -274,7 +274,14 @@ $( document ).ready(function() {
                     traces[zeitreihenSpalte] = [];
                     traces[zeitreihenSpalte].shift();
                     
-                    Plotly.newPlot('graph', traces, layout);
+                    var d3 = Plotly.d3;
+                    var node = d3.select('#graph').node();
+
+                    Plotly.newPlot(node, traces, layout);
+
+                    window.onresize = function() {
+                        Plotly.Plots.resize(node);
+                    };
                     
                 // Variablen, in denen die Auswahl des Users gespeichert wird.
                 // Werden so definiert, dass zu Anfang der ganze Datenbereich ausgewählt ist
@@ -347,8 +354,8 @@ $( document ).ready(function() {
         };
 
         // Hier liest der reader die hochgeladene Datei ein.
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+        reader.onabort = function() { console.log('file reading was aborted')};
+        reader.onerror = function() { console.log('file reading has failed')};
         reader.readAsText(file);
     });
 });

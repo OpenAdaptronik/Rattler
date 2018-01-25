@@ -6,7 +6,8 @@
 {% load materialize i18n defer %}
 
 {% block container %}
-<form method="POST">
+
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.non_field_errors }}
     {% for hidden_field in form.hidden_fields %}
@@ -17,14 +18,77 @@
         <div class="card-content">
             <span calss="card-title">Neues Projekt anlegen</span>
             {{form|materialize}}
+
+            <div class="row">
+                <div class="col s12">
+                    {% trans 'project images'%}:
+                </div>
+            </div>
+
+            <div class="row">
+                {{ project_image.management_form }}
+                {% for form in project_image.forms %}
+
+                    <div class="col s4" data-toggle="project-image" data-index="{{forloop.counter0}}" {% if forloop.counter0 > 0%}style="display:none"{% endif %}>
+                        <div style="display:none">{{ form }}</div>
+                        <label for="{{ form.path.id_for_label }}" id="label-{{ form.path.id_for_label }}">
+                            <span class="btn-floating btn-large waves-effect waves-light">
+                                <i class="material-icons medium">add</i>
+                            </span>
+                        </label>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+
+
+                
+            </div>
         </div>                    
         <div class="card-action">
             {% materialize_form_submit_btn %}
         </div>
     </div>
+
+    <span style="display:none;">
+            
+            
+    </span>
 </form>
 
 {% defer_html %}
+    <script>
+        $(document).ready(function() {
+            var VALID_FILETYPE = new RegExp('^image/.*');
+            $inputs = $('[data-toggle="project-image"] input[type="file"]');
+            $inputs.on('change', function(e) {
+                if (this.files.length != 1) {
+                    return;
+                }
+                var file = this.files[0];
+                if (!VALID_FILETYPE.test(file.type)) {
+                    return;
+                }
+                var reader = new FileReader();
+                var id = this.id;
+                var $label = $('#label-' + id);
+                var index = $(this).parents('[data-toggle="project-image"]').data('index');
+                var $next = $('[data-toggle="project-image"][data-index="' + (index + 1) + '"]');
+
+                reader.onload = function (e) {
+                    var $img = $('<img>');
+                    $img.attr('src', e.target.result);
+                    $img.css('width', '100%');
+                    $label.html($img);
+                    $next.css('display', '')
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+    </script>
+
     <script>
         $(document).ready(function() {
             var $category = $('#id_category');
