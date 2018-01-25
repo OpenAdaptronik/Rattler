@@ -26,6 +26,11 @@ class Profile(models.Model):
     created = models.DateTimeField(_('created'),auto_now_add=True)
     updated = models.DateTimeField(_('updated'),auto_now=True)
 
+    def __str__(self):
+        return _('%(username)s profile') % {'username': self.user.username}
+
+
+
 def profile_image_path(instance, filename):
     return 'profile/%s%s' % (instance.profile.id, os.path.splitext(filename)[1])
 
@@ -34,6 +39,10 @@ class ProfileImage(models.Model):
     path = models.ImageField(_('path'),upload_to=profile_image_path)
     created = models.DateTimeField(_('created'),auto_now_add=True)
     updated = models.DateTimeField(_('updated'),auto_now=True)
+
+    class Meta:
+        verbose_name = _('project image')
+        verbose_name_plural = _('project images')
 
 @receiver(post_save, sender=get_user_model())
 def create_user_profile(sender, instance, created, **kwargs):

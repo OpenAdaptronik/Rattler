@@ -27,6 +27,10 @@ class Project(models.Model):
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
 
+    class Meta:
+        verbose_name = _('project')
+        verbose_name_plural = _('projects')
+
     def get_absolute_url(self):
         kwargs = {
             'id': self.id,
@@ -62,6 +66,7 @@ def project_image_path(instance, filename):
 class ProjectImage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE,verbose_name=_('project'))
     path = models.ImageField(upload_to=project_image_path, verbose_name=_('path'))
+
 
 class Experiment(models.Model):
     name = models.CharField(_('name'),max_length=100, null=True)

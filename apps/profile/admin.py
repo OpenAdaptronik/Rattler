@@ -25,6 +25,9 @@ class ProfileInline(admin.StackedInline):
                                 title=instance.user.username,
                                 )
 
+    get_profile_image.short_description = _('profil image')
+
+
     """ The Profile admin Inline.
      Attributes:
          fk_name: ForeignKey name
@@ -34,7 +37,8 @@ class ProfileInline(admin.StackedInline):
      """
     model = Profile
     can_delete = False
-    verbose_name_plural = 'Profile'
+    verbose_name = _('profile')
+    verbose_name_plural = _('profile')
     fk_name = 'user'
     fields = ('company',
               'info',
@@ -69,7 +73,7 @@ class ProfileInline(admin.StackedInline):
                 text="Ändere Bild %s auf Seperaten Seite" % instance.profileimage._meta.verbose_name,
         ))
 
-    get_edit_link.short_description = _('Profilbild-Link')
+    get_edit_link.short_description = _('profile image link')
 
     """ The User admin.
         User get Attributes from Profile via inlines
@@ -113,7 +117,7 @@ class ProfileImageAdmin(admin.ModelAdmin):
                                 src='/' + instance.path.url,
                                 )
 
-    get_profile_image.short_description = _('Profilbild')
+    get_profile_image.short_description = _('profil image')
     save_on_top = True
     fields = ('path',
               'created',
@@ -123,6 +127,7 @@ class ProfileImageAdmin(admin.ModelAdmin):
     readonly_fields = ('created',
                        'updated',
                        get_profile_image)
+
 
 
 
