@@ -44,7 +44,7 @@
                         <div class="input-field inline">
                             <select class="inline" id="firstCol" style="">
                                 {% for header, unit in jsonHeaderAndUnits %}
-                                    <option value="{{ forloop.counter0 }}">{{ header }} ({{ unit }})</option>
+                                    <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}. {{ header }} ({{ unit }})</option>
                                 {% endfor %}
                             </select> 
                         </div>
@@ -94,7 +94,7 @@
                                 </optgroup>
                             </select>
                         </div>&ensp;
-                        <button class="btn waves-effect waves-light" type="submit">Neue Spalten abspeichern<i class="material-icons right">send</i></button>
+                        <button class="btn waves-effect waves-light" type="submit">ausführen<i class="material-icons right">send</i></button>
                     </p>
                 </div>
                 <!--<form method="post" action="@TODO HIER views.py-Methode zum abspeichern einfügen" enctype="multipart/form-data">
