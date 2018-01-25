@@ -2,7 +2,7 @@
   <div class="container">
     <h2> Community</h2>
     <div class="row">
-      <form method="get">
+      <form method="get" action="{% url 'community:index' %}">
         <div class="col s12 m12 13" style="min-width: 300px">
           <div class="card">
             <p class="card-content">
@@ -83,13 +83,13 @@
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="{% url 'community:index_paginated' page=page_obj.previous_page_number%}?username={{ filter.username }}&company={{ filter.company }}&email={{ filter.email }}&projectname={{ filter.projectname }}&category={{ filter.category }}&manufacturer={{ filter.manufacturer }}">previous</a>
+                    <a href="{% url 'community:index_paginated' page=page_obj.previous_page_number%}{% if filter_url %}?{{filter_url}}{% endif %}">previous</a>
                 {% endif %}
                 <span class="page-current">
                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
                 {% if page_obj.has_next %}
-                    <a href="{% url 'community:index_paginated' page=page_obj.next_page_number %}?username={{ filter.username }}&company={{ filter.company }}&email={{ filter.email }}&projectname={{ filter.projectname }}&category={{ filter.category }}&manufacturer={{ filter.manufacturer }}">next</a>
+                    <a href="{% url 'community:index_paginated' page=page_obj.next_page_number %}{% if filter_url %}?{{filter_url}}{% endif %}">next</a>
                 {% endif %}
             </span>
         </div>

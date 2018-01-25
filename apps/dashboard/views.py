@@ -2,16 +2,17 @@ from django.shortcuts import render, HttpResponse
 from apps.projects.models import Project
 from django.contrib.auth.decorators import login_required
 
+num_last_projects = 5
+
 # Create your views here.
 @login_required
 def show_projects(request):
-    user_id = request.user.id
-    my_projects = Project.objects.filter(user_id=user_id).values_list('name', flat=True)
+    last_projects = request.user.project_set.order_by('-experiment__created', '-updated', '-created')[:num_last_projects]
     return render(
         request,
         'dashboard/index.html',
         {
-            'my_projects': my_projects,
+            'last_projects': last_projects,
             'max_datarows': request.user.profile.max_datarows,
         }
     )
