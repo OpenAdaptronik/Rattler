@@ -120,6 +120,7 @@ $( document ).ready(function() {
             'resampling':$("#resampling").prop('checked'),
             'resamplingScale':$("#resamplingScale").val(),
             'fourier':$("#fourier").prop('checked'),
+            'fourierval':$("#fourierval").val(),
         }
 
         for(i=0; i < anzSpalten; i++){
@@ -148,11 +149,11 @@ $( document ).ready(function() {
         dataType: 'json',
         success: function (data) {
 
-           dataArray = JSON.parse(data.jsonData);
-           spaltenTitel = JSON.parse(data.jsonHeader);
-           spaltenEinheiten = JSON.parse(data.jsonEinheiten);
-           zeitreihenSpalte = data.zeitreihenSpalte;
-           anzSpalten = dataArray[0].length;
+            dataArray = JSON.parse(data.jsonData);
+            spaltenTitel = JSON.parse(data.jsonHeader);
+            spaltenEinheiten = JSON.parse(data.jsonEinheiten);
+            zeitreihenSpalte = data.zeitreihenSpalte;
+            anzSpalten = dataArray[0].length;
 
 
 

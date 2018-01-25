@@ -143,7 +143,11 @@ def renew_data(request):
 
 
     if request.POST.get('fourier') == 'true':
-        measurement.fourier_transform();
+        fourierval =request.POST.get('fourierval', '')
+        if fourierval == '':
+            measurement.fourier_transform()
+        else:
+            measurement.fourier_transform(int(fourierval))
 
     # Daten zum Rendern vorbereiten
     dataForRender = {
@@ -154,3 +158,4 @@ def renew_data(request):
     }
 
     return JsonResponse(dataForRender)
+
