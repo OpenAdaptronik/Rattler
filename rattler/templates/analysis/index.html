@@ -52,8 +52,12 @@
                                 <input type="checkbox" class="filled-in" id="fourier" name="fourier"/>
                                 <label for="fourier">Fourier-Transformation anwenden</label>
                                 <div class="input-field">
-                                    <input id="fourierval" name="fourierval" type="text">
-                                    <label for="fourierval">Real/Imagi/Abs</label>
+                                    <select id="fourierval">
+                                        <option value="real"> Realteil-plotten</option>
+                                        <option value="imaginary"> Imaginaerteil-plotten</option>
+                                        <option value="absolute"> Absolutteil-plotten</option>
+                                    </select>
+
                                 </div>
                             </div>
                         </div>

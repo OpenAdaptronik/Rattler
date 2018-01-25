@@ -78,7 +78,7 @@ class Measurement(object):
             if i == self.timeIndex:
                 X_new = np.fft.fftfreq(len(self.data[:,i]), d=get_average_delta(self.data,i))[:cut]
                 new_data.append(np.array(X_new))
-            if(fourierval == 'abs'):
+            if(fourierval == 'absolute'):
                 fft = [np.abs(x) for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
             elif fourierval == 'real':
