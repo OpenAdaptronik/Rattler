@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 
 from django.views.generic import FormView, CreateView, ListView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ProjectForm
+from .forms import ProjectForm, ProjectImageCreateFormSet, ProjectImageFormSet
 from django.core import serializers
 from django.utils.encoding import uri_to_iri
 
@@ -15,11 +15,27 @@ class NewProject(LoginRequiredMixin, CreateView):
     form_class = ProjectForm
     template_name = 'projects/project_create.html'
 
+    def get_context_data(self, **kwargs):
+        data = super(NewProject, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            data['project_image'] = ProjectImageCreateFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['project_image'] = ProjectImageCreateFormSet(instance=self.object)
+        return data
+
     def form_valid(self, form):
         user = self.request.user
         form.instance.user = user
-        form.save()
+
+        context = self.get_context_data()
+        project_image = context['project_image']
+        
+        self.object = form.save()
+        if project_image.is_valid():
+            project_image.instance = self.object
+            project_image.save()
         return super(NewProject, self).form_valid(form)
+
 
 class UpdateProject(LoginRequiredMixin, UpdateView):
     model = Project
@@ -31,6 +47,24 @@ class UpdateProject(LoginRequiredMixin, UpdateView):
         if not self.object.user == self.request.user and not self.object.visibility:
             raise PermissionDenied()
         return super(UpdateProject, self).get(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        data = super(UpdateProject, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            data['project_image'] = ProjectImageFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            data['project_image'] = ProjectImageFormSet(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        project_image = context['project_image']
+
+        if project_image.is_valid():
+            project_image.save()
+        return super(UpdateProject, self).form_valid(form)
+
+
 
 class MyProjects(LoginRequiredMixin, ListView):
     model = Project
