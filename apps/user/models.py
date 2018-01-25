@@ -62,10 +62,12 @@ class User(AbstractUser):
         is_active: The is active flag. Only active useres are allowed to login.
         created: The creation date of the user.
         updated: The last update date of the user.
+
+
         objects: The UserManager instance.
     """
     email = models.EmailField(_('email address'))
     is_active = models.BooleanField(_('active'), default=False)
     created = models.DateTimeField(_('created'), auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('updated'))
     objects = UserManager()

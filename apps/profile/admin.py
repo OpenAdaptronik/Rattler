@@ -5,6 +5,8 @@ from apps.user.admin import UserAdmin as apps_UserAdmin
 from django.utils.encoding import force_text
 from django.urls import reverse
 
+from django.utils.translation import gettext_lazy as _
+
 from .models import Profile,ProfileImage
 
 admin.site.unregister(User)
@@ -45,10 +47,12 @@ class ProfileInline(admin.StackedInline):
                 text="Ändere Bild %s auf Seperaten Seite" % instance.profileimage._meta.verbose_name,
         ))
 
+    get_edit_link.short_description = _('Profilbild-Link')
 
 @admin.register(User)
 class UserAdmin(apps_UserAdmin):
     inlines = (ProfileInline,)
+
 
 @admin.register(ProfileImage)
 class ProfileImageAdmin(admin.ModelAdmin):
@@ -60,6 +64,10 @@ class ProfileImageAdmin(admin.ModelAdmin):
                                 src='/' + instance.path.url,
                                 )
 
+    get_profile_image.short_description = _('Profilbild')
     save_on_top = True
     fields = ('path','created','updated', get_profile_image)
     readonly_fields = ('created', 'updated', get_profile_image)
+
+
+
