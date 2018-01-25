@@ -104,7 +104,7 @@ TIME_FORMAT = 'H:i'
 DECIMAL_SEPARATOR = ','
 # https://docs.djangoproject.com/en/2.0/ref/settings/#thousand-separator
 THOUSAND_SEPARATOR = '.'
-USE_THOUSAND_SEPARATOR = True
+USE_THOUSAND_SEPARATOR = False
 
 # Security Settings
 ALLOWED_HOSTS = ['*']
