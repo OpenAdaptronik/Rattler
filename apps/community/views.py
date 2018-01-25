@@ -15,40 +15,17 @@ class FilterListView(ListView):
     template_name = 'community/index.html'
     context_object_name = "filtered"
     paginate_by = 5
-    allow_empty = True
 
     def get_context_data(self, **kwargs):
         data = super(FilterListView, self).get_context_data(**kwargs)
-        data['filter'] = {}
-
-        username = self.request.GET.get('username', False)
-
-        if username:
-            data['filter']['username'] = username
-
-        company = self.request.GET.get('company', False)
-        if company:
-            data['filter']['company'] = company
-
-        email = self.request.GET.get('email', False)
-        if email:
-            data['filter']['email'] = email
-
-        projectname = self.request.GET.get('projectname', False)
-        if projectname:
-            data['filter']['projectname'] = projectname
-
-        category = self.request.GET.get('category', False)
-        if category:
-            data['filter']['category'] = category
-
-        manufacturer = self.request.GET.get('manufacturer', False)
-        if manufacturer:
-            data['filter']['manufacturer'] = manufacturer
-
-        qdict = QueryDict('', mutable=True)
-        qdict.update(data['filter'])
-        data['filter_url'] = qdict.urlencode()
+        data['filter'] = {
+            'username': self.request.GET.get('username', None),
+            'company': self.request.GET.get('company', None),
+            'email': self.request.GET.get('mail', None),
+            'projectname': self.request.GET.get('projectname', None),
+            'category': self.request.GET.get('category', None),
+            'manufacturer': self.request.GET.get('manufacturer', None),
+        }
         return data
 
 
