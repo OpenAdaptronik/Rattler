@@ -26,6 +26,7 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
+    measured = models.DateTimeField(null=True)
 
     def get_absolute_url(self):
         kwargs = {
@@ -69,11 +70,22 @@ class Experiment(models.Model):
     timerow = models.IntegerField(null=True)
 
 
+
 class Datarow(models.Model):
+    SENSOR = 'Se'
+    ACTUATOR = 'Ac'
+    NONE = 'No'
+    MEASURING_INSTRUMENT_CHOICES = (
+        (SENSOR, 'Sensor'),
+        (ACTUATOR, 'Aktor'),
+        (NONE, 'none')
+    )
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
     unit = models.CharField(max_length=10, null=True)
     name = models.CharField(max_length=50, null=True)
     description = models.TextField(max_length=500, null=True)
+    measuring_instrument = models.CharField(max_length=2, choices=MEASURING_INSTRUMENT_CHOICES, default=NONE)
+
 
 class Value(models.Model):
     datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, )
