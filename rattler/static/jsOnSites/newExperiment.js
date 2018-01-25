@@ -2,7 +2,7 @@
 Dropzone.autoDiscover = false;
 $( document ).ready(function() {
 
-    $('.tooltipped').tooltip({delay: 50});    
+    $('.tooltipped').tooltip({delay: 50});
 
     // setzt die Dropzone auf --> @TODO Überarbeiten, damit die komischen UI-Fehler der Dropzone nicht auftreten
     var myDropzone = new Dropzone("div#dropzoneDiv", {
@@ -11,6 +11,24 @@ $( document ).ready(function() {
         autoQueue: false, // wichtig, damit Files nicht sofort hochgeladen werden
         maxFiles: 1 // wieviele Files man gleichzeitig hochladen kann 
     });
+
+    // setup datepicker in the right language (at the moment hardcoded German) and the right format
+    // if you want to include other languages, you might want to take a look @ https://github.com/amsul/pickadate.js/tree/3.5.6/lib/translations
+        // get the dateFormat which is the base.py constant "DATE_FORMAT"
+        var dateFormat = $("#dateFormat").val();
+        $('.datepicker').pickadate({
+            monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
+            monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
+            weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
+            weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
+            today: 'Heute',
+            clear: 'Löschen',
+            close: 'Schließen',
+            firstDay: 1,
+            format: 'dddd, dd. mmmm yyyy',
+            formatSubmit: dateFormat
+        });
+
     // wird ausgeführt sobald ein File in die Dropzone geladen wird
     myDropzone.on("addedfile", function(file){
         // FileReader instanzieren

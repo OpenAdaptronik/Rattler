@@ -41,6 +41,11 @@
 
 {% endfor %}
 
+{% if object.user == user %}
+    <a href="{% url 'projects:edit' object.id %}">{% trans 'edit' %}</a>
+    <a href="{% url 'experiments:new' object.id %}">Neues Experiment</a>
+{% endif %}
+
 
 <a href="{% url 'experiments:new' object.id %}">Neues Experiment</a>
 

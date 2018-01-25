@@ -3,9 +3,12 @@ from apps.calc.measurement import measurement_obj
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
+import numpy as np
+import apps.calc.measurement.calculus as calc
 from apps.analysis.json import NumPyArangeEncoder
 from apps.projects.models import Experiment, Project, Datarow, Value
 import numpy as np
+from django.conf import settings
 
 # Create your views here.
 @login_required
@@ -20,8 +23,7 @@ def index(request, experimentId):
     # ownerid = Project.objects.get(id=id).user_id
     # ownerbool = request.User.id == ownerid
 
-    # @TODO: stattdessen Daten aus der Datenbank rauslesen. Vllt sollte man das nicht hier machen, sondern direkt in der HTML --> geht das? macht das Sinn?
-    # Read Data from POST request
+    # Read Data from DB
     header_list = Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True)
     jsonHeader = np.asarray(header_list)
     einheiten_list = Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True)
@@ -46,28 +48,84 @@ def index(request, experimentId):
     jsonEinheiten = json.dumps(jsonEinheiten, cls=NumPyArangeEncoder)
     jsonData = json.dumps(jsonData, cls=NumPyArangeEncoder)
     zeitreihenSpalte = json.dumps(zeitreihenSpalte, cls=NumPyArangeEncoder)
-    # Create/Initialize the measurement object
-    # data spalten = 2 dimenion
-    # data zeile = 1. dimension
-    # array Zeile Spalte
-    measurement = measurement_obj.Measurement(jsonData, jsonHeader, jsonEinheiten, zeitreihenSpalte)
 
     # Prepare the Data for Rendering
+    dataForRender = {
+        'jsonData': jsonData,
+        'jsonHeader': jsonHeader,
+        'jsonEinheiten': jsonEinheiten,
+        'zeitreihenSpalte': zeitreihenSpalte
+    }
+
+    # Safe all Data from the measurement object into the session storage to get them when applying filter
+    request.session['measurementData'] = jsonData
+    request.session['measurementHeader'] = jsonHeader
+    request.session['measurementUnits'] = jsonEinheiten
+    request.session['measurementTimeIndex'] = zeitreihenSpalte
+
+    #@TODO: hier für testzwecke auf deriv.html umgeleitet, müsste index.html sein
+    return render(request, "experiments/index.html", dataForRender)
+
+# the backend derivation and integration function
+def intderivate(request):
+
+    if request.method != 'POST':
+       return HttpResponseRedirect('/dashboard/')
+
+    # @TODO: the function should get the data directly from the database. the javascript json request shouldnt submit the data but only the experimentId. 
+
+
+
+    measurement = measurement_obj.Measurement(request.session['measurementData'], request.session['measurementHeader'],
+                                              request.session['measurementUnits'],
+                                              request.session['measurementTimeIndex'])
+
+
     dataForRender = {
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
         'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
         'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
     }
+    func = int(request.POST.get('function'))
+    first =int(request.POST.get('first'))
+    second =int(request.POST.get('second'))
 
-    # Safe all Data from the measurement object into the session storage to get them when applying filter
-    request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
-    request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
-    request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
-    request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+    if (func == 1):
+        result = calc.trapez_for_each(dataForRender['jsonData'], first , second)
+    else:
+        result = calc.numerical_approx(dataForRender['jsonData'], first , second)
 
-    return render(request, "experiments/index.html", dataForRender)
 
+    result = json.dumps(result, cls=NumPyArangeEncoder)
+    x={'result':result}
+    dataForRender.update(x)
+
+    #@TODO: hier neue Spalte in DB speichern
+
+    #return render(request, "experiments/start.html",dataForRender)
+    return JsonResponse(dataForRender)
+
+# is called @ the end of the intderiv process
+def refreshData(request):
+    if request.method != 'POST':
+       return HttpResponseRedirect('/dashboard/')
+
+    #Recreate measurement object from the session storage
+    measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+                                   request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    # jsonHeader = request.POST.get("jsonHeader", "")
+    # jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    # zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    # jsonData = request.POST.get("intderivresult", "")
+
+    result =request.POST.get('intderivresult')
+
+    # Number of Columns
+    anzSpalten = len(measurement.data[0])
+    return JsonResponse(result)
+
+# page to upload your csv
 @login_required
 def newE(request, id):
 
@@ -77,8 +135,14 @@ def newE(request, id):
     if ownerbool is not True:
         return HttpResponseRedirect('/dashboard')
 
-    return render(request, "experiments/new.html", {'projectId': id})
+    dataForRender = {
+        'projectId': id,
+        'dateFormat': settings.DATE_FORMAT
+    }
 
+    return render(request, "experiments/new.html", dataForRender)
+
+# is called after the user uploaded his csv. file
 @login_required
 def newESave(request):
     # those are the titles of the columns in an array
@@ -91,15 +155,22 @@ def newESave(request):
     jsonData = request.POST.get("jsonData", "")
     # ID of the project the new, received from the new.html file and casted to int (just in case :))
     projectId = request.POST.get("projectId", "")
+    # Title of the experiment
+    experimentTitle = request.POST.get("datensatzName", "")
+    # Date the experiment took place
+    experimentDate = request.POST.get("erfassungsDatum", "")
+    # Description of the experiment
+    experimentDescr = request.POST.get("experimentDescr", "")
 
-    experiment_name = 'Testname'
+    experiment_name = json.loads(experimentTitle)
+    description = json.loads(experimentDescr)
+    #experiment_date = json.loads(experimentDate)
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
-
     # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
-    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name)
+    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description= description)
     new_experiment.save()
     experiment_id = new_experiment.id
     i = 0
@@ -117,3 +188,21 @@ def newESave(request):
     # @TODO Diesem Redirect muss noch die ID des neuen Experimentes angegeben werden. Die Seite die da aufgerufen wird, ist die Experiment-Detail-Seite!
     # Zudem müssen wir dann noch die experiments/index.html-Seite und die Funktion index(request) (in diesem File) anpassen, damit sie das Experiment aus der DB liest!
     return HttpResponseRedirect('/experiments/' + str(experiment_id))
+
+# derivation and integration "app"
+@login_required
+def derivate(request, experimentId):
+    
+    # copied from index function and deleted stuff we dont need here
+    # Read Data from DB
+    header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
+    einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
+    
+    # Prepare the Data for Rendering
+    dataForRender = {
+        'jsonHeader': header_list,
+        'jsonEinheiten': einheiten_list,
+        'jsonHeaderAndUnits': zip(header_list, einheiten_list)
+    }
+
+    return render(request, "experiments/deriv.html", dataForRender)

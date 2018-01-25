@@ -1,4 +1,6 @@
 import numpy as np
+import json
+import scipy as sci
 
 def get_delta(data, index,decimals=0):
     '''
@@ -10,9 +12,22 @@ def get_delta(data, index,decimals=0):
     :return: a list of distances between all values in the column
     '''
     res = []
-    for t1, t2 in zip(data[:-1,index], data[1:,index]):
-        res.append(np.around(np.float64(t2) - np.float64(t1),decimals))
-    return res
+    realsol = []
+    i=1
+    intervall=0
+    lendata = len(data)
+    while i < len(data[0:,index]):
+
+        intervall = data[i, index]  # - data[index,i - 1]
+
+        realsol.append(intervall)
+        i += 1
+    realsol = np.array(realsol)
+    return realsol
+
+    #for t1, t2 in zip(data[:-1,int(index)], data[1:,int(index)]):
+     #   res.append(np.around(np.float64(t2) - np.float64(t1),decimals))
+    #return np.array(res)
 
 def get_average_delta(data, index):
     '''
@@ -36,6 +51,54 @@ def numerical_approx(data, diff_Value1_Index, diff_Value2_Index = 0):
     :return:
     '''
     diff_Value = []
-    for v1, t1 in zip(get_delta(data, diff_Value1_Index), get_delta(data, diff_Value2_Index)):
+    diff_Value.append(np.float_(0.000))
+    data = np.array(json.loads(data), dtype=np.float64)
+
+
+
+    for v1, t1 in zip(get_delta(data, int(diff_Value1_Index)), get_delta(data, int(diff_Value2_Index))):
         diff_Value.append(v1 / t1)
-    return diff_Value
+
+
+
+    return np.asarray(diff_Value)
+
+def trapez_for_each(data, index_x, index_y):
+        """
+        This method integrates the given Values with the Trapeziodal Rule
+        :param index_x: index der X Achse
+        :param index_y: index der Y Achse
+        :return: integrated Values from x,y
+        """
+        i = 1
+        sol = []
+
+
+        data =np.array(json.loads(data),dtype=np.float64)
+
+
+        #data =np.array(json.loads(data),dtype=np.float_)
+
+
+        while i < len(data[:,index_x]):
+            res = sci.trapz(data[0:i, index_y], data[0:i, index_x])
+            res = np.float_(res)
+            sol.append(res)
+            i += 1
+        i = 0
+        realsol = []
+        while i < len(sol):
+
+            intervall = sol[i] - sol[i - 1]
+
+            if i == 0:
+                realsol.append(np.float_(0))
+
+            realsol.append(intervall)
+            i += 1
+        realsol= np.array(realsol)
+
+
+
+        return realsol
+
