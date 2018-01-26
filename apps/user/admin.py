@@ -45,6 +45,9 @@ class UserAdmin(auth_admin.UserAdmin):
         list_display: The data to show in the user list.
         add_fieldsets: The data to show in the user creation.
     """
+
+    # Filter Funktion des Users im Profile/admin.py
+
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         (_('Permissions'), {'fields': ('is_active', 'is_superuser', 'is_staff')}),
@@ -52,7 +55,7 @@ class UserAdmin(auth_admin.UserAdmin):
         (_('name'), {'fields': ('last_name', 'first_name')}),
     )
 
-    list_display = ('username', 'email', 'is_superuser','is_active', 'date_joined', 'updated', )
+    list_display = ('username', 'email', 'is_superuser','is_active', 'date_joined', 'last_login', )
     list_filter = ('is_superuser', 'is_active')
     add_fieldsets = (
         (None, {
