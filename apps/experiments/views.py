@@ -13,15 +13,10 @@ from django.conf import settings
 # Create your views here.
 @login_required
 def index(request, experimentId):
-
-
     # The experiment id is passed in the variable experimentId (see urls.py)
-    
-    # @TODO: Überprüfen, ob der angemeldete User überhaupt Zugriff auf das Projekt hat, dem das Experiment angehört!
-    # + sichtbarkeit
-
-    # ownerid = Project.objects.get(id=id).user_id
-    # ownerbool = request.User.id == ownerid
+    projectId = Experiment.objects.get(id=experimentId).project_id
+    if(not request.user.id == Project.objects.get(id=projectId).user_id and not Project.objects.get(id=projectId).visibility):
+       return HttpResponseRedirect('/dashboard/')
 
     # Read Data from DB
     header_list = Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True)
@@ -63,7 +58,6 @@ def index(request, experimentId):
     request.session['measurementUnits'] = jsonEinheiten
     request.session['measurementTimeIndex'] = zeitreihenSpalte
 
-    #@TODO: hier für testzwecke auf deriv.html umgeleitet, müsste index.html sein
     return render(request, "experiments/index.html", dataForRender)
 
 # the backend derivation and integration function
@@ -128,11 +122,8 @@ def refreshData(request):
 # page to upload your csv
 @login_required
 def newE(request, id):
-
-    ownerid = Project.objects.get(id=id).user_id
-    ownerbool = request.user.id == ownerid
-
-    if ownerbool is not True:
+    # check if the current user owns the project. if he doesnt: redirect him to his dashboard
+    if not request.user.id == Project.objects.get(id=id).user_id:
         return HttpResponseRedirect('/dashboard')
 
     dataForRender = {
