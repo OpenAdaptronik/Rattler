@@ -274,7 +274,14 @@ $( document ).ready(function() {
                     traces[zeitreihenSpalte] = [];
                     traces[zeitreihenSpalte].shift();
                     
-                    Plotly.newPlot('graph', traces, layout);
+                    var d3 = Plotly.d3;
+                    var node = d3.select('#graph').node();
+
+                    Plotly.newPlot(node, traces, layout);
+
+                    window.onresize = function() {
+                        Plotly.Plots.resize(node);
+                    };
                     
                 // Variablen, in denen die Auswahl des Users gespeichert wird.
                 // Werden so definiert, dass zu Anfang der ganze Datenbereich ausgewählt ist
