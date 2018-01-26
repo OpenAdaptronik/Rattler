@@ -141,7 +141,7 @@ $( document ).ready(function() {
                     "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
                     "               <label for='spaltenname" + i + "'>Titel</label>" +
                     "           </div>" +
-                    "           <div class='input-field col s12' style='z-index: 5000'>" +
+                    "           <div class='input-field col s5' style='z-index: 5000'>" +
                     "               <select style='width: 100%' id='einheitSpalte"+i+"'>" +
                     "                   <optgroup label='Zeit'>" +
                     "                       <option value='ms' selected>ms</option>" +
@@ -171,6 +171,18 @@ $( document ).ready(function() {
                     "                   </optgroup>" +
                     "               </select>" +
                     "               <label>Einheit</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s7' style='z-index: 5000'>" +
+                    "               <select style='width: 100%' id='measurementInstrument"+i+"'>" +
+                    "                       <option value='sensor'>Sensor</option>" +
+                    "                       <option value='actuator'>Aktor</option>" +
+                    "                       <option value='none' selected>-</option>" +
+                    "               </select>" +
+                    "               <label>Messinstrument</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s12'>" +
+                    "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
+                    "               <label for='spaltenname" + i + "'>Titel</label>" +
                     "           </div>" +
                     "           <textarea class='col s12' style='resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;' disabled>" +
                                 bspDaten +
@@ -202,16 +214,20 @@ $( document ).ready(function() {
                 zeitreihenSpalte = $("input[name='ZeitreihenSpalte']:checked").val();
                 var spaltenTitel = [];
                 var spaltenEinheiten = [];
+                var measurementInstruments = [];
                 // Die Titel und Einheiten der Spalten holen
                 for(i=0; i < anzSpalten; i++){
                     spaltenTitel[i] = $("#spaltenname" + i).val();
                     spaltenEinheiten[i] = $('#einheitSpalte' + i).val();
+                    measurementInstruments[i] = $('#measurementInstrument' + i).val();
                 }
 
                 // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
                 $("#jsonHeader").html(JSON.stringify(spaltenTitel));
                 // Spalteneinheiten in textarea "#jsonEinheiten" einfügen, um sie python später zu übergeben
                 $("#jsonEinheiten").html(JSON.stringify(spaltenEinheiten));
+                // insert the measurement instruments of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
+                $("#jsonMeasurementInstruments").html(JSON.stringify(measurementInstruments));
                 // Zeitreihenspalte in input "#zeitreihenSpalte" einfügen, um sie python später zu übergeben
                 $("#zeitreihenSpalte").val(zeitreihenSpalte);
 

@@ -140,6 +140,8 @@ def newESave(request):
     jsonHeader = request.POST.get("jsonHeader", "")
     # those are the units of the columns in an array
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    # those are the units of the columns in an array
+    jsonMeasurementInstruments = request.POST.get("jsonMeasurementInstruments", "")
     # this is the column which contains the x axis (= time; also called "timeindex"), MUSS AUCH IN DIE DB!
     zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
     # Array of the Schwingungs data
@@ -156,6 +158,8 @@ def newESave(request):
     #experiment_date = json.loads(experimentDate)
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
+    # @ MAREN & HUY: Array über die Spalten, das für jede Spalte das Messinstrument enthält (Also entweder "sensor"/"actuator"/<irgendein anderer String für None>)
+    measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
     # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
