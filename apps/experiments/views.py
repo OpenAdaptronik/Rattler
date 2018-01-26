@@ -219,18 +219,27 @@ def newESave(request):
 # derivation and integration "app"
 @login_required
 def derivate(request, experimentId):
+    # check if the current user owns the project. if he doesnt: redirect him to his dashboard
+    projectId = Experiment.objects.get(id=experimentId).project_id
+    if not request.user.id == Project.objects.get(id=projectId).user_id:
+        return HttpResponseRedirect('/dashboard')
     
     # copied from index function and deleted stuff we dont need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
+    experimentName = Experiment.objects.get(id=experimentId).name
+    datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
+    datarow_amount = len(datarow_id)
     
     # Prepare the Data for Rendering
     dataForRender = {
         'jsonHeader': header_list,
         'jsonEinheiten': einheiten_list,
         'jsonHeaderAndUnits': zip(header_list, einheiten_list),
-        'experimentId': experimentId
+        'experimentId': experimentId,
+        'experimentName': experimentName,
+        'numOfCols': datarow_amount,
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
