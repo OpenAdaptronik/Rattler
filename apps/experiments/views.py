@@ -39,6 +39,12 @@ def index(request, experimentId):
         data_array = [0] * datarow_amount
         i += 1
 
+    experimentName = Experiment.objects.get(id=experimentId).name
+    experimentDateCreated = Experiment.objects.get(id=experimentId).created
+    # @TODO hier noch anderes Datum, sobald Modell da ist
+    experimentDescr = Experiment.objects.get(id=experimentId).description
+    projectName = Project.objects.get(id=projectId).name
+
     jsonHeader = json.dumps(jsonHeader, cls=NumPyArangeEncoder)
     jsonEinheiten = json.dumps(jsonEinheiten, cls=NumPyArangeEncoder)
     jsonData = json.dumps(jsonData, cls=NumPyArangeEncoder)
@@ -49,7 +55,13 @@ def index(request, experimentId):
         'jsonData': jsonData,
         'jsonHeader': jsonHeader,
         'jsonEinheiten': jsonEinheiten,
-        'zeitreihenSpalte': zeitreihenSpalte
+        'zeitreihenSpalte': zeitreihenSpalte,
+        'projectId': projectId,
+        'experimentId': experimentId,
+        'experimentName': experimentName,
+        'experimentDateCreated': experimentDateCreated,
+        'experimentDescr': experimentDescr,
+        'projectName': projectName,
     }
 
     # Safe all Data from the measurement object into the session storage to get them when applying filter
