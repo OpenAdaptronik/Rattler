@@ -29,27 +29,24 @@
                         </p>
                     </li>
                 </ul>
-                <div class="" id="newTask">
-                    
-                    <p>
-                        <b>Neuer Auftrag:</b>
-                        {% for key, value in test.items %}
-                            {{ key }}  {{value}}
-                        {% endfor %}
-                        <br/>
+                <form method="post" enctype="multipart/form-data" id="newTaskForm"> 
+                {% csrf_token %}
+                    <div class="" id="newTask">
+                        <p><b>Neuer Auftrag:</b><br/>
+                        <!--<br/>
                         >>{{ jsonHeader }} <<<br/>
-                        >>{{ jsonEinheiten }} <<
+                        >>{{ jsonEinheiten }} <<-->
                         <div class="input-field inline" style="width:0; height:0; font-size:0">
                         </div>Ich möchte
                         <div class="input-field inline">
                             <select class="inline" id="firstCol" style="">
                                 {% for header, unit in jsonHeaderAndUnits %}
-                                    <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}. {{ header }} ({{ unit }})</option>
+                                    <option value="{{ forloop.counter0 }}">({{ forloop.counter0 }}) {{ header }} ({{ unit }})</option>
                                 {% endfor %}
                             </select> 
                         </div>
                         über
-                        <div class="input-field inline">
+                        <div class="input-field inline" id="secondColInputFieldContainer">
                             <!-- clone w/ javascript -->
                             <select class="inline" id="secondCol">
                             </select>
@@ -59,7 +56,7 @@
                                 <option value="0">ableiten</option>
                                 <option value="1">integrieren</option>
                             </select>
-                        </div><br/>
+                        </div> !<br/>
                         <div class="input-field inline">
                             <input id="newColName" type="text" class="validate">
                             <label for="newColName">Name der neuen Spalte</label>
@@ -88,15 +85,38 @@
                                     <option value='mm/s'>mm/s</option>
                                 </optgroup>
                                 <optgroup label='Beschleunigung'>
-                                    <option value='m/s^2'>m/s²</option>
+                                    <option value='m/s²'>m/s²</option>
                                     <option value='g'>g</option>
-                                    <option value='mm/s^2'>mm/s²</option>
+                                    <option value='mm/s²'>mm/s²</option>
                                 </optgroup>
                             </select>
+                            <label for="newColUnit">Einheit der neuen Spalte</label>
                         </div>&ensp;
-                        <button class="btn waves-effect waves-light" type="submit">ausführen<i class="material-icons right">send</i></button>
-                    </p>
-                </div>
+                        <button class="btn waves-effect waves-light" type="submit" id="submitButton">ausführen<i class="material-icons right">send</i></button>
+                    </p></div>
+                    <div class="row valign-wrapper hide" id="newTaskInProgress">
+                        <div class="col">
+                            <div class="newTaskPreloaderWrapper">
+                                <div class="preloader-wrapper small active">
+                                    <div class="spinner-layer right">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col valign-wrapper" style="">
+                            Dein Auftrag wird gerade ausgeführt.
+                        </div>
+                    </div>
+                </form>
                 <!--<form method="post" action="@TODO HIER views.py-Methode zum abspeichern einfügen" enctype="multipart/form-data">
                     <textarea name="newColsAsJson" style="display:none;">
                             
@@ -108,6 +128,9 @@
         </div>
     </div>
 </div>
+
+<!-- hidden vars for js -->
+<input type="hidden" value="{{ experimentId }}" id="experimentId"/>
 
 {% endblock %}
 
@@ -124,12 +147,6 @@
 <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'experiments/deriv.js' %}"></script>
 <script>
-        var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
-        var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
-        var dataArray = JSON.parse('{{ jsonData|safe }}');
-        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
-        var anzSpalten = dataArray[0].length;
-
 </script>
 {% endblock %}
 

@@ -61,45 +61,8 @@ def index(request, experimentId):
     return render(request, "experiments/index.html", dataForRender)
 
 # the backend derivation and integration function
-def intderivate(request):
 
-    if request.method != 'POST':
-       return HttpResponseRedirect('/dashboard/')
-
-    # @TODO: the function should get the data directly from the database. the javascript json request shouldnt submit the data but only the experimentId. 
-
-
-
-    measurement = measurement_obj.Measurement(request.session['measurementData'], request.session['measurementHeader'],
-                                              request.session['measurementUnits'],
-                                              request.session['measurementTimeIndex'])
-
-
-    dataForRender = {
-        'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
-        'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
-        'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
-        'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
-    }
-    func = int(request.POST.get('function'))
-    first =int(request.POST.get('first'))
-    second =int(request.POST.get('second'))
-
-    if (func == 1):
-        result = calc.trapez_for_each(dataForRender['jsonData'], first , second)
-    else:
-        result = calc.numerical_approx(dataForRender['jsonData'], first , second)
-
-
-    result = json.dumps(result, cls=NumPyArangeEncoder)
-    x={'result':result}
-    dataForRender.update(x)
-
-    #@TODO: hier neue Spalte in DB speichern
-
-    #return render(request, "experiments/start.html",dataForRender)
-    return JsonResponse(dataForRender)
-
+# OLD VERSION FROM JÖRG --> delete when finished the real intderiv process
 # is called @ the end of the intderiv process
 def refreshData(request):
     if request.method != 'POST':
@@ -118,6 +81,65 @@ def refreshData(request):
     # Number of Columns
     anzSpalten = len(measurement.data[0])
     return JsonResponse(result)
+
+
+# is called @ the end of the intderiv process
+def derivateRefresh(request,experimentId):
+    if request.method != 'POST':
+        return JsonResponse({"error": "the Request Method hasnt been POST!"})
+
+    #Recreate measurement object from the session storage --> deprecated
+    #measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+    #                               request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    # jsonHeader = request.POST.get("jsonHeader", "")
+    # jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    # zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    # jsonData = request.POST.get("intderivresult", "")
+
+    # get the task data
+    function =      int(request.POST.get('function'))
+    firstCol =      int(request.POST.get('firstCol'))
+    secondCol =     int(request.POST.get('secondCol'))
+    newColName =    request.POST.get('newColName')
+    newColUnit =    request.POST.get('newColUnit')
+   
+    # Read Data from DB - copied from index function
+    datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
+    value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
+    datarow_amount = len(datarow_id)
+    data = [0] * value_amount
+    data_array = [0] * datarow_amount
+    i = 0
+    while i < value_amount:
+        j = 0
+        while j < datarow_amount:
+            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
+            j += 1
+        data[i] = data_array
+        data_array = [0] * datarow_amount
+        i += 1
+
+    # convert data to json (which wouldnt be necessary if we'd change the trapez_for_each & the numerical_approx function to accepting python lists instead of json arrays)
+    jsonData = json.dumps(data, cls=NumPyArangeEncoder)
+
+    # call function: 1 == Integration; 0/Else == Derivation (?)
+    if (function == 1):
+        result = calc.trapez_for_each(jsonData, firstCol, secondCol)
+    else:
+        result = calc.numerical_approx(jsonData, firstCol, secondCol)
+
+    #@TODO: hier neue Spalte in DB speichern
+
+    # convert result to json
+    result = json.dumps(result, cls=NumPyArangeEncoder)
+
+    # 
+    responseData = {
+        'result': result,
+    }
+
+    #return render(request, "experiments/start.html",dataForRender)
+    return JsonResponse(responseData)
 
 # page to upload your csv
 @login_required
@@ -195,7 +217,8 @@ def derivate(request, experimentId):
     dataForRender = {
         'jsonHeader': header_list,
         'jsonEinheiten': einheiten_list,
-        'jsonHeaderAndUnits': zip(header_list, einheiten_list)
+        'jsonHeaderAndUnits': zip(header_list, einheiten_list),
+        'experimentId': experimentId
     }
 
     return render(request, "experiments/deriv.html", dataForRender)

@@ -165,9 +165,9 @@ $( document ).ready(function() {
                     "                       <option value='mm/s'>mm/s</option>" +
                     "                   </optgroup>" +
                     "                   <optgroup label='Beschleunigung'>" +
-                    "                       <option value='m/s^2'>m/s²</option>" +
+                    "                       <option value='m/s²'>m/s²</option>" +
                     "                       <option value='g'>g</option>" +
-                    "                       <option value='mm/s^2'>mm/s²</option>" +
+                    "                       <option value='mm/s²'>mm/s²</option>" +
                     "                   </optgroup>" +
                     "               </select>" +
                     "               <label>Einheit</label>" +
