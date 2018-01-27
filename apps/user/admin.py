@@ -50,8 +50,8 @@ class UserAdmin(auth_admin.UserAdmin):
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_superuser', 'is_staff')}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('permissions'), {'fields': ('is_active', 'is_superuser', 'is_staff')}),
+        (_('important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('name'), {'fields': ('last_name', 'first_name')}),
     )
 

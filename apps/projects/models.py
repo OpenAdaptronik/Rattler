@@ -70,7 +70,7 @@ class ProjectImage(models.Model):
 
 class Experiment(models.Model):
     name = models.CharField(_('name'),max_length=100, null=True)
-    project = models.ForeignKey('Project',on_delete=models.CASCADE, verbose_name=_('Project'))
+    project = models.ForeignKey('Project',on_delete=models.CASCADE, verbose_name=_('project'))
     created = models.DateTimeField(null=True, auto_now_add=True, verbose_name=_('created'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))

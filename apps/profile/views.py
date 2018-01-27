@@ -25,6 +25,7 @@ from apps.register.tokens import account_activation_token
 from . import models
 from . import forms
 from . models import ProfileImage
+from apps.user.models import User
 
 
 reverse_lazy = lazy(reverse, str)
@@ -46,6 +47,12 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     template_name_suffix = '_update'
     fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name']
 
+    def update_user(self):
+        user = self.request.user
+        form = forms.UserForm(data=self.request.POST,instance=user)
+        if form.is_valid():
+            form.save()
+
     def get_object(self):
         try:
             return self.request.user.profile
@@ -55,6 +62,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(ProfileUpdate, self).get_context_data(**kwargs)
         if self.request.method == 'POST':
+            ProfileUpdate.update_user(self)
             data['profile_image'] = forms.ProfileImageFormSet(self.request.POST, self.request.FILES, instance=self.object)
         else:
             data['profile_image'] = forms.ProfileImageFormSet(instance=self.object)
@@ -69,6 +77,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
             profile_image.save()
         return super(ProfileUpdate, self).form_valid(form)
 
+
+
 class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
     model = models.ProfileImage
@@ -82,13 +92,14 @@ class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
         except ObjectDoesNotExist:
             return models.ProfileImage(profile=profile)
 
+
 def deleteProfileImage(request):
     try:
         profileImage = request.user.profile.profileimage.path
         ProfileImage.objects.filter(path=profileImage).delete()
-        return show_me(request)
+        return redirect(reverse('profile:edit'))
     except ObjectDoesNotExist:
-        return show_me(request)
+        return redirect(reverse('profile:edit'))
 
 
 def change_email(request):
