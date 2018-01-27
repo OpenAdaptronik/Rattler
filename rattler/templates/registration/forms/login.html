@@ -30,9 +30,13 @@
             </div>
         </div>
 
-        <div class="card-action">
-            <button type="submit" class="waves-effect waves-light btn inline">Login</button>&emsp;
-            <a href="{% url 'password:forget' %}" style="text-transform: none">Passwort vergessen?</a>
+        <div class="card-action row">
+            <div class="col">
+                <button type="submit" class="waves-effect waves-light btn">Login</button>
+            </div>
+            <div class="col">
+                <a href="{% url 'password:forget' %}" style="line-height: 36px; display: inline-block; text-transform: none">Passwort vergessen?</a>
+            </div>
         </div>
     </form>
 </div>

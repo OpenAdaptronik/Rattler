@@ -1690,7 +1690,7 @@ nav ul li.active {
   overflow: hidden;
   display: flex;
   flex-grow: 1;
-  max-height: 120px; }
+  height: 120px; }
 
 .processSteps {
   display: inline-block; }
