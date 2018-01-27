@@ -9,6 +9,7 @@ from apps.analysis.json import NumPyArangeEncoder
 from apps.projects.models import Experiment, Project, Datarow, Value
 import numpy as np
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 @login_required
@@ -16,7 +17,7 @@ def index(request, experimentId):
     # The experiment id is passed in the variable experimentId (see urls.py)
     projectId = Experiment.objects.get(id=experimentId).project_id
     if(not request.user.id == Project.objects.get(id=projectId).user_id and not Project.objects.get(id=projectId).visibility):
-       return HttpResponseRedirect('/dashboard/')
+            raise PermissionDenied()
 
     # Read Data from DB
     header_list = Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True)
@@ -158,7 +159,7 @@ def derivateRefresh(request,experimentId):
 def newE(request, id):
     # check if the current user owns the project. if he doesnt: redirect him to his dashboard
     if not request.user.id == Project.objects.get(id=id).user_id:
-        return HttpResponseRedirect('/dashboard')
+            raise PermissionDenied()
 
     dataForRender = {
         'projectId': id,
@@ -222,7 +223,7 @@ def derivate(request, experimentId):
     # check if the current user owns the project. if he doesnt: redirect him to his dashboard
     projectId = Experiment.objects.get(id=experimentId).project_id
     if not request.user.id == Project.objects.get(id=projectId).user_id:
-        return HttpResponseRedirect('/dashboard')
+            raise PermissionDenied()
     
     # copied from index function and deleted stuff we dont need here
     # Read Data from DB
