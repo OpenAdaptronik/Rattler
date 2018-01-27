@@ -39,6 +39,7 @@ $( document ).ready(function() {
             myDropzone.disable();
             // Bereich mit Dropzone löschen
             $("#dataUploadSection").remove();
+            $("#schritt1-card card-title").remove();
             // Papaparse parses our csv data into an array
             var results = Papa.parse(reader.result);
             // Falls letzte Zeile(n) leer ist/sind, wird sie entfernt
