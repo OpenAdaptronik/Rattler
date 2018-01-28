@@ -42,4 +42,5 @@ def defer_head(parser, token):
 
 @register.simple_tag(takes_context=True)
 def render_defer_head(context):
-    return html.mark_safe(_collect(context, 'get_defer_head'))
+    return ''
+#    return html.mark_safe(_collect(context, 'get_defer_head'))
