@@ -1,3 +1,4 @@
+from django.http import QueryDict
 from django.shortcuts import render
 from apps.user.models import User
 from apps.profile.models import Profile
