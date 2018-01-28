@@ -9,6 +9,7 @@ from apps.analysis.json import NumPyArangeEncoder
 from apps.projects.models import Experiment, Project, Datarow, Value
 import numpy as np
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 from apps.projects.models import MeasurementInstruments
 
 # Create your views here.
@@ -17,7 +18,7 @@ def index(request, experimentId):
     # The experiment id is passed in the variable experimentId (see urls.py)
     projectId = Experiment.objects.get(id=experimentId).project_id
     if(not request.user.id == Project.objects.get(id=projectId).user_id and not Project.objects.get(id=projectId).visibility):
-       return HttpResponseRedirect('/dashboard/')
+            raise PermissionDenied()
 
     # Read Data from DB
     header_list = Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True)
@@ -159,7 +160,7 @@ def derivateRefresh(request,experimentId):
 def newE(request, id):
     # check if the current user owns the project. if he doesnt: redirect him to his dashboard
     if not request.user.id == Project.objects.get(id=id).user_id:
-        return HttpResponseRedirect('/dashboard')
+            raise PermissionDenied()
 
     dataForRender = {
         'projectId': id,
@@ -167,7 +168,6 @@ def newE(request, id):
     }
 
     return render(request, "experiments/new.html", dataForRender)
-
 
 # is called after the user uploaded his csv. file
 @login_required
@@ -190,6 +190,7 @@ def newESave(request):
     experimentDate = request.POST.get("erfassungsDatum", "")
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
+    
     #experiment_date = json.loads(experimentDate)
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
@@ -219,8 +220,11 @@ def newESave(request):
             new_value.save()
             j += 1
         i += 1
-    return HttpResponseRedirect('/experiments/' + str(experiment_id))
 
+
+    # @TODO Diesem Redirect muss noch die ID des neuen Experimentes angegeben werden. Die Seite die da aufgerufen wird, ist die Experiment-Detail-Seite!
+    # Zudem müssen wir dann noch die experiments/index.html-Seite und die Funktion index(request) (in diesem File) anpassen, damit sie das Experiment aus der DB liest!
+    return HttpResponseRedirect('/experiments/' + str(experiment_id))
 
 # derivation and integration "app"
 @login_required
@@ -228,7 +232,7 @@ def derivate(request, experimentId):
     # check if the current user owns the project. if he doesnt: redirect him to his dashboard
     projectId = Experiment.objects.get(id=experimentId).project_id
     if not request.user.id == Project.objects.get(id=projectId).user_id:
-        return HttpResponseRedirect('/dashboard')
+            raise PermissionDenied()
     
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
