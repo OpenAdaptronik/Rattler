@@ -10,6 +10,7 @@ from apps.projects.models import Experiment, Project, Datarow, Value
 import numpy as np
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
+from apps.projects.models import MeasurementInstruments
 
 # Create your views here.
 @login_required
@@ -198,12 +199,20 @@ def newESave(request):
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
     # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
-    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description= description)
+    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
     new_experiment.save()
     experiment_id = new_experiment.id
     i = 0
     while i < len(header):
-        new_datarow = Datarow(experiment_id=experiment_id, unit=units[i], name=header[i])
+        if measurement_instruments[i] == 'actuator':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='Ac')
+        elif measurement_instruments[i] == 'sensor':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='Se')
+        elif measurement_instruments[i] == 'none':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='No')
         new_datarow.save()
         j = 0
         while j < len(data):
@@ -225,7 +234,7 @@ def derivate(request, experimentId):
     if not request.user.id == Project.objects.get(id=projectId).user_id:
             raise PermissionDenied()
     
-    # copied from index function and deleted stuff we dont need here
+    # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
