@@ -127,7 +127,3 @@ class ProfileImageAdmin(admin.ModelAdmin):
     readonly_fields = ('created',
                        'updated',
                        get_profile_image)
-
-
-
-
