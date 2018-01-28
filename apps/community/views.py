@@ -1,4 +1,3 @@
-from django.http import QueryDict
 from django.shortcuts import render
 from apps.user.models import User
 from apps.profile.models import Profile
@@ -22,26 +21,26 @@ class FilterListView(ListView):
         data['filter'] = {}
 
         username = self.request.GET.get('username', False)
-        
+
         if username:
             data['filter']['username'] = username
 
         company = self.request.GET.get('company', False)
         if company:
             data['filter']['company'] = company
-        
+
         email = self.request.GET.get('email', False)
         if email:
             data['filter']['email'] = email
-        
+
         projectname = self.request.GET.get('projectname', False)
         if projectname:
             data['filter']['projectname'] = projectname
-        
+
         category = self.request.GET.get('category', False)
         if category:
             data['filter']['category'] = category
-        
+
         manufacturer = self.request.GET.get('manufacturer', False)
         if manufacturer:
             data['filter']['manufacturer'] = manufacturer
