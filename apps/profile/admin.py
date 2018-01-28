@@ -1,22 +1,20 @@
 from django.contrib import admin
-from django.utils import html
-from apps.user.models import User
-from apps.user.admin import UserAdmin as apps_UserAdmin
-from django.utils.encoding import force_text
 from django.urls import reverse
-
+from django.utils import html
+from django.utils.encoding import force_text
 from django.utils.translation import gettext_lazy as _
+
+from apps.user.admin import UserAdmin as apps_UserAdmin
+from apps.user.models import User
 
 from .models import Profile,ProfileImage
 
 admin.site.unregister(User)
 
-
 class ProfileInline(admin.StackedInline):
     """ The Profile admin Inline.
     get Profile Image and shows it
     """
-
     def get_profile_image(instance):
         if not instance.profileimage.path:
             return
@@ -26,7 +24,6 @@ class ProfileInline(admin.StackedInline):
                                 )
 
     get_profile_image.short_description = _('profil image')
-
 
     """ The Profile admin Inline.
      Attributes:
@@ -57,7 +54,6 @@ class ProfileInline(admin.StackedInline):
               )
     readonly_fields = ('created','updated','get_edit_link',get_profile_image)
 
-
     """ The Profile admin model.
         Link to Change Profile Image to AdminProfileImage 
     """
@@ -78,6 +74,7 @@ class ProfileInline(admin.StackedInline):
     """ The User admin.
         User get Attributes from Profile via inlines
     """
+
 @admin.register(User)
 class UserAdmin(apps_UserAdmin):
     inlines = (ProfileInline,)
