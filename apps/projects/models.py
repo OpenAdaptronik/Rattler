@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import reverse
 from django.utils.encoding import iri_to_uri
+from enum import Enum
 
 '''crates model Projects with
 userId as ForeignKey from User
@@ -26,6 +27,7 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
+    measured = models.DateTimeField(null=True)
 
     class Meta:
         verbose_name = _('project')
@@ -76,11 +78,25 @@ class Experiment(models.Model):
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))
 
 
+class MeasurementInstruments(Enum):
+    SENSOR = 'Se'
+    ACTUATOR = 'Ac'
+    NONE = 'No'
+
+
 class Datarow(models.Model):
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
     unit = models.CharField(max_length=10, null=True, verbose_name=_('unit'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
+    unit = models.CharField(max_length=10, null=True)
+    name = models.CharField(max_length=50, null=True)
+    description = models.TextField(max_length=500, null=True)
+    measuring_instrument = models.CharField(max_length=2,
+                                            choices=tuple((x.name, x.value) for x in MeasurementInstruments),
+                                            default=MeasurementInstruments.NONE)
+
 
 class Value(models.Model):
     datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, verbose_name=_('datarow') )
-    value = models.IntegerField( null=True, verbose_name=_('value'))
+    value = models.DecimalField(max_digits=20, decimal_places=15, null=True null=True, verbose_name=_('value'))
+)

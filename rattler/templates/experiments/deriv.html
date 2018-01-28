@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Integrieren &amp; Ableiten{% endblock %}
+{% block moreStylesheets %}
+{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+{% block container %}
+<h2>Integrieren &amp; Ableiten</h2>
+<div class="row">
+    <div class="col s12 m12 l12" style="" id="">
+        <div class="card">
+            <div class="card-content">
+                <div class="section">
+                    Du bearbeitest gerade das Experiment
+                    <a href="{% url 'experiments:index' experimentId %}">
+                        <b>{{experimentName}}</b> (#{{experimentId}})</a>.
+                    <br/> Hier kannst du Spalten über andere ableiten und integrieren, jeweils über einen "Auftrag".
+                    <br/>
+                    <!--Damit die neu generierten Spalten auch in deinem Experiment gespeichert werden, musst du am Ende auf den Button "Neue Spalten abspeichern" klicken.<br/>-->
+                    Die neuen Spalten siehst du dann in der Analyse-App.
+                </div>
+                <div class="divider"></div>
+                <div class="section" id="">
+                    <form method="post" enctype="multipart/form-data" id="newTaskForm">
+                        <div class="" id="newTask">
+                            <p>
+                                {% csrf_token %}
+                                <b>Neuer Auftrag:</b>
+                                <br/>
+                                <div class="input-field inline" style="width:0; height:0; font-size:0">
+                                </div>Ich möchte
+                                <div class="input-field inline">
+                                    <select class="inline" id="firstCol" style="">
+                                        {% for header, unit in jsonHeaderAndUnits %}
+                                        <option value="{{ forloop.counter0 }}">({{ forloop.counter0 }}) {{ header }} ({{ unit }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                über
+                                <div class="input-field inline" id="secondColInputFieldContainer">
+                                    <!-- clone w/ javascript -->
+                                    <select class="inline" id="secondCol">
+                                    </select>
+                                </div>
+                                <div class="input-field inline">
+                                    <select class="inline" id="function">
+                                        <option value="0">ableiten</option>
+                                        <option value="1">integrieren</option>
+                                    </select>
+                                </div> !
+                                <br/>
+                                <div class="input-field inline">
+                                    <input id="newColName" type="text" class="validate">
+                                    <label for="newColName">Name der neuen Spalte</label>
+                                </div>
+                                <div class="input-field inline">
+                                    <select class="" id='newColUnit'>
+                                        <optgroup label='Zeit'>
+                                            <option value='ms' selected>ms</option>
+                                            <option value='sec'>sek</option>
+                                            <option value='min'>min</option>
+                                            <option value='h'>h</option>
+                                        </optgroup>
+                                        <optgroup label='Kraft'>
+                                            <option value='N'>N</option>
+                                            <option value='kN'>kN</option>
+                                        </optgroup>
+                                        <optgroup label='Weg'>
+                                            <option value='m'>m</option>
+                                            <option value='mm'>mm</option>
+                                            <option value='cm'>cm</option>
+                                            <option value='µm'>µm</option>
+                                        </optgroup>
+                                        <optgroup label='Geschwindigkeit'>
+                                            <option value='m/s'>m/s</option>
+                                            <option value='km/h'>km/h</option>
+                                            <option value='mm/s'>mm/s</option>
+                                        </optgroup>
+                                        <optgroup label='Beschleunigung'>
+                                            <option value='m/s²'>m/s²</option>
+                                            <option value='g'>g</option>
+                                            <option value='mm/s²'>mm/s²</option>
+                                        </optgroup>
+                                    </select>
+                                    <label for="newColUnit">Einheit der neuen Spalte</label>
+                                </div>&ensp;
+                                <button class="btn waves-effect waves-light" type="submit" id="submitButton">ausführen
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                    <div class="row valign-wrapper hide" id="newTaskInProgress">
+                        <div class="col">
+                            <div class="newTaskPreloaderWrapper">
+                                <div class="preloader-wrapper small active">
+                                    <div class="spinner-layer right">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col valign-wrapper" style="">
+                            Dein Auftrag wird gerade ausgeführt.
+                        </div>
+                    </div>
+                </div>
+                <div class="divider hide" id="completedTasksDivider"></div>
+                <div class="section hide" id="completedTasksSection">
+                    <b>Abgeschlossene Aufträge:</b>
+                    <br/>
+                    <ul class="collection with-header" style="" id="completedTasksCollection">
+                        <li class="collection-item avatar hide" id="taskFinishedTemplate" style="">
+                            <i class="material-icons circle">check</i>
+                            <p>
+                                <b>Auftrag <span class="taskNumber">Task#</span>:</b><br/>
+                                Spalte
+                                <span class="firstColInfo">FIRST ("NAME" (EINHEIT))</span>
+                                wurde über Spalte
+                                <span class="secondColInfo">SECOND ("NAME" (EINHEIT))</span>
+                                <span class="intOrDeriv">ABGELEITET/INTEGRIERT</span>.
+                                <br/>
+                                Das Ergebnis ist in Spalte
+                                <span class="resultColInfo">RESULT_SPALTE ("NAME" EINHEIT)</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- hidden vars for js -->
+<input type="hidden" value="{{ experimentId }}" id="experimentId" />
+<input type="hidden" value="{{ numOfCols }}" id="numOfCols" />
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block moreScripts %}
+    <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'experiments/deriv.js' %}"></script>
+    <script>
+    </script>
+{% endblock %}

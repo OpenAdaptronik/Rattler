@@ -2,7 +2,7 @@
 Dropzone.autoDiscover = false;
 $( document ).ready(function() {
 
-    $('.tooltipped').tooltip({delay: 50});    
+    $('.tooltipped').tooltip({delay: 50});
 
     // setzt die Dropzone auf --> @TODO Überarbeiten, damit die komischen UI-Fehler der Dropzone nicht auftreten
     var myDropzone = new Dropzone("div#dropzoneDiv", {
@@ -11,6 +11,24 @@ $( document ).ready(function() {
         autoQueue: false, // wichtig, damit Files nicht sofort hochgeladen werden
         maxFiles: 1 // wieviele Files man gleichzeitig hochladen kann 
     });
+
+    // setup datepicker in the right language (at the moment hardcoded German) and the right format
+    // if you want to include other languages, you might want to take a look @ https://github.com/amsul/pickadate.js/tree/3.5.6/lib/translations
+        // get the dateFormat which is the base.py constant "DATE_FORMAT"
+        var dateFormat = $("#dateFormat").val();
+        $('.datepicker').pickadate({
+            monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
+            monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
+            weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
+            weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
+            today: 'Heute',
+            clear: 'Löschen',
+            close: 'Schließen',
+            firstDay: 1,
+            format: 'dddd, dd. mmmm yyyy',
+            formatSubmit: dateFormat
+        });
+
     // wird ausgeführt sobald ein File in die Dropzone geladen wird
     myDropzone.on("addedfile", function(file){
         // FileReader instanzieren
@@ -21,6 +39,7 @@ $( document ).ready(function() {
             myDropzone.disable();
             // Bereich mit Dropzone löschen
             $("#dataUploadSection").remove();
+            $("#schritt1-card card-title").remove();
             // Papaparse parses our csv data into an array
             var results = Papa.parse(reader.result);
             // Falls letzte Zeile(n) leer ist/sind, wird sie entfernt
@@ -123,7 +142,7 @@ $( document ).ready(function() {
                     "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
                     "               <label for='spaltenname" + i + "'>Titel</label>" +
                     "           </div>" +
-                    "           <div class='input-field col s12' style='z-index: 5000'>" +
+                    "           <div class='input-field col s5' style='z-index: 5000'>" +
                     "               <select style='width: 100%' id='einheitSpalte"+i+"'>" +
                     "                   <optgroup label='Zeit'>" +
                     "                       <option value='ms' selected>ms</option>" +
@@ -147,12 +166,24 @@ $( document ).ready(function() {
                     "                       <option value='mm/s'>mm/s</option>" +
                     "                   </optgroup>" +
                     "                   <optgroup label='Beschleunigung'>" +
-                    "                       <option value='m/s^2'>m/s²</option>" +
+                    "                       <option value='m/s²'>m/s²</option>" +
                     "                       <option value='g'>g</option>" +
-                    "                       <option value='mm/s^2'>mm/s²</option>" +
+                    "                       <option value='mm/s²'>mm/s²</option>" +
                     "                   </optgroup>" +
                     "               </select>" +
                     "               <label>Einheit</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s7' style='z-index: 5000'>" +
+                    "               <select style='width: 100%' id='measurementInstrument"+i+"'>" +
+                    "                       <option value='sensor'>Sensor</option>" +
+                    "                       <option value='actuator'>Aktor</option>" +
+                    "                       <option value='none' selected>-</option>" +
+                    "               </select>" +
+                    "               <label>Messinstrument</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s12'>" +
+                    "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
+                    "               <label for='spaltenname" + i + "'>Titel</label>" +
                     "           </div>" +
                     "           <textarea class='col s12' style='resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;' disabled>" +
                                 bspDaten +
@@ -184,16 +215,20 @@ $( document ).ready(function() {
                 zeitreihenSpalte = $("input[name='ZeitreihenSpalte']:checked").val();
                 var spaltenTitel = [];
                 var spaltenEinheiten = [];
+                var measurementInstruments = [];
                 // Die Titel und Einheiten der Spalten holen
                 for(i=0; i < anzSpalten; i++){
                     spaltenTitel[i] = $("#spaltenname" + i).val();
                     spaltenEinheiten[i] = $('#einheitSpalte' + i).val();
+                    measurementInstruments[i] = $('#measurementInstrument' + i).val();
                 }
 
                 // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
                 $("#jsonHeader").html(JSON.stringify(spaltenTitel));
                 // Spalteneinheiten in textarea "#jsonEinheiten" einfügen, um sie python später zu übergeben
                 $("#jsonEinheiten").html(JSON.stringify(spaltenEinheiten));
+                // insert the measurement instruments of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
+                $("#jsonMeasurementInstruments").html(JSON.stringify(measurementInstruments));
                 // Zeitreihenspalte in input "#zeitreihenSpalte" einfügen, um sie python später zu übergeben
                 $("#zeitreihenSpalte").val(zeitreihenSpalte);
 

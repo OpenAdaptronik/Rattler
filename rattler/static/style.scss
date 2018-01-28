@@ -19,6 +19,9 @@
 
 	// Input Label Farbe
 	$input-border-color: #222;
+
+	// Color of the Preloader Spinner
+	$spinner-default-color: $primary-color;
 	
 // xyz
 	$roboto-font-path: "materialize/fonts/roboto/";
@@ -32,7 +35,7 @@
 	}
 
 	@include selection {
-		background: rgba(0,147,116,.2);
+		background: rgba(0,147,116,.2); 
 	}
 	
 // Form Colors

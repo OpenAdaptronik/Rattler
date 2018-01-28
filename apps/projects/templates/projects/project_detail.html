@@ -30,19 +30,17 @@
 
 </dl>
 <h2>{%trans 'experiments' %}</h2>
-{% if not experiment is None %}
+
 {% for experiment in object.experiment_set.all %}
     <dt><b>{% trans 'id' %}</b> {{ experiment.id }}</dt>
     <dt><b>{% trans 'name' %}</b> {{ experiment.name }}</dt>
     <dt><b>{% trans 'created' %}</b> {{ experiment.created }}</dt>
     <dt><b>{% trans 'description' %}</b> {{ experiment.description }}</dt>
-    <a href="{% url 'experiments:index' %}">Dieses Experiment wiederholen</a>
+    <a href="{% url 'experiments:index' experiment.id%}">Dieses Experiment wiederholen</a>
     <hr>
 
 {% endfor %}
-{% endif %}
-{% if object.user == user %}
-    <a href="{% url 'projects:edit' object.id %}">{% trans 'edit' %}</a>
-{% endif %}
+
+
 <a href="{% url 'experiments:new' object.id %}">Neues Experiment</a>
 

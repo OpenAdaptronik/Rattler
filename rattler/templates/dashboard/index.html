@@ -13,7 +13,9 @@
     <div class="col s12 m12 l12" style="min-width: 300px">
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Meine Projekte</span>
+                <span class="card-title" style="">Meine Projekte</span>
+                Hier siehst du deine 5 aktuellsten Projekte.
+                &ensp;<a href="{% url 'projects:index' %}">Alle anzeigen! &rarr;</a>
                 {% if last_projects %}
                     <table class="striped highlight responsive-table">
                         <thead>
@@ -47,7 +49,7 @@
             </div>
             <div class="card-action">
                 <!--<a href="#">Alle meine Schwingungsdaten anzeigen</a>-->
-                <a href="{% url 'projects:new' %}" class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></a>
+                <a href="{% url 'projects:new' %}" class="btn waves-effect waves-light" type="submit"><i class="material-icons left">add</i>Neues Projekt anlegen</a>
             </div>
         </div>
 
