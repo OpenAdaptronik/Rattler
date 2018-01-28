@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-28 15:57+0000\n"
+"POT-Creation-Date: 2018-01-28 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,19 +106,15 @@ msgstr "Profilbild"
 
 #: apps/profile/models.py:45
 msgid "profile images"
-msgstr "Profilbild"
+msgstr "Profilbilder"
 
 #: apps/projects/admin.py:54
 msgid "attributes"
 msgstr "Attribute"
 
-#: apps/projects/admin.py:55 apps/user/admin.py:51
-msgid "Important dates"
+#: apps/projects/admin.py:55 apps/user/admin.py:54
+msgid "important dates"
 msgstr "Wichtige Daten"
-
-#: apps/projects/admin.py:56
-msgid "Images"
-msgstr "Bilder"
 
 #: apps/projects/apps.py:7 apps/projects/models.py:32
 msgid "projects"
@@ -133,12 +129,14 @@ msgstr "Kategorie"
 #: apps/projects/models.py:60
 #: apps/projects/templates/projects/project_detail.html:15
 #: apps/projects/templates/projects/project_list.html:7
+#: rattler/templates/dashboard/index.html:23
 #: rattler/templates/projects/project_list.html:17
 msgid "category"
 msgstr "Kategorie"
 
 #: apps/projects/forms.py:14 apps/projects/models.py:22
 #: apps/projects/templates/projects/project_detail.html:17
+#: rattler/templates/dashboard/index.html:24
 #: rattler/templates/projects/project_list.html:18
 msgid "subcategory"
 msgstr "Unterkategorie"
@@ -147,7 +145,8 @@ msgstr "Unterkategorie"
 #: apps/projects/models.py:72
 #: apps/projects/templates/projects/project_detail.html:13
 #: apps/projects/templates/projects/project_detail.html:36
-#: apps/projects/templates/projects/project_list.html:6 apps/user/admin.py:52
+#: apps/projects/templates/projects/project_list.html:6 apps/user/admin.py:55
+#: rattler/templates/dashboard/index.html:22
 #: rattler/templates/projects/project_list.html:16
 msgid "name"
 msgstr "Name"
@@ -155,6 +154,7 @@ msgstr "Name"
 #: apps/projects/models.py:23
 #: apps/projects/templates/projects/project_detail.html:19
 #: apps/projects/templates/projects/project_list.html:8
+#: rattler/templates/dashboard/index.html:25
 #: rattler/templates/projects/project_list.html:19
 msgid "manufacturer"
 msgstr "Hersteller"
@@ -175,6 +175,7 @@ msgid "visibility"
 msgstr "Sichtbarkeit"
 
 #: apps/projects/models.py:31 apps/projects/models.py:67
+#: apps/projects/models.py:73
 #: apps/projects/templates/projects/project_detail.html:2
 msgid "project"
 msgstr "Projekt"
@@ -186,10 +187,6 @@ msgstr "Hauptkategorie"
 #: apps/projects/models.py:61
 msgid "categories"
 msgstr "Kategorien"
-
-#: apps/projects/models.py:73
-msgid "Project"
-msgstr "Projekt"
 
 #: apps/projects/models.py:76
 msgid "timerow"
@@ -214,6 +211,7 @@ msgstr "Projektbilder"
 
 #: apps/projects/templates/projects/project_detail.html:21
 #: apps/projects/templates/projects/project_list.html:9
+#: rattler/templates/dashboard/index.html:26
 #: rattler/templates/projects/project_list.html:20
 msgid "typ"
 msgstr "Typ"
@@ -231,8 +229,8 @@ msgstr "Experimente"
 msgid "id"
 msgstr "Projekt-ID"
 
-#: apps/user/admin.py:50
-msgid "Permissions"
+#: apps/user/admin.py:53
+msgid "permissions"
 msgstr "Berechtigungen"
 
 #: apps/user/models.py:69
@@ -275,6 +273,12 @@ msgid ""
 msgstr ""
 "Der Link zum Zurücksetzen Ihres Passworts ist ungültig, wahrscheinlich, weil "
 "er schon einmal benutzt wurde. Bitte setzen Sie Ihr Passwort erneut zurück."
+
+#~ msgid "Images"
+#~ msgstr "Bilder"
+
+#~ msgid "Project"
+#~ msgstr "Projekt"
 
 #~ msgid "project image"
 #~ msgstr "Projektbild"
