@@ -97,6 +97,5 @@ class Datarow(models.Model):
 
 
 class Value(models.Model):
-    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, verbose_name=_('datarow') )
+    datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, verbose_name=_('datarow'))
     value = models.DecimalField(max_digits=20, decimal_places=15, null=True, verbose_name=_('value'))
-)
