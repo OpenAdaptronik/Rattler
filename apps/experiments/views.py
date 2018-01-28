@@ -9,6 +9,7 @@ from apps.analysis.json import NumPyArangeEncoder
 from apps.projects.models import Experiment, Project, Datarow, Value
 import numpy as np
 from django.conf import settings
+from apps.projects.models import MeasurementInstruments
 
 # Create your views here.
 @login_required
@@ -167,6 +168,7 @@ def newE(request, id):
 
     return render(request, "experiments/new.html", dataForRender)
 
+
 # is called after the user uploaded his csv. file
 @login_required
 def newESave(request):
@@ -188,7 +190,6 @@ def newESave(request):
     experimentDate = request.POST.get("erfassungsDatum", "")
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
-    
     #experiment_date = json.loads(experimentDate)
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
@@ -197,12 +198,20 @@ def newESave(request):
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
     # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
-    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description= description)
+    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
     new_experiment.save()
     experiment_id = new_experiment.id
     i = 0
     while i < len(header):
-        new_datarow = Datarow(experiment_id=experiment_id, unit=units[i], name=header[i])
+        if measurement_instruments[i] == 'actuator':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='Ac')
+        elif measurement_instruments[i] == 'sensor':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='Se')
+        elif measurement_instruments[i] == 'none':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='No')
         new_datarow.save()
         j = 0
         while j < len(data):
@@ -210,11 +219,8 @@ def newESave(request):
             new_value.save()
             j += 1
         i += 1
-
-
-    # @TODO Diesem Redirect muss noch die ID des neuen Experimentes angegeben werden. Die Seite die da aufgerufen wird, ist die Experiment-Detail-Seite!
-    # Zudem müssen wir dann noch die experiments/index.html-Seite und die Funktion index(request) (in diesem File) anpassen, damit sie das Experiment aus der DB liest!
     return HttpResponseRedirect('/experiments/' + str(experiment_id))
+
 
 # derivation and integration "app"
 @login_required
@@ -224,7 +230,7 @@ def derivate(request, experimentId):
     if not request.user.id == Project.objects.get(id=projectId).user_id:
         return HttpResponseRedirect('/dashboard')
     
-    # copied from index function and deleted stuff we dont need here
+    # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
