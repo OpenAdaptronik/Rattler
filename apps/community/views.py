@@ -15,7 +15,6 @@ class FilterListView(ListView):
     template_name = 'community/index.html'
     context_object_name = "filtered"
     paginate_by = 5
-    allow_empty = True
 
     def get_context_data(self, **kwargs):
         data = super(FilterListView, self).get_context_data(**kwargs)

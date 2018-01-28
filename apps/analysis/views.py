@@ -145,6 +145,9 @@ def renew_data(request):
     if request.POST.get('fourier') == 'true':
         measurement.fourier_transform();
 
+
+
+
     # Daten zum Rendern vorbereiten
     dataForRender = {
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
