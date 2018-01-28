@@ -52,8 +52,7 @@ class ProjectAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('name', 'user', 'visibility')}),
         (_('attributes'), {'fields': ('category', 'subcategory', 'manufacturer', 'typ','description',)}),
-        (_('Important dates'), {'fields': ('created', 'updated')}),
-        (_('Images'), {'fields': ('created', 'updated', get_project_image)}),
+        (_('important dates'), {'fields': ('created', 'updated')}),
     )
 
 
