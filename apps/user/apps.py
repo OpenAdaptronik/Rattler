@@ -22,8 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
 
 class UserConfig(AppConfig):
     """ User app configuration.
     """
     name = 'apps.user'
+    verbose_name = _('user')
+
