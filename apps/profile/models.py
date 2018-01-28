@@ -41,8 +41,8 @@ class ProfileImage(models.Model):
     updated = models.DateTimeField(_('updated'),auto_now=True)
 
     class Meta:
-        verbose_name = _('project image')
-        verbose_name_plural = _('project images')
+        verbose_name = _('profile image')
+        verbose_name_plural = _('profile images')
 
 @receiver(post_save, sender=get_user_model())
 def create_user_profile(sender, instance, created, **kwargs):

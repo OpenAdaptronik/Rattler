@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 17:16+0000\n"
+"POT-Creation-Date: 2018-01-28 15:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,14 +101,12 @@ msgid "path"
 msgstr "Dateipfad auswählen"
 
 #: apps/profile/models.py:44
-msgid "project image"
-msgstr "Projektbild"
+msgid "profile image"
+msgstr "Profilbild"
 
 #: apps/profile/models.py:45
-#: apps/projects/templates/projects/project_detail.html:3
-#: rattler/templates/projects/project_create.html:24
-msgid "project images"
-msgstr "Projektbilder"
+msgid "profile images"
+msgstr "Profilbild"
 
 #: apps/projects/admin.py:54
 msgid "attributes"
@@ -209,6 +207,11 @@ msgstr "Maximale Anzahl an Datenpunkten"
 msgid "value"
 msgstr "Wert"
 
+#: apps/projects/templates/projects/project_detail.html:3
+#: rattler/templates/projects/project_create.html:24
+msgid "project images"
+msgstr "Projektbilder"
+
 #: apps/projects/templates/projects/project_detail.html:21
 #: apps/projects/templates/projects/project_list.html:9
 #: rattler/templates/projects/project_list.html:20
@@ -272,6 +275,9 @@ msgid ""
 msgstr ""
 "Der Link zum Zurücksetzen Ihres Passworts ist ungültig, wahrscheinlich, weil "
 "er schon einmal benutzt wurde. Bitte setzen Sie Ihr Passwort erneut zurück."
+
+#~ msgid "project image"
+#~ msgstr "Projektbild"
 
 #~ msgid "profiles"
 #~ msgstr "Profile"
