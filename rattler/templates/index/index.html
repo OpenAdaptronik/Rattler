@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de">
 	<head>
-		{% load static i18n %}
+		{% load defer static i18n %}
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="description" content="">
@@ -61,7 +61,7 @@
                 display: none;
             }
         </style>
-		{% block moreStylesheets %}{% endblock %}
+        {% include 'includeDefs/javascript-plotly.html' %}
 	</head>
 	<body>
     <div id="parCon1" class="parallax-container">
@@ -203,5 +203,6 @@
             });
         });
     </script>
+    {% render_defer_html %}
 </body>
 </html>

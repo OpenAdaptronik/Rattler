@@ -258,6 +258,9 @@ $( document ).ready(function() {
                 var traces = [];
                 // s. Variablenname
                 timeColumn = arrayColumnAsRow(results.data, zeitreihenSpalte);
+                //console.log(timeColumn);
+                console.log(spaltenTitel);
+                console.log(spaltenEinheiten);
 
                 //var selectorOptions = 
                 
@@ -276,17 +279,15 @@ $( document ).ready(function() {
 
                     // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
                     for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
-                        //if(i!=zeitreihenSpalte){
-                            traces[i] = {
-                                x: timeColumn,
-                                y: arrayColumnAsRow(results.data, i),
-                                name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
-                                type: 'scatter',
-                                line: {
-                                    width: 1.5,
-                                }
+                        traces[i] = {
+                            x: timeColumn,
+                            y: arrayColumnAsRow(results.data, i),
+                            name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+                            type: 'scatter',
+                            line: {
+                                width: 1.5,
                             }
-                        //}
+                        }
                         var yaxisTitle;
                         if(i==0){
                             traces[i]['yaxis'] = 'y';
@@ -326,7 +327,7 @@ $( document ).ready(function() {
                 var rangeStartIndex = 0;
                 var rangeEndIndex = results.data.length - 1;
 
-                // Funktion, die aufgerufen wird, wenn der 
+                // Funktion, die aufgerufen wird, wenn der User den Bereich ändert
                 document.getElementById("graph").on('plotly_relayout', function(eventdata){
                     // get the rangeStart and rangeEnd
                         if(eventdata['xaxis.range[0]']){
@@ -375,6 +376,8 @@ $( document ).ready(function() {
                     // cut the data to the range the user selected, convert it in JSON and write it in the textarea w/ id=jsonData & name=jsonData
                     // rangeStartIndex and rangeEndIndex are variables whose scope is one level higher. They might be altered by the event function which is called when the user changes the range.
                     $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
+                    console.log("Daten");
+                    console.log(results.data.slice(rangeStartIndex, rangeEndIndex));
                 }) 
                 
                 // Nachricht wegen Beta
