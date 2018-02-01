@@ -7,7 +7,7 @@
 {% endblock %}
 {% block container %}
 <!-- @TODO hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
-<input type="hidden" id="maxDatarows" name="" value="500"/>
+<input type="hidden" id="maxDatarows" name="" value="{{ user.profile.max_datarows }}"/>
 
 <h2 style="display:inline-block; margin-right: 12px;">Neues Experiment anlegen</h2>
 <a style="display: inline-block" href="{% url 'experiments:new' projectId %}">Von vorne beginnen</a><br/>
