@@ -11,6 +11,11 @@ from .models import Profile,ProfileImage
 
 admin.site.unregister(User)
 
+'''
+for more information and dokumentation check 
+docs.djangoproject.com/en/dev/ref/contrib/admin/
+'''
+
 class ProfileInline(admin.StackedInline):
     """ The Profile admin Inline.
     get Profile Image and shows it
@@ -37,21 +42,16 @@ class ProfileInline(admin.StackedInline):
     verbose_name = _('profile')
     verbose_name_plural = _('profile')
     fk_name = 'user'
-    fields = ('company',
-              'info',
-              'expert',
-              'visibility_mail',
-              'visibility_company',
-              'visibility_info',
-              'visibility_first_name',
-              'visibility_last_name',
-              'max_projects',
-              'max_datarows',
-              'created',
-              'updated',
-              'get_edit_link',
-              get_profile_image
-              )
+
+    fieldsets = (
+        (_('user'), {'fields': ('visibility_first_name', 'visibility_last_name','expert',)}),
+        (_('info'), {'fields': ('info', 'visibility_info',)}),
+        (_('company'), {'fields': ('company', 'visibility_company',)}),
+        (_('max fields'), {'fields': ('max_projects','max_datarows',)}),
+        (_('important dates'), {'fields': ('created', 'updated')}),
+        (_('profile image'), {'fields': ('get_edit_link', get_profile_image)}),
+
+    )
     readonly_fields = ('created','updated','get_edit_link',get_profile_image)
 
     """ The Profile admin model.
@@ -114,6 +114,7 @@ class ProfileImageAdmin(admin.ModelAdmin):
                                 src='/' + instance.path.url,
                                 )
 
+    '''Translate Profile Image in ProfileImage'''
     get_profile_image.short_description = _('profil image')
     save_on_top = True
     fields = ('path',
