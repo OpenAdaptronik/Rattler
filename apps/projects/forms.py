@@ -103,6 +103,7 @@ ProjectImageCreateFormSet = forms.inlineformset_factory(
     fk_name='project',
     form=ProjectImageForm,
     extra=3,
+    max_num=3,
     fields=('path',),
     can_delete=False,
 )
@@ -113,5 +114,6 @@ ProjectImageFormSet = forms.inlineformset_factory(
     fk_name='project',
     form=ProjectImageForm,
     extra=3,
+    max_num=3,
     fields=('path',)
 )
