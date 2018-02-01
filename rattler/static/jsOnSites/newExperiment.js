@@ -4,12 +4,12 @@ $( document ).ready(function() {
 
     $('.tooltipped').tooltip({delay: 50});
 
-    // setzt die Dropzone auf --> @TODO Überarbeiten, damit die komischen UI-Fehler der Dropzone nicht auftreten
+    // setting up the dropzone
     var myDropzone = new Dropzone("div#dropzoneDiv", {
-        url: "/file/post", // @TODO vllt noch ändern, ieine URL muss aber da stehen, damit Dropzone funktioniert
+        url: "/FAKEURL", // we dont use the url, but dropzone needs one to work properly
         addRemoveLinks: false,
-        autoQueue: false, // wichtig, damit Files nicht sofort hochgeladen werden
-        maxFiles: 1 // wieviele Files man gleichzeitig hochladen kann 
+        autoQueue: false, // important so the files arent uploaded directly after dropping them into the dropzone
+        maxFiles: 1 // how many files you can upload at the same time
     });
 
     // setup datepicker in the right language (at the moment hardcoded German) and the right format
@@ -29,50 +29,46 @@ $( document ).ready(function() {
             formatSubmit: dateFormat
         });
 
-    // wird ausgeführt sobald ein File in die Dropzone geladen wird
+    // executed when a file is dropped into the dropzone
     myDropzone.on("addedfile", function(file){
-        // FileReader instanzieren
+        // instance of FileReader
         const reader = new FileReader();
-        // sobald der Reader das File gelesen hat (das passiert bei reader.readAsText(file); unten)
+        // when the reader reads the file (see reader.readAsText(file) below)
         reader.onload = function() {
-            // Dropzone disablen
+            // disable the Dropzone
             myDropzone.disable();
-            // Bereich mit Dropzone löschen
+            // delete the section containing the dropzone
             $("#dataUploadSection").remove();
             $("#schritt1-card card-title").remove();
             // Papaparse parses our csv data into an array
             var results = Papa.parse(reader.result);
-            // Falls letzte Zeile(n) leer ist/sind, wird sie entfernt
+            // if rows at the end are empty: delete them
             for(i = results.data.length - 1; i >= 0 && results.data[i][0] == ""; i--){
-                results.data.splice(i, 1); // entfernt die Zeile i ("ab Zeile i wird 1 Zeile entfernt") 
+                results.data.splice(i, 1); // deletes row i ("delete 1 row beginning at row i")
             };
-            // Anz. der Spalten abspeichern
-            anzSpalten = results.data[0].length;
-            // Leeren Header erstellen
+            // amount of cols
+            amountOfCols = results.data[0].length;
+            // create empty header
             var header = [];
-            for(i=0; i < anzSpalten; i++){
+            for(i=0; i < amountOfCols; i++){
                 header[i] = "";
             }
-            // Über alle Elemente der ersten Zeile des Arrays laufen.
-            for(i = 0; i < anzSpalten; i++){
+            // iterate over all elements of the first row of the array
+            for(i = 0; i < amountOfCols; i++){
                 /*
-                    Es wird versucht, das Element zu einer float zu casten.
-                    Falls das Element ein String ist (also wahrscheinlich die Überschrift einer Spalte),
-                    so ergibt das Casten (mittels parseFloat) NaN.
-                    Das ist für uns das Anzeichen, dass es sich bei der ersten Zeile um den Header handelt.
-                    Diesen löschen wir mittels .shift() aus dem Array heraus und speichern ihn in der Variable header.
+                    We try to cast the element to float.
+                    If it is a string, we assume it is a header of a column and the cast (parseFloat) results to NaN.
+                    The header will be deleted from the array using .shift() and saved to the header array.
                 */
                 if(isNaN(parseFloat(results.data[0][i]))){
                     header = results.data.shift();
                     break;
                 }
             }
-            // Jetzt fangen die Daten in jedem Fall bei Zeile 0 an.
-            
-            // @ TODO Hier evtl. falls für plotly erforderlich alle Array-Inhalte in floats casten
-            
-            // Nun werden dem User die Spalten angezeigt und er gibt die jeweiligen Daten ein
-            // Grundgerüst für Spalten-Formular aufbauen
+            // Now we're sure that the data begins at row 0.
+
+            // Display the cols to the user and make him enter the data
+            // build up the scaffold for the column form
             $('#schritt1-card').append("" +
             "                    <div class='section' id='spaltenInfosDiv' style='margin:0; padding-bottom:0'>" +
             "                        <div class='row' style='margin:0;'>" +
@@ -96,47 +92,46 @@ $( document ).ready(function() {
             "                                </li>" +
             "                            </ul>" +
             "                        </div>" +
-            "                        <fieldset id='ZeitreihenSpalte' style='border:none; padding-bottom: 0'>" +
+            "                        <fieldset id='timeRowCol' style='border:none; padding-bottom: 0'>" +
             "                            <!-- Reihe aller Spalten -->" +
             "                            <div class='row' id='allDataColsRow' style='margin:0'>" +
             "                            </div>" +
             "                        </fieldset>" +
             "                    </div>"   
             );
-            // Die einzelnen Datenspalten einfügen
-            // Damit die erste Spalte standardmäßig als Zeitreihe ausgewählt ist.
+            // insert the data cols
+            // Check the first col as timerow.
             var checked = "checked='checked'";
-            // Variable, die in der For-Schleife verwendet wird, um einige Daten aus der Spalte einzufügen
-            var bspDaten = "";
-            // for-Schleife über die Datenspalten
-            for(i=0; i < anzSpalten; i++){
-                // Bsp-Daten vorbereiten
+            // variable used in the for loop below
+            var exampleDataVar = "";
+            // for loop over the data cols
+            for(i=0; i < amountOfCols; i++){
+                // prepare example data
                 for(j=0; j < results.data.length && j < 51; j++){
-                    bspDaten += parseFloat(results.data[j][i]);
+                    exampleDataVar += parseFloat(results.data[j][i]);
                     if(j!=results.data.length-1 || j!=50){
-                        bspDaten += "\r\n";
+                        exampleDataVar += "\r\n";
                     }
                 }
-                // vor einem Pärchen von 2 Spalten eine Row einfügen
+                // insert a row before a pair of two  cols
                 if(i % 4 == 0){
                     $("#allDataColsRow").append("<div id='dataColumnRow" + i + "' class='row' style='background: #eee; padding: 10px 0'></div>");
-                } else if(i % 2 == 0){ // bei jeder 2. Zeile => Zeile leicht grau hinterlegen
+                } else if(i % 2 == 0){ // grey background for every 2nd row
                     $("#allDataColsRow").append("<div id='dataColumnRow" + i + "' class='row' style='padding: 10px 0'></div>");
-                } 
-                // bisheriger Name der Spalte
+                }
                 if(header[i]!=""){
-                    var bisherigerName = "               Bisheriger Name: <b class='bisherigerSpaltenname'>" + header[i] + "</b>";
+                    var nameSoFar = "               Bisheriger Name: <b class='bisherigerSpaltenname'>" + header[i] + "</b>";
                 } else {
-                    var bisherigerName = "";
+                    var nameSoFar = "";
                 }
                 $("#dataColumnRow" + (i - (i%2)) ).append("" +
                     "   <div class='col m6 s12' style=''>" +
                     "       <div class='row' style='margin: 0'>" +
                     "           <div class='col s12'>" +
                     "               <b>Spalte " + (Number(i)+1) + "</b>&emsp;" +
-                    "               <input name='ZeitreihenSpalte' type='radio' id='ZeitreiheChoiceSpalte" + i + "' value='" + i + "'  " + checked +"/>" +
+                    "               <input name='timeRowCol' type='radio' id='ZeitreiheChoiceSpalte" + i + "' value='" + i + "'  " + checked +"/>" +
                     "               <label for='ZeitreiheChoiceSpalte" + i + "'>Zeitreihe</label>" +
-                    //"               <br/>" + bisherigerName +
+                    //"               <br/>" + nameSoFar +
                     "           </div>" +
                     "           <div class='input-field col s12'>" +
                     "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
@@ -186,51 +181,51 @@ $( document ).ready(function() {
                     "               <label for='spaltenname" + i + "'>Titel</label>" +
                     "           </div>" +
                     "           <textarea class='col s12' style='resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;' disabled>" +
-                                bspDaten +
+                                exampleDataVar +
                     "           </textarea>" +
                     "       </div>" +
                     "   </div>"
                 );
                 checked = "";
-                bspDaten = "";
+                exampleDataVar = "";
             }
 
             // Update Materialize Text Fields to make them look fine
             Materialize.updateTextFields();
             
-            // Button zum Überprüfen des Forms einfügen
+            // insert button for validating the form
             $("#allDataColsRow").append(""+
                 "   <div id='validateDataColumnFormRow' style='margin:0' class='row'>" +
                 "       <button type='button' class='btn waves-effect waves-light' id='validateDataColumnForm' style=position: relative; z-index: auto;'><i class='material-icons left'>timeline</i> Alle Spalten bestimmt!</button>" +
                 "   </div>"
                 );
 
-            // Materialize macht alles wieder schön
+            // materialize makes everthing look perfectly nice beautiful tremendous great
             $('select').material_select();
             $('.collapsible').collapsible();
             
-            // Wenn der Button zur Validierung der eingegebenen Spalten-Daten gedrückt wird:
+            // when the validate button is pressed
             $("#validateDataColumnForm").click(function() {
-                // In welcher Zeile steht die Zeitreihe?
-                zeitreihenSpalte = $("input[name='ZeitreihenSpalte']:checked").val();
-                var spaltenTitel = [];
-                var spaltenEinheiten = [];
+                // column of the timerow
+                timeRowCol = $("input[name='timeRowCol']:checked").val();
+                var colTitles = [];
+                var colUnits = [];
                 var measurementInstruments = [];
-                // Die Titel und Einheiten der Spalten holen
-                for(i=0; i < anzSpalten; i++){
-                    spaltenTitel[i] = $("#spaltenname" + i).val();
-                    spaltenEinheiten[i] = $('#einheitSpalte' + i).val();
+                // get titles and units and measurement instr.s of the cols
+                for(i=0; i < amountOfCols; i++){
+                    colTitles[i] = $("#spaltenname" + i).val();
+                    colUnits[i] = $('#einheitSpalte' + i).val();
                     measurementInstruments[i] = $('#measurementInstrument' + i).val();
                 }
 
-                // Spaltentitel in textarea "#jsonHeader" einfügen, um sie python später zu übergeben
-                $("#jsonHeader").html(JSON.stringify(spaltenTitel));
-                // Spalteneinheiten in textarea "#jsonEinheiten" einfügen, um sie python später zu übergeben
-                $("#jsonEinheiten").html(JSON.stringify(spaltenEinheiten));
+                // insert the colTitles of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
+                $("#jsonHeader").html(JSON.stringify(colTitles));
+                // insert the colUnits of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
+                $("#jsonEinheiten").html(JSON.stringify(colUnits));
                 // insert the measurement instruments of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
                 $("#jsonMeasurementInstruments").html(JSON.stringify(measurementInstruments));
-                // Zeitreihenspalte in input "#zeitreihenSpalte" einfügen, um sie python später zu übergeben
-                $("#zeitreihenSpalte").val(zeitreihenSpalte);
+                // timeRowCol in input "#timeRowCol" einfügen, um sie python später zu übergeben
+                $("#timeRowCol").val(timeRowCol);
 
                 $("#spaltenInfosDiv").remove();
                 $("#neueSchwingungsdatenCol").removeClass("l6");
@@ -252,37 +247,29 @@ $( document ).ready(function() {
                 $('.tooltipped').tooltip({delay: 50});
 
 
-                // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
                 // https://stackoverflow.com/a/34979219
                 const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
                 var traces = [];
-                // s. Variablenname
-                timeColumn = arrayColumnAsRow(results.data, zeitreihenSpalte);
+                timeColumn = arrayColumnAsRow(results.data, timeRowCol);
                 //console.log(timeColumn);
-                console.log(spaltenTitel);
-                console.log(spaltenEinheiten);
+                console.log(colTitles);
+                console.log(colUnits);
 
-                //var selectorOptions = 
-                
                 // Plotly: Graph
                     //var d3 = Plotly.d3;
                     var layout = {
-                        /*title: 'Erste Visualisierung',*/
                         'xaxis': {
                             autotick: true,
-                            //ticks: 'outside',
-                            //tickcolor: '#f00',
-                            //rangeselector: selectorOptions,
                             rangeslider: {}
                         }
                     }
 
-                    // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
-                    for(i=0; i < anzSpalten; i++){ // i = Index über Spalten
+                    // iterate through all cols and prepare them for visualisation
+                    for(i=0; i < amountOfCols; i++){ // i = index for cols
                         traces[i] = {
                             x: timeColumn,
                             y: arrayColumnAsRow(results.data, i),
-                            name: spaltenTitel[i] + "(" + spaltenEinheiten[i] + ")",
+                            name: colTitles[i] + "(" + colUnits[i] + ")",
                             type: 'scatter',
                             line: {
                                 width: 1.5,
@@ -307,8 +294,8 @@ $( document ).ready(function() {
                             layout[yaxisTitle]['overlaying'] = 'y';
                         }
                     }
-                    traces[zeitreihenSpalte] = [];
-                    traces[zeitreihenSpalte].shift();
+                    traces[timeRowCol] = [];
+                    traces[timeRowCol].shift();
                     
                     var d3 = Plotly.d3;
                     var node = d3.select('#graph').node();
@@ -319,23 +306,23 @@ $( document ).ready(function() {
                         Plotly.Plots.resize(node);
                     };
                     
-                // Variablen, in denen die Auswahl des Users gespeichert wird.
-                // Werden so definiert, dass zu Anfang der ganze Datenbereich ausgewählt ist
-                var rangeStart = results.data[0][zeitreihenSpalte];
-                var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
+                // vars containing the selection of the user
+                // at the beginning, the whole data is selected
+                var rangeStart = results.data[0][timeRowCol];
+                var rangeEnd = results.data[results.data.length-1][timeRowCol];
                 
                 var rangeStartIndex = 0;
                 var rangeEndIndex = results.data.length - 1;
 
-                // Funktion, die aufgerufen wird, wenn der User den Bereich ändert
+                // called when user changes the selection
                 document.getElementById("graph").on('plotly_relayout', function(eventdata){
                     // get the rangeStart and rangeEnd
                         if(eventdata['xaxis.range[0]']){
                             rangeStart = eventdata['xaxis.range[0]'];
                             rangeEnd = eventdata['xaxis.range[1]'];
                         } else if(typeof eventdata['xaxis.range'] == 'undefined'){ // when you double click on the graph
-                            var rangeStart = results.data[0][zeitreihenSpalte];
-                            var rangeEnd = results.data[results.data.length-1][zeitreihenSpalte];
+                            var rangeStart = results.data[0][timeRowCol];
+                            var rangeEnd = results.data[results.data.length-1][timeRowCol];
                         } else {
                             rangeStart = eventdata['xaxis.range'][0];
                             rangeEnd = eventdata['xaxis.range'][1];
@@ -343,14 +330,14 @@ $( document ).ready(function() {
                         
                     // get the indices for the rangeStart and rangeEnd
                         for(i = 0; i < results.data.length - 1; i++){
-                            if(parseFloat(results.data[i+1][zeitreihenSpalte]) > parseFloat(rangeStart)){
+                            if(parseFloat(results.data[i+1][timeRowCol]) > parseFloat(rangeStart)){
                                 rangeStartIndex = i;
                                 break;
                             }
                         }
-                        // Ende bestimmen
+                        // determinate end
                         for(i = results.data.length - 1; i > 0; i--){
-                            if(parseFloat(results.data[i-1][zeitreihenSpalte]) < parseFloat(rangeEnd)){
+                            if(parseFloat(results.data[i-1][timeRowCol]) < parseFloat(rangeEnd)){
                                 rangeEndIndex = i;
                                 break;
                             }
@@ -367,9 +354,9 @@ $( document ).ready(function() {
                     $('.tooltipped').tooltip({delay: 50});
                 });
                 
-                // sobald der User seinen Bereich im Graphen ausgesucht hat
+                // when the user has finished selecting
                 $("#validateGraphSelection").click(function() {
-                    $("#visualisationSection").remove(); // der Graph wird gelöscht
+                    $("#visualisationSection").remove(); // deleting the graph
                     $("#neueSchwingungsdatenCardAction").show(); // 
                     $(".datensatzInformationenFelder").show();
                     $("#neueSchwingungsdatenCol").addClass("l6");
@@ -378,20 +365,11 @@ $( document ).ready(function() {
                     $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
                     console.log("Daten");
                     console.log(results.data.slice(rangeStartIndex, rangeEndIndex));
-                }) 
-                
-                // Nachricht wegen Beta
-                /*
-                $('#schritt1-card').append("<span style='color: #d00'>" +
-                    "An diesem Punkt wird man in Zukunft, nach dem man seine Auswahl getroffen hat, " +
-                    "die Analyse starten.<br/>" +
-                    "Zudem werden der Graph und das Formular noch etwas schöner gestaltet."
-                    );
-                */
+                })
             });
         };
 
-        // Hier liest der reader die hochgeladene Datei ein.
+        // reader reads the data
         reader.onabort = function() { console.log('file reading was aborted')};
         reader.onerror = function() { console.log('file reading has failed')};
         reader.readAsText(file);
