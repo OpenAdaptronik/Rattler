@@ -25,6 +25,7 @@ ProfileImageFormSet = forms.inlineformset_factory(
     fk_name='profile',
     form=ProfileImageForm,
     extra=1,
+    max_num=1,
     fields=('path',)
 )
 ProfileFormSet = forms.inlineformset_factory(
@@ -33,6 +34,7 @@ ProfileFormSet = forms.inlineformset_factory(
     fk_name='user',
     form=ProfileForm,
     extra=1,
+    max_num=1,
     fields=('company', 'info', 'expert', 'visibility_mail',
                   'visibility_company', 'visibility_info',
                   'visibility_first_name','visibility_last_name',)
