@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de">
 	<head>
-		{% load static i18n %}
+		{% load defer static i18n %}
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="description" content="">
@@ -61,7 +61,7 @@
                 display: none;
             }
         </style>
-		{% block moreStylesheets %}{% endblock %}
+        {% include 'includeDefs/javascript-plotly.html' %}
 	</head>
 	<body>
     <div id="parCon1" class="parallax-container">
@@ -132,8 +132,6 @@
                     </div>
                 </div>
             </div>
-            <h3>Alles kostenlos und im Browser.</h3>
-            <h5><a href="{% url 'register:index' %}">Jetzt registrieren &rarr;</a></h5>
         </div>
         <div class="parallax">
             <img src="{% static 'img/parallax-test.jpg' %}" alt="Unsplashed background img 1" style="display: block; transform: translate3d(-50%, 201px, 0px);">
@@ -205,5 +203,6 @@
             });
         });
     </script>
+    {% render_defer_html %}
 </body>
 </html>
