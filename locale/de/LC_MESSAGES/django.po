@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-01 16:10+0000\n"
+"POT-Creation-Date: 2018-02-01 16:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -248,8 +248,9 @@ msgid "typ"
 msgstr "Typ"
 
 #: apps/projects/templates/projects/project_detail.html:28
-msgid "edit"
-msgstr "bearbeiten"
+#: rattler/templates/projects/project_detail.html:50
+msgid "edit project"
+msgstr "Projekt bearbeiten"
 
 #: apps/projects/templates/projects/project_detail.html:32
 msgid "experiments"
@@ -275,10 +276,6 @@ msgstr "Aktiv"
 #: rattler/templates/index/index_old.html:5
 msgid "Test"
 msgstr "Test"
-
-#: rattler/templates/projects/project_detail.html:50
-msgid "edit project"
-msgstr "Projekt"
 
 #: rattler/templates/registration/password_reset_confirm.html:3
 #: rattler/templates/registration/password_reset_confirm.html:25
@@ -308,6 +305,9 @@ msgid ""
 msgstr ""
 "Der Link zum Zurücksetzen Ihres Passworts ist ungültig, wahrscheinlich, weil "
 "er schon einmal benutzt wurde. Bitte setzen Sie Ihr Passwort erneut zurück."
+
+#~ msgid "edit"
+#~ msgstr "bearbeiten"
 
 #~ msgid "Images"
 #~ msgstr "Bilder"
