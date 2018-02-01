@@ -17,11 +17,6 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='projects.Experiment'),
         ),
         migrations.AddField(
-            model_name='datarow',
-            name='unit',
-            field=models.CharField(max_length=10, null=True),
-        ),
-        migrations.AddField(
             model_name='experiment',
             name='created',
             field=models.DateTimeField(null=True),
@@ -35,11 +30,6 @@ class Migration(migrations.Migration):
             model_name='experiment',
             name='project',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='projects.Project'),
-        ),
-        migrations.AddField(
-            model_name='value',
-            name='datarow',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='projects.Datarow'),
         ),
         migrations.AlterField(
             model_name='datarow',

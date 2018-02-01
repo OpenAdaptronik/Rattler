@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('projects', '0003_datarow_experiment_value'),
+        ('projects', '0002_auto_20180103_1000'),
     ]
 
     operations = [
