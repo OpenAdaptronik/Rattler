@@ -149,6 +149,9 @@ def renew_data(request):
         else:
             measurement.fourier_transform(fourierval=fourierval)
 
+
+
+
     # Daten zum Rendern vorbereiten
     dataForRender = {
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
@@ -158,4 +161,3 @@ def renew_data(request):
     }
 
     return JsonResponse(dataForRender)
-

@@ -9,6 +9,12 @@ def dashboard(request):
 def error404 (request):
     return render (request,'error404/index.html')
 
+def about (request):
+    return render (request,'about.html')
+
+def license (request):
+    return render (request,'license.html')
+
 @login_required
 def community (request):
     return render (request,'community/index.html')

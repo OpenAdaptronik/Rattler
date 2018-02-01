@@ -1,61 +1,209 @@
-{% extends "base.html" %}
-{% block siteTitle %}Start{% endblock %}
-{% block container %}
-    {% load i18n %}
-    <!--{% trans "Test" %}-->
-    <!--<h1>{% if user.is_authenticated %}{{user.username}}{% endif %}</h1>-->
-    <h3>Von Deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h3>
-    <div class="card">
-        <!-- TODO: Schritte über die ersten 3 Bilder!
-        http://materializecss.com/badges.html
-        -->
-        <div class="row card-content promo-row">
-            <!--<div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-                <div class="promo-pic-space">csv duifgsdi soijdfi 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764; 1.684645, 684648; 1.6546846, 87764;</div>
-                <h5>Daten hochladen</h5>
-                Als .csv
-            </div>
-            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-                <div class="promo-pic-space">Bild von einem Grapheng</div>
-                <h5>Visualisieren &amp; Analysieren</h5>
-            </div>
-            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-                <div class="promo-pic-space">Bild von Empfehlungen</div>
-                5 Empfehlungen zur
-                <h5>Open&shy;Source-Schwingungs&shy;minderung</h5>
-            </div>
-            <div class="col s12 m12 l3" style="/*min-width: inherit;*/">
-                <div class="promo-pic-space">Feed (nice2have: fullscreen-tauglich)</div>
-                Schwingungsdaten
-                <h5>teilen &amp; vergleichen</h5>
-            </div>-->
-            <span style="color: #d00">Es handelt sich um eine Beta-Version. Wichtige Hinweise zur jetzigen Benutzung geben wir in dieser Farbe.</span>
+<!doctype html>
+<html lang="de">
+	<head>
+		{% load static i18n %}
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<title>Rattler</title>
+		<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="shortcut icon" href="images/favicon.png">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <style>
+            .parallax-container {
+                line-height: 0;
+                height: auto;
+                color: rgba(255,255,255,.9);
+                background-color: rgba(0,0,0,.7);
+            }
+                .parallax-container .section {
+                width: 100%;
+                }
+            .parralax {
+            }
+            #parCon1 {
+                padding: 22px 0;
+            }
+            #index-logo-container {
+                display: inline-block;
+                margin: 0 0 0 0;
+            }
+            #index-logo-container svg {
+                height: 45px;
+            }
+            #index-logo-container svg path {
+                fill: #fff;
+            }
+            .linksOnTop {
+                height: 35px;
+                line-height: 35px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+            .linksOnTop a {
+                color: rgba(255,255,255,.8);
+                padding: 10px 15px;
+            }
+            .linksOnTop a:hover {
+                color: rgba(255,255,255,1);
+            }
+            .formCard {
+                opacity: .85;
+                transition: opacity .3s;
+            }
+            .formCard.fieldsFocus {
+                opacity: 1;
+            }
+            #loginCard .card-title {
+                display: none;
+            }
+        </style>
+		{% block moreStylesheets %}{% endblock %}
+	</head>
+	<body>
+    <div id="parCon1" class="parallax-container">
+        <div class="linksOnTop">
+            <a class="right" href="#loginCol">Login</a>
+            <a class="left" href="#registrationCol">Registieren</a>
         </div>
-    </div>
-    <h3>Alles kostenlos und im Browser.</h3>
-    <div class="row">
-        <div class="col s12 m12 l8">
-            <div class="card">
-                <div class="card-content">
-                    {% block register %}
-                        <span style="color: #d00">
-                            Hier wird später die Registrierung möglich sein.
-                            Bitte dazu vorerst auf den Button oben links klicken.
-                        </span>
-                    {% endblock %}
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="center">
+                    <div id="index-logo-container">
+                        {% include 'svg/logo.svg' %}
+                    </div>
+                </div>
+                <h1 class="header center white-text">Will&shy;kommen bei Rattler.</h1>
+                <div class="row center">
+                    <h5 class="header col s12 grey-text text-lighten-2 light">Von deinen Schwingungs&shy;daten zur besten Schwingungs&shy;dämpfung.</h5>
+                </div>
+                <div class="row center">
+                    <a href="#registrationCol" class="btn-large waves-effect waves-light lighten-1">Jetzt loslegen!</a>
                 </div>
             </div>
         </div>
-        {% if not user.is_authenticated %}
-        <div class="col s12 m12 l4">
-            {% include 'registration/forms/login.html' with form=login_form %}
+        <div class="parallax">
+            <img src="{% static 'img/parallax-test.jpg' %}" alt="Unsplashed background img 1" style="display: block; transform: translate3d(-50%, 201px, 0px);">
         </div>
-        {% endif %}
     </div>
-{% endblock %}
-{% block sideNavBlock %}
+    
+    <div class="section white">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    {% include 'includeDefs/promoRow.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <h3 class="center">Alles kostenlos und im Browser.</h3>
+                <div class="row">
+                    <div class="col m8 s12" id="registrationCol">
+                        <h5>Noch nicht dabei? Registrieren!</h5>
+                        <div class="card grey-text text-darken-4 formCard" id="registrationCard">
+                            <form method="post" action="{% url 'register:index' %}">
+                                {% csrf_token %}
+                                <div class="card-content">
+                                    {% for field in registration_form %}
+                                        <div class="input-field">
+                                            {{ field }}
+                                            <label for="{{field.id_for_label}}" {% if field.errors%}data-error="{{field.errors|first}}"{% endif %}>{{ field.label}}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="card-action">
+                                    <button type="submit" class="waves-effect waves-light btn">Registrieren</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col m4 s12" id="loginCol">
+                        <h5>Login</h5>
+                        <div class="card grey-text text-darken-4 formCard" id="loginCard">
+                            {% include 'registration/forms/login.html' with form=login_form %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3>Alles kostenlos und im Browser.</h3>
+            <h5><a href="{% url 'register:index' %}">Jetzt registrieren &rarr;</a></h5>
+        </div>
+        <div class="parallax">
+            <img src="{% static 'img/parallax-test.jpg' %}" alt="Unsplashed background img 1" style="display: block; transform: translate3d(-50%, 201px, 0px);">
+        </div>
+    </div>
+
+
+    
+
+
+
+
+    <!-- FOOTER -->
+    {% include 'includeDefs/footer.html' %}
+
+    <!-- SideNav -->
+    <!-- removed the block, because the sideNav is now the same inclusion for every site - even when you're not logged in -->
+    <!--{% block sideNavBlock %}{% endblock %}-->
     {% include 'includeDefs/sideNav.html' %}
-{% endblock %}
-{% block moreScripts %}
+
+    <!-- SKRIPTE einbinden -->
+    {% include 'includeDefs/javascripts.html' %}
     {% include 'includeDefs/javascript-forms.html' %}
-{% endblock %}
+    <script>
+        $(document).ready(function($){
+            $('#baseContainer').hide();
+            $('.parallax').parallax();
+            $('.formCard input').focus(function(){
+                $(this).closest('.formCard').addClass("fieldsFocus");
+            });
+            $('.formCard input').focusout(function(){
+                $(this).closest('.formCard').removeClass("fieldsFocus");
+            });
+            
+            // Helper for Smooth Scrolling: Set focus to username field after scrolling to form
+
+            // Smooth Scrolling for Anchors (like the login "link")
+            // from https://css-tricks.com/snippets/jquery/smooth-scrolling/
+            $('a[href*="#"]')
+                // Remove links that don't actually link to anything
+                .not('[href="#"]')
+                .not('[href="#0"]')
+                .click(function(event) {
+                // On-page links
+                if (
+                    location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') 
+                    && 
+                    location.hostname == this.hostname
+                ) {
+                    // Figure out element to scroll to
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    // Does a scroll target exist?
+                    if (target.length) {
+                        // Only prevent default if animation is actually gonna happen
+                        event.preventDefault();
+                        $('html, body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000, function() {
+                            // Changed by Rattler Team :)
+                                if(target[0].id == "loginCol"){
+                                    $("#loginCol #id_username").focus();
+                                } else if (target[0].id == "registrationCol"){
+                                    $("#registrationCol #id_username").focus();
+                                }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

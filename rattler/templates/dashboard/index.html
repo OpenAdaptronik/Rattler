@@ -1,5 +1,5 @@
 ﻿{% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 {% block siteTitle %}Dashboard{% endblock %}
 {% block moreStylesheets %}
     <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
@@ -8,18 +8,48 @@
 {% block container %}
 <h2>Willkommen!</h2>
 <!-- hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
-<input type="hidden" id="maxDatarows" name="" value="500"/>
+<input type="hidden" id="maxDatarows" name="" value="{{ max_datarows|floatformat:"0" }}"/>
 <div class="row">
     <div class="col s12 m12 l12" style="min-width: 300px">
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Meine Projekte</span>
-                <!--<p>Die letzten 5 von Ihnen hochgeladenen Schwingungsdatensätze.</p>-->
-                
+                <span class="card-title" style="">Meine Projekte</span>
+                Hier siehst du deine 5 aktuellsten Projekte.
+                &ensp;<a href="{% url 'projects:index' %}">Alle anzeigen! &rarr;</a>
+                {% if last_projects %}
+                    <table class="striped highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{% trans 'name' %}</th>
+                                <th>{% trans 'category' %}</th>
+                                <th>{% trans 'subcategory' %}</th>
+                                <th>{% trans 'manufacturer' %}</th>
+                                <th>{% trans 'typ' %}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in last_projects %}
+                                <tr>
+                                    <td>{{project.id}}</td>
+                                    <td>{{project.name}}</td>
+                                    <td>{{project.category}}</td>
+                                    <td>{{project.subcategory}}</td>
+                                    <td>{{project.manufacturer}}</td>
+                                    <td>{{project.typ}}</td>
+                                    <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>@TODO Infografik</p>
+                {% endif %}
             </div>
             <div class="card-action">
                 <!--<a href="#">Alle meine Schwingungsdaten anzeigen</a>-->
-                <a href="{% url 'projects:new' %}" class="btn waves-effect waves-light" type="submit">Neues Projekt anlegen<i class="material-icons left"></i></a>
+                <a href="{% url 'projects:new' %}" class="btn waves-effect waves-light" type="submit"><i class="material-icons left">add</i>Neues Projekt anlegen</a>
             </div>
         </div>
 

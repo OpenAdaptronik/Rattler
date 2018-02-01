@@ -106,16 +106,16 @@ $( document ).ready(function() {
 
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 
-            }
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
+        }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
                 }
-            });
+            }
+        });
 
 
         //Prepare Submission Data
@@ -126,31 +126,31 @@ $( document ).ready(function() {
             'fourierval':$("#fourierval").val(),
         }
 
-        for(i=0; i < anzSpalten; i++){
-            if(i!=zeitreihenSpalte){
-                data['hochpassOrder'+i] = $('#spaltenCol'+i).find('#hochpassOrder'+i).val()
-                data['hochpassCofreq'+i] = $('#spaltenCol'+i).find('#hochpassCofreq'+i).val()
-                data['tiefpassOrder'+i] = $('#spaltenCol'+i).find('#tiefpassOrder'+i).val()
-                data['tiefpassCofreq'+i] = $('#spaltenCol'+i).find('#tiefpassCofreq'+i).val()
+        for (i = 0; i < anzSpalten; i++) {
+            if (i != zeitreihenSpalte) {
+                data['hochpassOrder' + i] = $('#spaltenCol' + i).find('#hochpassOrder' + i).val()
+                data['hochpassCofreq' + i] = $('#spaltenCol' + i).find('#hochpassCofreq' + i).val()
+                data['tiefpassOrder' + i] = $('#spaltenCol' + i).find('#tiefpassOrder' + i).val()
+                data['tiefpassCofreq' + i] = $('#spaltenCol' + i).find('#tiefpassCofreq' + i).val()
 
-                data['hochpass'+i] = $('#spaltenCol'+i).find('#hochpass'+i).prop('checked');
-                data['tiefpass'+i] = $('#spaltenCol'+i).find('#tiefpass'+i).prop('checked');
-                data['gauss'+i] = $('#spaltenCol'+i).find('#gauss'+i).prop('checked');
-                data['gaussStd'+i] = $('#spaltenCol'+i).find('#gaussStd'+i).val();
-                data['gaussM'+i] = $('#spaltenCol'+i).find('#gaussM'+i).val();
-                }
+                data['hochpass' + i] = $('#spaltenCol' + i).find('#hochpass' + i).prop('checked');
+                data['tiefpass' + i] = $('#spaltenCol' + i).find('#tiefpass' + i).prop('checked');
+                data['gauss' + i] = $('#spaltenCol' + i).find('#gauss' + i).prop('checked');
+                data['gaussStd' + i] = $('#spaltenCol' + i).find('#gaussStd' + i).val();
+                data['gaussM' + i] = $('#spaltenCol' + i).find('#gaussM' + i).val();
             }
+        }
 
 
         $.ajax({
 
-        url: '/analysis/refresh',
+            url: '/analysis/refresh',
 
-        method: 'post',
-        data: data  ,
-        cache:false,
-        dataType: 'json',
-        success: function (data) {
+            method: 'post',
+            data: data,
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
 
             dataArray = JSON.parse(data.jsonData);
             spaltenTitel = JSON.parse(data.jsonHeader);
@@ -160,27 +160,38 @@ $( document ).ready(function() {
 
 
 
-        // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
-        // https://stackoverflow.com/a/34979219
-        function arrayColnAsRow(arr, n) {
-            return arr.map(function(x) { return x[n]})
-        }
+                // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
+                // https://stackoverflow.com/a/34979219
+                function arrayColnAsRow(arr, n) {
+                    return arr.map(function (x) { return x[n] })
+                }
 
         // Plotly: Graph von vorheriger Seite wieder plotten
             var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
             var traces = [];
             // s. Variablenname
             zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
+                var layout = {
+                    title: 'Dein Experiment:',
+                    xaxis: {
+                        title: spaltenTitel[zeitreihenSpalte] + ' (' + spaltenEinheiten[zeitreihenSpalte] + ')',
+                    }
+                }
 
-        var layout = {
-            title: 'Dein Experiment:',
-            xaxis: {
-                title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
-            }
-        }
+                // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
 
-        // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+                for (var j = 0; j < anzSpalten; j++) { // i = Index über Spalten
+                    traces[j] = {
+                        x: zeitreihenSpalteAlsZeile,
+                        y: arrayColnAsRow(dataArray, j),
+                        name: spaltenTitel[j] + ' (' + spaltenEinheiten[j] + ')',
+                        type: 'scatter',
+                        line: {
+                            width: 1.5,
+                        }
+                    }
 
+                  
         for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
@@ -191,17 +202,15 @@ $( document ).ready(function() {
                     color:color[j],
                     width: 1.5,
                 }
+                traces[zeitreihenSpalte] = [];
+                traces[zeitreihenSpalte].shift();
+
+                Plotly.newPlot('firstGraph', traces, layout);
+
+
+
             }
-
-        }
-        traces[zeitreihenSpalte] = [];
-        traces[zeitreihenSpalte].shift();
-
-        Plotly.newPlot('firstGraph', traces, layout);
-
-
-
-        }});
+        });
     })
 
 

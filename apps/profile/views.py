@@ -24,6 +24,9 @@ from django.utils.http import urlsafe_base64_decode
 from apps.register.tokens import account_activation_token
 from . import models
 from . import forms
+from . models import ProfileImage
+from apps.user.models import User
+
 
 reverse_lazy = lazy(reverse, str)
 
@@ -42,7 +45,13 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
     model = models.Profile
     template_name_suffix = '_update'
-    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info']
+    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name','expert']
+
+    def update_username(self):
+        user = self.request.user
+        form = forms.UserForm(data=self.request.POST,instance=user)
+        if form.is_valid():
+            form.save()
 
     def get_object(self):
         try:
@@ -53,6 +62,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(ProfileUpdate, self).get_context_data(**kwargs)
         if self.request.method == 'POST':
+            ProfileUpdate.update_username(self)
             data['profile_image'] = forms.ProfileImageFormSet(self.request.POST, self.request.FILES, instance=self.object)
         else:
             data['profile_image'] = forms.ProfileImageFormSet(instance=self.object)
@@ -61,11 +71,13 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         context = self.get_context_data()
         profile_image = context['profile_image']
-        
+
         self.object = form.save()
         if profile_image.is_valid():
             profile_image.save()
         return super(ProfileUpdate, self).form_valid(form)
+
+
 
 class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
@@ -81,6 +93,14 @@ class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
             return models.ProfileImage(profile=profile)
 
 
+def deleteProfileImage(request):
+    try:
+        request.user.profile.profileimage.delete()
+    except ProfileImage.DoesNotExist:
+        pass
+    return redirect(reverse('profile:edit'))
+
+
 def change_email(request):
     if request.method == 'POST':
         mailer = {'newMail1': request.POST.get('mail'),
@@ -89,12 +109,12 @@ def change_email(request):
         try:
             # prueft auf verschiedene fehler (dopplung in DB und beide felder gleich)
             if not mailer.get('newMail2') == mail:
-                return render(request, 'userSettings/changeEmail.html',{'error': 'E-mail Adresse stimmt nicht überein!'})
+                return render(request, 'profile/changeEmail.html',{'error': 'E-mail Adresse stimmt nicht überein!'})
             elif mail == '':
-                return render(request, 'userSettings/changeEmail.html', {'error': 'Bitte geben sie eine Email Adresse an'})
+                return render(request, 'profile/changeEmail.html', {'error': 'Bitte geben sie eine Email Adresse an'})
             else:
-                mailc = User.objects.get(mail=mail)
-                return render(request, 'userSettings/changeEmail.html', {'error': 'E-mail bereits vergeben'})
+                mailc = get_user_model().objects.get(email=mail)
+                return render(request, 'profile/changeEmail.html', {'error': 'E-mail bereits vergeben'})
         except:
             mailc=None
         if mailc is None:
@@ -104,7 +124,7 @@ def change_email(request):
             current_site = get_current_site(request)
             domain = current_site.domain
 
-            mes = render_to_string('userSettings/newMail.html', {
+            mes = render_to_string('profile/newMail.html', {
                 'use_https': request.is_secure(),
                 'domain':domain,
                 'uid': uid,
@@ -129,7 +149,7 @@ def change_email(request):
                                 Man muss beim bestätigen der E-mail weiterhin eingelogt bleiben!!''')
 
 
-    return render(request, 'userSettings/changeEmail.html')
+    return render(request, 'profile/changeEmail.html')
 
 
 def change_email_success (request, mail, uidb64, token):
@@ -163,6 +183,6 @@ def change_password(request):
             messages.error(request, 'Neues Passwort stimmt nicht überein')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'userSettings/changePassword.html', {
+    return render(request, 'profile/changePassword.html', {
         'form': form
     })

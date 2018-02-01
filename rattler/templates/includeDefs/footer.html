@@ -9,32 +9,32 @@
                         <a href="https://www.openadaptronik.de/" target="_blank">
                             <div id="partnerLogoOA" href="#" class="partnerSvg-container hide-on-small-only">
                                 {% include 'svg/oa-logo.svg' %}
-                            </div>OpenAdaptronik
+                            </div><span class="hide-on-med-and-up">OpenAdaptronik</span>
                         </a>
                     </div>
                     <div class="col s12 m4 l4">
                         <a href="https://www.lbf.fraunhofer.de/" target="_blank">
                             <div id="partnerLogoFLBF" href="#" class="partnerSvg-container hide-on-small-only">
                                 <img src="{% static 'img/flbf-logo.png' %}" />
-                            </div>Fraunhofer LBF
+                            </div><span class="hide-on-med-and-up">Fraunhofer LBF</span>
                         </a>
                     </div>
                     <div class="col s12 m4 l4">
                         <a href="https://www.tu-darmstadt.de/" target="_blank">
                             <div id="partnerLogoTUD" href="#" class="partnerSvg-container hide-on-small-only">
                                 {% include 'svg/tud-logo.svg' %}
-                            </div>TU Darmstadt
+                            </div><span class="hide-on-med-and-up">TU Darmstadt</span>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="col l4 offset-l2 s12">
                 <h5 class="">Informationen</h5>
-                    <a class="" href="about/">Über</a><br/>
+                    <a class="" href={% url 'about' %}>Über</a><br/>
                     <a class="" href="https://www.openadaptronik.de/kontakt/" target="_blank">Kontakt</a><br/>
                     <a class="" href="https://www.openadaptronik.de/impressum/" target="_blank">Impressum</a><br/>
                     <a class="" href="https://www.openadaptronik.de/datenschutzerklaerung/" target="_blank">Datenschutz</a><br/>
-                    <a class="" href="license/">Lizenz</a><br/>
+                    <a class="" href={% url 'license' %}>Lizenz</a><br/>
             </div>
         </div>
     </div>

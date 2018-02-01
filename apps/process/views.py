@@ -3,13 +3,15 @@ from apps.calc.measurement import measurement_obj
 from django.contrib.auth.decorators import login_required
 import json
 from .json import NumPyArangeEncoder
+from apps.projects.models import Experiment, Datarow
 
 
 # Create your views here.
 @login_required
-def from_dashboard(request):
+def from_dashboard(request, id):
     if not request.method == 'POST':
         return HttpResponseRedirect('/dashboard/')
+    raise ValueError
 
 
     # Variablen aus dem Post-Request auslesen
@@ -41,9 +43,34 @@ def from_dashboard(request):
         'datensatzName': datensatzName,
         'erfassungsDatum': erfassungsDatum
         }
+
+    newExperiment = Experiment(name=datensatzName, timerow=zeitreihenSpalte, project_id=id)
+    newExperiment.save()
+
+    #if saveExperiment == 1:
+
+
+    saveExperiment(request, id, dataForRender)
+
     return render(request, "process/index.html", dataForRender)
 
 
+def saveExperiment(request, id, dataForRender):
+    jsonHeader = request.POST.get("jsonHeader", "")
+    jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    jsonData = request.POST.get("jsonData", "")
+    saveExperiment = request.POST.get("saveExperiment", "")
+    datensatzName = request.POST.get("datensatzName", "")
+    erfassungsDatum = request.POST.get("erfassungsDatum", "")
+
+    if saveExperiment == 1:
+        newExperiment = Experiment(name=datensatzName, timerow=zeitreihenSpalte, project_id = id)
+        newExperiment.save()
+
+
+    dataForRender = dataForRender
+    return render(request, "process/index.html", dataForRender)
 
 
 

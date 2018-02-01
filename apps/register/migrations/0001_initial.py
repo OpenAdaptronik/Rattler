@@ -18,4 +18,4 @@ class Migration(migrations.Migration):
                 ('token', models.CharField(max_length=255, unique=True)),
             ],
         ),
-    ]
+]

@@ -33,7 +33,9 @@ class RegisterForm(UserCreationForm, BaseForm):
     Extends the django.contrib.auth.forms.UserCreationForm and rattler.forms.BaseForm.
     """
 
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(
+        label="",
+    )
 
     class Meta:
         """ Meta informations.
