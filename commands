@@ -24,7 +24,7 @@ Connect to Shell DB
 docker-compose exec db /bin/bash
 
 Read backend Logs
-docker-compose Logs -f Web
+docker-compose logs -f web
 
 Database Migration
 docker-compose exec web python manage.py migrate
