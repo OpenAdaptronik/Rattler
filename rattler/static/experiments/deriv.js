@@ -70,6 +70,7 @@ $(document).ready(function () {
 
                 // Add task to completed task list
                 $("#taskFinishedTemplate").clone().appendTo("#completedTasksCollection").attr("id","").addClass("newestCompletedTask");
+                $(".newestCompletedTask .taskNumber").html(numTasks);
                 $(".newestCompletedTask .firstColInfo").html(firstCol);
                 $(".newestCompletedTask .secondColInfo").html(secondCol);
                 if(intOrDevFctCode == "0") var intOrDeriv = "abgeleitet";

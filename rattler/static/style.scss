@@ -4,21 +4,21 @@
 	@import "materialize/sass/components/variables";
 
 // Farben
-	$primary-color: #009372;
-	$primary-color-light: #3db298;
-	$primary-color-dark: #005c47;
+	$primary-color: rgb(0, 147, 114);
+	$primary-color-light: rgb(61, 178, 152);
+	$primary-color-dark: rgb(0, 92, 71);
 
-	//$secondary-color: #e48400;
-	$secondary-color: $primary-color;
+	//$secondary-color: rgb(228, 132, 0);
+	$secondary-color: $primary-color; 
 	$success-color: $primary-color;
-	$error-color: #d70022;
+	$error-color: rgb(215, 0, 34);
 	$link-color: $primary-color-dark; 
 	
 	$card-link-color: $primary-color;
 	$card-link-color-light: $primary-color-light;
 
 	// Input Label Farbe
-	$input-border-color: #222;
+	$input-border-color: rgb(34, 34, 34);
 
 	// Color of the Preloader Spinner
 	$spinner-default-color: $primary-color;
@@ -172,7 +172,7 @@
 			overflow: hidden;
 			display: flex;
 			flex-grow: 1;
-			height: 120px; // muss später auf die Höhe der Inhalte von Grafik 2, 3 & 4 gesetzt werden!
+			height: 170px; // muss später auf die Höhe der Inhalte von Grafik 2, 3 & 4 gesetzt werden!
 		}
 
 	

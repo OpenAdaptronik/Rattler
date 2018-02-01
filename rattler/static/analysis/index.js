@@ -7,6 +7,8 @@ $( document ).ready(function() {
         function arrayColnAsRow(arr, n) {
             return arr.map(function(x) { return x[n]})
         }
+
+            var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
             // s. Variablenname
@@ -28,6 +30,7 @@ $( document ).ready(function() {
                 name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
+                    color: color[j],
                     width: 1.5,
                 }
             }
@@ -117,9 +120,10 @@ $( document ).ready(function() {
 
         //Prepare Submission Data
         var data = {
-            'resampling': $("#resampling").prop('checked'),
-            'resamplingScale': $("#resamplingScale").val(),
-            'fourier': $("#fourier").prop('checked'),
+            'resampling':$("#resampling").prop('checked'),
+            'resamplingScale':$("#resamplingScale").val(),
+            'fourier':$("#fourier").prop('checked'),
+            'fourierval':$("#fourierval").val(),
         }
 
         for (i = 0; i < anzSpalten; i++) {
@@ -148,11 +152,11 @@ $( document ).ready(function() {
             dataType: 'json',
             success: function (data) {
 
-                dataArray = JSON.parse(data.jsonData);
-                spaltenTitel = JSON.parse(data.jsonHeader);
-                spaltenEinheiten = JSON.parse(data.jsonEinheiten);
-                zeitreihenSpalte = data.zeitreihenSpalte;
-                anzSpalten = dataArray[0].length;
+            dataArray = JSON.parse(data.jsonData);
+            spaltenTitel = JSON.parse(data.jsonHeader);
+            spaltenEinheiten = JSON.parse(data.jsonEinheiten);
+            zeitreihenSpalte = data.zeitreihenSpalte;
+            anzSpalten = dataArray[0].length;
 
 
 
@@ -162,11 +166,11 @@ $( document ).ready(function() {
                     return arr.map(function (x) { return x[n] })
                 }
 
-                // Plotly: Graph von vorheriger Seite wieder plotten
-                var traces = [];
-                // s. Variablenname
-                zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
-
+        // Plotly: Graph von vorheriger Seite wieder plotten
+            var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
+            var traces = [];
+            // s. Variablenname
+            zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
                 var layout = {
                     title: 'Dein Experiment:',
                     xaxis: {
@@ -187,6 +191,16 @@ $( document ).ready(function() {
                         }
                     }
 
+                  
+        for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
+            traces[j] = {
+                x: zeitreihenSpalteAlsZeile,
+                y: arrayColnAsRow(dataArray, j),
+                name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
+                type: 'scatter',
+                line: {
+                    color:color[j],
+                    width: 1.5,
                 }
                 traces[zeitreihenSpalte] = [];
                 traces[zeitreihenSpalte].shift();
