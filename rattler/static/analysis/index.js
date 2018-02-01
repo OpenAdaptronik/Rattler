@@ -7,6 +7,8 @@ $( document ).ready(function() {
         function arrayColnAsRow(arr, n) {
             return arr.map(function(x) { return x[n]})
         }
+
+            var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
             // s. Variablenname
@@ -28,6 +30,7 @@ $( document ).ready(function() {
                 name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
+                    color: color[j],
                     width: 1.5,
                 }
             }
@@ -164,6 +167,7 @@ $( document ).ready(function() {
         }
 
         // Plotly: Graph von vorheriger Seite wieder plotten
+            var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
             var traces = [];
             // s. Variablenname
             zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
@@ -184,6 +188,7 @@ $( document ).ready(function() {
                 name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
                 type: 'scatter',
                 line: {
+                    color:color[j],
                     width: 1.5,
                 }
             }
