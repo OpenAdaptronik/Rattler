@@ -27,7 +27,7 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    measured = models.DateTimeField(null=True)
+    measured = models.DateTimeField( null=True)
 
     class Meta:
         verbose_name = _('project')
@@ -68,6 +68,10 @@ def project_image_path(instance, filename):
 class ProjectImage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE,verbose_name=_('project'))
     path = models.ImageField(upload_to=project_image_path, verbose_name=_('path'))
+
+    class Meta:
+        verbose_name = _('project image')
+        verbose_name_plural = _('project images')
 
 
 class Experiment(models.Model):
