@@ -6,7 +6,7 @@ from django.shortcuts import reverse
 from django.utils.encoding import iri_to_uri
 from enum import Enum
 
-'''crates model Projects with
+'''creates model Projects with
 userId as ForeignKey from User
 name as CharField
 category as ForeignKey from Category
