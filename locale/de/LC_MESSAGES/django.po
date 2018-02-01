@@ -306,20 +306,4 @@ msgstr ""
 "Der Link zum Zurücksetzen Ihres Passworts ist ungültig, wahrscheinlich, weil "
 "er schon einmal benutzt wurde. Bitte setzen Sie Ihr Passwort erneut zurück."
 
-#~ msgid "edit"
-#~ msgstr "bearbeiten"
 
-#~ msgid "Images"
-#~ msgstr "Bilder"
-
-#~ msgid "Project"
-#~ msgstr "Projekt"
-
-#~ msgid "profiles"
-#~ msgstr "Profile"
-
-#~ msgid "max_projects"
-#~ msgstr "Maximale Anzahl an Projekten"
-
-#~ msgid "visibility_info"
-#~ msgstr "Sichtbarkeit der Information"
