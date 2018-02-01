@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Category,ProjectImage,Experiment,Datarow
+from .models import Project, Category,ProjectImage,Experiment,Datarow,Value
 from django.utils import html
 from django.utils.translation import gettext_lazy as _
 from django.utils.encoding import force_text
@@ -23,6 +23,10 @@ class ProjectImagesInline (admin.TabularInline):
         return html.format_html("""<img src="{src}" style="max-width: 200px; max-height: 200px;" />""",
                                 src='/' + instance.path.url,
                                 )
+
+    '''Translate project Images in Project'''
+    get_projetc_images.short_description = _('project images')
+
     '''show Link to ProjectImages admin Site'''
     def get_edit_link(self, instance):
         if not instance.path:
@@ -33,13 +37,10 @@ class ProjectImagesInline (admin.TabularInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere Bild %s auf Seperaten Seite" % instance._meta.verbose_name,
+                text="Ändere %s auf Seperaten Seite" % instance._meta.verbose_name,
         ))
 
     get_edit_link.short_description = _('project image link')
-
-    '''Translate project Images in Project'''
-    get_projetc_images.short_description = _('project images')
 
     '''Attributes for Inline'''
     model = ProjectImage
@@ -57,8 +58,31 @@ class ExperimentInline(admin.StackedInline):
         Inline for Experiments in Project
     '''
 
+    '''show Link to Experiment admin Site'''
+    def get_edit_link(self, instance):
+        if not instance.id:
+            return
 
-    pass
+        url = reverse('admin:%s_%s_change' % (instance._meta.app_label, instance._meta.model_name),
+                      args=[force_text(instance.id)])
+
+        return html.format_html("""<a href="{url}">{text}</a>""".format(
+                url=url,
+                text="Ändere %s auf Seperaten Seite" % instance._meta.verbose_name,
+        ))
+
+    get_edit_link.short_description = _('experiment link')
+
+    model = Experiment
+    verbose_name = _('experiment')
+    verbose_name_plural = _('experiments')
+    fk_name = 'project'
+    can_delete = False
+    extra = 0
+    fieldsets = (
+                 (_('info'), {'fields': ('name','description','get_edit_link',)}),
+                 )
+    readonly_fields = ('name','description','get_edit_link')
 
 
 class DatarowInline(admin.StackedInline):
@@ -66,9 +90,39 @@ class DatarowInline(admin.StackedInline):
         Inline for Datarows in Experiment
     '''
 
+    '''show Link to Datarow admin Site'''
+    def get_edit_link(self, instance):
+        if not instance.id:
+            return
 
+        url = reverse('admin:%s_%s_change' % (instance._meta.app_label, instance._meta.model_name),
+                      args=[force_text(instance.id)])
 
-    pass
+        return html.format_html("""<a href="{url}">{text}</a>""".format(
+                url=url,
+                text="Ändere %s auf Seperaten Seite" % instance._meta.verbose_name,
+        ))
+
+    get_edit_link.short_description = _('datarow link')
+
+    model = Datarow
+    verbose_name = _('datarow')
+    verbose_name_plural = _('datarows')
+    fk_name = 'experiment'
+    can_delete = False
+    extra = 0
+    fieldsets = (
+                 (_('info'), {'fields': ('name','description','get_edit_link',)}),
+                 )
+    readonly_fields = ('name','description','get_edit_link')
+
+class ValueInline(admin.StackedInline):
+    model = Value
+    verbose_name = _('value')
+    verbose_name_plural = _('values')
+    fk_name = 'datarow'
+    extra = 0
+    fields = ('value',)
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
@@ -112,7 +166,7 @@ class ProjectAdmin(admin.ModelAdmin):
         (_('important dates'), {'fields': ('created', 'updated','measured')}),
     )
 
-    inlines = [ProjectImagesInline,]
+    inlines = [ProjectImagesInline, ExperimentInline,]
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -146,16 +200,46 @@ class ProjetcImageAdmin(admin.ModelAdmin):
 
     readonly_fields = (get_project_image,)
 
+@admin.register(Experiment)
 class ExperimentAdmin(admin.ModelAdmin):
     """ The Experiment admin.
               change or delete Experiments
            """
-    pass
 
+    '''list_display: The data to show in the list.'''
+    list_display = ('name',
+                    'project',
+                    'created',
+                    )
 
+    """ search_fields: Filter Searchfield."""
+    search_fields = ['name',
+                     'project__name'
+                     ]
+    fieldsets = (
+        (_('info'), {'fields': ('name', 'project','description')}),
+        (_('important dates'), {'fields': ('created','timerow')}),
+    )
+    readonly_fields = ('created',)
+
+    inlines = [DatarowInline,]
+
+@admin.register(Datarow)
 class DatarowAdmin(admin.ModelAdmin):
     """ The Datarow admin.
               change or delete Datarow
            """
-    pass
+    '''list_display: The data to show in the list.'''
+    list_display = ('name',
+                    'experiment',
+                    'unit'
+                    )
+
+    """ search_fields: Filter Searchfield."""
+    search_fields = ['name',
+                     'experiment__name'
+                     ]
+
+
+    inlines = [ValueInline,]
 

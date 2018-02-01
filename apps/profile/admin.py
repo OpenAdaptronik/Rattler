@@ -66,7 +66,7 @@ class ProfileInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere Bild %s auf Seperaten Seite" % instance.profileimage._meta.verbose_name,
+                text="Ändere %s auf Seperaten Seite" % instance.profileimage._meta.verbose_name,
         ))
 
     get_edit_link.short_description = _('profile image link')

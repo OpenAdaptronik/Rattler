@@ -89,12 +89,10 @@ class MeasurementInstruments(Enum):
 
 
 class Datarow(models.Model):
+    name = models.CharField(_('name'), max_length=100, null=True)
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
     unit = models.CharField(max_length=10, null=True, verbose_name=_('unit'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
-    unit = models.CharField(max_length=10, null=True)
-    name = models.CharField(max_length=50, null=True)
-    description = models.TextField(max_length=500, null=True)
     measuring_instrument = models.CharField(max_length=2,
                                             choices=tuple((x.name, x.value) for x in MeasurementInstruments),
                                             default=MeasurementInstruments.NONE)
