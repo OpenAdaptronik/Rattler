@@ -44,16 +44,27 @@ class Project(models.Model):
         return self.name    
 
 
+class CategoryManager(models.Manager):
+    def childrenIds(self, parent):
+        ids = []
+        children = self.filter(parent=parent)
+        for child in children:
+            ids.append(child.pk)
+            ids.extend(self.childrenIds(child))
+        return ids
+
+    def allDescandends(self, parent):
+        return self.filter(id__in = self.childrenIds(parent)).order_by('name')
+
 '''creates model Category with
 categoryID as PrimaryKey
 name as CharField
 parent as Foreignkey from itself'''
-
-
 class Category(models.Model):
     name = models.CharField(_('name'), max_length=100)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, verbose_name=_('parent'))
 
+    objects = CategoryManager()
     def __str__(self):
         return self.name
 

@@ -123,7 +123,7 @@ msgstr "Projekte"
 #: apps/projects/forms.py:8 apps/projects/forms.py:15
 #: apps/projects/templates/projects/categories.html:3
 msgid "new category"
-msgstr "Kategorie"
+msgstr "Neue Kategorie"
 
 #: apps/projects/forms.py:13 apps/projects/models.py:21
 #: apps/projects/models.py:60
