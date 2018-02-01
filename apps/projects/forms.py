@@ -3,12 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Project, Category, ProjectImage
 
-def category_options():
-    categories = [(None, '---------')]
-    categories += [(0, _('new subcategory'))]
-    categories += [(c.id, c.name) for c in Category.objects.order_by('id')]
-    return categories
-
 class ProjectForm(forms.ModelForm):
     category = forms.ModelChoiceField(Category.objects.filter(parent=None), label=_('category'))
     subcategory = forms.ChoiceField(label=_('subcategory'))
@@ -38,7 +32,7 @@ class ProjectForm(forms.ModelForm):
             category = self.instance.category
 
         if category:
-            subcategories = Category.objects.filter(parent=category)
+            subcategories = Category.objects.allDescandends(parent=category)
             subcategories = subcategories.order_by('id')
             choices += [(c.id, c.name) for c in subcategories]
 
