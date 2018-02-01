@@ -18,19 +18,35 @@
             </div>
             <div class="col l10 m8 s12">
                 <ul class="collection with-header" style="margin-bottom:0">
+                    {% if user.profile.visibility_first_name or user.profile.visibility_last_name %}
+                    <li class="collection-item avatar">
+                        <i class="material-icons circle">person</i>
+                        <span class="title">Name</span>
+                        <p>
+                            {% if user.profile.visibility_first_name %}
+                                {{user.first_name}} 
+                            {% endif %}
+                            {% if user.profile.visibility_last_name %}
+                                {{user.last_name}}
+                            {% endif %}
+                        </p>
+                    </li>
+                    {% endif %}
                     {% if user.profile.visibility_mail %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">email</i>
                         <span class="title">E-Mail-Adresse</span>
                         <p><a href="mailto:{{user.email}}">{{user.email}}</a></p>
                     </li>
-                    {% endif %} {% if user.profile.visibility_company and user.profile.company %}
+                    {% endif %}
+                    {% if user.profile.visibility_company and user.profile.company %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">work</i>
                         <span class="title">Institution / Firma</span>
                         <p>{{user.profile.company}}</p>
                     </li>
-                    {% endif %} {% if user.profile.visibility_info and user.profile.info %}
+                    {% endif %}
+                    {% if user.profile.visibility_info and user.profile.info %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">info</i>
                         <span class="title">Beschreibung</span>
