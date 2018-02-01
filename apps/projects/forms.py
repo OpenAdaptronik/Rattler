@@ -5,14 +5,14 @@ from .models import Project, Category, ProjectImage
 
 def category_options():
     categories = [(None, '---------')]
-    categories += [(0, _('new category'))]
+    categories += [(0, _('new subcategory'))]
     categories += [(c.id, c.name) for c in Category.objects.order_by('id')]
     return categories
 
 class ProjectForm(forms.ModelForm):
     category = forms.ModelChoiceField(Category.objects.filter(parent=None), label=_('category'))
     subcategory = forms.ChoiceField(label=_('subcategory'))
-    new_subcategory = forms.CharField(required=False, label=_('new category'))
+    new_subcategory = forms.CharField(required=False, label=_('new subcategory'))
 
     field_order = (
         'name',
@@ -31,7 +31,7 @@ class ProjectForm(forms.ModelForm):
 
     def get_subcategory_choices(self):
         choices = [(None, '---------')]
-        choices += [(0, 'new category')]
+        choices += [(0, 'new subcategory')]
         category = self.data.get('category', False)
 
         if not category and self.instance and hasattr(self.instance, 'category'):
