@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-01 15:59+0000\n"
+"POT-Creation-Date: 2018-02-01 16:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid "user"
 msgstr "Benutzer"
 
 #: apps/profile/admin.py:48 apps/profile/models.py:17
-#: apps/projects/admin.py:108
+#: apps/projects/admin.py:110
 msgid "info"
 msgstr "Information"
 
@@ -49,7 +49,7 @@ msgstr "Firma/Institution"
 msgid "max fields"
 msgstr "Beschränkungen"
 
-#: apps/profile/admin.py:51 apps/projects/admin.py:110 apps/user/admin.py:54
+#: apps/profile/admin.py:51 apps/projects/admin.py:112 apps/user/admin.py:54
 msgid "important dates"
 msgstr "Wichtige Daten"
 
@@ -120,14 +120,18 @@ msgstr "Dateipfad auswählen"
 msgid "profile images"
 msgstr "Profilbilder"
 
-#: apps/projects/admin.py:40 apps/projects/admin.py:49
+#: apps/projects/admin.py:39
+msgid "project image link"
+msgstr "Projektbilder-Link"
+
+#: apps/projects/admin.py:42 apps/projects/admin.py:51
 #: apps/projects/models.py:74
 #: apps/projects/templates/projects/project_detail.html:3
 #: rattler/templates/projects/project_create.html:24
 msgid "project images"
 msgstr "Projektbilder"
 
-#: apps/projects/admin.py:44 apps/projects/models.py:33
+#: apps/projects/admin.py:46 apps/projects/models.py:33
 #: apps/projects/models.py:69 apps/projects/models.py:79
 #: apps/projects/templates/projects/project_detail.html:2
 #: rattler/templates/projects/project_detail.html:3
@@ -135,15 +139,15 @@ msgstr "Projektbilder"
 msgid "project"
 msgstr "Projekt"
 
-#: apps/projects/admin.py:45 apps/projects/apps.py:7 apps/projects/models.py:34
+#: apps/projects/admin.py:47 apps/projects/apps.py:7 apps/projects/models.py:34
 msgid "projects"
 msgstr "Projekte"
 
-#: apps/projects/admin.py:109
+#: apps/projects/admin.py:111
 msgid "attributes"
 msgstr "Attribute"
 
-#: apps/projects/admin.py:140
+#: apps/projects/admin.py:142
 msgid "projetc image"
 msgstr "Projektbild"
 

@@ -36,6 +36,8 @@ class ProjectImagesInline (admin.TabularInline):
                 text="Ändere Bild %s auf Seperaten Seite" % instance._meta.verbose_name,
         ))
 
+    get_edit_link.short_description = _('project image link')
+
     '''Translate project Images in Project'''
     get_projetc_images.short_description = _('project images')
 
