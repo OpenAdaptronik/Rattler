@@ -3,7 +3,7 @@ import scipy as sci
 import json
 import numpy as np
 from collections import Counter
-from apps.calc.measurement.calculus import get_average_delta,get_delta
+from apps.calc.measurement.calculus import get_average_delta,get_decimal_delta
 from apps.calc.tess_module.tess import tess
 
 
@@ -37,7 +37,7 @@ class Measurement(object):
         '''
         begin = np.float64(self.data[0,self.timeIndex])
         end = np.float64(self.data[-1,self.timeIndex])
-        cnt=Counter(get_delta(self.data,self.timeIndex,3))
+        cnt=Counter(get_decimal_delta(self.data,self.timeIndex,3))
         X_new = np.linspace(begin, end , int(
             (round((end-begin) / cnt.most_common(1)[0][0])) * scale))
 
@@ -73,20 +73,25 @@ class Measurement(object):
             plt.show()
         '''
         new_data = []
-        cut = int(len(self.data[:, 0]) / 2)
+        n = len(self.data[:, 0])
+        cut = int(n/2)
         for i in range(0,len(self.data[0])):
             if i == self.timeIndex:
                 X_new = np.fft.fftfreq(len(self.data[:,i]), d=get_average_delta(self.data,i))[:cut]
                 new_data.append(np.array(X_new))
             if(fourierval == 'absolute'):
-                fft = [np.abs(x) for x in sci.fft(self.data[:, i])]
+                fft = [(np.abs(x)/n)*2 for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
+                fft[0] = fft[0] / 2
             elif fourierval == 'real':
-                fft = [np.real(x) for x in sci.fft(self.data[:, i])]
+                fft = [(np.real(x)/n)*2 for x in sci.fft(self.data[:, i])]
                 new_data.append(np.array(fft[:cut]))
+                fft[0] = fft[0] / 2
             elif fourierval == 'imaginary':
-                fft = [np.imag(x) for x in sci.fft(self.data[:, i])]
+                fft = [(np.imag(x)/n)*2 for x in sci.fft(self.data[:, i])]
+                fft[0] = fft[0]/2
                 new_data.append(np.array(fft[:cut]))
+
 
         self.colUnits[self.timeIndex] = 'Hz'
         self.colNames[self.timeIndex] = 'Frequenz'

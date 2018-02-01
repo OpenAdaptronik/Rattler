@@ -2,7 +2,7 @@ import numpy as np
 import json
 import scipy as sci
 
-def get_delta(data, index,decimals=0):
+def get_decimal_delta(data, index,decimals):
     '''
     This function calculates the difference between the values of one column
     :param data: the data array
@@ -12,22 +12,31 @@ def get_delta(data, index,decimals=0):
     :return: a list of distances between all values in the column
     '''
     res = []
+    for t1, t2 in zip(data[:-1,int(index)], data[1:,int(index)]):
+        res.append(np.around(np.float64(t2) - np.float64(t1),decimals))
+    return np.array(res)
+
+def get_delta(data, index):
+    '''
+    This function calculates the difference between the values of one column
+    :param data: the data array
+    :param time_index: the index of the column of interest
+    :param decimals: Number of decimal places to round to (default: 0).
+    If decimals is negative, it specifies the number of positions to the left of the decimal point.
+    :return: a list of distances between all values in the column
+    '''
     realsol = []
     i=1
-    intervall=0
-    lendata = len(data)
+
     while i < len(data[0:,index]):
 
-        intervall = data[i, index]  # - data[index,i - 1]
+        intervall = data[i, index]   - data[i - 1,index]
 
         realsol.append(intervall)
         i += 1
     realsol = np.array(realsol)
     return realsol
 
-    #for t1, t2 in zip(data[:-1,int(index)], data[1:,int(index)]):
-     #   res.append(np.around(np.float64(t2) - np.float64(t1),decimals))
-    #return np.array(res)
 
 def get_average_delta(data, index):
     '''
@@ -36,7 +45,7 @@ def get_average_delta(data, index):
     :param time_index: the index of the column of interest
     :return: average between all values in the column
     '''
-    deltas = get_delta(data, index, 7)
+    deltas = get_decimal_delta(data, index, 7)
     return sum(deltas) / len(deltas)
 
 
