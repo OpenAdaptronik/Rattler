@@ -233,7 +233,7 @@ def derivate(request, experimentId):
     projectId = Experiment.objects.get(id=experimentId).project_id
     if not request.user.id == Project.objects.get(id=projectId).user_id:
             raise PermissionDenied()
-    
+        
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))

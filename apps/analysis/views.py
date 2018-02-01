@@ -152,6 +152,9 @@ def renew_data(request):
 
 
 
+
+
+
     # Daten zum Rendern vorbereiten
     dataForRender = {
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
