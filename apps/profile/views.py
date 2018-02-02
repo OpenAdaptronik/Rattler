@@ -49,7 +49,7 @@ def show(request, name = 'me'):
         request,
         'profile/profile.html',
         {
-            'profile':user,
+            'profile': user.profile,
             'last_projects': user.project_set.filter(visibility=True).order_by('-updated', '-created')[:5]
         }
     )

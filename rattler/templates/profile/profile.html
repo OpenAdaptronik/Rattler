@@ -4,53 +4,53 @@
     Profil &bull; {{ profile.username }}
 {% endblock %}
 {% block container %}
-<h2 style="">{{profile.username}}'s Profil</h2>
+<h2 style="">{{profile.user.username}}'s Profil</h2>
 <div class="row">
     <div class="col s12 card">
         <div class="card-content row">
             <!--<span class="card-title">Meine Projekte</span>-->
             <div class="col l2 m4 s12">
-                {% if profile.profile and profile.profile.profileimage and profile.profile.profileimage.path %}
-                <img class="center" style="max-width: 100%; max-height: 100%" src="/{{ profile.profile.profileimage.path.url }}">
+                {% if profile.profileimage and profile.profileimage.path %}
+                <img class="center" style="max-width: 100%; max-height: 100%" src="/{{ profile.profileimage.path.url }}">
                 {% else %}
                 <img class="center" style="max-width: 100%; max-height: 100%" src="{% static 'img/user.png' %}">
                 {% endif %}
             </div>
             <div class="col l10 m8 s12">
                 <ul class="collection with-header" style="margin-bottom:0">
-                    {% if profile.profile.visibility_first_name or profile.profile.visibility_last_name %}
+                    {% if profile.visibility_first_name or profile.visibility_last_name %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">person</i>
                         <span class="title">Name</span>
                         <p>
-                            {% if profile.profile.visibility_first_name %}
+                            {% if profile.visibility_first_name %}
                                 {{profile.first_name}} 
                             {% endif %}
-                            {% if profile.profile.visibility_last_name %}
+                            {% if profile.visibility_last_name %}
                                 {{profile.last_name}}
                             {% endif %}
                         </p>
                     </li>
                     {% endif %}
-                    {% if profile.profile.visibility_mail %}
+                    {% if profile.visibility_mail %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">email</i>
                         <span class="title">E-Mail-Adresse</span>
-                        <p><a href="mailto:{{profile.email}}">{{profile.email}}</a></p>
+                        <p><a href="mailto:{{profile.user.email}}">{{profile.user.email}}</a></p>
                     </li>
                     {% endif %}
-                    {% if profile.profile.visibility_company and profile.profile.company %}
+                    {% if profile.visibility_company and profile.company %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">work</i>
                         <span class="title">Institution / Firma</span>
-                        <p>{{profile.profile.company}}</p>
+                        <p>{{profile.company}}</p>
                     </li>
                     {% endif %}
-                    {% if profile.profile.visibility_info and profile.profile.info %}
+                    {% if profile.visibility_info and profile.info %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">info</i>
                         <span class="title">Beschreibung</span>
-                        <p>{{profile.profile.info}}</p>
+                        <p>{{profile.info}}</p>
                     </li>
                     {% endif %}
                 </ul>
@@ -59,7 +59,7 @@
     </div>
     <div class="col s12 card">
         <div class="card-content">
-            <span class="card-title">Projekte von {{profile.username}}</span>
+            <span class="card-title">Projekte von {{profile.user.username}}</span>
 
             {% if last_projects %}
                 <table class="striped highlight responsive-table">
@@ -89,7 +89,7 @@
                     </tbody>
                 </table>
             {% else %}
-                {{profile.username}} hat noch keine Projekte angelegt.
+                {{profile.user.username}} hat noch keine Projekte angelegt.
             {% endif %}
 
 
