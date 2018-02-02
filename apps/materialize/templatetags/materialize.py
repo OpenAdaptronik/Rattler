@@ -127,7 +127,7 @@ def materialize_form_submit_btn(text=None):
     )
 
 @register.simple_tag(takes_context=False)
-def materialize_paginator(paginator, url_name, buffer=9):
+def materialize_paginator(paginator, url_name, params=None, buffer=9):
     current = paginator.number
     last = paginator.paginator.num_pages
 
@@ -158,5 +158,6 @@ def materialize_paginator(paginator, url_name, buffer=9):
             'pages_after': [n + current + 1 for n in range(after_range)],
             'has_next': paginator.has_next,
             'next': paginator.next_page_number,
+            'params': params
         }
     )

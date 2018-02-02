@@ -1,23 +1,23 @@
 <ul class="pagination">
 
     {% if has_previous %}
-        <li><a href="{% url url_name page=previous%}"><i class="material-icons">chevron_left</i></a></li>
+        <li><a href="{% url url_name page=previous%}{%if params%}?{{params}}{% endif %}"><i class="material-icons">chevron_left</i></a></li>
     {% else %}
         <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
     {% endif %}
 
     {% for pre in pages_before %}
-        <li class="waves-effect"><a href="{% url url_name page=pre%}">{{pre}}</a></li>
+        <li class="waves-effect"><a href="{% url url_name page=pre%}{%if params%}?{{params}}{% endif %}">{{pre}}</a></li>
     {% endfor %}
 
     <li class="active"><a>{{current}}</a></li>
 
     {% for after in pages_after %}
-        <li class="waves-effect"><a href="{% url url_name page=after%}">{{after}}</a></li>
+        <li class="waves-effect"><a href="{% url url_name page=after%}{%if params%}?{{params}}{% endif %}">{{after}}</a></li>
     {% endfor %}
 
     {% if has_next %}
-        <li><a href="{% url url_name page=next%}"><i class="material-icons">chevron_right</i></a></li>
+        <li><a href="{% url url_name page=next%}{%if params%}?{{params}}{% endif %}"><i class="material-icons">chevron_right</i></a></li>
     {% else %}
         <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
     {% endif %}
