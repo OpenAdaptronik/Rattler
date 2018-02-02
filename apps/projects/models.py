@@ -92,11 +92,16 @@ class Experiment(models.Model):
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))
 
+    class Meta:
+        verbose_name = _('experiment')
+        verbose_name_plural = _('experiments')
+
 
 class MeasurementInstruments(Enum):
     SENSOR = 'Se'
     ACTUATOR = 'Ac'
     NONE = 'No'
+
 
 
 class Datarow(models.Model):
@@ -106,7 +111,11 @@ class Datarow(models.Model):
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
     measuring_instrument = models.CharField(max_length=2,
                                             choices=tuple((x.name, x.value) for x in MeasurementInstruments),
-                                            default=MeasurementInstruments.NONE)
+                                            default=MeasurementInstruments.NONE, verbose_name=_('measuring instrument'))
+    class Meta:
+        verbose_name = _('datarow')
+        verbose_name_plural = _('datarows')
+
 
 
 class Value(models.Model):
