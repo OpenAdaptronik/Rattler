@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% load static %}
-{% block siteTitle %}Neues Projekt{% endblock %}
+{% load static  %}
+{% block siteTitle %}Projekt "{{ object.name }}" bearbeiten {% endblock %}
 {% block moreStylesheets %}
 {% endblock %}
-{% load materialize i18n defer %}
+{% load materialize i18n defer variables %}
 
 {% block container %}
 
@@ -27,22 +27,25 @@
 
             <div class="row">
                 {{ project_image.management_form }}
+                {% assign display 1 %}
                 {% for form in project_image.forms %}
-
-                    <div class="col s4" data-toggle="project-image" data-index="{{forloop.counter0}}" {% if forloop.counter0 > 0%}style="display:none"{% endif %}>
+                    <div class="col s4" data-toggle="project-image" data-index="{{forloop.counter0}}" {% if display is 0 %}style="display:none"{% endif %}>
+                        {% if not form.instance.path %}{% assign display 0 %}{% endif %}
                         <div style="display:none">{{ form }}</div>
                         <label for="{{ form.path.id_for_label }}" id="label-{{ form.path.id_for_label }}">
-                            <span class="btn-floating btn-large waves-effect waves-light">
-                                <i class="material-icons medium">add</i>
-                            </span>
+                            {% if form.instance.path %}
+                                <img src="/{{ form.instance.path.url  }}" style="width: 100%;">
+                                
+                            {% else %}
+                                <span class="btn-floating btn-large waves-effect waves-light">
+                                    <i class="material-icons medium">add</i>
+                                </span>
+                            {% endif %}
                         </label>
                     </div>
 
                 {% endfor %}
             </div>
-
-
-
                 
             </div>
         </div>                    
@@ -98,6 +101,7 @@
             var init = true;
 
             function loadSubCategories() {
+                if (init) return;
                 var path = '/projects/categories/';
                 path += $category.val();
                 $.ajax(path).done(function(data) {
@@ -136,4 +140,3 @@
     </script>
 {% end_defer_html %}
 {% endblock %}
-
