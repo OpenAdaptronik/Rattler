@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load materialize i18n %}
+{% block siteTitle %}Community{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+
+{% block container %}
+    <h4>Community</h4>
+    <div class="row">
+        <div class="col s12 l3 card">
+            <div class="card-content">
+                <span class="card-title">Filter</span>
+                <form method="get" action="{% url 'community:index' %}">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="username">Username</label>
+                            <input placeholder='' id="username" type="text" class="validate" name="username" {% if filter.username %}value="{{filter.username}}"{% endif %}>
+                        </div>
+                        <div class="input-field col s12">
+                            <label for="mail">Email</label>
+                            <input placeholder='' id="mail" type="text" class="validate" name="mail" {% if filter.mail %}value="{{filter.mail}}"{% endif %}>
+                        </div>
+                        <div class="input-field col s12">
+                            <label for="company">Firma</label>
+                            <input placeholder='' id="firma" type="text" class="validate" name="company" {% if filter.company %}value="{{filter.company}}"{% endif %}>
+                        </div>
+                        <div class="input-field col s12">
+                            <label for="projectname">Projektname</label>
+                            <input placeholder='' id="projectname" type="text" class="validate" name="projectname" {% if filter.projectname %}value="{{filter.projectname}}"{% endif %}>
+                        </div>
+                        <div class="input-field col s12">
+                            <label for="category">Kategorie</label>
+                            <input placeholder='' id="category" type="text" class="validate" name="category" {% if filter.category %}value="{{filter.category}}"{% endif %}>
+                        </div>
+                        <div class="input-field col s12">
+                            <label for="manufacturer">Hersteller</label>
+                            <input placeholder='' id="manufacturer" type="text" class="validate" name="manufacturer"  {% if filter.manufacturer %}value="{{filter.manufacturer}}"{% endif %}>
+                        </div>
+                        <div class="col s12">
+                                <button class="btn waves-effect waves-light" type="submit">Filtern<i class="material-icons left"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col s12 l9 card">
+            {% if filtered %}
+                <div class="card-content">
+                    <span class="card-title">Ergebnisse</span>
+
+                    <table class="striped highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'user' %}</th>
+                                <th>{% trans 'project name' %}</th>
+                                <th>{% trans 'category' %}</th>
+                                <th>{% trans 'subcategory' %}</th>
+                                <th>{% trans 'manufacturer' %}</th>
+                                <th>{% trans 'typ' %}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in filtered %}
+                                <tr>
+                                    <td><a href="{% url 'profile:detail' name=project.user.username %}">{{ project.user.username }}</a></td>
+                                    <td>{{project.name}}</td>
+                                    <td>{{project.category}}</td>
+                                    <td>{{project.subcategory}}</td>
+                                    <td>{{project.manufacturer}}</td>
+                                    <td>{{project.typ}}</td>
+                                    <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                                </tr>                   
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="card-content">
+                    <span class="card-title">Keine Ergebnisse</span>
+                </div>
+            {% endif %}
+
+            {% if is_paginated %}
+                <div class="row">
+                    <div class="col s12 center-align">
+                        {% materialize_paginator page_obj 'community:index_paginated' params=filter_url buffer=4 %}
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
+

@@ -90,8 +90,8 @@ $( document ).ready(function() {
         else {
             $('#submitButton').prop('disabled', 'disabled');
         }
-    });
-    $('form').submit(function(event){
+    });});
+$('form').submit(function(event){
         event.preventDefault();
         if(!$('form').valid()) {
         return;
@@ -189,30 +189,26 @@ $( document ).ready(function() {
                         line: {
                             width: 1.5,
                         }
-                    }
+                    }}
 
                   
-        for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
+        for(var j=0; j < anzSpalten; j++) { // i = Index über Spalten
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
                 y: arrayColnAsRow(dataArray, j),
-                name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
+                name: spaltenTitel[j] + ' (' + spaltenEinheiten[j] + ')',
                 type: 'scatter',
                 line: {
-                    color:color[j],
+                    color: color[j],
                     width: 1.5,
-                }
-                traces[zeitreihenSpalte] = [];
-                traces[zeitreihenSpalte].shift();
+                }}
+            traces[zeitreihenSpalte] = [];
+            traces[zeitreihenSpalte].shift();
 
-                Plotly.newPlot('firstGraph', traces, layout);
-
-
-
-            }
-        });
-    })
+            Plotly.newPlot('firstGraph', traces, layout);
 
 
 
+        }
+    }})
 });

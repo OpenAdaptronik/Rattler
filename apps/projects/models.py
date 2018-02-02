@@ -5,6 +5,10 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import reverse
 from django.utils.encoding import iri_to_uri
 from enum import Enum
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
+
 
 '''creates model Projects with
 userId as ForeignKey from User
@@ -122,3 +126,8 @@ class Datarow(models.Model):
 class Value(models.Model):
     datarow = models.ForeignKey('Datarow', on_delete=models.CASCADE, verbose_name=_('datarow'))
     value = models.DecimalField(max_digits=20, decimal_places=15, null=True, verbose_name=_('value'))
+
+@receiver(post_save, sender=Experiment)
+def update_experiment(sender, instance, created, **kwargs):
+    instance.project.updated = timezone.now()
+    instance.project.save()
