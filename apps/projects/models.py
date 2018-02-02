@@ -27,7 +27,7 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    measured = models.DateTimeField( null=True)
+    
 
     class Meta:
         verbose_name = _('project')
@@ -91,6 +91,7 @@ class Experiment(models.Model):
     created = models.DateTimeField(null=True, auto_now_add=True, verbose_name=_('created'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))
+    measured = models.DateTimeField(null=True)
 
     class Meta:
         verbose_name = _('experiment')
