@@ -24,10 +24,10 @@
                         <span class="title">Name</span>
                         <p>
                             {% if profile.visibility_first_name %}
-                                {{profile.first_name}} 
+                                {{profile.user.first_name}} 
                             {% endif %}
                             {% if profile.visibility_last_name %}
-                                {{profile.last_name}}
+                                {{profile.user.last_name}}
                             {% endif %}
                         </p>
                     </li>
