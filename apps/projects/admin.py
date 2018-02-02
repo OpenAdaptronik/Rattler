@@ -142,7 +142,6 @@ class ProjectAdmin(admin.ModelAdmin):
 
     readonly_fields = ('created',
                        'updated',
-                       'measured',
                        )
 
     """ search_fields: Filter Searchfield.
@@ -163,7 +162,7 @@ class ProjectAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('info'), {'fields': ('name', 'user', 'visibility',)}),
         (_('attributes'), {'fields': ('category', 'subcategory', 'manufacturer', 'typ','description',)}),
-        (_('important dates'), {'fields': ('created', 'updated','measured')}),
+        (_('important dates'), {'fields': ('created', 'updated',)}),
     )
 
     inlines = [ProjectImagesInline, ExperimentInline,]
@@ -210,6 +209,7 @@ class ExperimentAdmin(admin.ModelAdmin):
     list_display = ('name',
                     'project',
                     'created',
+                    'measured',
                     )
 
     """ search_fields: Filter Searchfield."""
@@ -218,9 +218,9 @@ class ExperimentAdmin(admin.ModelAdmin):
                      ]
     fieldsets = (
         (_('info'), {'fields': ('name', 'project','description')}),
-        (_('important dates'), {'fields': ('created','timerow')}),
+        (_('important dates'), {'fields': ('created','measured','timerow')}),
     )
-    readonly_fields = ('created',)
+    readonly_fields = ('created','measured',)
 
     inlines = [DatarowInline,]
 
