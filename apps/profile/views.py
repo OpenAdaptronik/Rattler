@@ -33,13 +33,26 @@ reverse_lazy = lazy(reverse, str)
 @login_required
 def show_me(request):
     ''' shows user profile '''
-    return render(request, 'profile/me.html')
+    return render(
+        request,
+        'profile/me.html',
+        {
+            'last_projects': request.user.project_set.order_by('-updated', '-created')[:5]
+        }
+    )
 
 def show(request, name = 'me'):
     if (name == 'me'):
         return show_me(request)
     user = get_user_model().objects.get(username=name)
-    return render(request, 'profile/profile.html', {'user':user})
+    return render(
+        request,
+        'profile/profile.html',
+        {
+            'profile': user.profile,
+            'last_projects': user.project_set.filter(visibility=True).order_by('-updated', '-created')[:5]
+        }
+    )
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
