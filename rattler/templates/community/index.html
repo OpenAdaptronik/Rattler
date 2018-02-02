@@ -53,7 +53,8 @@
                     <table class="striped highlight responsive-table">
                         <thead>
                             <tr>
-                                <th>{% trans 'name' %}</th>
+                                <th>{% trans 'user' %}</th>
+                                <th>{% trans 'project name' %}</th>
                                 <th>{% trans 'category' %}</th>
                                 <th>{% trans 'subcategory' %}</th>
                                 <th>{% trans 'manufacturer' %}</th>
@@ -64,6 +65,7 @@
                         <tbody>
                             {% for project in filtered %}
                                 <tr>
+                                    <td><a href="{% url 'profile:detail' name=project.user.username %}">{{ project.user.username }}</a></td>
                                     <td>{{project.name}}</td>
                                     <td>{{project.category}}</td>
                                     <td>{{project.subcategory}}</td>
