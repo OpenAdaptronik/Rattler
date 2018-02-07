@@ -5,11 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.encoding import force_text
 from django.urls import reverse
 
-'''
-for more information and dokumentation check 
-docs.djangoproject.com/en/dev/ref/contrib/admin/
-'''
-
 
 class ProjectImagesInline (admin.TabularInline):
     '''
@@ -37,7 +32,7 @@ class ProjectImagesInline (admin.TabularInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere %s auf Seperaten Seite" % instance._meta.verbose_name,
+                text="Change %s here" % instance._meta.verbose_name,
         ))
 
     get_edit_link.short_description = _('project image link')
@@ -68,7 +63,7 @@ class ExperimentInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere %s auf Seperaten Seite" % instance._meta.verbose_name,
+                text="Change %s here" % instance._meta.verbose_name,
         ))
 
     get_edit_link.short_description = _('experiment link')
@@ -100,7 +95,7 @@ class DatarowInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere %s auf Seperaten Seite" % instance._meta.verbose_name,
+                text="Change %s here" % instance._meta.verbose_name,
         ))
 
     get_edit_link.short_description = _('datarow link')

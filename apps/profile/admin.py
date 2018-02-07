@@ -9,13 +9,6 @@ from apps.user.models import User
 
 from .models import Profile,ProfileImage
 
-admin.site.unregister(User)
-
-'''
-for more information and dokumentation check 
-docs.djangoproject.com/en/dev/ref/contrib/admin/
-'''
-
 class ProfileInline(admin.StackedInline):
     """ The Profile admin Inline.
     get Profile Image and shows it
@@ -66,7 +59,7 @@ class ProfileInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere %s auf Seperaten Seite" % instance.profileimage._meta.verbose_name,
+                text="Change %s here" % instance.profileimage._meta.verbose_name,
         ))
 
     get_edit_link.short_description = _('profile image link')
