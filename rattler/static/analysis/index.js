@@ -8,7 +8,7 @@ $( document ).ready(function() {
             return arr.map(function(x) { return x[n]})
         }
 
-            var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
+            var color = ['#005C47', '#FF6600', '#006E94', '#FDC300', '#B28700', '#FF3400'];
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
             // s. Variablenname
