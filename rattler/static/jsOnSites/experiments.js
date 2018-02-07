@@ -6,7 +6,7 @@ $( document ).ready(function() {
         }
 
     // Plotly: Graph von vorheriger Seite wieder plotten
-        var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
+        var color = ['#005C47', '#FF6600', '#006E94', '#FDC300', '#B28700', '#FF3400'];
         var traces = [];
         // s. Variablenname
         zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
