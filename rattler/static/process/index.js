@@ -9,6 +9,7 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
 
 // Plotly: Graph von vorheriger Seite wieder plotten
     var traces = [];
+    var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
     // s. Variablenname
     timeColumn = arrayColumnAsRow(dataArray, zeitreihenSpalte);
 
@@ -28,6 +29,7 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
             type: 'scatter',
             line: {
                 width: 1.5,
+                color: color[j],
             }
         }
         var yaxisTitle;

@@ -8,7 +8,7 @@ $( document ).ready(function() {
             return arr.map(function(x) { return x[n]})
         }
 
-            var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
+            var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
         // Plotly: Graph von vorheriger Seite wieder plotten
             var traces = [];
             // s. Variablenname
@@ -23,7 +23,8 @@ $( document ).ready(function() {
 
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
 
-        for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
+        for(var j=0; j < anzSpalten; j++){
+            // i = Index über Spalten
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
                 y: arrayColnAsRow(dataArray, j),
@@ -166,9 +167,9 @@ $('form').submit(function(event){
                     return arr.map(function (x) { return x[n] })
                 }
 
-        // Plotly: Graph von vorheriger Seite wieder plotten
-            var color = ['#090040' , '#00C8FF' , '#00FF1A', '#B28700' , '#FF3400']
-            var traces = [];
+        // Plotly: Graph von vorheriger Seite wieder plotte
+                var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
+                var traces = [];
             // s. Variablenname
             zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
                 var layout = {
@@ -187,6 +188,7 @@ $('form').submit(function(event){
                         name: spaltenTitel[j] + ' (' + spaltenEinheiten[j] + ')',
                         type: 'scatter',
                         line: {
+                            color: color[j],
                             width: 1.5,
                         }
                     }}
