@@ -2,11 +2,11 @@ from os import path
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.storage import default_storage
 from django.conf import settings
-from apps.profile.models import ProfileImage
+from apps.projects.models import ProjectImage
 
 class Command(BaseCommand):
-    help = 'Deletes not used profile images.'
-    base_dir = 'profile'
+    help = 'Deletes not used project images.'
+    base_dir = 'project'
 
     def handle(self, *args, **options):
         self.check_directory(path.join(settings.MEDIA_ROOT, self.base_dir))
@@ -22,7 +22,7 @@ class Command(BaseCommand):
     def check_file(self, file):
         path = file.replace(settings.MEDIA_ROOT + '/', '')
         try:
-            ProfileImage.objects.get(path=path)
-        except ProfileImage.DoesNotExist:
+            ProjectImage.objects.get(path=path)
+        except ProjectImage.DoesNotExist:
             self.stdout.write('Delte %s' %file)
             default_storage.delete(file)
