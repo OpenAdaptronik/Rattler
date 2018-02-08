@@ -31,7 +31,7 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    measured = models.DateTimeField(null=True)
+    
 
     class Meta:
         verbose_name = _('project')
@@ -84,6 +84,10 @@ class ProjectImage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE,verbose_name=_('project'))
     path = models.ImageField(upload_to=project_image_path, verbose_name=_('path'))
 
+    class Meta:
+        verbose_name = _('project image')
+        verbose_name_plural = _('project images')
+
 
 class Experiment(models.Model):
     name = models.CharField(_('name'),max_length=100, null=True)
@@ -91,6 +95,11 @@ class Experiment(models.Model):
     created = models.DateTimeField(null=True, auto_now_add=True, verbose_name=_('created'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))
+    measured = models.DateTimeField(null=True)
+
+    class Meta:
+        verbose_name = _('experiment')
+        verbose_name_plural = _('experiments')
 
 
 class MeasurementInstruments(Enum):
@@ -99,16 +108,19 @@ class MeasurementInstruments(Enum):
     NONE = 'No'
 
 
+
 class Datarow(models.Model):
+    name = models.CharField(_('name'), max_length=100, null=True)
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
     unit = models.CharField(max_length=10, null=True, verbose_name=_('unit'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
-    unit = models.CharField(max_length=10, null=True)
-    name = models.CharField(max_length=50, null=True)
-    description = models.TextField(max_length=500, null=True)
     measuring_instrument = models.CharField(max_length=2,
                                             choices=tuple((x.name, x.value) for x in MeasurementInstruments),
-                                            default=MeasurementInstruments.NONE)
+                                            default=MeasurementInstruments.NONE, verbose_name=_('measuring instrument'))
+    class Meta:
+        verbose_name = _('datarow')
+        verbose_name_plural = _('datarows')
+
 
 
 class Value(models.Model):

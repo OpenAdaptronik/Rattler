@@ -60,12 +60,6 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     template_name_suffix = '_update'
     fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name','expert']
 
-    def update_username(self):
-        user = self.request.user
-        form = forms.UserForm(data=self.request.POST,instance=user)
-        if form.is_valid():
-            form.save()
-
     def get_object(self):
         try:
             return self.request.user.profile
@@ -75,7 +69,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(ProfileUpdate, self).get_context_data(**kwargs)
         if self.request.method == 'POST':
-            ProfileUpdate.update_username(self)
+            data['first_name'] = self.request.POST.get('first_name')
+            data['last_name'] = self.request.POST.get('last_name')
             data['profile_image'] = forms.ProfileImageFormSet(self.request.POST, self.request.FILES, instance=self.object)
         else:
             data['profile_image'] = forms.ProfileImageFormSet(instance=self.object)
@@ -84,8 +79,13 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         context = self.get_context_data()
         profile_image = context['profile_image']
+        UserForm = forms.UserForm(data=context, instance=self.request.user)
 
         self.object = form.save()
+
+        if UserForm.is_valid():
+            UserForm.save()
+
         if profile_image.is_valid():
             profile_image.save()
         return super(ProfileUpdate, self).form_valid(form)
