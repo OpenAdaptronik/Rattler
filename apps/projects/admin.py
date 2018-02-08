@@ -32,7 +32,7 @@ class ProjectImagesInline (admin.TabularInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text=_('Changes %(image_project)s here.') % {'image_project': instance._meta.verbose_name},
+                text=_('Change %(project_image)s here.') % {'project_image': instance._meta.verbose_name},
         ))
 
     get_edit_link.short_description = _('project image link')
@@ -63,7 +63,7 @@ class ExperimentInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text=_('Changes %(experiment)s here.') % {'experiment': instance._meta.verbose_name},
+                text=_('Change %(experiment)s here.') % {'experiment': instance._meta.verbose_name},
         ))
 
     get_edit_link.short_description = _('experiment link')
@@ -95,7 +95,7 @@ class DatarowInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text=_('Changes %(datarow)s here.') % {'datarow': instance._meta.verbose_name},
+                text=_('Change %(datarow)s here.') % {'datarow': instance._meta.verbose_name},
         ))
 
     get_edit_link.short_description = _('datarow link')
