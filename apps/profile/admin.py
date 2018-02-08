@@ -68,6 +68,7 @@ class ProfileInline(admin.StackedInline):
         User get Attributes from Profile via inlines
     """
 
+admin.site.unregister(User)
 @admin.register(User)
 class UserAdmin(apps_UserAdmin):
     inlines = (ProfileInline,)
