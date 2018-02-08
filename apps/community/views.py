@@ -9,7 +9,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 '''Community'''
 
 
-
 class FilterListView(ListView):
     model = Project
     template_name = 'community/index.html'
@@ -27,7 +26,6 @@ class FilterListView(ListView):
             'manufacturer': self.request.GET.get('manufacturer', None),
         }
         return data
-
 
     def get_queryset(self):
         queryset = Project.objects.filter(visibility=True)
@@ -52,7 +50,6 @@ class FilterListView(ListView):
         return queryset
 
 
-
 def user_filter(request):
     filtered_ids = list(Project.objects.values_list('id', flat=True))
     filtered_ids = list(Project.objects.all().values_list('id', flat=True))
@@ -67,10 +64,11 @@ def user_filter(request):
         manufacturer = post_data['manufacturer']
         # empty search
 
-        if (username == '') and (email == '') and (company == '') and (project_name == '') and (category == '') and (manufacturer == ''):
+        if (username == '') and (email == '') and (company == '') and (project_name == '') and (category == '') \
+                and (manufacturer == ''):
             return render(request, 'community/index.html', {'empty_search': 'Bitte gib einen Suchbegriff ein!'})
-        # legitimate search
 
+        # legitimate search
         if not(username == ''):
             matching_ids = list(Project.objects.filter(user__username__icontains=username).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
@@ -78,7 +76,8 @@ def user_filter(request):
             matching_ids = list(Project.objects.filter(user__email__icontains=email).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(company == ''):
-            matching_ids = list(Project.objects.filter(user__profile__company__icontains=company).values_list('id', flat=True))
+            matching_ids = list(Project.objects.filter(user__profile__company__icontains=company).
+                                values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(project_name == ''):
             matching_ids = list(Project.objects.filter(name__icontains=project_name).values_list('id', flat=True))
@@ -87,10 +86,9 @@ def user_filter(request):
             matching_ids = list(Project.objects.filter(category__name__icontains=category).values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
         if not(manufacturer == ''):
-            matching_ids = list(Project.objects.filter(manufacturer__icontains=manufacturer).values_list('id', flat=True))
+            matching_ids = list(Project.objects.filter(manufacturer__icontains=manufacturer).
+                                values_list('id', flat=True))
             filtered_ids = list(set(matching_ids) & set(filtered_ids))
-
-
 
     # no id matches
         if len(filtered_ids) == 0:
@@ -98,9 +96,6 @@ def user_filter(request):
 
     filtered = filter(filtered_ids)
     return render(request, 'community/index.html', {'filtered': filtered})
-
-
-
 
 
 def filter(filtered_ids):

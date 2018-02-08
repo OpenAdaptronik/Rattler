@@ -16,14 +16,17 @@ typ as CharField
 note as TextField
 '''
 
+
 class Project(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'), on_delete=models.CASCADE,)
     name = models.CharField(_('name'), max_length=100)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set', verbose_name=_('category'))
-    subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set', verbose_name=_('subcategory'))
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set',
+                                 verbose_name=_('category'))
+    subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set',
+                                    verbose_name=_('subcategory'))
     manufacturer = models.CharField(_('manufacturer'), max_length=100)
     typ = models.CharField(_('type'), max_length=100)
-    description = models.TextField(_('description') ,max_length=500)
+    description = models.TextField(_('description'), max_length=500)
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
@@ -56,12 +59,15 @@ class Category(models.Model):
     class Meta:
         unique_together = ('name', 'parent',)
 
+
 def project_image_path(instance, filename):
     return 'project/%s/%s%s' % (instance.project.id, instance.project.name, os.path.splitext(filename)[1])
+
 
 class ProjectImage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE,)
     path = models.ImageField(upload_to=project_image_path)
+
 
 class Experiment(models.Model):
     name = models.CharField(max_length=100, null=True)
@@ -71,6 +77,8 @@ class Experiment(models.Model):
     timerow = models.IntegerField(null=True)
 
 
+# Enum Model, damit man beim Auslesen von Datarow measuring_instrument besser auslesen kann;
+# z.B. actor_datarows = Datarow.objects.filter(measuring_instruments = MeasuringInstruments.ACTUATOR)
 class MeasurementInstruments(Enum):
     SENSOR = 'Se'
     ACTUATOR = 'Ac'
