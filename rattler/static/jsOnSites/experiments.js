@@ -27,7 +27,7 @@ $( document ).ready(function() {
             type: 'scatter',
             line: {
                 width: 1.5,
-                color: color[j]
+                color: color[j%6]
             }
         }
 
