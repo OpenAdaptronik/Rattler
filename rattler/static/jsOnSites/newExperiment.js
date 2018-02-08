@@ -273,7 +273,7 @@ $( document ).ready(function() {
                             name: colTitles[i] + "(" + colUnits[i] + ")",
                             type: 'scatter',
                             line: {
-                                color: color[i%5],
+                                color: color[i%6],
                                 width: 1.5,
                             }
                         }
