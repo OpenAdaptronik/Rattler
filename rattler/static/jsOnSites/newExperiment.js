@@ -262,7 +262,11 @@ $( document ).ready(function() {
                         'xaxis': {
                             autotick: true,
                             rangeslider: {}
-                        }
+                        },
+                        'margin': {
+                            t: 0,
+                            pad: 0,
+                        },
                     }
 
                     // iterate through all cols and prepare them for visualisation
