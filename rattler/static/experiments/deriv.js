@@ -90,7 +90,7 @@ $(document).ready(function () {
                 // Append new info and data to fields containing the vars we send to python to create a new experiment
                 // add the new heading to the headers
                 xHeaders.push(newColName);
-                console.log(xHeaders);
+                console.log(JSON.stringify(xHeaders));
                 $("#jsonHeader").val(JSON.stringify(xHeaders));
                 // add the new unit to the units
                 xUnits.push(newColUnit);
