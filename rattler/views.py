@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -56,3 +56,10 @@ def sleep(request):
     import time
     time.sleep(4)
     return HttpResponseRedirect('/')
+
+def fac(request, n):
+    res = 1
+    while n > 1:
+        res = res * n
+        n = n - 1
+    return HttpResponse(res)
