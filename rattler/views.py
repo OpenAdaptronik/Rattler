@@ -50,3 +50,9 @@ def index(request):
             'login_form': AuthenticationForm()
         }
     )
+
+
+def sleep(request):
+    import time
+    time.sleep(4)
+    return HttpResponseRedirect('/')
