@@ -7,10 +7,12 @@ $(document).ready(function () {
     var numTasks = 0;
     // @TODO: the following vars have to be initialized w/ the existing cols of the experiment,
     // because Fraunhofer want all the existing cols saved to the new experiment, too.
-    var xHeaders = [];
-    var xUnits = [];
-    var xMeasurementInstruments = [];
-    var xData = [];
+    var xHeaders = JSON.parse($("#jsonHeader").val());
+    console.log(xHeaders);
+    //console.log($.type(JSON.parse(xHeaders)));
+    var xUnits = JSON.parse($("#jsonEinheiten").html());
+    var xMeasurementInstruments = JSON.parse($("#jsonMeasurementInstruments").html());
+    var xData = JSON.parse($("#jsonData").html());
 
     // get vars from python (submitted through hidden html fields)
     var experimentId = parseInt($("#experimentId").val());
@@ -88,15 +90,19 @@ $(document).ready(function () {
                 // Append new info and data to fields containing the vars we send to python to create a new experiment
                 // add the new heading to the headers
                 xHeaders.push(newColName);
-                $("#jsonHeader").html(JSON.stringify(xHeaders));
+                console.log(xHeaders);
+                $("#jsonHeader").val(JSON.stringify(xHeaders));
                 // add the new unit to the units
                 xUnits.push(newColUnit);
                 $("#jsonEinheiten").html(JSON.stringify(xUnits));
                 // add new empty Instrument to MeasurementInstruments
-                xMeasurementInstruments.push("");
+                xMeasurementInstruments.push("No");
                 $("#jsonMeasurementInstruments").html(JSON.stringify(xMeasurementInstruments));
                 // add new col data to data
-                xData.push(newColData);
+                var horizontalLength = xData[0].length;
+                for(i=0; i<xData.length; i++){
+                    xData[i][horizontalLength] = newColData[i];
+                }
                 $("#jsonData").html(JSON.stringify(xData));
                 // add sentence about the completed task to the experiment description
                 $("#experimentDescr").html($("#experimentDescr").html() + "\nSpalte " + firstCol + " wurde über Spalte " + secondCol + " in die neue Spalte \"" + newColName + "\" " + intOrDeriv + ".");

@@ -369,8 +369,6 @@ $( document ).ready(function() {
                     // cut the data to the range the user selected, convert it in JSON and write it in the textarea w/ id=jsonData & name=jsonData
                     // rangeStartIndex and rangeEndIndex are variables whose scope is one level higher. They might be altered by the event function which is called when the user changes the range.
                     $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
-                    console.log("Daten");
-                    console.log(results.data.slice(rangeStartIndex, rangeEndIndex));
                 })
             });
         };
