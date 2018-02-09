@@ -6,7 +6,7 @@ After=network.target
 User=nginx
 Group=www-data
 WorkingDirectory=/usr/share/nginx/rattler
-ExecStart=/usr/share/nginx/rattler/venv/bin/uwsgi --ini uwsgi/vassals/rattler.ini
+ExecStart=/usr/share/nginx/rattler/venv/bin/uwsgi --ini /etc/uwsgi/vassals/rattler.ini
 
 [Install]
 WantedBy=multi-user.target
