@@ -15,6 +15,7 @@ $( document ).ready(function() {
     // setup datepicker in the right language (at the moment hardcoded German) and the right format
     // if you want to include other languages, you might want to take a look @ https://github.com/amsul/pickadate.js/tree/3.5.6/lib/translations
         // get the dateFormat which is the base.py constant "DATE_FORMAT"
+        var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
         var dateFormat = $("#dateFormat").val();
         $('.datepicker').pickadate({
             monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
@@ -272,6 +273,7 @@ $( document ).ready(function() {
                             name: colTitles[i] + "(" + colUnits[i] + ")",
                             type: 'scatter',
                             line: {
+                                color: color[i%6],
                                 width: 1.5,
                             }
                         }
