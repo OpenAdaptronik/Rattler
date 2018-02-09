@@ -239,6 +239,8 @@ def derivate(request, experimentId):
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
     experimentName = Experiment.objects.get(id=experimentId).name
+    dateCreated = Experiment.objects.get(id=experimentId).created
+    timerow = Experiment.objects.get(id=experimentId).timerow
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
     datarow_amount = len(datarow_id)
     
@@ -250,6 +252,10 @@ def derivate(request, experimentId):
         'experimentId': experimentId,
         'experimentName': experimentName,
         'numOfCols': datarow_amount,
+        'projectId':projectId,
+        'dateFormat': settings.DATE_FORMAT,
+        'dateCreated': dateCreated,
+        'timerow': timerow,
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
