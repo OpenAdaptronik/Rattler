@@ -213,6 +213,9 @@ def newESave(request):
         elif measurement_instruments[i] == 'none':
             new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
                                   name=header[i], measuring_instrument='No')
+         elif measurement_instruments[i] == '':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='No')
         new_datarow.save()
         j = 0
         while j < len(data):
