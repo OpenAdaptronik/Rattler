@@ -12,10 +12,14 @@ $( document ).ready(function() {
         zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
 
     var layout = {
-        title: 'Dein Experiment:',
+        //title: 'Dein Experiment:',
         xaxis: {
             title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
-        }
+        },
+        'margin': {
+            t: 0,
+            pad: 0,
+        },
     }
 
     // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten

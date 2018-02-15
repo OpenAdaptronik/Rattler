@@ -19,7 +19,9 @@
                     <br/> Hier kannst du Spalten über andere ableiten und integrieren, jeweils über einen "Auftrag".
                     <br/>
                     <!--Damit die neu generierten Spalten auch in deinem Experiment gespeichert werden, musst du am Ende auf den Button "Neue Spalten abspeichern" klicken.<br/>-->
-                    Die neuen Spalten siehst du dann in der Analyse-App.
+                    Die neuen Spalten werden zusammen mit den alten in einem Experiment abgespeichert, sobald du - nach Ausführung aller gewünschten Aufträge - auf den Button "als Experiment speichern" klickst.
+                    <br/>
+                    Dann kannst du deine neuen Spalten in der Analyse des neuen Experimentes ansehen.
                 </div>
                 <div class="divider"></div>
                 <div class="section" id="">
@@ -124,17 +126,44 @@
                             <i class="material-icons circle">check</i>
                             <p>
                                 <b>Auftrag <span class="taskNumber">Task#</span>:</b><br/>
-                                Spalte
-                                <span class="firstColInfo">FIRST ("NAME" (EINHEIT))</span>
-                                wurde über Spalte
-                                <span class="secondColInfo">SECOND ("NAME" (EINHEIT))</span>
-                                <span class="intOrDeriv">ABGELEITET/INTEGRIERT</span>.
-                                <br/>
-                                Das Ergebnis ist in Spalte
-                                <span class="resultColInfo">RESULT_SPALTE ("NAME" EINHEIT)</span>
+                                <span class="wholeSentence">Spalte
+                                    <span class="firstColInfo">FIRST ("NAME" (EINHEIT))</span>
+                                    wurde über Spalte
+                                    <span class="secondColInfo">SECOND ("NAME" (EINHEIT))</span>
+                                    <span class="intOrDeriv">ABGELEITET/INTEGRIERT</span>.
+                                    <br/>
+                                    Das Ergebnis ist in Spalte
+                                    <span class="resultColInfo">RESULT_SPALTE ("NAME" EINHEIT)</span>
+                                </span>
                             </p>
                         </li>
                     </ul>
+                </div>
+                <div class="divider" id=""></div>
+                <div class="section" id="">
+                    <b>Daten zum Experiment eingeben:</b>
+                    <form action="{% url 'experiments:newESave' %}" method="post" enctype="multipart/form-data" id="">
+                        {% csrf_token %}
+                        <!-- hidden vars we send to python to create a new experiment -->
+                            <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten">{{jsonEinheitenRealJson}}</textarea>
+                            <textarea style="display: none;" id="jsonMeasurementInstruments" name="jsonMeasurementInstruments">{{jsonMInstrumentsRealJson}}</textarea>
+                            <textarea style="display: none;" id="jsonData" name="jsonData">{{jsonData}}</textarea>
+                            <input type="hidden" id="timeRowCol" name="zeitreihenSpalte" value="{{timerow}}"/>
+                            <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
+                            <input type="hidden" id="dateFormat" name="dateFormat" value="{{ dateFormat }}"/>
+                            <input type="hidden" id="erfassungsDatum" name="erfassungsDatum" value="{{dateCreated}}">
+                            <input type="hidden" id="jsonHeader" name="jsonHeader" value='{{jsonHeaderRealJson}}'/>
+                        <!-- visible fields we send to python to create a new experiment -->
+                            <div class="input-field">
+                                <input id="datensatzName" class="validate" name="datensatzName" type="text" value="{{experimentName}} - modifiziert" data-length="40"/>
+                                <label for="datensatzName">Name des Experimentes</label>
+                            </div>
+                            <div class="input-field">
+                                <textarea type="text" class="materialize-textarea" id="experimentDescr" name="experimentDescr">Aus "{{experimentName}}" (Experiment-ID: {{experimentId}}) entstanden.</textarea>
+                                <label for="experimentDescr">Weitere Informationen:</label>
+                            </div>
+                            <button class="btn waves-effect waves-light" type="submit" style="position: relative; z-index: auto;">als Experiment speichern <i class="material-icons right">save</i></button>
+                    </form>
                 </div>
             </div>
         </div>
