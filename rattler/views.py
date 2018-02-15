@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.templatetags.static import static 
 
 @login_required
 def dashboard(request):
@@ -35,9 +36,8 @@ def settings (request):
 def projects (request):
     return render (request, 'projects/create.html')
 
-@login_required
 def help (request):
-    return render (request,'help/index.html')
+    return HttpResponseRedirect('/static/Benutzerhandbuch.pdf')
 
 def index(request):
     if request.user.is_authenticated:
