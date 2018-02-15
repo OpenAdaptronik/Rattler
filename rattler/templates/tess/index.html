@@ -22,43 +22,62 @@
                         </div>
                         <div class="section" id="result">
                             <div class="col s9">
+                                <div class="row valign-wrapper hide" id="newTaskInProgress">
+                                    <div class="col">
+                                        <div class="newTaskPreloaderWrapper">
+                                            <div class="preloader-wrapper small active">
+                                                <div class="spinner-layer right">
+                                                    <div class="circle-clipper left">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    <div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    <div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table id="tessResult" style="display: none">
                                     <thead>
-                                      <tr>
-                                          <th>Ergebnis</th>
-                                          <th>Beschreibung</th>
-                                          <th>Parameter</th>
-                                      </tr>
+                                    <tr>
+                                        <th>Ergebnis</th>
+                                        <th>Beschreibung</th>
+                                        <th>Parameter</th>
+                                    </tr>
                                     </thead>
 
                                     <tbody>
-                                      <tr>
+                                    <tr>
                                         <td>Beste Strategie:</td>
                                         <td id="strat1"></td>
                                         <td id="param1"></td>
-                                      </tr>
-                                      <tr>
+                                    </tr>
+                                    <tr>
                                         <td>Zweitbeste Strategie:</td>
                                         <td id="strat2"></td>
                                         <td id="param2"></td>
-                                      </tr>
-                                      <tr>
+                                    </tr>
+                                    <tr>
                                         <td>Drittbeste Strategie:</td>
                                         <td id="strat3"></td>
                                         <td id="param3"></td>
-                                      </tr>
-                                      <tr>
+                                    </tr>
+                                    <tr>
                                         <td>Viertbeste Strategie:</td>
                                         <td id="strat4"></td>
                                         <td id="param4"></td>
-                                      </tr>
-                                      <tr>
+                                    </tr>
+                                    <tr>
                                         <td>Fünftbeste Strategie:</td>
                                         <td id="strat5"></td>
                                         <td id="param5"></td>
-                                      </tr>
+                                    </tr>
                                     </tbody>
-                                  </table>
+                                </table>
                             </div>
                             <div class="col s3" style="margin-bottom: 1%">
                                 <button class="btn waves-effect waves-light" type="submit" id="refreshButton" disabled="true">Berechnen <i class="material-icons right"></i></button>
