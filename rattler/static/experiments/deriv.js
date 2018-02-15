@@ -5,6 +5,14 @@ $(document).ready(function () {
     // init vars
     var firstCol, secondCol, newColName, newColUnit, intOrDevFctCode;
     var numTasks = 0;
+    // @TODO: the following vars have to be initialized w/ the existing cols of the experiment,
+    // because Fraunhofer want all the existing cols saved to the new experiment, too.
+    var xHeaders = JSON.parse($("#jsonHeader").val());
+    console.log(xHeaders);
+    //console.log($.type(JSON.parse(xHeaders)));
+    var xUnits = JSON.parse($("#jsonEinheiten").html());
+    var xMeasurementInstruments = JSON.parse($("#jsonMeasurementInstruments").html());
+    var xData = JSON.parse($("#jsonData").html());
 
     // get vars from python (submitted through hidden html fields)
     var experimentId = parseInt($("#experimentId").val());
@@ -78,17 +86,40 @@ $(document).ready(function () {
                 $(".newestCompletedTask .tastNumber").html(numTasks+1);
                 $(".newestCompletedTask .intOrDeriv").html(intOrDeriv);
                 $(".newestCompletedTask .resultColInfo").html(numOfCols + " (\"" + newColName + "\" (" + newColUnit + "))");
+
+                // Append new info and data to fields containing the vars we send to python to create a new experiment
+                // add the new heading to the headers
+                xHeaders.push(newColName);
+                console.log(JSON.stringify(xHeaders));
+                $("#jsonHeader").val(JSON.stringify(xHeaders));
+                // add the new unit to the units
+                xUnits.push(newColUnit);
+                $("#jsonEinheiten").html(JSON.stringify(xUnits));
+                // add new empty Instrument to MeasurementInstruments
+                xMeasurementInstruments.push("No");
+                $("#jsonMeasurementInstruments").html(JSON.stringify(xMeasurementInstruments));
+                // add new col data to data
+                var horizontalLength = xData[0].length;
+                for(i=0; i<xData.length; i++){
+                    xData[i][horizontalLength] = newColData[i];
+                }
+                $("#jsonData").html(JSON.stringify(xData));
+                // add sentence about the completed task to the experiment description
+                $("#experimentDescr").html($("#experimentDescr").html() + "\nSpalte " + firstCol + " wurde über Spalte " + secondCol + " in die neue Spalte \"" + newColName + "\" " + intOrDeriv + ".");
+
+                // Show the info of the completed task in the completed tasks section
                 $(".newestCompletedTask").removeClass("hide").removeClass("newestCompletedTask");
                 $("#completedTasksSection").removeClass("hide");
                 $("#completedTasksDivider").removeClass("hide");
+                
+                // clear new task form for next task and make the fields look good again
+                $('#newTaskForm').trigger("reset");
+                Materialize.updateTextFields();
+                $('#experimentDescr').trigger('autoresize');
 
                 // Show new task form again
                 $("#newTaskInProgress").addClass("hide");
                 $("#newTask").removeClass("hide");
-                
-                // clear new task form for next task
-                $('#newTaskForm').trigger("reset");
-                Materialize.updateTextFields();
             },
             error: function(xhr, status, error) {
                 console.log("ERROR " + error);
