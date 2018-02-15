@@ -25,6 +25,7 @@ SOFTWARE.
 from django.db import models
 from django.contrib.auth.models import (AbstractUser, UserManager as auth_UserManager)
 from django.utils.translation import gettext_lazy as _
+from .validators import UnicodeUsernameValidator
 
 
 class UserManager(auth_UserManager):
@@ -62,10 +63,24 @@ class User(AbstractUser):
         is_active: The is active flag. Only active useres are allowed to login.
         created: The creation date of the user.
         updated: The last update date of the user.
+
+
         objects: The UserManager instance.
     """
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        unique=True,
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
     email = models.EmailField(_('email address'),unique= True)
     is_active = models.BooleanField(_('active'), default=False)
     created = models.DateTimeField(_('created'), auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('updated'))
     objects = UserManager()

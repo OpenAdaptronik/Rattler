@@ -25,7 +25,7 @@
     <dt><b>{% trans 'created' %}</b> {{ object.created }}</dt>
 
     {% if object.user == user %}
-    <a href="{% url 'projects:edit' object.id %}">{% trans 'edit' %}</a>
+    <a href="{% url 'projects:edit' object.id %}">{% trans 'edit project' %}</a>
 {% endif %}
 
 </dl>

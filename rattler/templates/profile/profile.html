@@ -1,146 +1,102 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block siteTitle %}
-    Profil &bull; {{ user.username }}
+    Profil &bull; {{ profile.username }}
 {% endblock %}
 {% block container %}
-<h2 style="">{{user.username}}'s Profil</h2>
+<h2 style="">{{profile.user.username}}'s Profil</h2>
 <div class="row">
     <div class="col s12 card">
         <div class="card-content row">
             <!--<span class="card-title">Meine Projekte</span>-->
             <div class="col l2 m4 s12">
-                {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
-                <img class="center" style="max-width: 100%; max-height: 100%" src="/{{ user.profile.profileimage.path.url }}">
+                {% if profile.profileimage and profile.profileimage.path %}
+                <img class="center" style="max-width: 100%; max-height: 100%" src="/{{ profile.profileimage.path.url }}">
                 {% else %}
                 <img class="center" style="max-width: 100%; max-height: 100%" src="{% static 'img/user.png' %}">
                 {% endif %}
             </div>
             <div class="col l10 m8 s12">
                 <ul class="collection with-header" style="margin-bottom:0">
-                    {% if user.profile.visibility_mail %}
+                    {% if profile.visibility_first_name or profile.visibility_last_name %}
+                    <li class="collection-item avatar">
+                        <i class="material-icons circle">person</i>
+                        <span class="title">Name</span>
+                        <p>
+                            {% if profile.visibility_first_name %}
+                                {{profile.user.first_name}} 
+                            {% endif %}
+                            {% if profile.visibility_last_name %}
+                                {{profile.user.last_name}}
+                            {% endif %}
+                        </p>
+                    </li>
+                    {% endif %}
+                    {% if profile.visibility_mail %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">email</i>
                         <span class="title">E-Mail-Adresse</span>
-                        <p><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+                        <p><a href="mailto:{{profile.user.email}}">{{profile.user.email}}</a></p>
                     </li>
-                    {% endif %} {% if user.profile.visibility_company and user.profile.company %}
+                    {% endif %}
+                    {% if profile.visibility_company and profile.company %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">work</i>
                         <span class="title">Institution / Firma</span>
-                        <p>{{user.profile.company}}</p>
+                        <p>{{profile.company}}</p>
                     </li>
-                    {% endif %} {% if user.profile.visibility_info and user.profile.info %}
+                    {% endif %}
+                    {% if profile.visibility_info and profile.info %}
                     <li class="collection-item avatar">
                         <i class="material-icons circle">info</i>
                         <span class="title">Beschreibung</span>
-                        <p>{{user.profile.info}}</p>
+                        <p>{{profile.info}}</p>
                     </li>
                     {% endif %}
                 </ul>
-                <!--
-                    <table>
-                        <tbody>
-                            {% if user.profile.visibility_mail %}
-                            <tr>
-                                <td><i class="material-icons">email</i></td>
-                                <td><strong>E-Mail-Adresse</strong></td>
-                                <td>{{user.email}}</td>
-                            </tr>
-                            {% endif %} {% if user.profile.visibility_company and user.profile.company %}
-                            <tr>
-                                <td><i class="material-icons">work</i></td>
-                                <td><strong>Institution / Firma</strong></td>
-                                <td>{{user.profile.company}}</td>
-                            </tr>
-                            {% endif %} {% if user.profile.visibility_info and user.profile.info %}
-                            <tr>
-                                <td><i class="material-icons">info</i></td>
-                                <td><strong>Beschreibung</strong></td>
-                                <td>{{user.profile.info}}</td>
-                            </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                    -->
             </div>
         </div>
     </div>
     <div class="col s12 card">
         <div class="card-content">
-            <span class="card-title">Projekte von {{user.username}}</span>
-            <div class="">
-                HIER PROJEKTE GEFILTERT AUF 5 AN DER ZAHL & VON DIESEM USER ANZEIGEN
-            </div>
+            <span class="card-title">Projekte von {{profile.user.username}}</span>
+
+            {% if last_projects %}
+                <table class="striped highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>{% trans 'name' %}</th>
+                            <th>{% trans 'category' %}</th>
+                            <th>{% trans 'subcategory' %}</th>
+                            <th>{% trans 'manufacturer' %}</th>
+                            <th>{% trans 'typ' %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in last_projects %}
+                            <tr>
+                                <td>{{project.id}}</td>
+                                <td>{{project.name}}</td>
+                                <td>{{project.category}}</td>
+                                <td>{{project.subcategory}}</td>
+                                <td>{{project.manufacturer}}</td>
+                                <td>{{project.typ}}</td>
+                                <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {{profile.user.username}} hat noch keine Projekte angelegt.
+            {% endif %}
+
+
         </div>
         <div class="card-action">
             <a href="#">Alle Projekte anzeigen &rarr;</a>
         </div>
     </div>
 </div>
-
-
-<!--
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col s12 m12 13" style="min-width: 300px">
-                <div class="card">
-                    {% if user.profile and user.profile.profileimage and user.profile.profileimage.path %}
-                        <div class="card-image">
-                            <img src="/{{ user.profile.profileimage.path.url }}">
-                            <span class="card-title">{{user.username}}</span>
-                        </div>
-                    {% else %}
-                            <span class="card-title">{{user.username}}</span>
-                    {% endif %}
-                        {% if user.profile %}
-                            <ul class="collection card-content">
-                                {% if user.profile.visibility_mail %}
-                                    <li class="collection-item avatar">
-                                        <i class="material-icons circle">email</i>
-                                        <span class="title">E-Mail</span>
-                                        <p>{{user.email}}</p>
-                                    </li>
-                                {% endif %}
-
-                                {% if user.profile.visibility_first_name and  user.first_name %}
-                                    <li class="collection-item avatar">
-                                        <i class="material-icons circle">face</i>
-                                        <span class="title">Vorname</span>
-                                        <p>{{user.first_name}}</p>
-                                    </li>
-                                {% endif %}
-
-                                {% if user.profile.visibility_last_name and  user.last_name %}
-                                    <li class="collection-item avatar">
-                                        <i class="material-icons circle">face</i>
-                                        <span class="title">Nachname</span>
-                                        <p>{{user.last_name}}</p>
-                                    </li>
-                                {% endif %}
-
-                                {% if user.profile.visibility_company and  user.profile.company %}
-                                    <li class="collection-item avatar">
-                                        <i class="material-icons circle">work</i>
-                                        <span class="title">Unternehmen</span>
-                                        <p>{{user.profile.company}}</p>
-                                    </li>
-                                {% endif %}
-
-                                {% if user.profile.visibility_info and  user.profile.info %}
-                                    <li class="collection-item avatar">
-                                        <i class="material-icons circle">info</i>
-                                        <span class="title">Info</span>
-                                        <p>{{user.profile.info}}</p>
-                                    </li>
-                                {% endif %}     
-                            </ul>                
-                        {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
 {% endblock %}

@@ -1690,7 +1690,7 @@ nav ul li.active {
   overflow: hidden;
   display: flex;
   flex-grow: 1;
-  max-height: 120px; }
+  height: 170px; }
 
 .processSteps {
   display: inline-block; }
@@ -4428,7 +4428,7 @@ button:focus {
 
 label {
   font-size: 0.8rem;
-  color: #222; }
+  color: #222222; }
 
 /* Text Inputs + Textarea
    ========================================================================== */
@@ -4766,7 +4766,7 @@ textarea.materialize-textarea + label:after, .select-wrapper + label:after {
   .input-field.col .prefix ~ .validate ~ label {
     width: calc(100% - 3rem - 1.5rem); }
   .input-field label {
-    color: #222;
+    color: #222222;
     position: absolute;
     top: 0;
     left: 0;

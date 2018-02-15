@@ -25,6 +25,7 @@ from apps.register.tokens import account_activation_token
 from . import models
 from . import forms
 from . models import ProfileImage
+from apps.user.models import User
 
 
 reverse_lazy = lazy(reverse, str)
@@ -32,19 +33,32 @@ reverse_lazy = lazy(reverse, str)
 @login_required
 def show_me(request):
     ''' shows user profile '''
-    return render(request, 'profile/me.html')
+    return render(
+        request,
+        'profile/me.html',
+        {
+            'last_projects': request.user.project_set.order_by('-updated', '-created')[:5]
+        }
+    )
 
 def show(request, name = 'me'):
     if (name == 'me'):
         return show_me(request)
     user = get_user_model().objects.get(username=name)
-    return render(request, 'profile/profile.html', {'user':user})
+    return render(
+        request,
+        'profile/profile.html',
+        {
+            'profile': user.profile,
+            'last_projects': user.project_set.filter(visibility=True).order_by('-updated', '-created')[:5]
+        }
+    )
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
     model = models.Profile
     template_name_suffix = '_update'
-    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name']
+    fields = ['company', 'info', 'visibility_mail', 'visibility_company', 'visibility_info','visibility_first_name','visibility_last_name','expert']
 
     def get_object(self):
         try:
@@ -55,6 +69,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(ProfileUpdate, self).get_context_data(**kwargs)
         if self.request.method == 'POST':
+            data['first_name'] = self.request.POST.get('first_name')
+            data['last_name'] = self.request.POST.get('last_name')
             data['profile_image'] = forms.ProfileImageFormSet(self.request.POST, self.request.FILES, instance=self.object)
         else:
             data['profile_image'] = forms.ProfileImageFormSet(instance=self.object)
@@ -63,11 +79,18 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         context = self.get_context_data()
         profile_image = context['profile_image']
-        
+        UserForm = forms.UserForm(data=context, instance=self.request.user)
+
         self.object = form.save()
+
+        if UserForm.is_valid():
+            UserForm.save()
+
         if profile_image.is_valid():
             profile_image.save()
         return super(ProfileUpdate, self).form_valid(form)
+
+
 
 class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
     success_url=reverse_lazy('profile:index')
@@ -82,13 +105,13 @@ class ProfileImageUpdate(LoginRequiredMixin, UpdateView):
         except ObjectDoesNotExist:
             return models.ProfileImage(profile=profile)
 
+
 def deleteProfileImage(request):
     try:
-        profileImage = request.user.profile.profileimage.path
-        ProfileImage.objects.filter(path=profileImage).delete()
-        return show_me(request)
-    except ObjectDoesNotExist:
-        return show_me(request)
+        request.user.profile.profileimage.delete()
+    except ProfileImage.DoesNotExist:
+        pass
+    return redirect(reverse('profile:edit'))
 
 
 def change_email(request):

@@ -6,9 +6,11 @@
     {% include 'includeDefs/javascript-plotly.html' %}
 {% endblock %}
 {% block container %}
-<h2>Neues Experiment anlegen</h2>
 <!-- @TODO hier dann mit Django die maxDatarows für den aktuell angemeldeten User einfügen -->
-<input type="hidden" id="maxDatarows" name="" value="500"/>
+<input type="hidden" id="maxDatarows" name="" value="{{ user.profile.max_datarows }}"/>
+
+<h2 style="display:inline-block; margin-right: 12px;">Neues Experiment anlegen</h2>
+<a style="display: inline-block" href="{% url 'experiments:new' projectId %}">Von vorne beginnen</a><br/>
 <div class="row">
     <div class="col s12 m12 l12" style="min-width: 300px" id="neueSchwingungsdatenCol">
         <div class="card">
@@ -18,43 +20,40 @@
                 <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
                 <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
                 <textarea style="display: none;" id="jsonMeasurementInstruments" name="jsonMeasurementInstruments"></textarea>
-                <input type="hidden" id="zeitreihenSpalte" name="zeitreihenSpalte"/>
+                <input type="hidden" id="timeRowCol" name="zeitreihenSpalte"/>
                 <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
                 <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
                 <input type="hidden" id="dateFormat" name="dateFormat" value="{{ dateFormat }}"/>
                 <div class="card-content" id="schritt1-card">
-                    <!--<span class="card-title">Neue Schwingungsdaten analysieren</span>-->
-                    <p>
-                        <div class="processSteps">
-                            <ul>
-                                <li class="active">1</li>
-                                <li>2</li>
-                                <li>3</li>
-                            </ul>
-                        </div><span style="display: inline-block">Schritt 1: 
-                            <b>Hochladen & Visualisieren</b></span>&emsp;<span style="display: inline-block">
-                                <a href="{% url 'dashboard:index' %}">Von vorne beginnen</a>
-                            </span>
-                    </p>
-                    <div class="divider"></div>
-                    <div class="section" id="dataUploadSection" style="padding-bottom:0">
-                        <p>
-                            <b>Datei hochladen</b>
-                        </p>
+                    <div class="card-title" id="">
+                        Datei hochladen
+                    </div>
+                    <div class="section" id="dataUploadSection" style="padding-bottom:0; padding-top:0">
                         <p>
                             <div class="row" style="margin:0"><!--<div class="col s8" style="border: 2px dashed #ccc; text-align: center;">Datei hier hinziehen<br/>oder<br/><button>In Ordner auswählen...</button></div>-->
-                                <div class="col s8 dropzone dz-clickable" id="dropzoneDiv" style="">
+                                <div class="col m5 s12" id="" style="padding-bottom: 5px">
+                                    <div class="dropzone dz-clickable" id="dropzoneDiv" style="">
                                         <div class="dz-message">
                                             <i class="material-icons">file_upload</i><br/>
                                             Daten hier hinziehen oder klicken um hochzuladen.
                                         </div>
+                                    </div>
                                 </div>
-                                <div class="col s4"><a href="xyz.html">Wie muss die Datei aufgebaut sein?</a></div>
+                                <div class="col m7 s12">
+                                    <b>Aufbau der Datei:</b>
+                                    <ul class="browser-default" style="padding:0 0 0 20px; margin:0">
+                                        <li>Jede Spalte sollte entweder die Zeit- oder eine Datenreihe enthalten.</li>
+                                        <li>Die Spalten sollten keine Zahlen als Titel haben.</li>
+                                        <li>Die erste Zeile darf, muss aber keinen Header (also Spaltentitel) enthalten.</li>
+                                        <li>Ab der zweiten Zeile dürfen nur Zeit- oder Schwingungsdaten enthalten sein.</li>
+                                        <li>phyphox: Beim Export bitte die Option "Export as CSV" wählen.</li>
+                                    </ul>   
+                                </div>
                             </div>
                         </p>
                     </div>
 
-                    <div class="divider datensatzInformationenFelder" style="display:none;"></div>
+                    <!--<div class="divider datensatzInformationenFelder" style="display:none;"></div>-->
                     <div class="section datensatzInformationenFelder" style="display:none;">
                         <div class="input-field">
                             <input id="datensatzName" class="validate" name="datensatzName" type="text" data-length="40"/>

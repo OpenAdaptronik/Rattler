@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-
+from .forms import RegisterForm
 from .forms import AuthenticationForm
 
 
@@ -11,6 +11,7 @@ def index(request):
         request,
         'index/index.html',
         {
-            'login_form': AuthenticationForm()
+            'login_form': AuthenticationForm(),
+            'registration_form': RegisterForm()
         }
     )

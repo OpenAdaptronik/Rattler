@@ -14,9 +14,4 @@ class Migration(migrations.Migration):
             model_name='experiment',
             name='description',
         ),
-        migrations.AddField(
-            model_name='experiment',
-            name='created',
-            field=models.DateTimeField(null=True),
-        ),
     ]

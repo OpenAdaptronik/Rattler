@@ -5,6 +5,7 @@
     <!-- Haupt-Navigation auf grossem Bildschirm -->
         <ul id="nav" class="left hide-on-med-and-down">
             <li class="{% if request.resolver_match.namespaces.0 == 'dashboard' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+            <li class="{% if request.resolver_match.namespaces.0 == 'projects' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'projects:index' %}">Meine Projekte</a></li>
             <li class="{% if request.resolver_match.namespaces.0 == 'community' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'community:index' %}">Community</a></li>
         </ul>
     <!-- Profil-Menue -->
@@ -37,7 +38,8 @@
         </ul>
 {% else %}
     <ul id="nav" class="left hide-on-med-and-down">
-        <li class=""><a href="{% url 'register:index' %}">Registrieren</a></li>
+        <li class="{% if request.resolver_match.namespaces.0 == 'register' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'register:index' %}"><a href="{% url 'register:index' %}">Registrieren</a></li>
+        <li class="{% if request.resolver_match.url_name == 'login' %}active{% endif %}"><a href="{% url 'login' %}">Login</a></li>
     </ul>
 {% endif %}
 <!-- Hilfe-Button -->

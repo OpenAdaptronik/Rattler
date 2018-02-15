@@ -25,7 +25,8 @@
 		</nav></div>
 
 		<!-- INHALT -->
-		<div class="section container">
+		{% block contentBeforeContainer %}{% endblock %}
+		<div class="section container" id="baseContainer">
 			{% block container %}{% endblock %}
 		</div>
 

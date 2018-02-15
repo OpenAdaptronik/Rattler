@@ -91,7 +91,7 @@ def categories(request, id=None):
         request,
         'projects/categories.html',
         {
-            'categories': Category.objects.filter(parent=id)
+            'categories': Category.objects.allDescandends(parent=id)
         }
     )
 

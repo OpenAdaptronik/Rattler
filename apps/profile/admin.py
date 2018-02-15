@@ -1,20 +1,20 @@
 from django.contrib import admin
+from django.urls import reverse
 from django.utils import html
 from apps.user.models import User
 from apps.user.admin import UserAdmin as apps_UserAdmin
 from django.utils.encoding import force_text
-from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+
+from apps.user.admin import UserAdmin as apps_UserAdmin
+from apps.user.models import User
 
 from .models import Profile, ProfileImage
-
-admin.site.unregister(User)
-
 
 class ProfileInline(admin.StackedInline):
     """ The Profile admin Inline.
     get Profile Image and shows it
     """
-
     def get_profile_image(instance):
         if not instance.profileimage.path:
             return
@@ -22,6 +22,8 @@ class ProfileInline(admin.StackedInline):
                                 src='/' + instance.profileimage.path.url,
                                 title=instance.user.username,
                                 )
+
+    get_profile_image.short_description = _('profil image')
 
     """ The Profile admin Inline.
      Attributes:
@@ -32,24 +34,21 @@ class ProfileInline(admin.StackedInline):
      """
     model = Profile
     can_delete = False
-    verbose_name_plural = 'Profile'
+    verbose_name = _('profile')
+    verbose_name_plural = _('profile')
     fk_name = 'user'
-    fields = ('company',
-              'info',
-              'expert',
-              'visibility_mail',
-              'visibility_company',
-              'visibility_info',
-              'visibility_first_name',
-              'visibility_last_name',
-              'max_projects',
-              'max_datarows',
-              'created',
-              'updated',
-              'get_edit_link',
-              get_profile_image
-              )
+
+    fieldsets = (
+        (_('user'), {'fields': ('visibility_first_name', 'visibility_last_name','expert',)}),
+        (_('info'), {'fields': ('info', 'visibility_info',)}),
+        (_('company'), {'fields': ('company', 'visibility_company',)}),
+        (_('max fields'), {'fields': ('max_projects','max_datarows',)}),
+        (_('important dates'), {'fields': ('created', 'updated')}),
+        (_('profile image'), {'fields': ('get_edit_link', get_profile_image)}),
+
+    )
     readonly_fields = ('created','updated','get_edit_link',get_profile_image)
+
 
     """ The Profile admin model.
         Link to Change Profile Image to AdminProfileImage 
@@ -64,14 +63,16 @@ class ProfileInline(admin.StackedInline):
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
                 url=url,
-                text="Ändere Bild %s auf Seperaten Seite" % instance.profileimage._meta.verbose_name,
+                text=_('Change %(profile_image_name)s here.') % {'profile_image_name': instance.profileimage._meta.verbose_name},
         ))
+
+    get_edit_link.short_description = _('profile image link')
 
     """ The User admin.
         User get Attributes from Profile via inlines
     """
 
-
+admin.site.unregister(User)
 @admin.register(User)
 class UserAdmin(apps_UserAdmin):
     inlines = (ProfileInline,)
@@ -112,6 +113,8 @@ class ProfileImageAdmin(admin.ModelAdmin):
                                 src='/' + instance.path.url,
                                 )
 
+    '''Translate Profile Image in ProfileImage'''
+    get_profile_image.short_description = _('profil image')
     save_on_top = True
     fields = ('path',
               'created',
