@@ -15,6 +15,7 @@ $( document ).ready(function() {
     // setup datepicker in the right language (at the moment hardcoded German) and the right format
     // if you want to include other languages, you might want to take a look @ https://github.com/amsul/pickadate.js/tree/3.5.6/lib/translations
         // get the dateFormat which is the base.py constant "DATE_FORMAT"
+        var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
         var dateFormat = $("#dateFormat").val();
         $('.datepicker').pickadate({
             monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
@@ -261,7 +262,11 @@ $( document ).ready(function() {
                         'xaxis': {
                             autotick: true,
                             rangeslider: {}
-                        }
+                        },
+                        'margin': {
+                            t: 0,
+                            pad: 0,
+                        },
                     }
 
                     // iterate through all cols and prepare them for visualisation
@@ -272,6 +277,7 @@ $( document ).ready(function() {
                             name: colTitles[i] + "(" + colUnits[i] + ")",
                             type: 'scatter',
                             line: {
+                                color: color[i%6],
                                 width: 1.5,
                             }
                         }
@@ -363,8 +369,6 @@ $( document ).ready(function() {
                     // cut the data to the range the user selected, convert it in JSON and write it in the textarea w/ id=jsonData & name=jsonData
                     // rangeStartIndex and rangeEndIndex are variables whose scope is one level higher. They might be altered by the event function which is called when the user changes the range.
                     $("#jsonData").html(JSON.stringify(results.data.slice(rangeStartIndex, rangeEndIndex)));
-                    console.log("Daten");
-                    console.log(results.data.slice(rangeStartIndex, rangeEndIndex));
                 })
             });
         };

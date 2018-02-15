@@ -29,7 +29,7 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
             type: 'scatter',
             line: {
                 width: 1.5,
-                color: color[j],
+                color: color[j%6],
             }
         }
         var yaxisTitle;

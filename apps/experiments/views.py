@@ -215,7 +215,7 @@ def newESave(request):
         elif measurement_instruments[i] == 'sensor':
             new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
                                   name=header[i], measuring_instrument='Se')
-        elif measurement_instruments[i] == 'none':
+        else:
             new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
                                   name=header[i], measuring_instrument='No')
         new_datarow.save()
@@ -243,18 +243,44 @@ def derivate(request, experimentId):
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
+    mInstruments_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('measuring_instrument', flat=True))
     experimentName = Experiment.objects.get(id=experimentId).name
+    dateCreated = Experiment.objects.get(id=experimentId).created
+    timerow = Experiment.objects.get(id=experimentId).timerow
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
     datarow_amount = len(datarow_id)
+    value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
+    data = [0] * value_amount
+    data_array = [0] * datarow_amount
+    i = 0
+    while i < value_amount:
+        j = 0
+        while j < datarow_amount:
+            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
+            j += 1
+        data[i] = data_array
+        data_array = [0] * datarow_amount
+        i += 1
+
+    # convert data to json
+    jsonData = json.dumps(data, cls=NumPyArangeEncoder)
     
     # Prepare the Data for Rendering
     dataForRender = {
         'jsonHeader': header_list,
+        'jsonHeaderRealJson': json.dumps(header_list, cls=NumPyArangeEncoder),
         'jsonEinheiten': einheiten_list,
+        'jsonEinheitenRealJson': json.dumps(einheiten_list, cls=NumPyArangeEncoder),
         'jsonHeaderAndUnits': zip(header_list, einheiten_list),
+        'jsonData': jsonData,
+        'jsonMInstrumentsRealJson': json.dumps(mInstruments_list, cls=NumPyArangeEncoder),
         'experimentId': experimentId,
         'experimentName': experimentName,
         'numOfCols': datarow_amount,
+        'projectId':projectId,
+        'dateFormat': settings.DATE_FORMAT,
+        'dateCreated': dateCreated,
+        'timerow': timerow,
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
