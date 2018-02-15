@@ -78,7 +78,7 @@ $(document).ready(function () {
                 $(".newestCompletedTask .tastNumber").html(numTasks+1);
                 $(".newestCompletedTask .intOrDeriv").html(intOrDeriv);
                 $(".newestCompletedTask .resultColInfo").html(numOfCols + " (\"" + newColName + "\" (" + newColUnit + "))");
-                $(".newestCompletedTask").removeClass("hide").removeClass("");
+                $(".newestCompletedTask").removeClass("hide").removeClass("newestCompletedTask");
                 $("#completedTasksSection").removeClass("hide");
                 $("#completedTasksDivider").removeClass("hide");
 
