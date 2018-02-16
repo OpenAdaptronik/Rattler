@@ -37,7 +37,8 @@ class FilterListView(ListView):
             queryset = queryset.filter(
                 Q(user__username__icontains=search) | Q(user__email__icontains=search) |
                 Q(user__profile__company__icontains=search) | Q(name__icontains=search) |
-                Q(category__name__icontains=search) | Q(manufacturer__icontains=search)
+                Q(category__name__icontains=search) | Q(manufacturer__icontains=search) |
+                Q(typ__icontains=search) | Q(subcategory__name=search)
             )
 
         return queryset
