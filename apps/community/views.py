@@ -6,6 +6,7 @@ from apps.projects.models import Project
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import QueryDict
+from django.db.models import Q
 
 '''Community'''
 
@@ -20,30 +21,9 @@ class FilterListView(ListView):
         data = super(FilterListView, self).get_context_data(**kwargs)
         data['filter'] = {}
 
-        username = self.request.GET.get('username', False)
-
-        if username:
-            data['filter']['username'] = username
-
-        company = self.request.GET.get('company', False)
-        if company:
-            data['filter']['company'] = company
-
-        email = self.request.GET.get('email', False)
-        if email:
-            data['filter']['email'] = email
-
-        projectname = self.request.GET.get('projectname', False)
-        if projectname:
-            data['filter']['projectname'] = projectname
-
-        category = self.request.GET.get('category', False)
-        if category:
-            data['filter']['category'] = category
-
-        manufacturer = self.request.GET.get('manufacturer', False)
-        if manufacturer:
-            data['filter']['manufacturer'] = manufacturer
+        search = self.request.GET.get('search', False)
+        if search:
+            data['filter']['search'] = search
 
         qdict = QueryDict('', mutable=True)
         qdict.update(data['filter'])
@@ -52,22 +32,12 @@ class FilterListView(ListView):
 
     def get_queryset(self):
         queryset = Project.objects.filter(visibility=True)
-        username = self.request.GET.get('username', False)
-        company = self.request.GET.get('company', False)
-        email = self.request.GET.get('mail', False)
-        projectname = self.request.GET.get('projectname', False)
-        category = self.request.GET.get('category', False)
-        manufacturer = self.request.GET.get('manufacturer', False)
-        if username:
-            queryset = queryset.filter(user__username__icontains=username)
-        if email:
-            queryset = queryset.filter(user__email__icontains=email)
-        if company:
-            queryset = queryset.filter(user__profile__company__icontains=company)
-        if projectname:
-            queryset = queryset.filter(name__icontains=projectname)
-        if category:
-            queryset = queryset.filter(category__name__icontains=category)
-        if manufacturer:
-            queryset = queryset.filter(manufacturer__icontains=manufacturer)
+        search = self.request.GET.get('search', False)
+        if search:
+            queryset = queryset.filter(
+                Q(user__username__icontains=search) | Q(user__email__icontains=search) |
+                Q(user__profile__company__icontains=search) | Q(name__icontains=search) |
+                Q(category__name__icontains=search) | Q(manufacturer__icontains=search)
+            )
+
         return queryset
