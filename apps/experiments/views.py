@@ -146,7 +146,6 @@ def derivateRefresh(request,experimentId):
     else:
         result = calc.numerical_approx(jsonData, firstCol, secondCol)
 
-    # @TODO: hier neue Spalte in DB speichern
 
     # convert result to json
     result = json.dumps(result, cls=NumPyArangeEncoder)
@@ -203,7 +202,6 @@ def newESave(request):
     measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
-    # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
     new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
     new_experiment.save()
     experiment_id = new_experiment.id
