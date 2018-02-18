@@ -154,13 +154,8 @@ def change_email(request):
             email.send()
 
             update_session_auth_hash(request, request.user)
-            return HttpResponse('''Die E-mail wurde verschickt.  <br/>
-                                Bitte neue E-Mail Adresse Bestätigen.<br/>
-                                Solange diese nicht bestätigt wurde beleibt die alte E-mail zum Login aktuell.
-                                <br/>
-                                <br/>
-                                Man muss beim bestätigen der E-mail weiterhin eingelogt bleiben!!''')
 
+            return render(request, 'profile/sendEmail.html')
 
     return render(request, 'profile/changeEmail.html')
 
