@@ -14,28 +14,8 @@
                 <form method="get" action="{% url 'community:index' %}">
                     <div class="row">
                         <div class="input-field col s12">
-                            <label for="username">Username</label>
-                            <input placeholder='' id="username" type="text" class="validate" name="username" {% if filter.username %}value="{{filter.username}}"{% endif %}>
-                        </div>
-                        <div class="input-field col s12">
-                            <label for="mail">Email</label>
-                            <input placeholder='' id="mail" type="text" class="validate" name="mail" {% if filter.mail %}value="{{filter.mail}}"{% endif %}>
-                        </div>
-                        <div class="input-field col s12">
-                            <label for="company">Firma</label>
-                            <input placeholder='' id="firma" type="text" class="validate" name="company" {% if filter.company %}value="{{filter.company}}"{% endif %}>
-                        </div>
-                        <div class="input-field col s12">
-                            <label for="projectname">Projektname</label>
-                            <input placeholder='' id="projectname" type="text" class="validate" name="projectname" {% if filter.projectname %}value="{{filter.projectname}}"{% endif %}>
-                        </div>
-                        <div class="input-field col s12">
-                            <label for="category">Kategorie</label>
-                            <input placeholder='' id="category" type="text" class="validate" name="category" {% if filter.category %}value="{{filter.category}}"{% endif %}>
-                        </div>
-                        <div class="input-field col s12">
-                            <label for="manufacturer">Hersteller</label>
-                            <input placeholder='' id="manufacturer" type="text" class="validate" name="manufacturer"  {% if filter.manufacturer %}value="{{filter.manufacturer}}"{% endif %}>
+                            <label for="search">Suchbegriff</label>
+                            <input placeholder='' id="search" type="text" class="validate" name="search" {% if filter.search %}value="{{filter.search}}"{% endif %}>
                         </div>
                         <div class="col s12">
                                 <button class="btn waves-effect waves-light" type="submit">Filtern<i class="material-icons left"></i></button>
