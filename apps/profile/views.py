@@ -169,7 +169,7 @@ def change_email_success (request, mail, uidb64, token):
     except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
         user = None
 
-    if not user is None:
+    if not user is None and account_activation_token.check_token(user=user, token=token):
         email = force_text(urlsafe_base64_decode(mail))
         user.email = email
         user.save()
