@@ -177,7 +177,7 @@ def change_email_success (request, mail, uidb64, token):
         login(request=request,user= user)
         return redirect(reverse('profile:edit'))
     else:
-        return HttpResponse('Aktivierungslink ist ungültig oder fehler beim User!')
+        return render(request, 'profile/failChangeEmail.html')
 
 
 def change_password(request):
