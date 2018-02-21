@@ -4,12 +4,42 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
 from .json import NumPyArangeEncoder
+from apps.projects.models import Experiment, Project, Datarow, Value
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
+import numpy as np
 
 # Create your views here.
 @login_required
-def index(request):
+def index(request, experimentId):
     if request.method != 'POST':
         return HttpResponseRedirect('/dashboard/')
+    projectId = Experiment.objects.get(id=experimentId).project_id
+
+    # copied from index function and deleted stuff we don't need here
+    # Read Data from DB
+    header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
+    einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
+    mInstruments_list = np.asarray(
+        Datarow.objects.filter(experiment_id=experimentId).values_list('measuring_instrument', flat=True))
+    experimentName = Experiment.objects.get(id=experimentId).name
+    dateCreated = Experiment.objects.get(id=experimentId).created
+    timerow = Experiment.objects.get(id=experimentId).timerow
+    datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
+    datarow_amount = len(datarow_id)
+    value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
+    data = [0] * value_amount
+    data_array = [0] * datarow_amount
+    i = 0
+    while i < value_amount:
+        j = 0
+        while j < datarow_amount:
+            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
+            j += 1
+        data[i] = data_array
+        data_array = [0] * datarow_amount
+        i += 1
+
 
 
     # Read Data from POST request
@@ -27,7 +57,19 @@ def index(request):
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
         'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
-        'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+        'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
+        'jsonHeaderRealJson': json.dumps(header_list, cls=NumPyArangeEncoder),
+        'jsonEinheitenRealJson': json.dumps(einheiten_list, cls=NumPyArangeEncoder),
+        'jsonHeaderAndUnits': zip(header_list, einheiten_list),
+        'data': jsonData,
+        'jsonMInstrumentsRealJson': json.dumps(mInstruments_list, cls=NumPyArangeEncoder),
+        'experimentId': experimentId,
+        'experimentName': experimentName,
+        'numOfCols': datarow_amount,
+        'projectId': projectId,
+        'dateFormat': settings.DATE_FORMAT,
+        'dateCreated': dateCreated,
+        'timerow': timerow,
     }
 
     #Safe all Data from the measurement object into the session storage to get them when applying filter
@@ -157,7 +199,9 @@ def renew_data(request):
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
         'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
-        'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+        'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
+
+
     }
 
     return JsonResponse(dataForRender)

@@ -21,6 +21,7 @@ $( document ).ready(function() {
             }
         }
 
+
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
 
         for(var j=0; j < anzSpalten; j++){
@@ -83,7 +84,6 @@ $( document ).ready(function() {
             }
         }
 
-
     $('#analyseAuswahlForm').on('keyup blur', function () {
         if ($('#analyseAuswahlForm').valid()) {
             $('#submitButton').prop('disabled', false);
@@ -97,8 +97,6 @@ $('form').submit(function(event){
         if(!$('form').valid()) {
         return;
         }
-
-
 
 
         //Token Configuration
@@ -141,11 +139,11 @@ $('form').submit(function(event){
                 data['gaussM' + i] = $('#spaltenCol' + i).find('#gaussM' + i).val();
             }
         }
-
+        var experimentId = parseInt($("#experimentId").val());
 
         $.ajax({
 
-            url: '/analysis/refresh',
+            url: '/analysis/refresh/' + experimentId,
 
             method: 'post',
             data: data,
