@@ -32,7 +32,7 @@
             <tr>
                 <td> <a href="{% url 'projects:detail' name=project.name id=project.id %}">Projektname: {{ project.name }}</a></td>
                 <td>erstellt am {{project.created}}</td>
-                <td> <a href="{% url 'profile:detail' name=project.user.username %}">Username: {{ project.user.username }}</a></td>
+                <td> <a href="{% url 'profile:detail' name=project.user.username %}">Benutzername: {{ project.user.username }}</a></td>
 
             </tr>
         {% endfor %}
