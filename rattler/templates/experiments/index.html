@@ -81,7 +81,7 @@
 
          //Give form two different targeds
         $("#analysisButton").click(function() {
-            $(this).closest("form").attr("action", "{% url 'analysis:index' %}");
+            $(this).closest("form").attr("action", "{% url 'analysis:index' experimentId %}");
             });
         $("#tessButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
