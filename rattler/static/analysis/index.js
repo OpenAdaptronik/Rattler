@@ -143,7 +143,7 @@ $('form').submit(function(event){
 
         $.ajax({
 
-            url: '/analysis/refresh/' + experimentId,
+            url: '/analysis/refresh',
 
             method: 'post',
             data: data,
