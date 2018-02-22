@@ -21,6 +21,7 @@ $( document ).ready(function() {
             }
         }
 
+
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
 
         for(var j=0; j < anzSpalten; j++){
@@ -83,7 +84,6 @@ $( document ).ready(function() {
             }
         }
 
-
     $('#analyseAuswahlForm').on('keyup blur', function () {
         if ($('#analyseAuswahlForm').valid()) {
             $('#submitButton').prop('disabled', false);
@@ -92,12 +92,11 @@ $( document ).ready(function() {
             $('#submitButton').prop('disabled', 'disabled');
         }
     });});
-$('form').submit(function(event){
+$('#analyseAuswahlForm').submit(function(event){
         event.preventDefault();
-        if(!$('form').valid()) {
+        if(!$('#analyseAuswahlForm').valid()) {
         return;
         }
-
 
 
 
@@ -141,7 +140,7 @@ $('form').submit(function(event){
                 data['gaussM' + i] = $('#spaltenCol' + i).find('#gaussM' + i).val();
             }
         }
-
+        var experimentId = parseInt($("#experimentId").val());
 
         $.ajax({
 
@@ -208,9 +207,8 @@ $('form').submit(function(event){
             traces[zeitreihenSpalte].shift();
 
             Plotly.newPlot('firstGraph', traces, layout);
-
-
-
         }
+
+
     }})
 });

@@ -63,6 +63,9 @@ $( document ).ready(function() {
 $('form').submit(function(event){
     event.preventDefault();
 
+    // Show Progress Bar
+    $("#newTaskInProgress").removeClass("hide");
+
 
     //Token Configuration
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
@@ -91,17 +94,19 @@ $('form').submit(function(event){
         cache:false,
         dataType: 'json',
         success: function (data) {
-            $('#tessResult').show()
-            $('#strat1').text(data.strategie1)
-            $('#param1').text(data.param1)
-            $('#strat2').text(data.strategie2)
-            $('#param2').text(data.param2)
-            $('#strat3').text(data.strategie3)
-            $('#param3').text(data.param3)
-            $('#strat4').text(data.strategie4)
-            $('#param4').text(data.param4)
-            $('#strat5').text(data.strategie5)
-            $('#param5').text(data.param5)
+            $('#tessResult').show();
+            $('#strat1').text(data.strategie1);
+            $('#param1').text(data.param1);
+            $('#strat2').text(data.strategie2);
+            $('#param2').text(data.param2);
+            $('#strat3').text(data.strategie3);
+            $('#param3').text(data.param3);
+            $('#strat4').text(data.strategie4);
+            $('#param4').text(data.param4);
+            $('#strat5').text(data.strategie5);
+            $('#param5').text(data.param5);
+            // Hide progress bar
+            $("#newTaskInProgress").addClass("hide");
         }
     });
 });

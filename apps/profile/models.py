@@ -22,7 +22,7 @@ class Profile(models.Model):
     visibility_first_name = models.BooleanField(_('visibility of first name'),default=False)
     visibility_last_name = models.BooleanField(_('visibility of last name'), default=False)
     max_projects = models.IntegerField(_('maximum number of projects'),default=5)
-    max_datarows = models.IntegerField(_('maximum number of datarows'), default=1000)
+    max_datarows = models.IntegerField(_('maximum number of datarows'), default=100000)
     created = models.DateTimeField(_('created'),auto_now_add=True)
     updated = models.DateTimeField(_('updated'),auto_now=True)
 

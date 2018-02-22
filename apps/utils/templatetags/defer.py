@@ -3,6 +3,9 @@ from django.utils import html
 register = template.Library()
 
 def _collect(context, name):
+    if not hasattr(context, name):
+        return ''
+
     res = ''
     for node in context[name]():
         res += node

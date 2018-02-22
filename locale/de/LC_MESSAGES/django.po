@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-02 09:37+0000\n"
+"POT-Creation-Date: 2018-02-21 08:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,46 +20,52 @@ msgstr ""
 msgid "save"
 msgstr "speichern"
 
-#: apps/profile/admin.py:31 apps/profile/admin.py:118
+#: apps/profile/admin.py:26 apps/profile/admin.py:117
 msgid "profil image"
 msgstr "Profilbild"
 
-#: apps/profile/admin.py:42 apps/profile/admin.py:43 apps/profile/apps.py:7
+#: apps/profile/admin.py:37 apps/profile/admin.py:38 apps/profile/apps.py:7
 #: apps/profile/models.py:38
 msgid "profile"
 msgstr "Profil"
 
-#: apps/profile/admin.py:47 apps/profile/models.py:15
-#: apps/projects/models.py:20
+#: apps/profile/admin.py:42 apps/profile/models.py:15
+#: apps/projects/models.py:25
 #: apps/projects/templates/projects/project_detail.html:11 apps/user/apps.py:31
+#: rattler/templates/community/index.html:36
 #: rattler/templates/projects/project_detail.html:17
 msgid "user"
 msgstr "Benutzer"
 
-#: apps/profile/admin.py:48 apps/profile/models.py:17 apps/projects/admin.py:83
-#: apps/projects/admin.py:115 apps/projects/admin.py:164
-#: apps/projects/admin.py:220
+#: apps/profile/admin.py:43 apps/profile/models.py:17 apps/projects/admin.py:78
+#: apps/projects/admin.py:110 apps/projects/admin.py:158
+#: apps/projects/admin.py:215
 msgid "info"
 msgstr "Information"
 
-#: apps/profile/admin.py:49 apps/profile/models.py:16
+#: apps/profile/admin.py:44 apps/profile/models.py:16
 msgid "company"
 msgstr "Firma/Institution"
 
-#: apps/profile/admin.py:50
+#: apps/profile/admin.py:45
 msgid "max fields"
 msgstr "Beschränkungen"
 
-#: apps/profile/admin.py:51 apps/projects/admin.py:166
-#: apps/projects/admin.py:221 apps/user/admin.py:54
+#: apps/profile/admin.py:46 apps/projects/admin.py:160
+#: apps/projects/admin.py:216 apps/user/admin.py:54
 msgid "important dates"
 msgstr "Wichtige Daten"
 
-#: apps/profile/admin.py:52 apps/profile/models.py:44
+#: apps/profile/admin.py:47 apps/profile/models.py:44
 msgid "profile image"
 msgstr "Profilbild"
 
-#: apps/profile/admin.py:72
+#: apps/profile/admin.py:66
+#, python-format
+msgid "Change %(profile_image_name)s here."
+msgstr "Ändere %(profile_image_name)s hier"
+
+#: apps/profile/admin.py:69
 msgid "profile image link"
 msgstr "Profilbild-Link"
 
@@ -96,16 +102,16 @@ msgid "maximum number of datarows"
 msgstr "Maximale Anzahl an Datenpunkten"
 
 #: apps/profile/models.py:26 apps/profile/models.py:40
-#: apps/projects/models.py:28 apps/projects/models.py:91
+#: apps/projects/models.py:35 apps/projects/models.py:101
 #: apps/projects/templates/projects/project_detail.html:25
 #: apps/projects/templates/projects/project_detail.html:37
-#: apps/user/models.py:71 rattler/templates/projects/project_detail.html:45
+#: apps/user/models.py:84 rattler/templates/projects/project_detail.html:45
 #: rattler/templates/projects/project_detail.html:96
 msgid "created"
 msgstr "Erstellt"
 
 #: apps/profile/models.py:27 apps/profile/models.py:41
-#: apps/projects/models.py:29 apps/user/models.py:72
+#: apps/projects/models.py:36 apps/user/models.py:85
 msgid "updated"
 msgstr "Aktualisiert"
 
@@ -114,7 +120,7 @@ msgstr "Aktualisiert"
 msgid "%(username)s profile"
 msgstr "Das Profil von %(username)s"
 
-#: apps/profile/models.py:39 apps/projects/models.py:81
+#: apps/profile/models.py:39 apps/projects/models.py:90
 msgid "path"
 msgstr "Dateipfad auswählen"
 
@@ -122,84 +128,104 @@ msgstr "Dateipfad auswählen"
 msgid "profile images"
 msgstr "Profilbilder"
 
-#: apps/projects/admin.py:28 apps/projects/admin.py:52
-#: apps/projects/models.py:85
+#: apps/projects/admin.py:23 apps/projects/admin.py:47
+#: apps/projects/models.py:94
 #: apps/projects/templates/projects/project_detail.html:3
 #: rattler/templates/projects/project_create.html:24
+#: rattler/templates/projects/project_form.html:24
 msgid "project images"
 msgstr "Projektbilder"
 
-#: apps/projects/admin.py:43
+#: apps/projects/admin.py:35
+#, python-format
+msgid "Change %(project_image)s here."
+msgstr "Ändere %(project_image)s hier"
+
+#: apps/projects/admin.py:38
 msgid "project image link"
 msgstr "Projektbild"
 
-#: apps/projects/admin.py:47 apps/projects/models.py:33
-#: apps/projects/models.py:80 apps/projects/models.py:90
+#: apps/projects/admin.py:42 apps/projects/models.py:40
+#: apps/projects/models.py:89 apps/projects/models.py:100
 #: apps/projects/templates/projects/project_detail.html:2
 #: rattler/templates/projects/project_detail.html:3
 #: rattler/templates/projects/project_detail.html:9
 msgid "project"
 msgstr "Projekt"
 
-#: apps/projects/admin.py:48 apps/projects/apps.py:7 apps/projects/models.py:34
+#: apps/projects/admin.py:43 apps/projects/apps.py:7 apps/projects/models.py:41
 msgid "projects"
 msgstr "Projekte"
 
-#: apps/projects/admin.py:74
-msgid "experiment link"
-msgstr "Experimente"
+#: apps/projects/admin.py:66
+#, python-format
+msgid "Change %(experiment)s here."
+msgstr "Ändere %(experiment)s hier"
 
-#: apps/projects/admin.py:77 apps/projects/models.py:96
+#: apps/projects/admin.py:69
+msgid "experiment link"
+msgstr "Experimente link"
+
+#: apps/projects/admin.py:72 apps/projects/models.py:107
 msgid "experiment"
 msgstr "Experimente"
 
-#: apps/projects/admin.py:78 apps/projects/models.py:97
+#: apps/projects/admin.py:73 apps/projects/models.py:108
 #: apps/projects/templates/projects/project_detail.html:32
 msgid "experiments"
 msgstr "Experimente"
 
-#: apps/projects/admin.py:106
+#: apps/projects/admin.py:98
+#, python-format
+msgid "Change %(datarow)s here."
+msgstr "Ändere %(datarow)s hier"
+
+#: apps/projects/admin.py:101
 msgid "datarow link"
-msgstr "Maximale Anzahl an Datenpunkten"
+msgstr "Datenreihe/Messreihe Link"
 
-#: apps/projects/admin.py:109 apps/projects/models.py:116
-#: apps/projects/models.py:122
+#: apps/projects/admin.py:104 apps/projects/models.py:129
+#: apps/projects/models.py:135
 msgid "datarow"
-msgstr "Maximale Anzahl an Datenpunkten"
+msgstr "Datenreihe/Messreihe"
 
-#: apps/projects/admin.py:110 apps/projects/models.py:117
+#: apps/projects/admin.py:105 apps/projects/models.py:130
 msgid "datarows"
-msgstr "Maximale Anzahl an Datenpunkten"
+msgstr "Datenreihen/Messreihen"
 
-#: apps/projects/admin.py:121 apps/projects/models.py:123
+#: apps/projects/admin.py:116 apps/projects/models.py:136
 msgid "value"
 msgstr "Wert"
 
-#: apps/projects/admin.py:122
+#: apps/projects/admin.py:117
 msgid "values"
 msgstr "Wert"
 
-#: apps/projects/admin.py:165
+#: apps/projects/admin.py:159
 msgid "attributes"
 msgstr "Attribute"
 
-#: apps/projects/admin.py:196
+#: apps/projects/admin.py:190
 msgid "projetc image"
 msgstr "Projektbild"
 
-#: apps/projects/forms.py:7 apps/projects/models.py:22
-#: apps/projects/models.py:73
+#: apps/projects/forms.py:7 apps/projects/models.py:28
+#: apps/projects/models.py:80
 #: apps/projects/templates/projects/project_detail.html:15
 #: apps/projects/templates/projects/project_list.html:7
+#: rattler/templates/community/index.html:38
 #: rattler/templates/dashboard/index.html:25
+#: rattler/templates/profile/profile.html:70
 #: rattler/templates/projects/project_detail.html:25
 #: rattler/templates/projects/project_list.html:17
 msgid "category"
 msgstr "Kategorie"
 
-#: apps/projects/forms.py:8 apps/projects/models.py:23
+#: apps/projects/forms.py:8 apps/projects/models.py:30
 #: apps/projects/templates/projects/project_detail.html:17
+#: rattler/templates/community/index.html:39
 #: rattler/templates/dashboard/index.html:26
+#: rattler/templates/profile/profile.html:71
 #: rattler/templates/projects/project_detail.html:29
 #: rattler/templates/projects/project_list.html:18
 msgid "subcategory"
@@ -209,33 +235,36 @@ msgstr "Unterkategorie"
 msgid "new subcategory"
 msgstr "Neue Unterkategorie"
 
-#: apps/projects/models.py:21 apps/projects/models.py:64
-#: apps/projects/models.py:89 apps/projects/models.py:108
+#: apps/projects/models.py:26 apps/projects/models.py:71
+#: apps/projects/models.py:99 apps/projects/models.py:121
 #: apps/projects/templates/projects/project_detail.html:13
 #: apps/projects/templates/projects/project_detail.html:36
 #: apps/projects/templates/projects/project_list.html:6 apps/user/admin.py:55
 #: rattler/templates/dashboard/index.html:24
+#: rattler/templates/profile/profile.html:69
 #: rattler/templates/projects/project_detail.html:21
 #: rattler/templates/projects/project_detail.html:93
 #: rattler/templates/projects/project_list.html:16
 msgid "name"
 msgstr "Name"
 
-#: apps/projects/models.py:24
+#: apps/projects/models.py:31
 #: apps/projects/templates/projects/project_detail.html:19
 #: apps/projects/templates/projects/project_list.html:8
+#: rattler/templates/community/index.html:40
 #: rattler/templates/dashboard/index.html:27
+#: rattler/templates/profile/profile.html:72
 #: rattler/templates/projects/project_detail.html:33
 #: rattler/templates/projects/project_list.html:19
 msgid "manufacturer"
 msgstr "Hersteller"
 
-#: apps/projects/models.py:25 rattler/templates/projects/project_detail.html:37
+#: apps/projects/models.py:32 rattler/templates/projects/project_detail.html:37
 msgid "type"
 msgstr "Typ"
 
-#: apps/projects/models.py:26 apps/projects/models.py:92
-#: apps/projects/models.py:111
+#: apps/projects/models.py:33 apps/projects/models.py:102
+#: apps/projects/models.py:124
 #: apps/projects/templates/projects/project_detail.html:23
 #: apps/projects/templates/projects/project_detail.html:38
 #: rattler/templates/projects/project_detail.html:41
@@ -243,37 +272,43 @@ msgstr "Typ"
 msgid "description"
 msgstr "Beschreibung"
 
-#: apps/projects/models.py:27
+#: apps/projects/models.py:34
 msgid "visibility"
 msgstr "Sichtbarkeit"
 
-#: apps/projects/models.py:65
+#: apps/projects/models.py:72
 msgid "parent"
 msgstr "Hauptkategorie"
 
-#: apps/projects/models.py:74
+#: apps/projects/models.py:81
 msgid "categories"
 msgstr "Kategorien"
 
-#: apps/projects/models.py:84
+#: apps/projects/models.py:93
 msgid "project image"
 msgstr "Projektbild"
 
-#: apps/projects/models.py:93
+#: apps/projects/models.py:103
 msgid "timerow"
 msgstr "Zeitreihe"
 
-#: apps/projects/models.py:110
+#: apps/projects/models.py:104
+msgid "measured"
+msgstr "Gemessen am"
+
+#: apps/projects/models.py:123
 msgid "unit"
 msgstr "Einheit"
 
-#: apps/projects/models.py:114
+#: apps/projects/models.py:127
 msgid "measuring instrument"
 msgstr "Messinstrument"
 
 #: apps/projects/templates/projects/project_detail.html:21
 #: apps/projects/templates/projects/project_list.html:9
+#: rattler/templates/community/index.html:41
 #: rattler/templates/dashboard/index.html:28
+#: rattler/templates/profile/profile.html:73
 #: rattler/templates/projects/project_list.html:20
 msgid "typ"
 msgstr "Typ"
@@ -281,7 +316,7 @@ msgstr "Typ"
 #: apps/projects/templates/projects/project_detail.html:28
 #: rattler/templates/projects/project_detail.html:50
 msgid "edit project"
-msgstr "Projekt"
+msgstr "Projekt bearbeiten"
 
 #: apps/projects/templates/projects/project_detail.html:35
 msgid "id"
@@ -291,17 +326,35 @@ msgstr "Projekt-ID"
 msgid "permissions"
 msgstr "Berechtigungen"
 
-#: apps/user/models.py:69
+#: apps/user/models.py:73
+msgid "username"
+msgstr "Benutzer"
+
+#: apps/user/models.py:76
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+
+#: apps/user/models.py:79
+msgid "A user with that username already exists."
+msgstr "Es existiert bereits ein Nutzer mit diesem Namen."
+
+#: apps/user/models.py:82
 msgid "email address"
 msgstr "E-Mail"
 
-#: apps/user/models.py:70
+#: apps/user/models.py:83
 msgid "active"
 msgstr "Aktiv"
 
-#: rattler/templates/index/index_old.html:5
-msgid "Test"
-msgstr "Test"
+#: apps/user/validators.py:12
+msgid ""
+"Enter a valid username. This value may contain only letters, numbers, and ./"
+"+/-/_ characters."
+msgstr ""
+
+#: rattler/templates/community/index.html:37
+msgid "project name"
+msgstr "Projektname"
 
 #: rattler/templates/registration/password_reset_confirm.html:3
 #: rattler/templates/registration/password_reset_confirm.html:25
@@ -331,3 +384,6 @@ msgid ""
 msgstr ""
 "Der Link zum Zurücksetzen Ihres Passworts ist ungültig, wahrscheinlich, weil "
 "er schon einmal benutzt wurde. Bitte setzen Sie Ihr Passwort erneut zurück."
+
+#~ msgid "Test"
+#~ msgstr "Test"

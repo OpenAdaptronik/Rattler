@@ -20,14 +20,17 @@ typ as CharField
 note as TextField
 '''
 
+
 class Project(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'), on_delete=models.CASCADE,)
     name = models.CharField(_('name'), max_length=100)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set', verbose_name=_('category'))
-    subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set', verbose_name=_('subcategory'))
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_category_set',
+                                 verbose_name=_('category'))
+    subcategory = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='projects_subcategory_set',
+                                    verbose_name=_('subcategory'))
     manufacturer = models.CharField(_('manufacturer'), max_length=100)
     typ = models.CharField(_('type'), max_length=100)
-    description = models.TextField(_('description') ,max_length=500)
+    description = models.TextField(_('description'), max_length=500)
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
@@ -77,8 +80,10 @@ class Category(models.Model):
         verbose_name = _('category')
         verbose_name_plural = _('categories')
 
+
 def project_image_path(instance, filename):
     return 'project/%s/%s%s' % (instance.project.id, instance.project.name, os.path.splitext(filename)[1])
+
 
 class ProjectImage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE,verbose_name=_('project'))
@@ -89,19 +94,22 @@ class ProjectImage(models.Model):
         verbose_name_plural = _('project images')
 
 
+
 class Experiment(models.Model):
     name = models.CharField(_('name'),max_length=100, null=True)
     project = models.ForeignKey('Project',on_delete=models.CASCADE, verbose_name=_('project'))
     created = models.DateTimeField(null=True, auto_now_add=True, verbose_name=_('created'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))
-    measured = models.DateTimeField(null=True)
+    measured = models.DateTimeField(null=True, verbose_name=_('measured'))
 
     class Meta:
         verbose_name = _('experiment')
         verbose_name_plural = _('experiments')
 
 
+# Enum Model, damit man beim Auslesen von Datarow measuring_instrument besser auslesen kann;
+# z.B. actor_datarows = Datarow.objects.filter(measuring_instruments = MeasuringInstruments.ACTUATOR)
 class MeasurementInstruments(Enum):
     SENSOR = 'Se'
     ACTUATOR = 'Ac'

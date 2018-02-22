@@ -12,6 +12,7 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from apps.projects.models import MeasurementInstruments
 
+
 # Create your views here.
 @login_required
 def index(request, experimentId):
@@ -74,23 +75,25 @@ def index(request, experimentId):
 
     return render(request, "experiments/index.html", dataForRender)
 
+
 # the backend derivation and integration function
 
 # OLD VERSION FROM JÖRG --> delete when finished the real intderiv process
 # is called @ the end of the intderiv process
 def refreshData(request):
     if request.method != 'POST':
-       return HttpResponseRedirect('/dashboard/')
+        return HttpResponseRedirect('/dashboard/')
 
-    #Recreate measurement object from the session storage
-    measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
-                                   request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    # Recreate measurement object from the session storage
+    measurement = measurement_obj.Measurement(request.session['measurementData'], request.session['measurementHeader'],
+                                              request.session['measurementUnits'],
+                                              request.session['measurementTimeIndex'])
     # jsonHeader = request.POST.get("jsonHeader", "")
     # jsonEinheiten = request.POST.get("jsonEinheiten", "")
     # zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
     # jsonData = request.POST.get("intderivresult", "")
 
-    result =request.POST.get('intderivresult')
+    result = request.POST.get('intderivresult')
 
     # Number of Columns
     anzSpalten = len(measurement.data[0])
@@ -102,8 +105,8 @@ def derivateRefresh(request,experimentId):
     if request.method != 'POST':
         return JsonResponse({"error": "the Request Method hasnt been POST!"})
 
-    #Recreate measurement object from the session storage --> deprecated
-    #measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+    # Recreate measurement object from the session storage --> deprecated
+    # measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
     #                               request.session['measurementUnits'],request.session['measurementTimeIndex'])
     # jsonHeader = request.POST.get("jsonHeader", "")
     # jsonEinheiten = request.POST.get("jsonEinheiten", "")
@@ -133,16 +136,16 @@ def derivateRefresh(request,experimentId):
         data_array = [0] * datarow_amount
         i += 1
 
-    # convert data to json (which wouldnt be necessary if we'd change the trapez_for_each & the numerical_approx function to accepting python lists instead of json arrays)
+    # convert data to json (which wouldnt be necessary if we'd change the trapez_for_each & the numerical
+    # _approx function to accepting python lists instead of json arrays)
     jsonData = json.dumps(data, cls=NumPyArangeEncoder)
 
     # call function: 1 == Integration; 0/Else == Derivation (?)
-    if (function == 1):
+    if function == 1:
         result = calc.trapez_for_each(jsonData, firstCol, secondCol)
     else:
         result = calc.numerical_approx(jsonData, firstCol, secondCol)
 
-    #@TODO: hier neue Spalte in DB speichern
 
     # convert result to json
     result = json.dumps(result, cls=NumPyArangeEncoder)
@@ -152,8 +155,9 @@ def derivateRefresh(request,experimentId):
         'result': result,
     }
 
-    #return render(request, "experiments/start.html",dataForRender)
+    # return render(request, "experiments/start.html",dataForRender)
     return JsonResponse(responseData)
+
 
 # page to upload your csv
 @login_required
@@ -190,15 +194,13 @@ def newESave(request):
     experimentDate = request.POST.get("erfassungsDatum", "")
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
-    
-    #experiment_date = json.loads(experimentDate)
+    # experiment_date = json.loads(experimentDate)
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
-    # @ MAREN & HUY: Array über die Spalten, das für jede Spalte das Messinstrument enthält (Also entweder "sensor"/"actuator"/<irgendein anderer String für None>)
+    # "sensor"/"actuator"/<irgendein anderer String für None>)
     measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
-    # @TODO Huy & Maren: Hier die Daten usw. in die Datenbank speichern
     new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
     new_experiment.save()
     experiment_id = new_experiment.id
@@ -272,7 +274,7 @@ def derivate(request, experimentId):
         'experimentId': experimentId,
         'experimentName': experimentName,
         'numOfCols': datarow_amount,
-        'projectId':projectId,
+        'projectId': projectId,
         'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
         'timerow': timerow,

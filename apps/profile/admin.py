@@ -1,13 +1,15 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils import html
+from apps.user.models import User
+from apps.user.admin import UserAdmin as apps_UserAdmin
 from django.utils.encoding import force_text
 from django.utils.translation import gettext_lazy as _
 
 from apps.user.admin import UserAdmin as apps_UserAdmin
 from apps.user.models import User
 
-from .models import Profile,ProfileImage
+from .models import Profile, ProfileImage
 
 class ProfileInline(admin.StackedInline):
     """ The Profile admin Inline.
@@ -47,6 +49,7 @@ class ProfileInline(admin.StackedInline):
     )
     readonly_fields = ('created','updated','get_edit_link',get_profile_image)
 
+
     """ The Profile admin model.
         Link to Change Profile Image to AdminProfileImage 
     """
@@ -54,7 +57,8 @@ class ProfileInline(admin.StackedInline):
         if not instance.profileimage.path:
             return
 
-        url = reverse('admin:%s_%s_change' % (instance.profileimage._meta.app_label, instance.profileimage._meta.model_name),
+        url = reverse('admin:%s_%s_change' % (instance.profileimage._meta.app_label,
+                                              instance.profileimage._meta.model_name),
                       args=[force_text(instance.profileimage.id)])
 
         return html.format_html("""<a href="{url}">{text}</a>""".format(
@@ -93,6 +97,7 @@ class UserAdmin(apps_UserAdmin):
                    'profile__visibility_first_name',
                    'profile__visibility_last_name',
     )
+
 
 @admin.register(ProfileImage)
 class ProfileImageAdmin(admin.ModelAdmin):

@@ -12,46 +12,8 @@
                   <tr>
                     <td>
                       <div class="input-field col s12">
-                        <label for="username">Username: </label>
-                        <input placeholder='' id="username" type="text" class="validate" name="username">
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="mail">Email: </label>
-                        <input placeholder='' id="mail" type="text" class="validate" name="mail">
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="company">Firma: </label>
-                        <input placeholder='' id="firma" type="text" class="validate" name="company">
-                      </div>
-                    </td>
-                  </tr>
-                    <tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="projectname">Projektname: </label>
-                        <input placeholder='' id="projectname" type="text" class="validate" name="projectname">
-                      </div>
-                    </td>
-                  </tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="category">Kategorie: </label>
-                        <input placeholder='' id="category" type="text" class="validate" name="category">
-                      </div>
-                    </td>
-                  </tr>
-                    <td>
-                      <div class="input-field col s12">
-                        <label for="manufacturer">Hersteller: </label>
-                        <input placeholder='' id="manufacturer" type="text" class="validate" name="manufacturer">
+                        <label for="search">Suchbegriff: </label>
+                        <input placeholder='' id="search" type="text" class="validate" name="search">
                       </div>
                     </td>
                   </tr>
@@ -70,7 +32,7 @@
             <tr>
                 <td> <a href="{% url 'projects:detail' name=project.name id=project.id %}">Projektname: {{ project.name }}</a></td>
                 <td>erstellt am {{project.created}}</td>
-                <td> <a href="{% url 'profile:detail' name=project.user.username %}">Username: {{ project.user.username }}</a></td>
+                <td> <a href="{% url 'profile:detail' name=project.user.username %}">Benutzername: {{ project.user.username }}</a></td>
 
             </tr>
         {% endfor %}

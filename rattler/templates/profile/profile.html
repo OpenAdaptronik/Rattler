@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static i18n %}
 {% block siteTitle %}
-    Profil &bull; {{ profile.username }}
+    Profil &bull; {{profile.user.username}}
 {% endblock %}
 {% block container %}
 <h2 style="">{{profile.user.username}}'s Profil</h2>
@@ -95,7 +95,7 @@
 
         </div>
         <div class="card-action">
-            <a href="#">Alle Projekte anzeigen &rarr;</a>
+            <a href="{% url 'projects:index' %}">Alle Projekte anzeigen &rarr;</a>
         </div>
     </div>
 </div>
