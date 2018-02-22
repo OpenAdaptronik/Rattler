@@ -92,11 +92,12 @@ $( document ).ready(function() {
             $('#submitButton').prop('disabled', 'disabled');
         }
     });});
-$('form').submit(function(event){
+$('#analyseAuswahlForm').submit(function(event){
         event.preventDefault();
-        if(!$('form').valid()) {
+        if(!$('#analyseAuswahlForm').valid()) {
         return;
         }
+
 
 
         //Token Configuration
@@ -143,7 +144,7 @@ $('form').submit(function(event){
 
         $.ajax({
 
-            url: '/analysis/refresh/' + experimentId,
+            url: '/analysis/refresh',
 
             method: 'post',
             data: data,
@@ -206,9 +207,8 @@ $('form').submit(function(event){
             traces[zeitreihenSpalte].shift();
 
             Plotly.newPlot('firstGraph', traces, layout);
-
-
-
         }
+
+
     }})
 });
