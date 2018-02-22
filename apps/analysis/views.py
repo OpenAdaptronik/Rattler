@@ -233,7 +233,7 @@ def newESave(request):
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
     # "sensor"/"actuator"/<irgendein anderer String für None>)
-    measurement_instruments = jsonMeasurementInstruments
+    measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = json.loads(zeitreihenSpalte)
     data = json.loads(jsonData)
     new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
