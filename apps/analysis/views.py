@@ -200,8 +200,65 @@ def renew_data(request):
         'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
         'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
-
-
     }
 
+    # Safe all Data from the measurement object into the session storage to get them when applying filter
+    request.session['measurementDataNew'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
+    request.session['measurementHeaderNew'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
+    request.session['measurementUnitsNew'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
+    request.session['measurementTimeIndexNew'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+
     return JsonResponse(dataForRender)
+
+
+@login_required
+def newESave(request):
+    # those are the titles of the columns in an array
+    jsonHeader = request.session['measurementHeaderNew']
+    # those are the units of the columns in an array
+    jsonEinheiten = request.session['measurementUnitsNew']
+    # those are the units of the columns in an array
+    jsonMeasurementInstruments = request.POST.get("jsonMeasurementInstruments", "")
+    # this is the column which contains the x axis (= time; also called "timeindex"), MUSS AUCH IN DIE DB!
+    zeitreihenSpalte = request.session['measurementTimeIndexNew']
+    # Array of the Schwingungs data
+    jsonData = request.session['measurementDataNew']
+    # ID of the project the new, received from the new.html file and casted to int (just in case :))
+    projectId = request.POST.get("projectId", "")
+    # Title of the experiment
+    experiment_name = request.POST.get("datensatzName", "")
+    # Description of the experiment
+    description = request.POST.get("experimentDescr", "")
+
+    header = json.loads(jsonHeader)
+    units = json.loads(jsonEinheiten)
+    # "sensor"/"actuator"/<irgendein anderer String für None>)
+    measurement_instruments = jsonMeasurementInstruments
+    time_row = json.loads(zeitreihenSpalte)
+    data = json.loads(jsonData)
+    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
+    new_experiment.save()
+    experiment_id = new_experiment.id
+    i = 0
+    while i < len(header):
+        if measurement_instruments[i] == 'Ac':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='Ac')
+        elif measurement_instruments[i] == 'Se':
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='Se')
+        else:
+            new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
+                                  name=header[i], measuring_instrument='No')
+        new_datarow.save()
+        j = 0
+        while j < len(data):
+            new_value = Value(value=data[j][i], datarow_id=new_datarow.id)
+            new_value.save()
+            j += 1
+        i += 1
+
+
+    # @TODO Diesem Redirect muss noch die ID des neuen Experimentes angegeben werden. Die Seite die da aufgerufen wird, ist die Experiment-Detail-Seite!
+    # Zudem müssen wir dann noch die experiments/index.html-Seite und die Funktion index(request) (in diesem File) anpassen, damit sie das Experiment aus der DB liest!
+    return HttpResponseRedirect('/experiments/' + str(experiment_id))

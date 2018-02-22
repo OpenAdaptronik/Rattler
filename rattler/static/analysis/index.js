@@ -207,9 +207,8 @@ $('#analyseAuswahlForm').submit(function(event){
             traces[zeitreihenSpalte].shift();
 
             Plotly.newPlot('firstGraph', traces, layout);
-
-
-
         }
+
+
     }})
 });
