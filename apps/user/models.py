@@ -26,7 +26,9 @@ from django.db import models
 from django.contrib.auth.models import (AbstractUser, UserManager as auth_UserManager)
 from django.utils.translation import gettext_lazy as _
 from .validators import UnicodeUsernameValidator
-
+from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from django.db.models.signals import pre_save
 
 class UserManager(auth_UserManager):
     """ The User Manager Class.
@@ -84,3 +86,8 @@ class User(AbstractUser):
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, verbose_name=_('updated'))
     objects = UserManager()
+
+@receiver(pre_save, sender=get_user_model())
+def pre_save_user(sender, instance, **kwargs):
+    if instance.is_superuser:
+        instance.is_staff = True
