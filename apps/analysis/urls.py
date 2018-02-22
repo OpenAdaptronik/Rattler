@@ -4,6 +4,7 @@ from apps.analysis import views
 
 app_name = 'analysis'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('<int:experimentId>/', views.index, name='index'),
     path('refresh', views.renew_data, name='refresh'),
+    path('new/save', views.newESave, name='newESave'),
 ]

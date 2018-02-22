@@ -197,7 +197,6 @@ def newESave(request):
     # experiment_date = json.loads(experimentDate)
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
-    # @ MAREN & HUY: Array über die Spalten, das für jede Spalte das Messinstrument enthält (Also entweder
     # "sensor"/"actuator"/<irgendein anderer String für None>)
     measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
@@ -275,7 +274,7 @@ def derivate(request, experimentId):
         'experimentId': experimentId,
         'experimentName': experimentName,
         'numOfCols': datarow_amount,
-        'projectId':projectId,
+        'projectId': projectId,
         'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
         'timerow': timerow,
