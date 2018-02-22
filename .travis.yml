@@ -7,7 +7,7 @@ python:
 
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y lapack-dev
+  - sudo apt-get install -y liblapack-dev
 
 install:
   - pip install -r requirements.txt
