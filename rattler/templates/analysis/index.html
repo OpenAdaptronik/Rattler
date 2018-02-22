@@ -10,7 +10,7 @@
 {% endblock %}
 {% block container %}
 
-<form method="post" action="{% url 'analysis:refresh' %}" id="analyseAuswahlForm">
+<form method="post" action="{% url 'analysis:refresh' %}"  id="analyseAuswahlForm">
     {% csrf_token %}
     <textarea style="display: none;" id="jsonHeader" name="jsonHeader"></textarea>
     <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten"></textarea>
@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="col s5"></div>
                             <div class="col s2">
-                                    <button id="submitButton" class="btn waves-effect waves-light right" type="submit" style="position: absolute; z-index: auto"><i class="material-icons left">autorenew</i>Berechnen</button>
+                                    <button id="submitButton" name="refresh" class="btn waves-effect waves-light right" type="submit" style="position: absolute; z-index: auto"><i class="material-icons left">autorenew</i>Berechnen</button>
                             </div>
                             <div class="col s5"></div>
                         </div>
@@ -170,12 +170,46 @@
                                 </p>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+
+    # button
+                        <div class="divider" id=""></div>
+                <div class="section" id="">
+                    <b>Daten zum Speichern als neues Experiment eingeben:</b>
+                    <form action="{% url 'analysis:newESave' %}" method="post" enctype="multipart/form-data" id="speicherForm">
+                        {% csrf_token %}
+                        <!-- hidden vars we send to python to create a new experiment -->
+                            <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten">{{jsonEinheitenRealJson}}</textarea>
+                            <textarea style="display: none;" id="jsonMeasurementInstruments" name="jsonMeasurementInstruments">{{jsonMInstrumentsRealJson}}</textarea>
+                            <textarea style="display: none;" id="jsonData" name="jsonData">{{jsonData}}</textarea>
+                            <input type="hidden" id="timeRowCol" name="zeitreihenSpalte" value="{{timerow}}"/>
+                            <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
+                            <input type="hidden" id="dateFormat" name="dateFormat" value="{{ dateFormat }}"/>
+                            <input type="hidden" id="erfassungsDatum" name="erfassungsDatum" value="{{dateCreated}}">
+                            <input type="hidden" id="jsonHeader" name="jsonHeader" value='{{jsonHeaderRealJson}}'/>
+                        <!-- visible fields we send to python to create a new experiment -->
+                            <div class="input-field">
+                                <input id="datensatzName" class="validate" name="datensatzName" type="text" value="{{experimentName}} - modifiziert" data-length="40"/>
+                                <label for="datensatzName">Name des Experimentes</label>
+                            </div>
+                            <div class="input-field">
+                                <textarea type="text" class="materialize-textarea" id="experimentDescr" name="experimentDescr">Aus "{{experimentName}}" (Experiment-ID: {{experimentId}}) entstanden.</textarea>
+                                <label for="experimentDescr">Weitere Informationen:</label>
+                            </div>
+                            <button class="btn waves-effect waves-light" name="speichern" type="submit" style="position: relative; z-index: auto;">als Experiment speichern <i class="material-icons right">save</i></button>
+                    </form>
+                </div>
+                        # button
+<input type="hidden" value="{{ experimentId }}" id="experimentId" />
+
 
 {% endblock %}
 {% block sideNavBlock %}
