@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import logging
 
 from django.contrib import auth
 from django.contrib.auth import get_user_model
@@ -41,6 +42,8 @@ from rattler.auth.decorators import not_login_required
 from .forms import RegisterForm
 from .tokens import account_activation_token
 
+logger = logging.getLogger(__name__)
+
 class IndexView(NoLoginRequiredMixin, FormView):
     """Register Index View Class.
 
@@ -57,6 +60,7 @@ class IndexView(NoLoginRequiredMixin, FormView):
     success_url = 'success'
 
     def create_mail_context(self, user):
+        logger.info('create_mail_context')
         """ Creates the context data to render a verification mail.
         """
         return {
@@ -68,12 +72,14 @@ class IndexView(NoLoginRequiredMixin, FormView):
         }
 
     def create_mail_message(self, user):
+        logger.info('create_mail_message')
         return render_to_string(
             'register/mail/verification.html',
             self.create_mail_context(user)
         )
 
     def mail_user(self, user):
+        logger.info('mail_user')
         user.email_user(
             'Account Verifikation',
             self.create_mail_message(user)
@@ -90,6 +96,7 @@ class IndexView(NoLoginRequiredMixin, FormView):
         Returns:
             Form valid redirection
         """
+        logger.info('form_valid')
         self.mail_user(form.save())
         return super().form_valid(form)
 
