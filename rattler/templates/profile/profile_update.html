@@ -116,18 +116,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="switch">
-                                        <label>
-                                            <input type="checkbox" name="expert" {% if user.profile.expert %} checked {% endif %} value="1">
-                                            <span class="lever"></span>
-                                            Experten-Modus
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
                             <span style="display:none">
                                     {{ profile_image.management_form }}
                                     {% for form in profile_image.forms %}
