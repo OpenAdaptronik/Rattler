@@ -177,10 +177,6 @@ $( document ).ready(function() {
                     "               </select>" +
                     "               <label>Messinstrument</label>" +
                     "           </div>" +
-                    "           <div class='input-field col s12'>" +
-                    "               <input name='spaltenname" + i + "' id='spaltenname" + i + "' type='text' value='"+header[i]+"'>" +
-                    "               <label for='spaltenname" + i + "'>Titel</label>" +
-                    "           </div>" +
                     "           <textarea class='col s12' style='resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;' disabled>" +
                                 exampleDataVar +
                     "           </textarea>" +
