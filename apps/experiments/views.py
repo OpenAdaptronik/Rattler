@@ -278,6 +278,7 @@ def derivate(request, experimentId):
         'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
         'timerow': timerow,
+        'experiment': Experiment.objects.get(id=experimentId)
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
