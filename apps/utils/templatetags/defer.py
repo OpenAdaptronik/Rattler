@@ -3,7 +3,7 @@ from django.utils import html
 register = template.Library()
 
 def _collect(context, name):
-    if not hasattr(context, name):
+    if not context[name]:
         return ''
 
     res = ''
