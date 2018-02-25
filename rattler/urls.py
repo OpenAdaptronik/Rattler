@@ -56,7 +56,5 @@ urlpatterns = [
     path('analysis/', include('apps.analysis.urls'), name='analysis'),
     path('tess/',include('apps.tess.urls'),name='tess'),
     path('experiments/',include('apps.experiments.urls'),name='experiments'),
-    path('sleep/', views.sleep, name='sleep'),
-    path('fac/<int:n>', views.fac, name='fac'),
     path('', include('apps.index.urls'), name='index'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

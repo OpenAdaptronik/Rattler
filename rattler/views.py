@@ -50,16 +50,3 @@ def index(request):
             'login_form': AuthenticationForm()
         }
     )
-
-
-def sleep(request):
-    import time
-    time.sleep(4)
-    return HttpResponseRedirect('/')
-
-def fac(request, n):
-    res = 1
-    while n > 1:
-        res = res * n
-        n = n - 1
-    return HttpResponse(res)
