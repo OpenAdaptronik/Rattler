@@ -14,7 +14,11 @@ import numpy as np
 def index(request, experimentId):
     if request.method != 'POST':
         return HttpResponseRedirect('/dashboard/')
+    # current user
+    curruser = request.user.id
     projectId = Experiment.objects.get(id=experimentId).project_id
+    # owner of experiment
+    expowner_id = Project.objects.get(id=projectId).user_id
 
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
@@ -70,6 +74,8 @@ def index(request, experimentId):
         'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
         'timerow': timerow,
+        'current_user': curruser,
+        'experiment_owner_id': expowner_id,
     }
 
     #Safe all Data from the measurement object into the session storage to get them when applying filter
