@@ -15,7 +15,7 @@ def index(request, experimentId):
     if request.method != 'POST':
         return HttpResponseRedirect('/dashboard/')
     # current user
-    curruser = request.user.id
+    curruser_id = request.user.id
     projectId = Experiment.objects.get(id=experimentId).project_id
     # owner of experiment
     expowner_id = Project.objects.get(id=projectId).user_id
@@ -74,7 +74,7 @@ def index(request, experimentId):
         'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
         'timerow': timerow,
-        'current_user': curruser,
+        'current_user_id': curruser_id,
         'experiment_owner_id': expowner_id,
     }
 

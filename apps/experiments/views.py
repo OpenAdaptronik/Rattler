@@ -17,8 +17,13 @@ from apps.projects.models import MeasurementInstruments
 @login_required
 def index(request, experimentId):
     # The experiment id is passed in the variable experimentId (see urls.py)
+
+    # current user
+    curruser_id = request.user.id
     projectId = Experiment.objects.get(id=experimentId).project_id
-    if(not request.user.id == Project.objects.get(id=projectId).user_id and not Project.objects.get(id=projectId).visibility):
+    # owner of experiment
+    expowner_id = Project.objects.get(id=projectId).user_id
+    if not curruser_id == expowner_id and not Project.objects.get(id=projectId).visibility:
             raise PermissionDenied()
 
     # Read Data from DB
@@ -65,6 +70,8 @@ def index(request, experimentId):
         'experimentDateCreated': experimentDateCreated,
         'experimentDescr': experimentDescr,
         'projectName': projectName,
+        'current_user_id': curruser_id,
+        'experiment_owner_id': expowner_id,
     }
 
     # Safe all Data from the measurement object into the session storage to get them when applying filter

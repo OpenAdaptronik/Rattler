@@ -55,11 +55,9 @@
                     <div class="row" style="margin-top: 2%">
                         <button class="btn waves-effect waves-light" type="submit" id="tessButton" style="height: 200px;width:200px;">Tess</button>
                         <button class="btn waves-effect waves-light" type="submit" id="analysisButton" style="height: 200px;width:200px;">Analysieren</button>
-                        <a href="{% url 'experiments:derivate' experimentId %}" class="btn waves-effect waves-light valign-wrapper" id="derivButton" style="height: 200px;width:200px;">
-                            <div class="valign-wrapper" style="height:100%">
-                                Ableiten &amp; Integrieren
-                            </div>
-                        </a>
+                        {% if current_user_id == experiment_owner_id %}
+                        <button class="btn waves-effect waves-light" type="submit" id="ableitButton" style="height: 200px;width:200px;">Ableiten &amp; Integrieren</button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -85,6 +83,9 @@
         $("#analysisButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'analysis:index' experimentId %}");
             });
+         $("#ableitButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:derivate' experimentId%}");
+        });
         $("#tessButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
         });
