@@ -5,6 +5,11 @@
 {% endblock %}
 {% block container %}
 <h2 style="">{{profile.user.username}}'s Profil</h2>
+{% if profile.user == user %}
+    <div class="card-action">
+        <a class="btn waves-effect waves-light" href="{% url 'profile:delete_account' %}">Meinen Account löschen</a>
+    </div>
+{% endif %}
 <div class="row">
     <div class="col s12 card">
         <div class="card-content row">

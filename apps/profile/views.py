@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.views import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
@@ -9,7 +10,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth import login
 from django.db import transaction
 
-from django.shortcuts import render, reverse, redirect, HttpResponse
+from django.shortcuts import render, reverse, redirect, HttpResponse, HttpResponseRedirect
 from django.utils.functional import lazy
 from django.views.generic import UpdateView, DetailView
 
@@ -194,3 +195,10 @@ def change_password(request):
     return render(request, 'profile/changePassword.html', {
         'form': form
     })
+
+
+def delete_account(request):
+
+    User.objects.filter(id=request.user.id).update(is_active=False)
+
+    return redirect(reverse('logout'))

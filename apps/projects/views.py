@@ -1,5 +1,5 @@
-from apps.projects.models import Category, Project
-from django.shortcuts import render
+from apps.projects.models import Category, Project, Experiment
+from django.shortcuts import render, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 
 from django.views.generic import FormView, CreateView, ListView, DetailView, UpdateView
@@ -104,3 +104,9 @@ def createExperiment(request, name, id):
         new_experiment.save()
 
     return render(request, 'projects/createExperiment.html')
+
+
+def delete_project(request, project_id):
+    Project.objects.get(id=project_id).delete()
+
+    return HttpResponseRedirect('/projects/')

@@ -11,4 +11,7 @@ urlpatterns = [
     path('<int:experimentId>/derivate/', views.derivate, name='derivate'),
     path('<int:experimentId>/', views.index, name='index'),
     path('', views.index, name='index'),
+    path('delete/<int:experimentId>', views.delete_experiment, name='deleteExperiment'),
+    path('edit/<int:experimentId>', views.render_edit_experiment, name='renderEditExperiment'),
+    path('submit/<int:experimentId>', views.edit_experiment, name='editExperiment'),
 ]

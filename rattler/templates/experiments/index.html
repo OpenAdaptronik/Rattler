@@ -15,6 +15,13 @@
     <textarea style="display: none;" id="zeitreihenSpalte" name="zeitreihenSpalte"></textarea>
     <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
     <h4>Experimentdetails: {{experimentName}}</h4>
+    {% if current_user_id == experiment_owner_id %}
+    <div class="card-action">
+        <button class="btn waves-effect waves-light" id="editExperimentButton" >Experiment bearbeiten</button>
+        <button class="btn waves-effect waves-light" id="deleteExperimentButton">Experiment löschen</button>
+    </div>
+
+    {% endif %}
     <div class="row">
         <div class="col s12">
             <div class="card">
@@ -79,7 +86,7 @@
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
 
-         //Give form two different targeds
+         //Give form two different targets
         $("#analysisButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'analysis:index' experimentId %}");
             });
@@ -89,7 +96,15 @@
         $("#tessButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
         });
+        $("#deleteExperimentButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:deleteExperiment' experimentId%}");
+        });
+        $("#editExperimentButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:renderEditExperiment' experimentId%}");
+        });
+
 
     </script>
     <script type="text/javascript" src="{% static 'jsOnSites/experiments.js' %}"></script>
+    <script type="text/javascript" src="{% static 'general_js/delete_warning.js' %}"></script>
 {% endblock %}
