@@ -326,13 +326,19 @@ def edit_experiment(request, experimentId):
     datarow_ids = datarow_ids[11:-2].split(', ')
     # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
     experiment_measured = experiment_measured.split(' ')
-    experiment_measured = datetime(int(experiment_measured[3]), month_to_string(experiment_measured[2]),
-                              int(experiment_measured[1].rstrip('.')))
-    experiment_measured = timezone.make_aware(experiment_measured, timezone.get_current_timezone())
+    if experiment_measured[0] == 'None' or experiment_measured[0][-1] == '.':
+        experiment_measured = 0
+    else:
+        experiment_measured = datetime(int(experiment_measured[3]), month_to_string(experiment_measured[2]),
+                                       int(experiment_measured[1].rstrip('.')))
+        experiment_measured = timezone.make_aware(experiment_measured, timezone.get_current_timezone())
 
     # update database
-    Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description,
-                                                      measured=experiment_measured)
+    if experiment_measured == 0:
+        Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description)
+    else:
+        Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description,
+                                                          measured=experiment_measured)
 
     i = 0
     while i < int(amt_datarows):
@@ -340,9 +346,8 @@ def edit_experiment(request, experimentId):
         datarow_unit = request.POST['datarow_unit' + str(datarow_ids[i])]
         datarow_measuring_instrument = request.POST['datarow_measuring_instrument' + str(datarow_ids[i])]
         Datarow.objects.filter(id=datarow_ids[i]).update(name=datarow_name, unit=datarow_unit,
-                                                        measuring_instrument=datarow_measuring_instrument)
+                                                         measuring_instrument=datarow_measuring_instrument)
         i = i + 1
-
 
     return HttpResponseRedirect('/experiments/' + str(experimentId))
 
