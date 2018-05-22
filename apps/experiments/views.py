@@ -11,14 +11,21 @@ import numpy as np
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from apps.projects.models import MeasurementInstruments
+from datetime import datetime
+from django.utils import timezone
 
 
 # Create your views here.
 @login_required
 def index(request, experimentId):
     # The experiment id is passed in the variable experimentId (see urls.py)
+
+    # current user
+    curruser_id = request.user.id
     projectId = Experiment.objects.get(id=experimentId).project_id
-    if(not request.user.id == Project.objects.get(id=projectId).user_id and not Project.objects.get(id=projectId).visibility):
+    # owner of experiment
+    expowner_id = Project.objects.get(id=projectId).user_id
+    if not curruser_id == expowner_id and not Project.objects.get(id=projectId).visibility:
             raise PermissionDenied()
 
     # Read Data from DB
@@ -65,6 +72,8 @@ def index(request, experimentId):
         'experimentDateCreated': experimentDateCreated,
         'experimentDescr': experimentDescr,
         'projectName': projectName,
+        'current_user_id': curruser_id,
+        'experiment_owner_id': expowner_id,
     }
 
     # Safe all Data from the measurement object into the session storage to get them when applying filter
@@ -74,30 +83,6 @@ def index(request, experimentId):
     request.session['measurementTimeIndex'] = zeitreihenSpalte
 
     return render(request, "experiments/index.html", dataForRender)
-
-
-# the backend derivation and integration function
-
-# OLD VERSION FROM JÖRG --> delete when finished the real intderiv process
-# is called @ the end of the intderiv process
-def refreshData(request):
-    if request.method != 'POST':
-        return HttpResponseRedirect('/dashboard/')
-
-    # Recreate measurement object from the session storage
-    measurement = measurement_obj.Measurement(request.session['measurementData'], request.session['measurementHeader'],
-                                              request.session['measurementUnits'],
-                                              request.session['measurementTimeIndex'])
-    # jsonHeader = request.POST.get("jsonHeader", "")
-    # jsonEinheiten = request.POST.get("jsonEinheiten", "")
-    # zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
-    # jsonData = request.POST.get("intderivresult", "")
-
-    result = request.POST.get('intderivresult')
-
-    # Number of Columns
-    anzSpalten = len(measurement.data[0])
-    return JsonResponse(result)
 
 
 # is called @ the end of the intderiv process
@@ -173,6 +158,12 @@ def newE(request, id):
 
     return render(request, "experiments/new.html", dataForRender)
 
+
+def month_to_string(month):
+    months = {'Januar': 1, 'Februar': 2, 'März': 3, 'April': 4, 'Mai': 5, 'Juni': 6,
+              'Juli': 7, 'August': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Dezember': 12}
+    return months[month]
+
 # is called after the user uploaded his csv. file
 @login_required
 def newESave(request):
@@ -192,6 +183,12 @@ def newESave(request):
     experiment_name = request.POST.get("datensatzName", "")
     # Date the experiment took place
     experimentDate = request.POST.get("erfassungsDatum", "")
+    # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
+    experimentDate = experimentDate.split(' ')
+    experimentDate = datetime(int(experimentDate[3]), month_to_string(experimentDate[2]),
+                              int(experimentDate[1].rstrip('.')))
+    experimentDate = timezone.make_aware(experimentDate, timezone.get_current_timezone())
+
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
     # experiment_date = json.loads(experimentDate)
@@ -201,7 +198,8 @@ def newESave(request):
     measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
-    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
+    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description,
+                                measured=experimentDate)
     new_experiment.save()
     experiment_id = new_experiment.id
     i = 0
@@ -282,3 +280,69 @@ def derivate(request, experimentId):
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
+
+# delete an experiment
+@login_required
+def delete_experiment(request, experimentId):
+    project_id = Experiment.objects.get(id=experimentId).project_id
+    project_name = Project.objects.get(id=project_id).name
+    Experiment.objects.filter(id=experimentId).delete()
+
+    return HttpResponseRedirect('/projects/detail/' + str(project_name) + '/' + str(project_id))
+
+#render the experiment edit page:
+@login_required
+def render_edit_experiment(request, experimentId):
+    experiment = Experiment.objects.get(id=experimentId)
+    datarows = Datarow.objects.filter(experiment_id=experimentId)
+    amt_datarows = len(datarows)
+    datarow_ids = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
+
+    data_for_render = {
+        'experiment': experiment,
+        'datarows': datarows,
+        'amt_datarows': amt_datarows,
+        'experimentId': experimentId,
+        'datarow_ids': datarow_ids,
+    }
+
+    return render(request, "experiments/edit.html", data_for_render)
+
+
+# experiment in database gets changed according to user input
+@login_required
+def edit_experiment(request, experimentId):
+    if request.method != 'POST':
+        return HttpResponseRedirect('/dashboard/')
+
+    # get POST data
+    datarow_ids = request.POST['datarow_ids']
+    experiment_name = request.POST['experiment_name']
+    experiment_description = request.POST['experiment_description']
+    experiment_measured = request.POST['experiment_measured']
+    amt_datarows = request.POST['amt_datarows']
+
+    # prepare POST data for further usage
+    datarow_ids = datarow_ids[11:-2].split(', ')
+    # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
+    experiment_measured = experiment_measured.split(' ')
+    experiment_measured = datetime(int(experiment_measured[3]), month_to_string(experiment_measured[2]),
+                              int(experiment_measured[1].rstrip('.')))
+    experiment_measured = timezone.make_aware(experiment_measured, timezone.get_current_timezone())
+
+    # update database
+    Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description,
+                                                      measured=experiment_measured)
+
+    i = 0
+    while i < int(amt_datarows):
+        datarow_name = request.POST['datarow_name' + str(datarow_ids[i])]
+        datarow_unit = request.POST['datarow_unit' + str(datarow_ids[i])]
+        datarow_measuring_instrument = request.POST['datarow_measuring_instrument' + str(datarow_ids[i])]
+        Datarow.objects.filter(id=datarow_ids[i]).update(name=datarow_name, unit=datarow_unit,
+                                                        measuring_instrument=datarow_measuring_instrument)
+        i = i + 1
+
+
+    return HttpResponseRedirect('/experiments/' + str(experimentId))
+

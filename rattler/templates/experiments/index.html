@@ -15,6 +15,13 @@
     <textarea style="display: none;" id="zeitreihenSpalte" name="zeitreihenSpalte"></textarea>
     <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
     <h4>Experimentdetails: {{experimentName}}</h4>
+    {% if current_user_id == experiment_owner_id %}
+    <div class="card-action">
+        <button class="btn waves-effect waves-light" id="editExperimentButton" >Experiment bearbeiten</button>
+        <button class="btn waves-effect waves-light" id="deleteExperimentButton">Experiment löschen</button>
+    </div>
+
+    {% endif %}
     <div class="row">
         <div class="col s12">
             <div class="card">
@@ -55,11 +62,9 @@
                     <div class="row" style="margin-top: 2%">
                         <button class="btn waves-effect waves-light" type="submit" id="tessButton" style="height: 200px;width:200px;">Tess</button>
                         <button class="btn waves-effect waves-light" type="submit" id="analysisButton" style="height: 200px;width:200px;">Analysieren</button>
-                        <a href="{% url 'experiments:derivate' experimentId %}" class="btn waves-effect waves-light valign-wrapper" id="derivButton" style="height: 200px;width:200px;">
-                            <div class="valign-wrapper" style="height:100%">
-                                Ableiten &amp; Integrieren
-                            </div>
-                        </a>
+                        {% if current_user_id == experiment_owner_id %}
+                        <button class="btn waves-effect waves-light" type="submit" id="ableitButton" style="height: 200px;width:200px;">Ableiten &amp; Integrieren</button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -81,14 +86,25 @@
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
 
-         //Give form two different targeds
+         //Give form two different targets
         $("#analysisButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'analysis:index' experimentId %}");
             });
+         $("#ableitButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:derivate' experimentId%}");
+        });
         $("#tessButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
         });
+        $("#deleteExperimentButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:deleteExperiment' experimentId%}");
+        });
+        $("#editExperimentButton").click(function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:renderEditExperiment' experimentId%}");
+        });
+
 
     </script>
     <script type="text/javascript" src="{% static 'jsOnSites/experiments.js' %}"></script>
+    <script type="text/javascript" src="{% static 'general_js/delete_warning.js' %}"></script>
 {% endblock %}

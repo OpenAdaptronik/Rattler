@@ -11,4 +11,5 @@ urlpatterns = [
     path('categories/', views.categories, name='categories'),
     path('categories/<int:id>/', views.categories, name='sub_categories'),
     path('createExperiment/<slug:name>/<int:id>', views.createExperiment, name='createExperiment'),
+    path('delete/<int:project_id>', views.delete_project, name='deleteProject'),
 ]

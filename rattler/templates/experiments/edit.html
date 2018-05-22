@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load materialize i18n %}
+{% load static %}
+{% block siteTitle %}Experimente bearbeiten {% endblock %}
+{% block moreStylesheets %}
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% block naviSpace %}
+    {% include 'includeDefs/normalNavi.html' %}
+{% endblock %}
+
+{% block container %}
+    <h4>Experiment "{{experiment.name}}" bearbeiten</h4>
+    <div class="row">
+        <div class="col s12 l9 card">
+            <div class="card-content">
+            <form method="post" action="{% url 'experiments:editExperiment' experimentId %}" enctype="multipart/form-data"> {% csrf_token %}
+                <div class="section"></div>
+            <span class="card-title">Experimentdaten</span>
+                <table class="striped highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Beschreibung</th>
+                                <th>Datum der Messung</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                                <tr>
+                                    <td> <input name="experiment_name" value="{{ experiment.name }}"></td>
+                                    <td><input name="experiment_description" value="{{experiment.description}}"></td>
+                                    <td><input name="experiment_measured" class="datepicker" style="z-index: 500; position: relative;" id="erfassungsDatum" value="{{experiment.measured}}" type="text"></td>
+                                </tr>
+                        </tbody>
+                    <!-- nur zur datenweitergabe, deswegen type="hidden"-->
+                    <input name="amt_datarows" value="{{ amt_datarows }}" type="hidden">
+                    <input name="datarow_ids" value="{{ datarow_ids }}" type="hidden">
+
+
+                    </table>
+                <div class="section"></div>
+                <span class="card-title">Datenreihendaten</span>
+                <table class="striped highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Einheit</th>
+                                <th>Messinstrumente</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                    <tbody>
+                            {% for datarow in datarows %}
+                                <tr>
+                                    <td><input name="datarow_name{{ datarow.id }}" value="{{ datarow.name }}"></td>
+                                    <td>
+                                        <select style='width: 100%' name="datarow_unit{{ datarow.id }}">
+                                        <option selected  value="{{datarow.unit}}">{{datarow.unit}}</option>
+                                        <optgroup label='Zeit'>
+                                            <option value='ms'>ms</option>
+                                            <option value='sec'>sek</option>
+                                            <option value='min'>min</option>
+                                            <option value='h'>h</option>
+                                        </optgroup>
+                                        <optgroup label='Kraft'>
+                                            <option value='N'>N</option>
+                                            <option value='kN'>kN</option>
+                                        </optgroup>
+                                        <optgroup label='Weg'>
+                                            <option value='m'>m</option>
+                                            <option value='mm'>mm</option>
+                                            <option value='cm'>cm</option>
+                                            <option value='µm'>µm</option>
+                                        </optgroup>
+                                        <optgroup label='Geschwindigkeit'>
+                                            <option value='m/s'>m/s</option>
+                                            <option value='km/h'>km/h</option>
+                                            <option value='mm/s'>mm/s</option>
+                                        </optgroup>
+                                        <optgroup label='Beschleunigung'>
+                                            <option value='m/s²'>m/s²</option>
+                                            <option value='g'>g</option>
+                                            <option value='mm/s²'>mm/s²</option>
+                                        </optgroup>
+                                        <optgroup label='Impuls'>
+                                            <option value='Ns'>Ns</option>
+                                        </optgroup>
+                                </select>
+                                    </td>
+                                    <td>
+                                    <select style='width: 100%' name="datarow_measuring_instrument{{ datarow.id }}">
+                                        <option selected  value="{{datarow.measuring_instrument}}">{{datarow.measuring_instrument}}</option>
+                                        <option value='Se'>Se</option>
+                                        <option value='Ac'>Ac</option>
+                                        <option value='None'>None</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+        <div class="card-action">
+        <button class="btn waves-effect waves-light" id="saveExperimentChangesButton" >Änderungen speichern</button>
+        </div>
+    </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+{% block sideNavBlock %}
+    {% include 'includeDefs/sideNav.html' %}
+{% endblock %}
+
+{% block moreScripts %}
+    <script>
+    var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
+    var dateFormat = $("#dateFormat").val();
+    $('.datepicker').pickadate({
+        monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
+        monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
+        weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
+        weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
+        today: 'Heute',
+        clear: 'Löschen',
+        close: 'Schließen',
+        firstDay: 1,
+        format: 'dddd, dd. mmmm yyyy',
+        formatSubmit: dateFormat
+    });
+    </script>
+    {% include 'includeDefs/javascript-forms.html' %}
+{% endblock %}

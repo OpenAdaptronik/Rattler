@@ -73,8 +73,6 @@ $( document ).ready(function() {
             $('#schritt1-card').append("" +
             "                    <div class='section' id='spaltenInfosDiv' style='margin:0; padding-bottom:0'>" +
             "                        <div class='row' style='margin:0;'>" +
-            "                            Wir haben deine Datei analysiert.<br/>" +
-            "                            Aber: <b>was steht in welcher Spalte?</b><br/>" +
             "                            <ul class='collapsible collapsible-accordion' data-collapsible='accordion' style=''>" +
             "                                <li>" +
             "                                    <div class='collapsible-header'><i class='material-icons'>help</i>Hilfe beim Ausfüllen</div>" +
@@ -165,6 +163,9 @@ $( document ).ready(function() {
                     "                       <option value='m/s²'>m/s²</option>" +
                     "                       <option value='g'>g</option>" +
                     "                       <option value='mm/s²'>mm/s²</option>" +
+                    "                   </optgroup>" +
+                    "                   <optgroup label='Impuls'>" +
+                    "                       <option value='Ns'>Ns</option>" +
                     "                   </optgroup>" +
                     "               </select>" +
                     "               <label>Einheit</label>" +
