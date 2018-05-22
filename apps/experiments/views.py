@@ -184,10 +184,13 @@ def newESave(request):
     # Date the experiment took place
     experimentDate = request.POST.get("erfassungsDatum", "")
     # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
-    experimentDate = experimentDate.split(' ')
-    experimentDate = datetime(int(experimentDate[3]), month_to_string(experimentDate[2]),
-                              int(experimentDate[1].rstrip('.')))
-    experimentDate = timezone.make_aware(experimentDate, timezone.get_current_timezone())
+    if experimentDate == '':
+        experimentDate = 0
+    else:
+        experimentDate = experimentDate.split(' ')
+        experimentDate = datetime(int(experimentDate[3]), month_to_string(experimentDate[2]),
+                                  int(experimentDate[1].rstrip('.')))
+        experimentDate = timezone.make_aware(experimentDate, timezone.get_current_timezone())
 
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
@@ -198,8 +201,12 @@ def newESave(request):
     measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
-    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description,
-                                measured=experimentDate)
+    if experimentDate == 0:
+        new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name,
+                                    description=description)
+    else:
+        new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name,
+                                    description=description, measured=experimentDate)
     new_experiment.save()
     experiment_id = new_experiment.id
     i = 0
