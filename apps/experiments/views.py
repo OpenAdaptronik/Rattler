@@ -184,10 +184,13 @@ def newESave(request):
     # Date the experiment took place
     experimentDate = request.POST.get("erfassungsDatum", "")
     # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
-    experimentDate = experimentDate.split(' ')
-    experimentDate = datetime(int(experimentDate[3]), month_to_string(experimentDate[2]),
-                              int(experimentDate[1].rstrip('.')))
-    experimentDate = timezone.make_aware(experimentDate, timezone.get_current_timezone())
+    if experimentDate == '':
+        experimentDate = 0
+    else:
+        experimentDate = experimentDate.split(' ')
+        experimentDate = datetime(int(experimentDate[3]), month_to_string(experimentDate[2]),
+                                  int(experimentDate[1].rstrip('.')))
+        experimentDate = timezone.make_aware(experimentDate, timezone.get_current_timezone())
 
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
@@ -198,8 +201,12 @@ def newESave(request):
     measurement_instruments = json.loads(jsonMeasurementInstruments)
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
-    new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description,
-                                measured=experimentDate)
+    if experimentDate == 0:
+        new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name,
+                                    description=description)
+    else:
+        new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name,
+                                    description=description, measured=experimentDate)
     new_experiment.save()
     experiment_id = new_experiment.id
     i = 0
@@ -326,13 +333,19 @@ def edit_experiment(request, experimentId):
     datarow_ids = datarow_ids[11:-2].split(', ')
     # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
     experiment_measured = experiment_measured.split(' ')
-    experiment_measured = datetime(int(experiment_measured[3]), month_to_string(experiment_measured[2]),
-                              int(experiment_measured[1].rstrip('.')))
-    experiment_measured = timezone.make_aware(experiment_measured, timezone.get_current_timezone())
+    if experiment_measured[0] == 'None' or experiment_measured[0][-1] == '.':
+        experiment_measured = 0
+    else:
+        experiment_measured = datetime(int(experiment_measured[3]), month_to_string(experiment_measured[2]),
+                                       int(experiment_measured[1].rstrip('.')))
+        experiment_measured = timezone.make_aware(experiment_measured, timezone.get_current_timezone())
 
     # update database
-    Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description,
-                                                      measured=experiment_measured)
+    if experiment_measured == 0:
+        Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description)
+    else:
+        Experiment.objects.filter(id=experimentId).update(name=experiment_name, description=experiment_description,
+                                                          measured=experiment_measured)
 
     i = 0
     while i < int(amt_datarows):
@@ -340,9 +353,8 @@ def edit_experiment(request, experimentId):
         datarow_unit = request.POST['datarow_unit' + str(datarow_ids[i])]
         datarow_measuring_instrument = request.POST['datarow_measuring_instrument' + str(datarow_ids[i])]
         Datarow.objects.filter(id=datarow_ids[i]).update(name=datarow_name, unit=datarow_unit,
-                                                        measuring_instrument=datarow_measuring_instrument)
+                                                         measuring_instrument=datarow_measuring_instrument)
         i = i + 1
-
 
     return HttpResponseRedirect('/experiments/' + str(experimentId))
 

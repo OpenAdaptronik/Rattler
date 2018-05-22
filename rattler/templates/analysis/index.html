@@ -207,7 +207,7 @@
                 {% else %}
                     <form action="{% url 'dashboard:index' %}" method="post" enctype="multipart/form-data" id="speicherForm">
                     {% csrf_token %}
-                        <button class="btn waves-effect waves-light" name="speichern" type="submit" style="position: relative; z-index: auto;">Zum Dashboard <i class="material-icons right">save</i></button>
+                        <button class="btn waves-effect waves-light" name="speichern" type="submit" style="position: relative; z-index: auto;">Zum Dashboard </button>
                     </form>
                 {% endif %}
                 </div>
