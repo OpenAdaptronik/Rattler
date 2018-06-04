@@ -37,13 +37,23 @@ def index(request, experimentId):
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
     value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
     datarow_amount = len(datarow_id)
+    # values in the right order will be put in here, but for now initialize with 0
     jsonData = [0] * value_amount
+    # array, initialized with 0, for iterating through values_wo
     data_array = [0] * datarow_amount
+    #values_wrongorder, filled with 0
+    values_wo = [0] * datarow_amount
+    #fill values_wo with only datarow_amount-times of database fetches
+    i = 0
+    while i < datarow_amount:
+        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
+        i += 1
+    # order the values in values_wo, so that they can be used without database fetching
     i = 0
     while i < value_amount:
         j = 0
         while j < datarow_amount:
-            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
+            data_array[j] = float(values_wo[j][i])
             j += 1
         jsonData[i] = data_array
         data_array = [0] * datarow_amount
@@ -104,18 +114,28 @@ def derivateRefresh(request,experimentId):
     secondCol =     int(request.POST.get('secondCol'))
     newColName =    request.POST.get('newColName')
     newColUnit =    request.POST.get('newColUnit')
-   
+
     # Read Data from DB - copied from index function
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
     value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
     datarow_amount = len(datarow_id)
+    # values in the right order will be put in here, but for now initialize with 0
     data = [0] * value_amount
+    # array, initialized with 0, for iterating through values_wo
     data_array = [0] * datarow_amount
+    #values_wrongorder, filled with 0
+    values_wo = [0] * datarow_amount
+    #fill values_wo with only datarow_amount-times of database fetches
+    i = 0
+    while i < datarow_amount:
+        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
+        i += 1
+    # order the values in values_wo, so that they can be used without database fetching
     i = 0
     while i < value_amount:
         j = 0
         while j < datarow_amount:
-            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
+            data_array[j] = float(values_wo[j][i])
             j += 1
         data[i] = data_array
         data_array = [0] * datarow_amount
@@ -135,7 +155,7 @@ def derivateRefresh(request,experimentId):
     # convert result to json
     result = json.dumps(result, cls=NumPyArangeEncoder)
 
-    # 
+    #
     responseData = {
         'result': result,
     }
@@ -240,7 +260,7 @@ def derivate(request, experimentId):
     projectId = Experiment.objects.get(id=experimentId).project_id
     if not request.user.id == Project.objects.get(id=projectId).user_id:
             raise PermissionDenied()
-    
+
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
@@ -266,7 +286,7 @@ def derivate(request, experimentId):
 
     # convert data to json
     jsonData = json.dumps(data, cls=NumPyArangeEncoder)
-    
+
     # Prepare the Data for Rendering
     dataForRender = {
         'jsonHeader': header_list,
@@ -357,4 +377,3 @@ def edit_experiment(request, experimentId):
         i = i + 1
 
     return HttpResponseRedirect('/experiments/' + str(experimentId))
-
