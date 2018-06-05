@@ -37,10 +37,6 @@ def index(request, experimentId):
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
     value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
     datarow_amount = len(datarow_id)
-    # values in the right order will be put in here, but for now initialize with 0
-    jsonData = [0] * value_amount
-    # array, initialized with 0, for iterating through values_wo
-    data_array = [0] * datarow_amount
     #values_wrongorder, filled with 0
     values_wo = [0] * datarow_amount
     #fill values_wo with only datarow_amount-times of database fetches
@@ -49,15 +45,7 @@ def index(request, experimentId):
         values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
         i += 1
     # order the values in values_wo, so that they can be used without database fetching
-    i = 0
-    while i < value_amount:
-        j = 0
-        while j < datarow_amount:
-            data_array[j] = float(values_wo[j][i])
-            j += 1
-        jsonData[i] = data_array
-        data_array = [0] * datarow_amount
-        i += 1
+    jsonData = np.transpose(values_wo).astype(float)
 
     experimentName = Experiment.objects.get(id=experimentId).name
     experimentDateCreated = Experiment.objects.get(id=experimentId).created
@@ -120,10 +108,6 @@ def derivateRefresh(request,experimentId):
     value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
     datarow_amount = len(datarow_id)
     # values in the right order will be put in here, but for now initialize with 0
-    data = [0] * value_amount
-    # array, initialized with 0, for iterating through values_wo
-    data_array = [0] * datarow_amount
-    #values_wrongorder, filled with 0
     values_wo = [0] * datarow_amount
     #fill values_wo with only datarow_amount-times of database fetches
     i = 0
@@ -131,15 +115,7 @@ def derivateRefresh(request,experimentId):
         values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
         i += 1
     # order the values in values_wo, so that they can be used without database fetching
-    i = 0
-    while i < value_amount:
-        j = 0
-        while j < datarow_amount:
-            data_array[j] = float(values_wo[j][i])
-            j += 1
-        data[i] = data_array
-        data_array = [0] * datarow_amount
-        i += 1
+    data = np.transpose(values_wo).astype(float)
 
     # convert data to json (which wouldnt be necessary if we'd change the trapez_for_each & the numerical
     # _approx function to accepting python lists instead of json arrays)
