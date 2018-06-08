@@ -48,7 +48,15 @@ $( document ).ready(function() {
     $('#zeitreihenSpalte').text(zeitreihenSpalte);
     $('#jsonData').html(JSON.stringify(dataArray));
 
+    var deleteButton = document.getElementById("deleteExperimentButton");
+    deleteButton.addEventListener("click", changeButton);
+    function changeButton() {
+      if (deleteButton.type=="button") {
+        deleteButton.type = "submit";
+        deleteButton.innerHTML = "Unwiderrufliches Löschen!";
+        event.preventDefault();
+        deleteButton.removeEventListener("click", changeButton);
+      }
+    }
 
 });
-
-

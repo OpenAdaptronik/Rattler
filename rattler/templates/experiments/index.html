@@ -16,9 +16,9 @@
     <textarea style="display: none;" id="jsonData" name="jsonData"></textarea>
     <h4>Experimentdetails: {{experimentName}}</h4>
     {% if current_user_id == experiment_owner_id %}
-    <div class="card-action">
-        <button class="btn waves-effect waves-light" id="editExperimentButton" >Experiment bearbeiten</button>
-        <button class="btn waves-effect waves-light" id="deleteExperimentButton">Experiment löschen</button>
+    <div class="card-action" >
+        <div id="editExperiment"><button class="btn waves-effect waves-light" id="editExperimentButton" >Experiment bearbeiten</button></div>
+        <div id="deleteExperiment"><button class="btn waves-effect waves-light" type="button" id="deleteExperimentButton">Experiment löschen</button></div>
     </div>
 
     {% endif %}
@@ -79,6 +79,11 @@
 {% block moreScripts %}
     {% include 'includeDefs/javascript-forms.html' %}
     {% include 'includeDefs/jquery-validation.html' %}
+    <style>
+    #editExperiment, #deleteExperiment{
+      display: inline;
+    }
+    </style>
     <script>
         var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
         var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
@@ -96,12 +101,13 @@
         $("#tessButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
         });
-        $("#deleteExperimentButton").click(function() {
-            $(this).closest("form").attr("action", "{% url 'experiments:deleteExperiment' experimentId%}");
-        });
         $("#editExperimentButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'experiments:renderEditExperiment' experimentId%}");
         });
+        $('#deleteExperiment').on('click', "button", function() {
+            $(this).closest("form").attr("action", "{% url 'experiments:deleteExperiment' experimentId%}");
+        });
+
 
 
     </script>
