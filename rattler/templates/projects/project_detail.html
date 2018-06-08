@@ -88,7 +88,7 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Enthaltene Experimente</span>
-                {% if object.experiment != null %}
+                {% if object.experiment_set.all|length != 0 %}
                 <table class="striped highlight responsive-table">
                     <thead>
                         <tr>
