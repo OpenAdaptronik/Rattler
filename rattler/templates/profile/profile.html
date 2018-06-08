@@ -7,7 +7,7 @@
 <h2 style="">{{profile.user.username}}'s Profil</h2>
 {% if profile.user == user %}
     <div class="card-action">
-        <a class="btn waves-effect waves-light" href="{% url 'profile:delete_account' %}">Meinen Account löschen</a>
+        <a id="deleteProfileButton" class="btn waves-effect waves-light" type="button"href="{% url 'profile:delete_account' %}">Mein Account löschen</a>
     </div>
 {% endif %}
 <div class="row">
@@ -29,7 +29,7 @@
                         <span class="title">Name</span>
                         <p>
                             {% if profile.visibility_first_name %}
-                                {{profile.user.first_name}} 
+                                {{profile.user.first_name}}
                             {% endif %}
                             {% if profile.visibility_last_name %}
                                 {{profile.user.last_name}}
@@ -104,4 +104,19 @@
         </div>
     </div>
 </div>
+
+<script>
+
+var deleteButton = document.getElementById("deleteProfileButton");
+deleteButton.addEventListener("click", changeButton);
+function changeButton() {
+  if (deleteButton.type=="button") {
+    deleteButton.type = "submit";
+    deleteButton.innerHTML = "Unwiderrufliches Löschen!";
+    event.preventDefault();
+    deleteButton.removeEventListener("click", changeButton);
+  }
+}
+
+</script>
 {% endblock %}
