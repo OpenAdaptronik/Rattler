@@ -9,7 +9,7 @@
 <h2>{%trans 'project' %}: {{ object.name }}</h2>
 {% if object.user == user %}
     <div class="card-action">
-        <a class="btn waves-effect waves-light" href="{% url 'projects:deleteProject' object.id %}">Dieses Projekt löschen</a>
+        <div id=deleteProject><a class="btn waves-effect waves-light" id="deleteProjectButton" type=button href="{% url 'projects:deleteProject' object.id %}">Dieses Projekt löschen</a></div>
     </div>
 {% endif %}
 <div class="row">
@@ -169,5 +169,16 @@
             $('.carousel-slider').height($('#detailCol').outerHeight() - 22);
         });
     });
+
+    var deleteButton = document.getElementById("deleteProjectButton");
+    deleteButton.addEventListener("click", changeButton);
+    function changeButton() {
+      if (deleteButton.type=="button") {
+        deleteButton.type = "submit";
+        deleteButton.innerHTML = "Unwiderrufliches Löschen!";
+        event.preventDefault();
+        deleteButton.removeEventListener("click", changeButton);
+      }
+    }
     </script>
 {% endblock %}

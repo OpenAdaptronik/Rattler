@@ -104,6 +104,7 @@
         $("#editExperimentButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'experiments:renderEditExperiment' experimentId%}");
         });
+        <!--delegiertes Selektieren, da delete button dynamisch verändert wird-->
         $('#deleteExperiment').on('click', "button", function() {
             $(this).closest("form").attr("action", "{% url 'experiments:deleteExperiment' experimentId%}");
         });
