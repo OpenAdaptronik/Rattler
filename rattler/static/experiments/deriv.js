@@ -1,15 +1,54 @@
 $(document).ready(function () {
+
+  function arrayColnAsRow(arr, n) {
+      return arr.map(function(x) { return x[n]})
+  }
+
+      var color = ['#005C47', '#FF6600', '#006E94', '#FDC300', '#B28700', '#FF3400'];
+  // Plotly: Graph von vorheriger Seite wieder plotten
+      var traces = [];
+      // s. Variablenname
+      zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
+
+  var layout = {
+      title: 'Dein Experiment:',
+      xaxis: {
+          title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
+      }
+  }
+
+
+  // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+
+  for(var j=0; j < anzSpalten; j++){
+      // i = Index über Spalten
+      traces[j] = {
+          x: zeitreihenSpalteAlsZeile,
+          y: arrayColnAsRow(dataArray, j),
+          name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
+          type: 'scatter',
+          line: {
+              color: color[j],
+              width: 1.5,
+          }
+      }
+
+  }
+  traces[zeitreihenSpalte] = [];
+  traces[zeitreihenSpalte].shift();
+
+  Plotly.newPlot('firstGraph', traces, layout);
+
+
     // Clone firstCol select to secondCol select
     $("#secondCol").html($("#firstCol").html());
-    
+
     // init vars
     var firstCol, secondCol, newColName, newColUnit, intOrDevFctCode;
     var numTasks = 0;
     // @TODO: the following vars have to be initialized w/ the existing cols of the experiment,
     // because Fraunhofer want all the existing cols saved to the new experiment, too.
     var xHeaders = JSON.parse($("#jsonHeader").val());
-    console.log(xHeaders);
-    //console.log($.type(JSON.parse(xHeaders)));
     var xUnits = JSON.parse($("#jsonEinheiten").html());
     var xMeasurementInstruments = JSON.parse($("#jsonMeasurementInstruments").html());
     var xData = JSON.parse($("#jsonData").html());
@@ -17,7 +56,7 @@ $(document).ready(function () {
     // get vars from python (submitted through hidden html fields)
     var experimentId = parseInt($("#experimentId").val());
     var numOfCols = parseInt($("#numOfCols").val());
-    
+
     // triggered when function is submitted
     $('#newTaskForm').submit(function (event) {
         event.preventDefault();
@@ -38,7 +77,7 @@ $(document).ready(function () {
                 }
             }
         });
-        
+
         firstCol = $("#firstCol").val();
         secondCol = $("#secondCol").val();
         newColName = $("#newColName").val();
@@ -67,10 +106,8 @@ $(document).ready(function () {
                 newColData = JSON.parse(data.result);
                 //spaltenTitel = JSON.parse(data.jsonHeader);
                 //spaltenEinheiten = JSON.parse(data.jsonEinheiten);
-                //zeitreihenSpalte = data.zeitreihenSpalte;
-                //anzSpalten = dataArray[0].length;
-                console.log(newColData);
 
+                //anzSpalten = dataArray[0].length;
                 // count the cols!
                 numOfCols++;
                 // count the successful tasks!
@@ -90,7 +127,6 @@ $(document).ready(function () {
                 // Append new info and data to fields containing the vars we send to python to create a new experiment
                 // add the new heading to the headers
                 xHeaders.push(newColName);
-                console.log(JSON.stringify(xHeaders));
                 $("#jsonHeader").val(JSON.stringify(xHeaders));
                 // add the new unit to the units
                 xUnits.push(newColUnit);
@@ -111,7 +147,7 @@ $(document).ready(function () {
                 $(".newestCompletedTask").removeClass("hide").removeClass("newestCompletedTask");
                 $("#completedTasksSection").removeClass("hide");
                 $("#completedTasksDivider").removeClass("hide");
-                
+
                 // clear new task form for next task and make the fields look good again
                 $('#newTaskForm').trigger("reset");
                 Materialize.updateTextFields();
@@ -120,6 +156,64 @@ $(document).ready(function () {
                 // Show new task form again
                 $("#newTaskInProgress").addClass("hide");
                 $("#newTask").removeClass("hide");
+
+
+                dataArray = xData;
+                spaltenTitel = xHeaders;
+                spaltenEinheiten = xUnits;
+                anzSpalten = dataArray[0].length;
+
+                // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
+                // https://stackoverflow.com/a/34979219
+                function arrayColnAsRow(arr, n) {
+                    return arr.map(function (x) { return x[n] })
+                }
+
+                // Plotly: Graph von vorheriger Seite wieder plotte
+                var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
+                var traces = [];
+                // s. Variablenname
+                zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
+                var layout = {
+                    title: 'Dein Experiment:',
+                    xaxis: {
+                        title: spaltenTitel[zeitreihenSpalte] + ' (' + spaltenEinheiten[zeitreihenSpalte] + ')',
+                    }
+                }
+
+                // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
+
+                for (var j = 0; j < anzSpalten; j++) { // i = Index über Spalten
+                    traces[j] = {
+                        x: zeitreihenSpalteAlsZeile,
+                        y: arrayColnAsRow(dataArray, j),
+                        name: spaltenTitel[j] + ' (' + spaltenEinheiten[j] + ')',
+                        type: 'scatter',
+                        line: {
+                            color: color[j],
+                            width: 1.5,
+                        }
+                    }}
+
+
+                for(var j=0; j < anzSpalten; j++) { // i = Index über Spalten
+                    traces[j] = {
+                        x: zeitreihenSpalteAlsZeile,
+                        y: arrayColnAsRow(dataArray, j),
+                        name: spaltenTitel[j] + ' (' + spaltenEinheiten[j] + ')',
+                        type: 'scatter',
+                        line: {
+                        color: color[j],
+                        width: 1.5,
+                      }}
+                      traces[zeitreihenSpalte] = [];
+                      traces[zeitreihenSpalte].shift();
+
+                      Plotly.newPlot('firstGraph', traces, layout);
+                    }
+
+
+
             },
             error: function(xhr, status, error) {
                 console.log("ERROR " + error);

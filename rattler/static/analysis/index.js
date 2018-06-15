@@ -192,7 +192,7 @@ $('#analyseAuswahlForm').submit(function(event){
                         }
                     }}
 
-                  
+
         for(var j=0; j < anzSpalten; j++) { // i = Index über Spalten
             traces[j] = {
                 x: zeitreihenSpalteAlsZeile,
