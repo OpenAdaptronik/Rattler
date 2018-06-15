@@ -83,63 +83,6 @@ def index(request, experimentId):
     return render(request, "experiments/index.html", dataForRender)
 
 
-# is called @ the end of the intderiv process
-def derivateRefresh(request,experimentId):
-    if request.method != 'POST':
-        return JsonResponse({"error": "the Request Method hasnt been POST!"})
-
-    # Recreate measurement object from the session storage --> deprecated
-    # measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
-    #                               request.session['measurementUnits'],request.session['measurementTimeIndex'])
-    # jsonHeader = request.POST.get("jsonHeader", "")
-    # jsonEinheiten = request.POST.get("jsonEinheiten", "")
-    # zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
-    # jsonData = request.POST.get("intderivresult", "")
-
-    # get the task data
-    function =      int(request.POST.get('function'))
-    firstCol =      int(request.POST.get('firstCol'))
-    secondCol =     int(request.POST.get('secondCol'))
-    newColName =    request.POST.get('newColName')
-    newColUnit =    request.POST.get('newColUnit')
-
-    # Read Data from DB - copied from index function
-    datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
-    value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
-    datarow_amount = len(datarow_id)
-    # values in the right order will be put in here, but for now initialize with 0
-    values_wo = [0] * datarow_amount
-    #fill values_wo with only datarow_amount-times of database fetches
-    i = 0
-    while i < datarow_amount:
-        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
-        i += 1
-    # order the values in values_wo, so that they can be used without database fetching
-    data = np.transpose(values_wo).astype(float)
-
-    # convert data to json (which wouldnt be necessary if we'd change the trapez_for_each & the numerical
-    # _approx function to accepting python lists instead of json arrays)
-    jsonData = json.dumps(data, cls=NumPyArangeEncoder)
-
-    # call function: 1 == Integration; 0/Else == Derivation (?)
-    if function == 1:
-        result = calc.trapez_for_each(jsonData, firstCol, secondCol)
-    else:
-        result = calc.numerical_approx(jsonData, firstCol, secondCol)
-
-
-    # convert result to json
-    result = json.dumps(result, cls=NumPyArangeEncoder)
-
-    #
-    responseData = {
-        'result': result,
-    }
-
-    # return render(request, "experiments/start.html",dataForRender)
-    return JsonResponse(responseData)
-
-
 # page to upload your csv
 @login_required
 def newE(request, id):
@@ -232,11 +175,9 @@ def newESave(request):
 # derivation and integration "app"
 @login_required
 def derivate(request, experimentId):
-    # check if the current user owns the project. if he doesnt: redirect him to his dashboard
     projectId = Experiment.objects.get(id=experimentId).project_id
-    if not request.user.id == Project.objects.get(id=projectId).user_id:
-            raise PermissionDenied()
-
+    expowner_id = Project.objects.get(id=projectId).user_id
+    curruser_id = request.user.id
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
@@ -246,19 +187,17 @@ def derivate(request, experimentId):
     dateCreated = Experiment.objects.get(id=experimentId).created
     timerow = Experiment.objects.get(id=experimentId).timerow
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
-    datarow_amount = len(datarow_id)
     value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
-    data = [0] * value_amount
-    data_array = [0] * datarow_amount
+    datarow_amount = len(datarow_id)
+    # values in the right order will be put in here, but for now initialize with 0
+    values_wo = [0] * datarow_amount
+    #fill values_wo with only datarow_amount-times of database fetches
     i = 0
-    while i < value_amount:
-        j = 0
-        while j < datarow_amount:
-            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
-            j += 1
-        data[i] = data_array
-        data_array = [0] * datarow_amount
+    while i < datarow_amount:
+        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
         i += 1
+    # order the values in values_wo, so that they can be used without database fetching
+    data = np.transpose(values_wo).astype(float)
 
     # convert data to json
     jsonData = json.dumps(data, cls=NumPyArangeEncoder)
@@ -279,10 +218,73 @@ def derivate(request, experimentId):
         'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
         'timerow': timerow,
-        'experiment': Experiment.objects.get(id=experimentId)
+        'timerowRealJson': json.dumps(timerow, cls=NumPyArangeEncoder),
+        'experiment': Experiment.objects.get(id=experimentId),
+        'current_user_id': curruser_id,
+        'experiment_owner_id': expowner_id,
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
+
+
+# is called @ the end of the intderiv process
+def derivateRefresh(request,experimentId):
+    if request.method != 'POST':
+        return JsonResponse({"error": "the Request Method hasnt been POST!"})
+
+    # Recreate measurement object from the session storage --> deprecated
+    # measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
+    #                               request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    # jsonHeader = request.POST.get("jsonHeader", "")
+    # jsonEinheiten = request.POST.get("jsonEinheiten", "")
+    # zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
+    # jsonData = request.POST.get("intderivresult", "")
+
+    # get the task data
+    function =      int(request.POST.get('function'))
+    firstCol =      int(request.POST.get('firstCol'))
+    secondCol =     int(request.POST.get('secondCol'))
+    newColName =    request.POST.get('newColName')
+    newColUnit =    request.POST.get('newColUnit')
+
+    # Read Data from DB - copied from index function
+    datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
+    value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
+    datarow_amount = len(datarow_id)
+    # values in the right order will be put in here, but for now initialize with 0
+    values_wo = [0] * datarow_amount
+    #fill values_wo with only datarow_amount-times of database fetches
+    i = 0
+    while i < datarow_amount:
+        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
+        i += 1
+    # order the values in values_wo, so that they can be used without database fetching
+    data = np.transpose(values_wo).astype(float)
+
+    # convert data to json (which wouldnt be necessary if we'd change the trapez_for_each & the numerical
+    # _approx function to accepting python lists instead of json arrays)
+    jsonData = json.dumps(data, cls=NumPyArangeEncoder)
+
+    # call function: 1 == Integration; 0/Else == Derivation (?)
+    if function == 1:
+        result = calc.trapez_for_each(jsonData, firstCol, secondCol)
+    else:
+        result = calc.numerical_approx(jsonData, firstCol, secondCol)
+
+
+    # convert result to json
+    result = json.dumps(result, cls=NumPyArangeEncoder)
+
+
+    #
+    responseData = {
+
+        'result': result,
+    }
+
+    # return render(request, "experiments/start.html",dataForRender)
+    return JsonResponse(responseData)
+
 
 # delete an experiment
 @login_required

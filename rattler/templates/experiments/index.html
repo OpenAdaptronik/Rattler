@@ -20,8 +20,8 @@
         <div id="editExperiment"><button class="btn waves-effect waves-light" id="editExperimentButton" >Experiment bearbeiten</button></div>
         <div id="deleteExperiment"><button class="btn waves-effect waves-light" type="button" id="deleteExperimentButton">Experiment löschen</button></div>
     </div>
-
     {% endif %}
+
     <div class="row">
         <div class="col s12">
             <div class="card">
@@ -62,9 +62,7 @@
                     <div class="row" style="margin-top: 2%">
                         <button class="btn waves-effect waves-light" type="submit" id="tessButton" style="height: 200px;width:200px;">Tess</button>
                         <button class="btn waves-effect waves-light" type="submit" id="analysisButton" style="height: 200px;width:200px;">Analysieren</button>
-                        {% if current_user_id == experiment_owner_id %}
                         <button class="btn waves-effect waves-light" type="submit" id="ableitButton" style="height: 200px;width:200px;">Ableiten &amp; Integrieren</button>
-                        {% endif %}
                     </div>
                 </div>
             </div>

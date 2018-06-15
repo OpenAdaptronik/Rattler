@@ -63,10 +63,10 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
 
             // vor einem Pärchen von 2 Spalten eine Row einfügen
             $("#spaltenColTemplate").clone().attr("id", "spaltenCol" + i).appendTo("#dataColsSection").show();
-            
+
             // Spaltentitel einfügen
             $("#spaltenCol" + i + " .colHeader").html("Spalte " + i + ": <b>" + spaltenTitel[i] + "</b>");
-            
+
             // IDs, names, fors
                 $("#spaltenCol" + i + " #hochpass").attr("name", "hochpass" + i).attr("id", "hochpass" + i);
                 $("#spaltenCol" + i + " .hochpassLabel").attr("for", "hochpass" + i);
@@ -76,7 +76,7 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
 
                     $("#spaltenCol" + i + " #hochpassCofreq").attr("id", "hochpassCofreq" + i);
                     $("#spaltenCol" + i + " .hochpassCofreqLabel").attr("for", "hochpassCofreq" + i);
-                    
+
                 $("#spaltenCol" + i + " #tiefpass").attr("name", "tiefpass" + i).attr("id", "tiefpass" + i);
                 $("#spaltenCol" + i + " .tiefpassLabel").attr("for", "tiefpass" + i);
 
@@ -85,13 +85,13 @@ const arrayColumnAsRow = (arr, n) => arr.map(x => x[n]);
 
                     $("#spaltenCol" + i + " #tiefpassCofreq").attr("id", "tiefpassCofreq" + i);
                     $("#spaltenCol" + i + " .tiefpassCofreqLabel").attr("for", "tiefpassCofreq" + i);
-                
+
                 $("#spaltenCol" + i + " #gauss").attr("name", "gauss" + i).attr("id", "gauss" + i);
                 $("#spaltenCol" + i + " .gaussLabel").attr("for", "gauss" + i);
-                    
+
                     $("#spaltenCol" + i + " #gaussStd").attr("id", "gaussStd" + i);
                     $("#spaltenCol" + i + " .gaussStdLabel").attr("for", "gaussStd" + i);
-                    
+
                     $("#spaltenCol" + i + " #gaussM").attr("id", "gaussM" + i);
                     $("#spaltenCol" + i + " .gaussMLabel").attr("for", "gaussM" + i);
         }

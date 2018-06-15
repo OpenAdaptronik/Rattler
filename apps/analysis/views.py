@@ -30,19 +30,17 @@ def index(request, experimentId):
     dateCreated = Experiment.objects.get(id=experimentId).created
     timerow = Experiment.objects.get(id=experimentId).timerow
     datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
-    datarow_amount = len(datarow_id)
     value_amount = len(Value.objects.filter(datarow_id=datarow_id[0]))
-    data = [0] * value_amount
-    data_array = [0] * datarow_amount
+    datarow_amount = len(datarow_id)
+    # values in the right order will be put in here, but for now initialize with 0
+    values_wo = [0] * datarow_amount
+    #fill values_wo with only datarow_amount-times of database fetches
     i = 0
-    while i < value_amount:
-        j = 0
-        while j < datarow_amount:
-            data_array[j] = float(Value.objects.filter(datarow_id=datarow_id[j]).values_list('value', flat=True)[i])
-            j += 1
-        data[i] = data_array
-        data_array = [0] * datarow_amount
+    while i < datarow_amount:
+        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
         i += 1
+    # order the values in values_wo, so that they can be used without database fetching
+    data = np.transpose(values_wo).astype(float)
 
 
 
@@ -103,7 +101,7 @@ def renew_data(request):
 
     '''
     Modify the Data:
-    
+
     1. Check and Apply Resample
     2. Filter
         --> Check and Apply Highpass & Lowpass
