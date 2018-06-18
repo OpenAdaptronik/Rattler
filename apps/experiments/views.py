@@ -161,10 +161,11 @@ def newESave(request):
                                   name=header[i], measuring_instrument='No')
         new_datarow.save()
         j = 0
+        values_list = []
         while j < len(data):
-            new_value = Value(value=data[j][i], datarow_id=new_datarow.id)
-            new_value.save()
+            values_list.append(Value(value=data[j][i], datarow_id=new_datarow.id))
             j += 1
+        Value.objects.bulk_create(values_list)
         i += 1
 
 
