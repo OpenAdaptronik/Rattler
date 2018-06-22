@@ -20,7 +20,20 @@ $( document ).ready(function() {
             t: 0,
             pad: 0,
         },
-    }
+        updatemenus: [{
+        y: 1,
+        yanchor: 'top',
+        buttons: [{
+            method: 'relayout',
+            args: ['yaxis.type', 'linear'],
+            label: 'linear'
+        }, {
+            method: 'relayout',
+            args: ['yaxis.type', 'log'],
+            label: 'log'
+        }]
+    }],
+    };
 
     // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
     for(var j=0; j < anzSpalten; j++){ // i = Index über Spalten
