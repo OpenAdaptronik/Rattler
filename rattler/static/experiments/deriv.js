@@ -14,7 +14,20 @@ $(document).ready(function () {
       title: 'Dein Experiment:',
       xaxis: {
           title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
-      }
+      },
+      updatemenus: [{
+      y: 1,
+      yanchor: 'top',
+      buttons: [{
+          method: 'relayout',
+          args: ['yaxis.type', 'linear'],
+          label: 'linear'
+      }, {
+          method: 'relayout',
+          args: ['yaxis.type', 'log'],
+          label: 'log'
+      }]
+  }]
   }
 
 
@@ -178,7 +191,20 @@ $(document).ready(function () {
                     title: 'Dein Experiment:',
                     xaxis: {
                         title: spaltenTitel[zeitreihenSpalte] + ' (' + spaltenEinheiten[zeitreihenSpalte] + ')',
-                    }
+                    },
+                    updatemenus: [{
+                    y: 1,
+                    yanchor: 'top',
+                    buttons: [{
+                        method: 'relayout',
+                        args: ['yaxis.type', 'linear'],
+                        label: 'linear'
+                    }, {
+                        method: 'relayout',
+                        args: ['yaxis.type', 'log'],
+                        label: 'log'
+                    }]
+                }]
                 }
 
                 // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten

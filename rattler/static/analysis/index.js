@@ -8,22 +8,35 @@ $( document ).ready(function() {
             return arr.map(function(x) { return x[n]})
         }
 
-            var color = ['#005C47', '#FF6600', '#006E94', '#FDC300', '#B28700', '#FF3400'];
+
+        var color = ['#005C47', '#FF6600', '#006E94', '#FDC300', '#B28700', '#FF3400'];
         // Plotly: Graph von vorheriger Seite wieder plotten
-            var traces = [];
-            // s. Variablenname
-            zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
+        var traces = [];
+        // s. Variablenname
+        zeitreihenSpalteAlsZeile = arrayColnAsRow(dataArray, zeitreihenSpalte);
 
         var layout = {
             title: 'Dein Experiment:',
             xaxis: {
                 title: spaltenTitel[zeitreihenSpalte]+' ('+spaltenEinheiten[zeitreihenSpalte]+')',
-            }
+            },
+            updatemenus: [{
+            y: 1,
+            yanchor: 'top',
+            buttons: [{
+                method: 'relayout',
+                args: ['yaxis.type', 'linear'],
+                label: 'linear'
+            }, {
+                method: 'relayout',
+                args: ['yaxis.type', 'log'],
+                label: 'log'
+            }]
+        }]
         }
 
 
         // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
-
         for(var j=0; j < anzSpalten; j++){
             // i = Index über Spalten
             traces[j] = {
@@ -38,6 +51,8 @@ $( document ).ready(function() {
             }
 
         }
+        console.log(dataArray);
+
         traces[zeitreihenSpalte] = [];
         traces[zeitreihenSpalte].shift();
 
@@ -151,20 +166,21 @@ $('#analyseAuswahlForm').submit(function(event){
             cache: false,
             dataType: 'json',
             success: function (data) {
+            console.log(dataArray);
 
             dataArray = JSON.parse(data.jsonData);
             spaltenTitel = JSON.parse(data.jsonHeader);
             spaltenEinheiten = JSON.parse(data.jsonEinheiten);
             zeitreihenSpalte = data.zeitreihenSpalte;
             anzSpalten = dataArray[0].length;
+            console.log(dataArray);
 
 
-
-                // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
-                // https://stackoverflow.com/a/34979219
-                function arrayColnAsRow(arr, n) {
-                    return arr.map(function (x) { return x[n] })
-                }
+            // Funktion, um Spalte in 2. Dimension als Zeile auszugeben
+            // https://stackoverflow.com/a/34979219
+            function arrayColnAsRow(arr, n) {
+                return arr.map(function (x) { return x[n] })
+            }
 
         // Plotly: Graph von vorheriger Seite wieder plotte
                 var color = ['#005C47','#FF6600' , '#006E94' , '#FDC300', '#B28700' , '#FF3400']
@@ -175,7 +191,20 @@ $('#analyseAuswahlForm').submit(function(event){
                     title: 'Dein Experiment:',
                     xaxis: {
                         title: spaltenTitel[zeitreihenSpalte] + ' (' + spaltenEinheiten[zeitreihenSpalte] + ')',
-                    }
+                    },
+                    updatemenus: [{
+                    y: 1,
+                    yanchor: 'top',
+                    buttons: [{
+                        method: 'relayout',
+                        args: ['yaxis.type', 'linear'],
+                        label: 'linear'
+                    }, {
+                        method: 'relayout',
+                        args: ['yaxis.type', 'log'],
+                        label: 'log'
+                    }]
+                }]
                 }
 
                 // Alle Spalten durchlaufen und Daten für die Visualisierung aufbereiten
@@ -208,6 +237,7 @@ $('#analyseAuswahlForm').submit(function(event){
 
             Plotly.newPlot('firstGraph', traces, layout);
         }
+        console.log(dataArray);
 
 
     }})

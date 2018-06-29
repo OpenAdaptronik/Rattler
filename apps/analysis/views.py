@@ -196,8 +196,6 @@ def renew_data(request):
             measurement.fourier_transform(fourierval=fourierval)
 
 
-
-
     # Daten zum Rendern vorbereiten
     dataForRender = {
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
@@ -205,6 +203,7 @@ def renew_data(request):
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
         'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
     }
+
 
     # Safe all Data from the measurement object into the session storage to get them when applying filter
     request.session['measurementDataNew'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
@@ -234,10 +233,16 @@ def newESave(request):
     # Description of the experiment
     description = request.POST.get("experimentDescr", "")
 
+
+
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
+    header.append("undefined")
+    units.append("undefined")
+
     # "sensor"/"actuator"/<irgendein anderer String für None>)
     measurement_instruments = json.loads(jsonMeasurementInstruments)
+    measurement_instruments.append("No")
     time_row = json.loads(zeitreihenSpalte)
     data = json.loads(jsonData)
     new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
