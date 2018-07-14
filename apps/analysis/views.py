@@ -43,15 +43,9 @@ def index(request, experimentId):
     data = np.transpose(values_wo).astype(float)
 
 
-
-    # Read Data from POST request
-    jsonHeader = request.POST.get("jsonHeader", "")
-    jsonEinheiten = request.POST.get("jsonEinheiten", "")
-    zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
-    jsonData = request.POST.get("jsonData", "")
-
     # Create/Initialize the measurement object
-    measurement = measurement_obj.Measurement(jsonData,jsonHeader,jsonEinheiten,zeitreihenSpalte)
+    measurement = measurement_obj.Measurement(json.dumps(data, cls=NumPyArangeEncoder),json.dumps(header_list, cls=NumPyArangeEncoder),
+                                              json.dumps(einheiten_list, cls=NumPyArangeEncoder),timerow)
 
 
     # Prepare the Data for Rendering
@@ -63,7 +57,7 @@ def index(request, experimentId):
         'jsonHeaderRealJson': json.dumps(header_list, cls=NumPyArangeEncoder),
         'jsonEinheitenRealJson': json.dumps(einheiten_list, cls=NumPyArangeEncoder),
         'jsonHeaderAndUnits': zip(header_list, einheiten_list),
-        'data': jsonData,
+        'data': data,
         'jsonMInstrumentsRealJson': json.dumps(mInstruments_list, cls=NumPyArangeEncoder),
         'experimentId': experimentId,
         'experimentName': experimentName,
@@ -237,14 +231,15 @@ def newESave(request):
 
     header = json.loads(jsonHeader)
     units = json.loads(jsonEinheiten)
-    header.append("undefined")
-    units.append("undefined")
-
     # "sensor"/"actuator"/<irgendein anderer String für None>)
     measurement_instruments = json.loads(jsonMeasurementInstruments)
-    measurement_instruments.append("No")
     time_row = json.loads(zeitreihenSpalte)
     data = json.loads(jsonData)
+    if len(header) != len(data[0]):
+        header.append("undefined")
+        units.append("undefined")
+        measurement_instruments.append("No")
+        
     new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
     new_experiment.save()
     experiment_id = new_experiment.id

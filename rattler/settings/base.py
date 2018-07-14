@@ -54,8 +54,11 @@ DATABASES = {
 }
 
 # E-Mails
-DEFAULT_FROM_EMAIL = 'noreply@rattler.openadaptronik.com'
+# E-Mails
+DEFAULT_FROM_EMAIL = 'noreply <noreply@rattler.openadaptronik.de>'
 EMAIL_SUBJECT_PREFIX = '[ Rattler ]'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SERVER_EMAIL = 'root@rattler.openadaptronik.com'
 
