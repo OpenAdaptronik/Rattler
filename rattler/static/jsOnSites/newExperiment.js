@@ -9,7 +9,8 @@ $( document ).ready(function() {
         url: "/FAKEURL", // we dont use the url, but dropzone needs one to work properly
         addRemoveLinks: false,
         autoQueue: false, // important so the files arent uploaded directly after dropping them into the dropzone
-        maxFiles: 1 // how many files you can upload at the same time
+        maxFiles: 1, // how many files you can upload at the same time
+        acceptedFiles: ".csv",
     });
 
     // setup datepicker in the right language (at the moment hardcoded German) and the right format
@@ -96,7 +97,7 @@ $( document ).ready(function() {
             "                            <div class='row' id='allDataColsRow' style='margin:0'>" +
             "                            </div>" +
             "                        </fieldset>" +
-            "                    </div>"   
+            "                    </div>"
             );
             // insert the data cols
             // Check the first col as timerow.
@@ -190,7 +191,7 @@ $( document ).ready(function() {
 
             // Update Materialize Text Fields to make them look fine
             Materialize.updateTextFields();
-            
+
             // insert button for validating the form
             $("#allDataColsRow").append(""+
                 "   <div id='validateDataColumnFormRow' style='margin:0' class='row'>" +
@@ -201,7 +202,7 @@ $( document ).ready(function() {
             // materialize makes everthing look perfectly nice beautiful tremendous great
             $('select').material_select();
             $('.collapsible').collapsible();
-            
+
             // when the validate button is pressed
             $("#validateDataColumnForm").click(function() {
                 // column of the timerow
@@ -234,8 +235,8 @@ $( document ).ready(function() {
                     "<div id='validateGraphSelectionContainer' style='display:inline;' data-position='bottom' data-tooltip='ausgewählter Bereich ist zu groß!'><button type='button' class='btn waves-effect waves-light' id='validateGraphSelection' style=position: relative; z-index: auto;'>Bereich ausgewählt!</button></div>" +
                     "</div>"
                     );
-                    
-                // read the maxDatarows which is the user's maxDatarows value 
+
+                // read the maxDatarows which is the user's maxDatarows value
                 maxDatarows = Number($("#maxDatarows").val());
 
                 if(results.data.length - 1 > maxDatarows){
@@ -299,7 +300,7 @@ $( document ).ready(function() {
                     }
                     traces[timeRowCol] = [];
                     traces[timeRowCol].shift();
-                    
+
                     var d3 = Plotly.d3;
                     var node = d3.select('#graph').node();
 
@@ -308,12 +309,12 @@ $( document ).ready(function() {
                     window.onresize = function() {
                         Plotly.Plots.resize(node);
                     };
-                    
+
                 // vars containing the selection of the user
                 // at the beginning, the whole data is selected
                 var rangeStart = results.data[0][timeRowCol];
                 var rangeEnd = results.data[results.data.length-1][timeRowCol];
-                
+
                 var rangeStartIndex = 0;
                 var rangeEndIndex = results.data.length - 1;
 
@@ -330,7 +331,7 @@ $( document ).ready(function() {
                             rangeStart = eventdata['xaxis.range'][0];
                             rangeEnd = eventdata['xaxis.range'][1];
                         }
-                        
+
                     // get the indices for the rangeStart and rangeEnd
                         for(i = 0; i < results.data.length - 1; i++){
                             if(parseFloat(results.data[i+1][timeRowCol]) > parseFloat(rangeStart)){
@@ -345,7 +346,7 @@ $( document ).ready(function() {
                                 break;
                             }
                         }
-                        
+
                     if(rangeEndIndex-rangeStartIndex > maxDatarows){
                         $("#validateGraphSelection").addClass("disabled");
                         $("#validateGraphSelectionContainer").addClass("tooltipped").attr("data-position","bottom").attr("data-tooltip","ausgewählter Bereich ist zu groß!");
@@ -356,11 +357,11 @@ $( document ).ready(function() {
                     }
                     $('.tooltipped').tooltip({delay: 50});
                 });
-                
+
                 // when the user has finished selecting
                 $("#validateGraphSelection").click(function() {
                     $("#visualisationSection").remove(); // deleting the graph
-                    $("#neueSchwingungsdatenCardAction").show(); // 
+                    $("#neueSchwingungsdatenCardAction").show(); //
                     $(".datensatzInformationenFelder").show();
                     $("#neueSchwingungsdatenCol").addClass("l6");
                     // cut the data to the range the user selected, convert it in JSON and write it in the textarea w/ id=jsonData & name=jsonData
