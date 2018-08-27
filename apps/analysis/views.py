@@ -70,11 +70,17 @@ def index(request, experimentId):
         'experiment_owner_id': expowner_id,
     }
 
-    #Safe all Data from the measurement object into the session storage to get them when applying filter
+    #Safe all Data from the measurement object into the session storage to view old data before the changes
     request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
     request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
     request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
     request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+
+    # Safe all Data a second time to save changes for a new experiment
+    request.session['measurementDataNew'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
+    request.session['measurementHeaderNew'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
+    request.session['measurementUnitsNew'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
+    request.session['measurementTimeIndexNew'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
 
 
     return render(request, "analysis/index.html", dataForRender)
@@ -239,7 +245,7 @@ def newESave(request):
         header.append("undefined")
         units.append("undefined")
         measurement_instruments.append("No")
-        
+
     new_experiment = Experiment(project_id=projectId, timerow=time_row, name=experiment_name, description=description)
     new_experiment.save()
     experiment_id = new_experiment.id

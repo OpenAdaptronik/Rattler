@@ -72,7 +72,7 @@
                 <a style="position:absolute;top:0;right:0;" class="btn white grey-text darken-text-2 imageCarouselNext waves-effect"><i class="material-icons">keyboard_arrow_right</i></a>
             </div>
             {% for image in object.projectimage_set.all %}
-                <a>
+                <a
                     style="display:block;
                             background: url('/{{image.path.url}}') no-repeat center center;
                             background-size: cover;
