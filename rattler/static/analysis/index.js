@@ -156,6 +156,7 @@ $('#analyseAuswahlForm').submit(function(event){
             }
         }
         var experimentId = parseInt($("#experimentId").val());
+        console.log("im here");
 
         $.ajax({
 
@@ -237,8 +238,10 @@ $('#analyseAuswahlForm').submit(function(event){
 
             Plotly.newPlot('firstGraph', traces, layout);
         }
-        console.log(dataArray);
+        console.log("im here");
 
 
     }})
+    console.log("im here");
+
 });
