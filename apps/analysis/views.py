@@ -20,6 +20,9 @@ def index(request, experimentId):
     # owner of experiment
     expowner_id = Project.objects.get(id=projectId).user_id
 
+    # read graph visibility from post
+    graph_visibility = request.POST.get("graphVisibilities", "").split(',')
+
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
@@ -41,7 +44,7 @@ def index(request, experimentId):
         i += 1
     # order the values in values_wo, so that they can be used without database fetching
     data = np.transpose(values_wo).astype(float)
-
+    # raise ValueError(json.dumps(data, cls=NumPyArangeEncoder)[0])
 
     # Create/Initialize the measurement object
     measurement = measurement_obj.Measurement(json.dumps(data, cls=NumPyArangeEncoder),json.dumps(header_list, cls=NumPyArangeEncoder),
@@ -68,6 +71,7 @@ def index(request, experimentId):
         'timerow': timerow,
         'current_user_id': curruser_id,
         'experiment_owner_id': expowner_id,
+        'graphVisibility': json.dumps(graph_visibility, cls=NumPyArangeEncoder),
     }
 
     #Safe all Data from the measurement object into the session storage to view old data before the changes

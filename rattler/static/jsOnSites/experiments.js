@@ -54,6 +54,8 @@ $( document ).ready(function() {
 
     Plotly.newPlot('firstGraph', traces, layout);
 
+    //create vars for user chosen visibility of graph 
+
 
     //Set hidden Data to submit it with the form
     $('#jsonHeader').html(JSON.stringify(spaltenTitel));

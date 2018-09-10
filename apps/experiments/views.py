@@ -179,6 +179,10 @@ def derivate(request, experimentId):
     projectId = Experiment.objects.get(id=experimentId).project_id
     expowner_id = Project.objects.get(id=projectId).user_id
     curruser_id = request.user.id
+
+    # read graph visibility from post
+    graph_visibility = request.POST.get("graphVisibilities", "").split(',')
+    
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
@@ -223,6 +227,7 @@ def derivate(request, experimentId):
         'experiment': Experiment.objects.get(id=experimentId),
         'current_user_id': curruser_id,
         'experiment_owner_id': expowner_id,
+        'graphVisibility': json.dumps(graph_visibility, cls=NumPyArangeEncoder),
     }
 
     return render(request, "experiments/deriv.html", dataForRender)
