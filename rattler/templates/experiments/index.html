@@ -89,20 +89,48 @@
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
 
-         //Give form two different targets
+        // save user choices about viewing the plots of the graph in array graphVisibilities
+        function userGraphSettings() {
+            var form = document.getElementById("tessForm");
+            var graphPlots = document.getElementById('firstGraph').data;
+            var graphVisibilities = [];
+            i = 1;
+            while (i < anzSpalten) {
+                // check for null, because visibility is undefined unless user changes visibility of plot for first time
+                // if null, then plot visibility was not changed --> plot was visible
+                if (graphPlots[i].visible == null) {
+                    graphVisibilities[i-1] = "true";
+                } else {
+                    graphVisibilities[i-1] = graphPlots[i].visible;
+                }
+                ++i;
+            }
+            // create an input element with value of graphVisibility to post to next page
+            var textarea = document.createElement('textarea');
+            textarea.name = "graphVisibilities";
+            textarea.value = graphVisibilities;
+            textarea.id = "graphVisibilities";
+            textarea.style = "display: none;"
+            form.appendChild(textarea);
+        }
+
+        //Give form two different targets
         $("#analysisButton").click(function() {
+            userGraphSettings();
             $(this).closest("form").attr("action", "{% url 'analysis:index' experimentId %}");
-            });
+        });
          $("#ableitButton").click(function() {
+            userGraphSettings();
             $(this).closest("form").attr("action", "{% url 'experiments:derivate' experimentId%}");
         });
         $("#tessButton").click(function() {
+            userGraphSettings();
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
         });
         $("#editExperimentButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'experiments:renderEditExperiment' experimentId%}");
         });
-        <!--delegiertes Selektieren, da delete button dynamisch verändert wird-->
+        //delegiertes Selektieren, da delete button dynamisch verändert wird
         $('#deleteExperiment').on('click', "button", function() {
             $(this).closest("form").attr("action", "{% url 'experiments:deleteExperiment' experimentId%}");
         });

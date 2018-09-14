@@ -37,6 +37,7 @@ $( document ).ready(function() {
             y: arrayColnAsRow(dataArray, j),
             name: spaltenTitel[j] + ' ('+spaltenEinheiten[j]+')',
             type: 'scatter',
+            visible: graphVisibility[j-1],
             line: {
                 width: 1.5,
             }

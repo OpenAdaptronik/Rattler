@@ -128,8 +128,7 @@
         var dataArray = JSON.parse('{{ jsonData|safe }}');
         var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
-        //var strategie1 = 0
-
+        var graphVisibility = JSON.parse('{{ graphVisibility|safe }}');
     </script>
     <script type="text/javascript" src="{% static 'tess/index.js' %}">
             </script>

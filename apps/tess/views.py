@@ -17,6 +17,7 @@ def index(request):
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
     zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
     jsonData = request.POST.get("jsonData", "")
+    graph_visibility = request.POST.get("graphVisibilities", "").split(',')
 
 
     # Prepare the Data for Rendering
@@ -25,6 +26,7 @@ def index(request):
         'jsonHeader': jsonHeader,
         'jsonEinheiten': jsonEinheiten,
         'zeitreihenSpalte': zeitreihenSpalte,
+        'graphVisibility': json.dumps(graph_visibility, cls=NumPyArangeEncoder),
     }
 
     #Safe all Data from the measurement object into the session storage to get them when applying filter
