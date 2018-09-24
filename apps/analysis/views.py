@@ -44,7 +44,6 @@ def index(request, experimentId):
         i += 1
     # order the values in values_wo, so that they can be used without database fetching
     data = np.transpose(values_wo).astype(float)
-    # raise ValueError(json.dumps(data, cls=NumPyArangeEncoder)[0])
 
     # Create/Initialize the measurement object
     measurement = measurement_obj.Measurement(json.dumps(data, cls=NumPyArangeEncoder),json.dumps(header_list, cls=NumPyArangeEncoder),
@@ -56,35 +55,29 @@ def index(request, experimentId):
         'jsonData': json.dumps(measurement.data, cls=NumPyArangeEncoder),
         'jsonHeader': json.dumps(measurement.colNames, cls=NumPyArangeEncoder),
         'jsonEinheiten': json.dumps(measurement.colUnits, cls=NumPyArangeEncoder),
-        'zeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
-        'jsonHeaderRealJson': json.dumps(header_list, cls=NumPyArangeEncoder),
-        'jsonEinheitenRealJson': json.dumps(einheiten_list, cls=NumPyArangeEncoder),
-        'jsonHeaderAndUnits': zip(header_list, einheiten_list),
-        'data': data,
-        'jsonMInstrumentsRealJson': json.dumps(mInstruments_list, cls=NumPyArangeEncoder),
+        'jsonZeitreihenSpalte': json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder),
+        'jsonMeasurementInstruments': json.dumps(mInstruments_list, cls=NumPyArangeEncoder),
         'experimentId': experimentId,
         'experimentName': experimentName,
-        'numOfCols': datarow_amount,
         'projectId': projectId,
-        'dateFormat': settings.DATE_FORMAT,
         'dateCreated': dateCreated,
-        'timerow': timerow,
         'current_user_id': curruser_id,
         'experiment_owner_id': expowner_id,
         'graphVisibility': json.dumps(graph_visibility, cls=NumPyArangeEncoder),
     }
 
     #Safe all Data from the measurement object into the session storage to view old data before the changes
-    request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
-    request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
-    request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
-    request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+    #request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
+    #request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
+    #request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
+    #request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+    request.session['experimentId'] = experimentId
 
     # Safe all Data a second time to save changes for a new experiment
-    request.session['measurementDataNew'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
-    request.session['measurementHeaderNew'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
-    request.session['measurementUnitsNew'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
-    request.session['measurementTimeIndexNew'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+    #request.session['measurementDataNew'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
+    #request.session['measurementHeaderNew'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
+    #request.session['measurementUnitsNew'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
+    #request.session['measurementTimeIndexNew'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
 
 
     return render(request, "analysis/index.html", dataForRender)
@@ -95,9 +88,34 @@ def renew_data(request):
     if request.method != 'POST':
        return HttpResponseRedirect('/dashboard/')
 
+    experimentId = request.session['experimentId']
+    datarow_id = Datarow.objects.filter(experiment_id=experimentId).values_list('id', flat=True)
+    datarow_amount = len(datarow_id)
+    # values in the right order will be put in here, but for now initialize with 0
+    values_wo = [0] * datarow_amount
+    #fill values_wo with only datarow_amount-times of database fetches
+    i = 0
+    while i < datarow_amount:
+        values_wo[i] = Value.objects.filter(datarow_id=datarow_id[i]).values_list('value', flat=True)
+        i += 1
+    # order the values in values_wo, so that they can be used without database fetching
+    data = np.transpose(values_wo).astype(float)
+    header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
+    einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
+    timerow = Experiment.objects.get(id=experimentId).timerow
+
+
     #Recreate measurement object from the session storage
-    measurement = measurement_obj.Measurement(request.session['measurementData'],request.session['measurementHeader'],
-                                   request.session['measurementUnits'],request.session['measurementTimeIndex'])
+    #measurement = measurement_obj.Measurement(request.session['measurementData'],
+    #                                          request.session['measurementHeader'],
+    #                                          request.session['measurementUnits'],
+    #                                          request.session['measurementTimeIndex'])
+
+    #Recreate measurement object from post data
+    measurement = measurement_obj.Measurement(json.dumps(data, cls=NumPyArangeEncoder),
+                                              json.dumps(header_list, cls=NumPyArangeEncoder),
+                                              json.dumps(einheiten_list, cls=NumPyArangeEncoder),
+                                              json.dumps(timerow, cls=NumPyArangeEncoder))
 
     # Number of Columns
     anzSpalten = len(measurement.data[0])
@@ -221,9 +239,9 @@ def renew_data(request):
 @login_required
 def newESave(request):
     # those are the titles of the columns in an array
-    jsonHeader = request.session['measurementHeaderNew']
+    jsonHeader = request.POST.get('jsonHeader', '')
     # those are the units of the columns in an array
-    jsonEinheiten = request.session['measurementUnitsNew']
+    jsonEinheiten = request.POST.get('jsonEinheiten', '')
     # those are the units of the columns in an array
     jsonMeasurementInstruments = request.POST.get("jsonMeasurementInstruments", "")
     # this is the column which contains the x axis (= time; also called "timeindex"), MUSS AUCH IN DIE DB!
