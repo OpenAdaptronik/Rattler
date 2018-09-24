@@ -23,7 +23,6 @@ def index(request, experimentId):
     # read graph visibility from post
     graph_visibility = request.POST.get("graphVisibilities", "").split(',')
 
-    # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
@@ -66,19 +65,8 @@ def index(request, experimentId):
         'graphVisibility': json.dumps(graph_visibility, cls=NumPyArangeEncoder),
     }
 
-    #Safe all Data from the measurement object into the session storage to view old data before the changes
-    #request.session['measurementData'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
-    #request.session['measurementHeader'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
-    #request.session['measurementUnits'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
-    #request.session['measurementTimeIndex'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
+    # save experimentId to get it in ajax call when refreshing graph
     request.session['experimentId'] = experimentId
-
-    # Safe all Data a second time to save changes for a new experiment
-    #request.session['measurementDataNew'] = json.dumps(measurement.data, cls=NumPyArangeEncoder)
-    #request.session['measurementHeaderNew'] = json.dumps(measurement.colNames, cls=NumPyArangeEncoder)
-    #request.session['measurementUnitsNew'] = json.dumps(measurement.colUnits, cls=NumPyArangeEncoder)
-    #request.session['measurementTimeIndexNew'] = json.dumps(measurement.timeIndex, cls=NumPyArangeEncoder)
-
 
     return render(request, "analysis/index.html", dataForRender)
 
@@ -103,13 +91,6 @@ def renew_data(request):
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
     timerow = Experiment.objects.get(id=experimentId).timerow
-
-
-    #Recreate measurement object from the session storage
-    #measurement = measurement_obj.Measurement(request.session['measurementData'],
-    #                                          request.session['measurementHeader'],
-    #                                          request.session['measurementUnits'],
-    #                                          request.session['measurementTimeIndex'])
 
     #Recreate measurement object from post data
     measurement = measurement_obj.Measurement(json.dumps(data, cls=NumPyArangeEncoder),
@@ -291,7 +272,4 @@ def newESave(request):
         Value.objects.bulk_create(values_list)
         i += 1
 
-
-    # @TODO Diesem Redirect muss noch die ID des neuen Experimentes angegeben werden. Die Seite die da aufgerufen wird, ist die Experiment-Detail-Seite!
-    # Zudem müssen wir dann noch die experiments/index.html-Seite und die Funktion index(request) (in diesem File) anpassen, damit sie das Experiment aus der DB liest!
     return HttpResponseRedirect('/experiments/' + str(experiment_id))
