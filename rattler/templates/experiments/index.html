@@ -63,7 +63,13 @@
                         <button class="btn waves-effect waves-light" type="submit" id="tessButton" style="height: 200px;width:200px;">Tess</button>
                         <button class="btn waves-effect waves-light" type="submit" id="analysisButton" style="height: 200px;width:200px;">Analysieren</button>
                         <button class="btn waves-effect waves-light" type="submit" id="ableitButton" style="height: 200px;width:200px;">Ableiten &amp; Integrieren</button>
+                        <button class="btn waves-effect waves-light" type="submit" id="quiverButton" style="height: 200px;width:200px;">Quiver</button>
                     </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    Deine Applikationen:
                 </div>
             </div>
         </div>
@@ -126,6 +132,10 @@
         $("#tessButton").click(function() {
             userGraphSettings();
             $(this).closest("form").attr("action", "{% url 'tess:index' %}");
+        });
+        $("#quiverButton").click(function() {
+            userGraphSettings();
+            $(this).closest("form").attr("action", "{% url 'quiver:index' experimentId%}");
         });
         $("#editExperimentButton").click(function() {
             $(this).closest("form").attr("action", "{% url 'experiments:renderEditExperiment' experimentId%}");
