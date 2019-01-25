@@ -181,14 +181,13 @@
                     <form action="{% url 'analysis:newESave' %}" method="post" enctype="multipart/form-data" id="speicherForm">
                         {% csrf_token %}
                         <!-- hidden vars we send to python to create a new experiment -->
-                            <textarea style="display: none;" id="jsonEinheiten" name="jsonEinheiten">{{jsonEinheitenRealJson}}</textarea>
-                            <textarea style="display: none;" id="jsonMeasurementInstruments" name="jsonMeasurementInstruments">{{jsonMInstrumentsRealJson}}</textarea>
-                            <textarea style="display: none;" id="jsonData" name="jsonData">{{data}}</textarea>
-                            <input type="hidden" id="timeRowCol" name="zeitreihenSpalte" value="{{timerow}}"/>
-                            <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
-                            <input type="hidden" id="dateFormat" name="dateFormat" value="{{ dateFormat }}"/>
-                            <input type="hidden" id="erfassungsDatum" name="erfassungsDatum" value="{{dateCreated}}">
-                            <input type="hidden" id="jsonHeader" name="jsonHeader" value='{{jsonHeader}}'/>
+                        <input type="hidden" id="jsonMeasurementInstruments" name="jsonMeasurementInstruments" value="{{jsonMeasurementInstruments}}"/>
+                        <!-- old experimentData without changes -->
+                        <input type="hidden" id="jsonHeader" name="jsonHeader" value='{{jsonHeader}}'/>
+                        <input type="hidden" id="jsonEinheiten" name="jsonEinheiten" value="{{jsonEinheiten}}"/>
+                        <!-- general data information -->
+                        <input type="hidden" id="projectId" name="projectId" value="{{ projectId }}"/>
+                        <input type="hidden" id="erfassungsDatum" name="erfassungsDatum" value="{{dateCreated}}">
                         <!-- visible fields we send to python to create a new experiment -->
                             <div class="input-field">
                                 <input id="datensatzName" class="validate" name="datensatzName" type="text" value="{{experimentName}} - modifiziert" data-length="40"/>
@@ -221,7 +220,7 @@
         var spaltenTitel = JSON.parse('{{ jsonHeader|safe }}');
         var spaltenEinheiten = JSON.parse('{{ jsonEinheiten|safe }}');
         var dataArray = JSON.parse('{{ jsonData|safe }}');
-        var zeitreihenSpalte = {{ zeitreihenSpalte|safe }};
+        var zeitreihenSpalte = {{ jsonZeitreihenSpalte|safe }};
         var anzSpalten = dataArray[0].length;
         var graphVisibility = JSON.parse('{{ graphVisibility|safe }}');
     </script>

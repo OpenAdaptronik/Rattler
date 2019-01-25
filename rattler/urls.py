@@ -53,6 +53,7 @@ urlpatterns = [
     path('profile/', include('apps.profile.urls'), name='profile'),
     path('projects/', include('apps.projects.urls'), name='projects'),
     path('process/', include('apps.process.urls'), name='process'),
+    path('quiver/', include('apps.quiver.urls'), name='quiver'),
     path('analysis/', include('apps.analysis.urls'), name='analysis'),
     path('tess/',include('apps.tess.urls'),name='tess'),
     path('experiments/',include('apps.experiments.urls'),name='experiments'),

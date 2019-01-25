@@ -157,7 +157,7 @@ $('#analyseAuswahlForm').submit(function(event){
             }
         }
         var experimentId = parseInt($("#experimentId").val());
-        console.log("im here");
+        console.log(data);
 
         $.ajax({
 
