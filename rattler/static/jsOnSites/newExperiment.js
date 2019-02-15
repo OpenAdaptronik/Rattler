@@ -179,6 +179,110 @@ $( document ).ready(function() {
                     "               </select>" +
                     "               <label>Messinstrument</label>" +
                     "           </div>" +
+                    "           <div class='input-field col s6' style='z-index: 5000'>" +
+                    "               <select style='width: 100%' id='dataType"+i+"'>" +
+                    "                       <option value='unknown'>unknown</option>" +
+                    "                       <option value='general'>general</option>" +
+                    "                       <option value='stress'>stress</option>" +
+                    "                       <option value='strain'>strain</option>" +
+                    "                       <option value='temperature'>temperature</option>" +
+                    "                       <option value='heat flux'>heat flux</option>" +
+                    "                       <option value='displacement'>displacement</option>" +
+                    "                       <option value='reaction force'>reaction force</option>" +
+                    "                       <option value='velocity'>velocity</option>" +
+                    "                       <option value='acceleration'>acceleration</option>" +
+                    "                       <option value='excitation force'>excitation force</option>" +
+                    "                       <option value='pressure'>pressure</option>" +
+                    "                       <option value='mass'>mass</option>" +
+                    "                       <option value='time' selected>time</option>" +
+                    "                       <option value='frequency'>frequency</option>" +
+                    "                       <option value='rpm'>rpm</option>" +
+                    "                       <option value='order'>order</option>" +
+                    "               </select>" +
+                    "               <label>Datentyp</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s6' style='z-index: 5000'>" +
+                    "               <select style='width: 100%' id='dataFormat"+i+"'>" +
+                    "                       <option value='real' selected>real</option>" +
+                    "                       <option value='complex'>complex</option>" +
+                    "               </select>" +
+                    "               <label>Datenformat</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s12' style='z-index: 5000'>" +
+                    "               <select style='width: 100%' id='functionType"+i+"'>" +
+                    "                       <option value='general or unknown'>general or unknown</option>" +
+                    "                       <option value='time response' selected>time response</option>" +
+                    "                       <option value='auto spectrum'>auto spectrum</option>" +
+                    "                       <option value='cross spectrum'>cross spectrum</option>" +
+                    "                       <option value='frequency response function'>frequency response function</option>" +
+                    "                       <option value='transmissibility'>transmissibility</option>" +
+                    "                       <option value='coherence'>coherence</option>" +
+                    "                       <option value='auto correlation'>auto correlation</option>" +
+                    "                       <option value='cross correlation'>cross correlation</option>" +
+                    "                       <option value='power spectral density (PSD)'>power spectral density (PSD)</option>" +
+                    "                       <option value='energy spectral density (ESD)'>energy spectral density (ESD)</option>" +
+                    "                       <option value='probability density function'>probability density function</option>" +
+                    "                       <option value='spectrum'>spectrum</option>" +
+                    "                       <option value='cumulative frequency distribution'>cumulative frequency distribution</option>" +
+                    "                       <option value='peaks valley'>peaks valley</option>" +
+                    "                       <option value='stress/cycles'>stress/cycles</option>" +
+                    "                       <option value='strain/cycles'>strain/cycles</option>" +
+                    "                       <option value='orbit'>orbit</option>" +
+                    "                       <option value='mode indicator function'>mode indicator function</option>" +
+                    "                       <option value='force pattern'>force pattern</option>" +
+                    "                       <option value='partial power'>partial power</option>" +
+                    "                       <option value='partial coherence'>partial coherence</option>" +
+                    "                       <option value='eigenvalue'>eigenvalue</option>" +
+                    "                       <option value='eigenvector'>eigenvector</option>" +
+                    "                       <option value='shock response spectrum'>shock response spectrum</option>" +
+                    "                       <option value='finite impulse response filter'>finite impulse response filter</option>" +
+                    "                       <option value='multiple coherence'>multiple coherence</option>" +
+                    "                       <option value='order function'>order function</option>" +
+                    "               </select>" +
+                    "               <label>Funktionstyp</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s12'>" +
+                    "               <input name='res_name" + i + "' id='res_name" + i + "' type='text' value=''>" +
+                    "               <label>Response Name</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s6'>" +
+                    "               <input name='res_node" + i + "' id='res_node" + i + "' type='number' value=0>" +
+                    "               <label>Response Node</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s6'>" +
+                    "               <select style='width: 100%' id='res_dir"+i+"'>" +
+                    "                       <option value='+x translation'>+x translation</option>" +
+                    "                       <option value='+x rotation'>+x rotation</option>" +
+                    "                       <option value='-x translation'>-x translation</option>" +
+                    "                       <option value='-x rotation'>-x rotation</option>" +
+                    "                       <option value='+y translation'>+y translation</option>" +
+                    "                       <option value='+y rotation'>+y rotation</option>" +
+                    "                       <option value='-y translation'>-y translation</option>" +
+                    "                       <option value='-y rotation'>-y rotation</option>" +
+                    "               </select>" +
+                    "               <label>Response Direction</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s12'>" +
+                    "               <input name='ref_name" + i + "' id='ref_name" + i + "' type='text' value=''>" +
+                    "               <label>Reference Name</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s6'>" +
+                    "               <input name='ref_node" + i + "' id='ref_node" + i + "' type='number' value=0>" +
+                    "               <label>Reference Node</label>" +
+                    "           </div>" +
+                    "           <div class='input-field col s6'>" +
+                    "               <select style='width: 100%' id='ref_dir"+i+"'>" +
+                    "                       <option value='+x translation'>+x translation</option>" +
+                    "                       <option value='+x rotation'>+x rotation</option>" +
+                    "                       <option value='-x translation'>-x translation</option>" +
+                    "                       <option value='-x rotation'>-x rotation</option>" +
+                    "                       <option value='+y translation'>+y translation</option>" +
+                    "                       <option value='+y rotation'>+y rotation</option>" +
+                    "                       <option value='-y translation'>-y translation</option>" +
+                    "                       <option value='-y rotation'>-y rotation</option>" +
+                    "               </select>" +
+                    "               <label>Reference Direction</label>" +
+                    "           </div>" +
                     "           <textarea class='col s12' style='resize: none; width:100%; min-width: 100%; max-width: 100%; height: 100px; max-height: 100px; min-height: 100px; border:none; border-top: 1px solid #ccc;' disabled>" +
                                 exampleDataVar +
                     "           </textarea>" +
@@ -210,20 +314,45 @@ $( document ).ready(function() {
                 var colTitles = [];
                 var colUnits = [];
                 var measurementInstruments = [];
+                var dataType = [];
+                var dataFormat = [];
+                var functionType = [];
+                var resName = [];
+                var resNode = [];
+                var resDir = [];
+                var refName = [];
+                var refNode = [];
+                var refDir = [];
                 // get titles and units and measurement instr.s of the cols
                 for(i=0; i < amountOfCols; i++){
                     colTitles[i] = $("#spaltenname" + i).val();
                     colUnits[i] = $('#einheitSpalte' + i).val();
                     measurementInstruments[i] = $('#measurementInstrument' + i).val();
+                    dataType[i] = $('#dataType' + i).val();
+                    dataFormat[i] = $('#dataFormat' + i).val();
+                    functionType[i] = $('#functionType' + i).val();
+                    resName[i] = $('#res_name' + i).val();
+                    resNode[i] = $('#res_node' + i).val();
+                    resDir[i] = $('#res_dir' + i).val();
+                    refName[i] = $('#ref_name' + i).val();
+                    refNode[i] = $('#ref_node' + i).val();
+                    refDir[i] = $('#ref_dir' + i).val();
+
                 }
 
-                // insert the colTitles of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
+                // insert the data of the columns into the hidden textareas to pass them to python later
                 $("#jsonHeader").html(JSON.stringify(colTitles));
-                // insert the colUnits of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
                 $("#jsonEinheiten").html(JSON.stringify(colUnits));
-                // insert the measurement instruments of the columns into the hidden textarea "#jsonMeasurementInstruments" to pass them to python later
                 $("#jsonMeasurementInstruments").html(JSON.stringify(measurementInstruments));
-                // timeRowCol in input "#timeRowCol" einfügen, um sie python später zu übergeben
+                $("#jsonDataType").html(JSON.stringify(dataType));
+                $("#jsonDataFormat").html(JSON.stringify(dataFormat));
+                $("#jsonFunctionType").html(JSON.stringify(functionType));
+                $("#jsonResName").html(JSON.stringify(resName));
+                $("#jsonResNode").html(JSON.stringify(resNode));
+                $("#jsonResDir").html(JSON.stringify(resDir));
+                $("#jsonRefName").html(JSON.stringify(refName));
+                $("#jsonRefNode").html(JSON.stringify(refNode));
+                $("#jsonRefDir").html(JSON.stringify(refDir));
                 $("#timeRowCol").val(timeRowCol);
 
                 $("#spaltenInfosDiv").remove();

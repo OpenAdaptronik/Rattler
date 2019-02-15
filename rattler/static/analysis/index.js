@@ -245,6 +245,11 @@ $('#analyseAuswahlForm').submit(function(event){
 
 
     }})
+
+    //activate save button after submitting once
+    var save_button = document.getElementById('save_button');
+    save_button.disabled = false;
+
     console.log("im here");
 
 });

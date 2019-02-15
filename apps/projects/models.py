@@ -34,7 +34,7 @@ class Project(models.Model):
     visibility = models.BooleanField(_('visibility'), default=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    
+
 
     class Meta:
         verbose_name = _('project')
@@ -48,7 +48,7 @@ class Project(models.Model):
         return reverse('projects:detail', kwargs=kwargs)
 
     def __str__(self):
-        return self.name    
+        return self.name
 
 
 class CategoryManager(models.Manager):
@@ -103,6 +103,7 @@ class Experiment(models.Model):
     timerow = models.IntegerField(null=True,verbose_name=_('timerow'))
     measured = models.DateTimeField(null=True, verbose_name=_('measured'))
 
+
     class Meta:
         verbose_name = _('experiment')
         verbose_name_plural = _('experiments')
@@ -122,6 +123,15 @@ class Datarow(models.Model):
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE, )
     unit = models.CharField(max_length=10, null=True, verbose_name=_('unit'))
     description = models.TextField(max_length=500, null=True, verbose_name=_('description'))
+    function_type = models.CharField(max_length=40, null=True,verbose_name=_('func_type'))
+    response_node = models.IntegerField(null=True,verbose_name=_('res_node'))
+    response_name = models.CharField(max_length=10, null=True, verbose_name=_('res_name'))
+    response_dir = models.CharField(max_length=20, null=True, verbose_name=_('res_dir'))
+    reference_node = models.IntegerField(null=True,verbose_name=_('ref_node'))
+    reference_name = models.CharField(max_length=10, null=True, verbose_name=_('ref_name'))
+    reference_dir = models.CharField(max_length=20, null=True, verbose_name=_('ref_dir'))
+    data_format = models.CharField(max_length=20, null=True,verbose_name=_('data_form'))
+    data_type = models.CharField(max_length=10, null=True,verbose_name=_('data_type'))
     measuring_instrument = models.CharField(max_length=2,
                                             choices=tuple((x.name, x.value) for x in MeasurementInstruments),
                                             default=MeasurementInstruments.NONE, verbose_name=_('measuring instrument'))
