@@ -190,7 +190,6 @@ def renew_data(request):
                 else:
                     measurement.gaussian_filter(index=i)
 
-
     if request.POST.get('fourier') == 'true':
         fourierval =request.POST.get('fourierval', '')
         if fourierval == '':
@@ -229,7 +228,7 @@ def newESave(request):
     zeitreihenSpalte = request.session['measurementTimeIndexNew']
     # Array of the Schwingungs data
     jsonData = request.session['measurementDataNew']
-    # ID of the project 
+    # ID of the project
     projectId = request.POST.get("projectId", "")
     # Title of the experiment
     experiment_name = request.POST.get("datensatzName", "")
