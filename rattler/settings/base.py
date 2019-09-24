@@ -205,4 +205,4 @@ RECAPTCHA_PRIVATE_KEY = '6LcvBkgUAAAAAN5sQ53fsp1abQnNJngZeVgL3q3q'
 NOCAPTCHA = True
 
 # Sessions
-SESSION_COOKIE_AGE = 60 * 15 # 15 minutes = 60*15 = 900 secs timout for user sessions
+SESSION_COOKIE_AGE = 60 * 60 # 60 minutes = 60*60 = 3600 secs timout for user sessions

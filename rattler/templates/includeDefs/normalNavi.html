@@ -6,6 +6,7 @@
         <ul id="nav" class="left hide-on-med-and-down">
             <li class="{% if request.resolver_match.namespaces.0 == 'dashboard' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
             <li class="{% if request.resolver_match.namespaces.0 == 'projects' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'projects:index' %}">Meine Projekte</a></li>
+            <li class="{% if request.resolver_match.namespaces.0 == 'quiver' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'quiver:index' %}">Meine Services</a></li>
             <li class="{% if request.resolver_match.namespaces.0 == 'community' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'community:index' %}">Community</a></li>
         </ul>
     <!-- Profil-Menue -->

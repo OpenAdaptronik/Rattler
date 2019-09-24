@@ -35,7 +35,7 @@
                         <label for="{{ form.path.id_for_label }}" id="label-{{ form.path.id_for_label }}">
                             {% if form.instance.path %}
                                 <img src="/{{ form.instance.path.url  }}" style="width: 100%;">
-                                
+
                             {% else %}
                                 <span class="btn-floating btn-large waves-effect waves-light">
                                     <i class="material-icons medium">add</i>
@@ -46,17 +46,17 @@
 
                 {% endfor %}
             </div>
-                
+
             </div>
-        </div>                    
+        </div>
         <div class="card-action">
             {% materialize_form_submit_btn %}
         </div>
     </div>
 
     <span style="display:none;">
-            
-            
+
+
     </span>
 </form>
 
