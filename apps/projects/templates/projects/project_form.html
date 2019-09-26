@@ -7,7 +7,7 @@
         {% endfor %}
         <button type="submit">Save</button>
     </form>
-    
+
     <script>
         (function() {
             var category = window.document.querySelector('#id_category');
@@ -17,11 +17,11 @@
             if (!category || !subCategory || !newSubCategory) {
                 return;
             }
-    
+
             function subCategoriesLoaded() {
                 subCategory.innerHTML = this.responseText
             }
-    
+
             function loadSubCategories() {
                 if (init) {
                     init = false;
@@ -31,11 +31,11 @@
                 req.addEventListener('load', subCategoriesLoaded);
                 var path = '/projects/categories/';
                 path += category.value;
-    
+
                 req.open('GET', path);
                 req.send();
             }
-    
+
             function toggleCategory() {
                 if (category.value == '') {
                     subCategory.value = '';
@@ -47,7 +47,7 @@
                 }
                 init = false;
             }
-    
+
             function toggleSubCategory() {
                 if (subCategory.value == '0') {
                     newSubCategory.parentElement.style.display = '';
@@ -55,11 +55,10 @@
                     newSubCategory.parentElement.style.display = 'none';
                 }
             }
-    
+
             category.addEventListener('change', toggleCategory);
             subCategory.addEventListener('change', toggleSubCategory);
             toggleCategory();
             toggleSubCategory();
         })();
     </script>
-    

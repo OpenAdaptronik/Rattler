@@ -106,22 +106,43 @@ def month_to_string(month):
 # is called after the user uploaded his csv. file
 @login_required
 def newESave(request):
-    # those are the titles of the columns in an array
+    # titles in an array
     jsonHeader = request.POST.get("jsonHeader", "")
-    # those are the units of the columns in an array
+    header = json.loads(jsonHeader)
+    empty_array = [None] * len(header)
+    # units in an array
     jsonEinheiten = request.POST.get("jsonEinheiten", "")
-    # those are the units of the columns in an array
+    # measurement instruments in an array
     jsonMeasurementInstruments = request.POST.get("jsonMeasurementInstruments", "")
-    # this is the column which contains the x axis (= time; also called "timeindex"), MUSS AUCH IN DIE DB!
+    # data types in an array
+    jsonDataType = request.POST.get("jsonDataType", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # data format in an array
+    jsonDataFormat = request.POST.get("jsonDataFormat", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # function types in an array
+    jsonFunctionType = request.POST.get("jsonFunctionType", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # response directions in an array
+    jsonResName = request.POST.get("jsonResName", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # response nodes in an array
+    jsonResNode = request.POST.get("jsonResNode", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # response directions in an array
+    jsonResDir = request.POST.get("jsonResDir", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # reference names in an array
+    jsonRefName = request.POST.get("jsonRefName", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # reference nodes in an array
+    jsonRefNode = request.POST.get("jsonRefNode", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # reference directions in an array
+    jsonRefDir = request.POST.get("jsonRefDir", json.dumps(empty_array, cls=NumPyArangeEncoder))
+    # column which contains the x axis (= time)
     zeitreihenSpalte = request.POST.get("zeitreihenSpalte", "")
-    # Array of the Schwingungs data
+    # Array of the vibration-data
     jsonData = request.POST.get("jsonData", "")
-    # ID of the project the new, received from the new.html file and casted to int (just in case :))
+    # ID of the new project
     projectId = request.POST.get("projectId", "")
-    # Title of the experiment
+    # title of the experiment
     experiment_name = request.POST.get("datensatzName", "")
-    # Date the experiment took place
+    # date the experiment took place
     experimentDate = request.POST.get("erfassungsDatum", "")
+
     # format date so that it fits into the model 'Day, DD. Month, YYYY'  -> timezone aware object
     if experimentDate == '':
         experimentDate = 0
@@ -131,13 +152,21 @@ def newESave(request):
                                   int(experimentDate[1].rstrip('.')))
         experimentDate = timezone.make_aware(experimentDate, timezone.get_current_timezone())
 
-    # Description of the experiment
     description = request.POST.get("experimentDescr", "")
-    # experiment_date = json.loads(experimentDate)
-    header = json.loads(jsonHeader)
+
+    #decoding json arrays
     units = json.loads(jsonEinheiten)
-    # "sensor"/"actuator"/<irgendein anderer String für None>)
     measurement_instruments = json.loads(jsonMeasurementInstruments)
+    data_type = json.loads(jsonDataType)
+    data_format = json.loads(jsonDataFormat)
+    function_type = json.loads(jsonFunctionType)
+    res_name = json.loads(jsonResName)
+    res_node = json.loads(jsonResNode)
+    res_dir = json.loads(jsonResDir)
+    ref_name = json.loads(jsonRefName)
+    ref_node = json.loads(jsonRefNode)
+    ref_dir = json.loads(jsonRefDir)
+
     time_row = zeitreihenSpalte
     data = json.loads(jsonData)
     if experimentDate == 0:
@@ -152,13 +181,26 @@ def newESave(request):
     while i < len(header):
         if measurement_instruments[i] == 'actuator':
             new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
-                                  name=header[i], measuring_instrument='Ac')
+                                  name=header[i], data_type=data_type[i],
+                                  data_format=data_format[i], function_type=function_type[i],
+                                  response_name=res_name[i], response_node=res_node[i],
+                                  response_dir=res_dir[i], reference_name=ref_name[i],
+                                  reference_node=ref_node[i], reference_dir=ref_dir[i],
+                                  measuring_instrument='Ac')
         elif measurement_instruments[i] == 'sensor':
             new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
-                                  name=header[i], measuring_instrument='Se')
+                                  name=header[i], data_type=data_type[i],
+                                  data_format=data_format[i], function_type=function_type[i],
+                                  response_name=res_name[i], response_node=res_node[i],
+                                  response_dir=res_dir[i], reference_name=ref_name[i],
+                                  reference_node=ref_node[i], reference_dir=ref_dir[i], measuring_instrument='Se')
         else:
             new_datarow = Datarow(experiment_id=experiment_id, unit=units[i],
-                                  name=header[i], measuring_instrument='No')
+                                  name=header[i], data_type=data_type[i],
+                                  data_format=data_format[i], function_type=function_type[i],
+                                  response_name=res_name[i], response_node=res_node[i],
+                                  response_dir=res_dir[i], reference_name=ref_name[i],
+                                  reference_node=ref_node[i], reference_dir=ref_dir[i], measuring_instrument='No')
         new_datarow.save()
         j = 0
         values_list = []
@@ -182,12 +224,13 @@ def derivate(request, experimentId):
 
     # read graph visibility from post
     graph_visibility = request.POST.get("graphVisibilities", "").split(',')
-    
+
     # copied from index function and deleted stuff we don't need here
     # Read Data from DB
     header_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('name', flat=True))
     einheiten_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('unit', flat=True))
     mInstruments_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('measuring_instrument', flat=True))
+    data_format_list = np.asarray(Datarow.objects.filter(experiment_id=experimentId).values_list('data_format', flat=True))
     experimentName = Experiment.objects.get(id=experimentId).name
     dateCreated = Experiment.objects.get(id=experimentId).created
     timerow = Experiment.objects.get(id=experimentId).timerow
@@ -216,6 +259,7 @@ def derivate(request, experimentId):
         'jsonHeaderAndUnits': zip(header_list, einheiten_list),
         'jsonData': jsonData,
         'jsonMInstrumentsRealJson': json.dumps(mInstruments_list, cls=NumPyArangeEncoder),
+        'jsonDataFormat': json.dumps(data_format_list, cls=NumPyArangeEncoder),
         'experimentId': experimentId,
         'experimentName': experimentName,
         'numOfCols': datarow_amount,
@@ -356,8 +400,25 @@ def edit_experiment(request, experimentId):
         datarow_name = request.POST['datarow_name' + str(datarow_ids[i])]
         datarow_unit = request.POST['datarow_unit' + str(datarow_ids[i])]
         datarow_measuring_instrument = request.POST['datarow_measuring_instrument' + str(datarow_ids[i])]
+        datarow_data_type = request.POST['datarow_data_type' + str(datarow_ids[i])]
+        datarow_data_format = request.POST['datarow_data_format' + str(datarow_ids[i])]
+        datarow_function_type = request.POST['datarow_function_type' + str(datarow_ids[i])]
+        datarow_response_name = request.POST['datarow_res_name' + str(datarow_ids[i])]
+        datarow_response_node = request.POST['datarow_res_node' + str(datarow_ids[i])]
+        datarow_response_direction = request.POST['datarow_res_dir' + str(datarow_ids[i])]
+        datarow_reference_name = request.POST['datarow_ref_name' + str(datarow_ids[i])]
+        datarow_reference_node = request.POST['datarow_ref_node' + str(datarow_ids[i])]
+        datarow_reference_direction = request.POST['datarow_ref_dir' + str(datarow_ids[i])]
         Datarow.objects.filter(id=datarow_ids[i]).update(name=datarow_name, unit=datarow_unit,
-                                                         measuring_instrument=datarow_measuring_instrument)
+                                                         measuring_instrument=datarow_measuring_instrument,
+                                                         data_type=datarow_data_type, data_format=datarow_data_format,
+                                                         function_type=datarow_function_type,
+                                                         response_name=datarow_response_name,
+                                                         response_node=datarow_response_node,
+                                                         response_dir=datarow_response_direction,
+                                                         reference_name=datarow_reference_name,
+                                                         reference_node=datarow_reference_node,
+                                                         reference_dir=datarow_reference_direction)
         i = i + 1
 
     return HttpResponseRedirect('/experiments/' + str(experimentId))

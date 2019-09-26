@@ -62,13 +62,13 @@ def materialize_form_field_label(field):
 @register.simple_tag(takes_context=False)
 @wrap_input_field_div
 def materialize_form_textinput(field):
-    return html.mark_safe('%s%s' % (str(field), materialize_form_field_label(field))) 
+    return html.mark_safe('%s%s' % (str(field), materialize_form_field_label(field)))
 
 @register.simple_tag(takes_context=False)
 @wrap_input_field_div
 def materialize_form_textarea(field):
     append_attr(field, 'class', 'materialize-textarea')
-    return html.mark_safe('%s%s' % (materialize_form_field_label(field), str(field))) 
+    return html.mark_safe('%s%s' % (materialize_form_field_label(field), str(field)))
 
 @register.simple_tag(takes_context=False)
 @wrap_input_field_div
@@ -95,7 +95,7 @@ def form_field_render(field, col=12, **kwargs):
         'select': materialize_form_select,
         'checkboxinput': materialize_form_checkboxinput,
     }.get(
-        form_field_type(field), 
+        form_field_type(field),
         materialize_form_textinput
     )(field, col, **kwargs)
 
@@ -135,7 +135,7 @@ def materialize_paginator(paginator, url_name, params=None, buffer=9):
     before_range = min(
         current - 1,
         max(
-            mb - min(buffer, last - current), 
+            mb - min(buffer, last - current),
             buffer
         )
     )

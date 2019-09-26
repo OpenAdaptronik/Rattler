@@ -197,7 +197,7 @@
                                 <textarea type="text" class="materialize-textarea" id="experimentDescr" name="experimentDescr">Aus "{{experimentName}}" (Experiment-ID: {{experimentId}}) entstanden.</textarea>
                                 <label for="experimentDescr">Weitere Informationen:</label>
                             </div>
-                            <button class="btn waves-effect waves-light" name="speichern" type="submit" style="position: relative; z-index: auto;">als Experiment speichern <i class="material-icons right">save</i></button>
+                            <button id="save_button" class="btn waves-effect waves-light" name="speichern" type="submit" disabled style="position: relative; z-index: auto;">als Experiment speichern <i class="material-icons right">save</i></button>
                     </form>
                 {% else %}
                     <form action="{% url 'dashboard:index' %}" method="post" enctype="multipart/form-data" id="speicherForm">

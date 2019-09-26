@@ -190,7 +190,6 @@ def renew_data(request):
                 else:
                     measurement.gaussian_filter(index=i)
 
-
     if request.POST.get('fourier') == 'true':
         fourierval =request.POST.get('fourierval', '')
         if fourierval == '':
@@ -225,11 +224,11 @@ def newESave(request):
     jsonEinheiten = request.POST.get('jsonEinheiten', '')
     # those are the units of the columns in an array
     jsonMeasurementInstruments = request.POST.get("jsonMeasurementInstruments", "")
-    # this is the column which contains the x axis (= time; also called "timeindex"), MUSS AUCH IN DIE DB!
+    # this is the column which contains the x axis
     zeitreihenSpalte = request.session['measurementTimeIndexNew']
     # Array of the Schwingungs data
     jsonData = request.session['measurementDataNew']
-    # ID of the project the new, received from the new.html file and casted to int (just in case :))
+    # ID of the project
     projectId = request.POST.get("projectId", "")
     # Title of the experiment
     experiment_name = request.POST.get("datensatzName", "")

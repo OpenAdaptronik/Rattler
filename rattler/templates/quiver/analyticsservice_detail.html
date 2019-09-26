@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block siteTitle %}Service: {{ object.name }}{% endblock %}
+{% block moreStylesheets %}
+    <link rel="stylesheet" href="{% static 'dropzone/dropzone.min.css' %}">
+    {% include 'includeDefs/javascript-plotly.html' %}
+{% endblock %}
+{% load materialize i18n defer %}
+{% block container %}
+<h2>Service: {{ object.name }}</h2>
+{% if object.user == user %}
+    <div class="card-action">
+        <a class="btn waves-effect waves-light" id="deleteAnalyticsServiceButton" type=button href="{% url 'quiver:deleteAnalyticsService' object.id %}">Diesen Service löschen</a>
+    </div>
+{% endif %}
+<div class="row">
+    <div class="col m12 s12" id="detailCol">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Details</span>
+                <dl>
+                    <dt>
+                         Besitzer :
+                        <b><a href="{% url 'profile:detail' name=object.user.username %}">{{ object.user.username }}</a></b>
+                    </dt>
+                    <dt>
+                        {% trans 'name' %}:
+                        <b>{{ object.name }}</b>
+                    </dt>
+                    <dt>
+                        {% trans 'description' %}:
+                        <b>{{ object.description }}</b>
+                    </dt>
+                    <dt>
+                        Url:
+                        <b>{{ object.url }}</b>
+                    </dt>
+                    <dt>
+                        API-Key:
+                        <b>{{ object.api_key }}</b>
+                    </dt>
+                    <dt>
+                        {% trans 'Sichtbarkeit' %}:
+                        <b>{{ object.visibility }}</b>
+                    </dt>
+                    {% if object.user == user %}
+                    <dt>
+                        <b><a href="{% url 'quiver:edit' object.id %}">Service bearbeiten</a></b>
+                    </dt>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+<form method="post" id="executeForm" action="{% url 'quiver:execute_service' object.id %}">
+{% csrf_token %}
+<div class="card">
+    <div class="card-content">
+        <p>Wähle zur Anwendung ein Projekt aus.</p>
+        <table class="striped highlight responsive-table" id="project_table">
+            <thead>
+                <tr>
+                    <th>Checkbox</th>
+                    <th>{% trans 'name' %}</th>
+                    <th>{% trans 'category' %}</th>
+                    <th>{% trans 'subcategory' %}</th>
+                    <th>{% trans 'manufacturer' %}</th>
+                    <th>{% trans 'typ' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in project_list %}
+                    <tr>
+                        <td><input type="radio" name="project_checkbox" id="{{project.id}}" value="{{project.id}}"><label for="{{project.id}}"></label></td>
+                        <td>{{project.name}}</td>
+                        <td>{{project.category}}</td>
+                        <td>{{project.subcategory}}</td>
+                        <td>{{project.manufacturer}}</td>
+                        <td>{{project.typ}}</td>
+                        <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+            <div class="center-align">
+                {% materialize_paginator page_obj 'projects:index_paginated' buffer=4 %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="card">
+    <div class="card-content">
+        <p>Füge Parameter hinzu, die du diesem Service überreichen willst.</p>
+        <table class="striped highlight responsive-table" id="parameter_table">
+            <thead>
+                <tr>
+                    <th>{% trans 'name' %}</th>
+                    <th>{% trans 'value' %}</th>
+                    <th>{% trans 'typ' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <input type="hidden" value=0 id='rowcounter' name='rowcounter'> </input>
+        <input type="hidden" value={{ object.id }} id='service_id' name='service_id'> </input>
+        <div class="card-action">
+            <button class="btn waves-effect waves-light" type="button" onclick="add_table_row()">einen Parameter hinzufügen<i class="material-icons left"></i></button>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col m12 s12" id="detailCol">
+            <div class="card-action">
+                <button class="btn waves-effect waves-light" type="submit">Diesen Service ausführen<i class="material-icons left"></i></button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="section">
+    <div class="col s9">
+        <div class="row valign-wrapper hide" id="newTaskInProgress">
+            <div class="col">
+                <div class="newTaskPreloaderWrapper">
+                    <div class="preloader-wrapper small active">
+                        <div class="spinner-layer right">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" style="display: none" id="executeResult">
+    <div class="card-content">
+        <p>Dein Ergebnis:</p>
+        <p id='result'></p>
+    </div>
+</div>
+{% endblock %}
+{% block sideNavBlock %}
+{% endblock %}
+{% block moreScripts %}
+<script type="text/javascript" src="{% static 'quiver/analyticsservice_detail.js' %}"></script>
+    <script>
+    $(document).ready(function(){
+        $('.carousel.carousel-slider').carousel({
+            fullWidth: true,
+            indicators: true,
+        });
+        // move next carousel
+        $('.imageCarouselNext').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $('.carousel').carousel('next');
+        });
+        // move prev carousel
+        $('.imageCarouselPrevious').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $('.carousel').carousel('prev');
+        });
+        // make the carousel have the same height as its left neighbor
+        $('.carousel-slider').height($('#detailCol').outerHeight() - 22);
+        $( window ).resize(function() {
+            $('.carousel-slider').height($('#detailCol').outerHeight() - 22);
+        });
+    });
+
+    var deleteButton = document.getElementById("deleteAnalyticsServiceButton");
+    deleteButton.addEventListener("click", changeButton);
+    function changeButton() {
+      if (deleteButton.type=="button") {
+        deleteButton.type = "submit";
+        deleteButton.innerHTML = "Unwiderrufliches Löschen!";
+        event.preventDefault();
+        deleteButton.removeEventListener("click", changeButton);
+      }
+    }
+    </script>
+{% endblock %}

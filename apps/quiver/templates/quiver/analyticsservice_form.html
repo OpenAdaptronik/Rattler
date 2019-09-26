@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static  %}
+{% block siteTitle %}Service "{{ object.name }}" bearbeiten {% endblock %}
+{% block moreStylesheets %}
+{% endblock %}
+{% load materialize i18n defer variables %}
+
+{% block container %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field.errors }}
+        {{ hidden_field }}
+    {% endfor %}
+    <div class="card">
+        <div class="card-content">
+            <span calss="card-title">Service "{{ object.name }}" bearbeiten </span>
+            {{form|materialize}}
+        </div>
+    </div>
+    <div class="card-action">
+        {% materialize_form_submit_btn %}
+    </div>
+    <span style="display:none;">
+    </span>
+</form>
+
+
+{% endblock %}

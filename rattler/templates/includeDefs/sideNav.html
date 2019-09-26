@@ -3,6 +3,7 @@
     <ul id="nav-mobile" class="side-nav" style="">
         <li class="{% if request.resolver_match.namespaces.0 == 'dashboard' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'dashboard:index' %}"><i class="material-icons">home</i>Dashboard</a></li>
         <li class="{% if request.resolver_match.namespaces.0 == 'projects' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'projects:index' %}"><i class="material-icons">folder_shared</i>Meine Projekte</a></li>
+        <li class="{% if request.resolver_match.namespaces.0 == 'quiver' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'quiver:index' %}"><i class="material-icons">folder_shared</i>Meine Services</a></li>
         <li class="{% if request.resolver_match.namespaces.0 == 'community' and request.resolver_match.url_name == 'index' %}active{% endif %}"><a href="{% url 'community:index' %}"><i class="material-icons">people</i>Community</a></li>
         <li class="{% if request.resolver_match.url_name == 'help' %}active{% endif %}"><a href="{% url 'help' %}"><i class="material-icons">help</i>Hilfe</a></li>
     </ul>

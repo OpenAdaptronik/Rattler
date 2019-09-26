@@ -31,7 +31,7 @@
                         <td>{{project.manufacturer}}</td>
                         <td>{{project.typ}}</td>
                         <td><a href="{% url 'projects:detail' id=project.id name=project.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
-                    </tr>                   
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>

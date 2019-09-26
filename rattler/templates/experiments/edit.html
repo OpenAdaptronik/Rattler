@@ -12,7 +12,7 @@
 {% block container %}
     <h4>Experiment "{{experiment.name}}" bearbeiten</h4>
     <div class="row">
-        <div class="col s12 l9 card">
+        <div class="col s12 card">
             <div class="card-content">
             <form method="post" action="{% url 'experiments:editExperiment' experimentId %}" enctype="multipart/form-data"> {% csrf_token %}
                 <div class="section"></div>
@@ -47,6 +47,9 @@
                                 <th>Name</th>
                                 <th>Einheit</th>
                                 <th>Messinstrumente</th>
+                                <th>Datentyp</th>
+                                <th>Datenformat</th>
+                                <th>Funktionstyp</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -56,7 +59,7 @@
                                 <tr>
                                     <td><input name="datarow_name{{ datarow.id }}" value="{{ datarow.name }}"></td>
                                     <td>
-                                        <select style='width: 100%' name="datarow_unit{{ datarow.id }}">
+                                    <select style='width: 100%' name="datarow_unit{{ datarow.id }}">
                                         <option selected  value="{{datarow.unit}}">{{datarow.unit}}</option>
                                         <optgroup label='Zeit'>
                                             <option value='ms'>ms</option>
@@ -87,7 +90,7 @@
                                         <optgroup label='Impuls'>
                                             <option value='Ns'>Ns</option>
                                         </optgroup>
-                                </select>
+                                    </select>
                                     </td>
                                     <td>
                                     <select style='width: 100%' name="datarow_measuring_instrument{{ datarow.id }}">
@@ -97,11 +100,125 @@
                                         <option value='No'>No</option>
                                     </select>
                                     </td>
+                                    <td>
+                                    <select style='width: 100%' name="datarow_data_type{{ datarow.id }}">
+                                        <option selected  value="{{datarow.data_type}}">{{datarow.data_type}}</option>
+                                        <option value='unknown'>unknown</option>
+                                        <option value='general'>general</option>
+                                        <option value='stress'>stress</option>
+                                        <option value='strain'>strain</option>
+                                        <option value='temperature'>temperature</option>
+                                        <option value='heat flux'>heat flux</option>
+                                        <option value='displacement'>displacement</option>
+                                        <option value='reaction force'>reaction force</option>
+                                        <option value='velocity'>velocity</option>
+                                        <option value='acceleration'>acceleration</option>
+                                        <option value='excitation force'>excitation force</option>
+                                        <option value='pressure'>pressure</option>
+                                        <option value='mass'>mass</option>
+                                        <option value='time' selected>time</option>
+                                        <option value='frequency'>frequency</option>
+                                        <option value='rpm'>rpm</option>
+                                        <option value='order'>order</option>
+                                </select>
+                                    </td>
+                                    <td>
+                                <select style='width: 100%' name="datarow_data_format{{ datarow.id }}">
+                                        <option selected  value="{{datarow.data_format}}">{{datarow.data_format}}</option>
+                                        <option value='real'>real</option>
+                                        <option value='complex'>complex</option>
+                                </select>
+                                    </td>
+                                    <td>
+                                <select style='width: 100%' name="datarow_function_type{{ datarow.id }}">
+                                        <option selected  value="{{datarow.function_type}}">{{datarow.function_type}}</option>
+                                        <option value='general or unknown'>general or unknown</option>
+                                        <option value='time response' selected>time response</option>
+                                        <option value='auto spectrum'>auto spectrum</option>
+                                        <option value='cross spectrum'>cross spectrum</option>
+                                        <option value='frequency response function'>frequency response function</option>
+                                        <option value='transmissibility'>transmissibility</option>
+                                        <option value='coherence'>coherence</option>
+                                        <option value='auto correlation'>auto correlation</option>
+                                        <option value='cross correlation'>cross correlation</option>
+                                        <option value='power spectral density (PSD)'>power spectral density (PSD)</option>
+                                        <option value='energy spectral density (ESD)'>energy spectral density (ESD)</option>
+                                        <option value='probability density function'>probability density function</option>
+                                        <option value='spectrum'>spectrum</option>
+                                        <option value='cumulative frequency distribution'>cumulative frequency distribution</option>
+                                        <option value='peaks valley'>peaks valley</option>
+                                        <option value='stress/cycles'>stress/cycles</option>
+                                        <option value='strain/cycles'>strain/cycles</option>
+                                        <option value='orbit'>orbit</option>
+                                        <option value='mode indicator function'>mode indicator function</option>
+                                        <option value='force pattern'>force pattern</option>
+                                        <option value='partial power'>partial power</option>
+                                        <option value='partial coherence'>partial coherence</option>
+                                        <option value='eigenvalue'>eigenvalue</option>
+                                        <option value='eigenvector'>eigenvector</option>
+                                        <option value='shock response spectrum'>shock response spectrum</option>
+                                        <option value='finite impulse response filter'>finite impulse response filter</option>
+                                        <option value='multiple coherence'>multiple coherence</option>
+                                        <option value='order function'>order function</option>
+                                </select>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
 
                     </table>
+                    <div class="section"></div>
+                    <table class="striped highlight responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Response Name</th>
+                                    <th>Response Node</th>
+                                    <th>Response Direction</th>
+                                    <th>Reference Name</th>
+                                    <th>Reference Node</th>
+                                    <th>Reference Direction</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                        <tbody>
+                                {% for datarow in datarows %}
+                                    <tr>
+                                        <td><input name="datarow_res_name{{ datarow.id }}" value="{{ datarow.response_name }}" type="text"></td>
+                                        <td><input name="datarow_res_node{{ datarow.id }}" value="{{ datarow.response_node }}" type="number"></td>
+                                        <td>
+                                        <select style='width: 100%' name="datarow_res_dir{{ datarow.id }}">
+                                            <option selected  value="{{datarow.response_dir}}">{{datarow.response_dir}}</option>
+                                            <option value='+x translation'>+x translation</option>
+                                            <option value='+x rotation'>+x rotation</option>
+                                            <option value='-x translation'>-x translation</option>
+                                            <option value='-x rotation'>-x rotation</option>
+                                            <option value='+y translation'>+y translation</option>
+                                            <option value='+y rotation'>+y rotation</option>
+                                            <option value='-y translation'>-y translation</option>
+                                            <option value='-y rotation'>-y rotation</option>
+                                        </select>
+                                        </td>
+                                        <td><input name="datarow_ref_name{{ datarow.id }}" value="{{ datarow.reference_name }}" type="text"></td>
+                                        <td><input name="datarow_ref_node{{ datarow.id }}" value="{{ datarow.reference_node }}" type="number"></td>
+                                        <td>
+                                        <select style='width: 100%' name="datarow_ref_dir{{ datarow.id }}">
+                                            <option selected  value="{{datarow.reference_dir}}">{{datarow.reference_dir}}</option>
+                                            <option value='+x translation'>+x translation</option>
+                                            <option value='+x rotation'>+x rotation</option>
+                                            <option value='-x translation'>-x translation</option>
+                                            <option value='-x rotation'>-x rotation</option>
+                                            <option value='+y translation'>+y translation</option>
+                                            <option value='+y rotation'>+y rotation</option>
+                                            <option value='-y translation'>-y translation</option>
+                                            <option value='-y rotation'>-y rotation</option>
+                                        </select>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
         <div class="card-action">
         <button class="btn waves-effect waves-light" id="saveExperimentChangesButton" >Änderungen speichern</button>
         </div>

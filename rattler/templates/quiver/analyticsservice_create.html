@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Neuer Service{% endblock %}
+{% block moreStylesheets %}
+{% endblock %}
+{% load materialize i18n defer %}
+
+{% block container %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field.errors }}
+        {{ hidden_field }}
+    {% endfor %}
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Neuen Service anlegen</span>
+            {{form|materialize}}
+        </div>
+    </div>
+        <div class="card-action">
+            {% materialize_form_submit_btn %}
+        </div>
+    </div>
+
+    <span style="display:none;">
+
+
+    </span>
+</form>
+
+{% defer_html %}
+
+    <script>
+        $(document).ready(function() {
+            var init = true;
+
+        });
+    </script>
+{% end_defer_html %}
+{% endblock %}

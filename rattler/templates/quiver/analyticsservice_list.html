@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block siteTitle %}Meine Services{% endblock %}
+{% block moreStylesheets %}
+{% endblock %}
+{% load materialize i18n defer %}
+{% block container %}
+<h2>Meine Services</h2>
+<div class="card">
+    <div class="card-content">
+        <p>Wähle zur Anwendung einen Service aus.</p>
+        <table class="striped highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{% trans 'name' %}</th>
+                    <th>{% trans 'description' %}</th>
+                    <th>Url</th>
+                    <th>Sichtbarkeit</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for analytics_service in object_list %}
+                    <tr>
+                        <td>{{analytics_service.id}}</td>
+                        <td>{{analytics_service.name}}</td>
+                        <td>{{analytics_service.description}}</td>
+                        <td>{{analytics_service.url}}</td>
+                        <td>{{analytics_service.visibility}}</td>
+                        <td><a href="{% url 'quiver:detail' id=analytics_service.id name=analytics_service.name|urlencode %}"><i class="material-icons">arrow_forward</i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+            <div class="center-align">
+                {% materialize_paginator page_obj 'projects:index_paginated' buffer=4 %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-action">
+            <a href="{% url 'quiver:new' %}" class="btn waves-effect waves-light" type="submit">Neuen Service anlegen<i class="material-icons left">add</i></a>
+    </div>
+
+</div>
+{% endblock %}
