@@ -3,7 +3,6 @@ from apps.projects.models import Experiment, Project, Datarow, Value
 def project_serialize(project_id):
     #get all experiments from that project into a nested list of dictionaries to post to the selected webservice
     experiment_objects = list(Experiment.objects.filter(project=project_id))
-    input = []
     for experiment_object in experiment_objects:
         datarow_objects = list(Datarow.objects.filter(experiment=experiment_object.id))
         datarow_objects_list = []
@@ -36,5 +35,5 @@ def project_serialize(project_id):
             'description': experiment_object.description,
             'datarows': datarow_objects_list
         }
-        input.append(experiment_attributes)
+        input = experiment_attributes
         return input
