@@ -73,6 +73,7 @@ def execute_next_state(service: AnalyticsServiceExecution, task_url, input, para
                 raise ValueError('Something went wrong!')
 
         task_url = rsp.headers['Location']
+        #raise ValueError(task_url)
 
         #json = rsp.json()
         service.last_contact = now()
@@ -86,14 +87,20 @@ def execute_next_state(service: AnalyticsServiceExecution, task_url, input, para
         rsp = requests.get(url, allow_redirects=False, auth=ServiceAuth(service.service))
         #raise ValueError(rsp)
 
+        #as long as get hasnt finished do nothing
+        while rsp.status_code != 303:
+            if rsp.status_code == 500 or rsp.status_code == 404:
+                raise ValueError('Something went wrong!')
+
         # We have a result
         if rsp.status_code == 303:
             location = rsp.headers['Location']
 
             r = requests.get(location, allow_redirects=False, auth=ServiceAuth(service.service))
-            #slow get? -> old result
+            #slow get? -> old result shown!!!
             json = r.json()
             json['data'] = base64.b64decode(json['data'])
+            #raise ValueError(json['data'].decode('ascii'))
             service.last_contact = now()
 
 

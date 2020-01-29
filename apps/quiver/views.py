@@ -19,6 +19,7 @@ from apps.projects.serializer import project_serialize
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 import numpy as np
+import random
 
 
 from apps.quiver import service_executor
@@ -178,35 +179,38 @@ def execute_service(request, analytics_service_id):
         rowcounter = int(request.POST.get("rowcounter", ))
         #read out of ajax and adjust format for follwing execution of service
 
-    #raise ValueError(request.POST.get("project_id"))
-    #read and prepare parameter data to send it to the service
-    parameter = [];
-    i = 0;
-    while i < rowcounter:
-        param_attributes = {
-                            'name': request.POST.get('parameter_name_' + str(i), ),
-                            'value': request.POST.get('parameter_value_' + str(i), ),
-                            'type': request.POST.get('type_select_' + str(i), )
-                            }
-        parameter.append(param_attributes)
-        i = i + 1;
+        #read and prepare parameter data to send it to the service
+        input = [];
+        parameter = [];
+        i = 0;
+        while i < rowcounter:
+            param_attributes = {
+                                'name': request.POST.get('parameter_name_' + str(i), ),
+                                'value': request.POST.get('parameter_value_' + str(i), ),
+                                'type': request.POST.get('type_select_' + str(i), )
+                                }
+            parameter.append(param_attributes)
+            i = i + 1;
+        # work that input
 
-    #serialize project as preparation to send it to the service
-    input = project_serialize(project_id)
+        #serialize project as preparation to send it to the service
+        input = project_serialize(project_id)
 
-    service = AnalyticsService.objects.get(id=analytics_service_id)
-    status = service_executor.get_status_for_service(service)
-    if status == service_executor.ServiceState.READY:
-        user = request.user
-        service_execution = AnalyticsServiceExecution(service=service, last_state=1, user=user)
-        service_execution.save()
-        while service_execution.last_state != service_executor.ServiceState.DONE:
+        #generate a random number between 0 and 9999 as task_id
+        task_id = random.randrange(0, 10000, 1)
+
+        service = AnalyticsService.objects.get(id=analytics_service_id)
+        status = service_executor.get_status_for_service(service)
+        if status == service_executor.ServiceState.READY:
+            user = request.user
+            service_execution = AnalyticsServiceExecution(service=service, last_state=1, user=user)
+            service_execution.save()
+            #while service_execution.last_state != service_executor.ServiceState.DONE:
             if service_execution.last_state == service_executor.ServiceState.READY:
                 task_url = service_executor.execute_next_state(service_execution, None, input, parameter)
-            elif service_execution.last_state == service_executor.ServiceState.RUNNING:
+            if service_execution.last_state == service_executor.ServiceState.RUNNING:
                 result = service_executor.execute_next_state(service_execution, task_url, None, None).decode('ascii')
                 return JsonResponse(result, safe=False)
-
 
     else: raise ValueError('Service does not exist right now.')
 

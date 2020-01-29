@@ -65,6 +65,10 @@ function add_table_row(){
 $('form').submit(function(event){
     event.preventDefault();
 
+    // disable button until task is finished
+    $('#submit_button').prop('disabled', true).addClass('disabled');
+
+
     // Show Progress Bar
     $("#newTaskInProgress").removeClass("hide");
 
@@ -107,11 +111,14 @@ $('form').submit(function(event){
         cache:false,
         dataType: 'json',
         success: function (data) {
+
             $('#executeResult').show();
             $('#result').text(data);
             console.log(data)
             // Hide progress bar
             $("#newTaskInProgress").addClass("hide");
+            $('#submit_button').prop('disabled', false).removeClass('disabled');
+
         }
     });
 });
