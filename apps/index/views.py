@@ -18,10 +18,10 @@ def index(request):
         if "url" in data and data["url"] == 'testurl':
             # curl --data "post1=value1&post2=value2&etc=valetc&url=testurl" https://rattler.openadaptronik.de
             # hier weiter arbeiten!!
-            return HttpResponse(str(data) + "200", status=200)
+            return HttpResponse(str(data) + "200")
         else:
             #return HttpResponse(str(type(request.body)) + "400", status=400) ["url"]
-            return HttpResponse(str(data) + "400", status=400)
+            return HttpResponse(str(data) + "400")
 
     if request.user.is_authenticated:
         return HttpResponseRedirect('/dashboard')
