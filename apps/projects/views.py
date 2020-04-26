@@ -29,7 +29,7 @@ class NewProject(LoginRequiredMixin, CreateView):
 
         context = self.get_context_data()
         project_image = context['project_image']
-        
+
         self.object = form.save()
         if project_image.is_valid():
             project_image.instance = self.object
@@ -47,7 +47,7 @@ class UpdateProject(LoginRequiredMixin, UpdateView):
         if not self.object.user == self.request.user and not self.object.visibility:
             raise PermissionDenied()
         return super(UpdateProject, self).get(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         data = super(UpdateProject, self).get_context_data(**kwargs)
         if self.request.method == 'POST':
@@ -99,7 +99,7 @@ def createExperiment(request, name, id):
     if request.method == 'POST':
         post_data = request.POST.copy()
         description = post_data['description']
- 
+
         new_experiment = Experiment(project_id=id, description=description)
         new_experiment.save()
 
