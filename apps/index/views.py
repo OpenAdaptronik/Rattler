@@ -30,7 +30,7 @@ def index(request):
             hashed_password_db = User.objects.filter(username=username).values_list("password", flat=True)[0]
             if check_password(password, hashed_password_db):
                 if Project.objects.filter(name=project_name).exists():
-                    project_id = Project.objects.filter(name=project_name).values_list("id", flat=True)[0]
+                    project_id = Project.objects.filter(name=project_name).filter(user=User.objects.filter(username=username).values_list("id", flat=True)[0]).values_list("id", flat=True)[0]
                     i = 0
                     while i < numofdatarows:
                         if not ("datarow" + str(i) in data):
